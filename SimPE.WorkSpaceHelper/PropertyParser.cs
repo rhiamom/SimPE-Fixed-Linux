@@ -256,11 +256,10 @@ namespace Ambertation
 		/// </summary>
 		protected void Load()
 		{					
-			AppDomain myDomain = Thread.GetDomain();
 			AssemblyName myAsmName = new AssemblyName();
 			myAsmName.Name = "SaveEmittedAssembly";
 
-			AssemblyBuilder myAsmBuilder = myDomain.DefineDynamicAssembly(myAsmName,
+			AssemblyBuilder myAsmBuilder = AssemblyBuilder.DefineDynamicAssembly(myAsmName,
 				AssemblyBuilderAccess.Run);
 
 			// Create a dynamic module.

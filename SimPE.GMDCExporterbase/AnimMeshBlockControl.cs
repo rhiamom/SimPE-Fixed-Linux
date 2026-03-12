@@ -46,12 +46,9 @@ namespace SimPe.Plugin.Anim
 		private System.Windows.Forms.LinkLabel llExport;
 		private System.Windows.Forms.LinkLabel llImport;
         private System.Windows.Forms.CheckBox cbCorrect;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem miAdd;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem miRem;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu cmJoint;
+		private System.Windows.Forms.ToolStripMenuItem miAdd;
+		private System.Windows.Forms.ToolStripMenuItem miRem;
+		private System.Windows.Forms.ContextMenuStrip cmJoint;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -119,12 +116,9 @@ namespace SimPe.Plugin.Anim
 			this.pnSubMesh = new System.Windows.Forms.Panel();
 			this.cbSubMesh = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
-			// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.cmJoint = new System.Windows.Forms.ContextMenu();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.miAdd = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.miRem = new System.Windows.Forms.MenuItem();
+			this.cmJoint = new System.Windows.Forms.ContextMenuStrip();
+			this.miAdd = new System.Windows.Forms.ToolStripMenuItem();
+			this.miRem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel2.SuspendLayout();
 			this.pnJoint.SuspendLayout();
 			this.pnSubMesh.SuspendLayout();
@@ -193,7 +187,7 @@ namespace SimPe.Plugin.Anim
 			// 
 			this.cbJoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbJoint.ContextMenu = this.cmJoint;
+			this.cbJoint.ContextMenuStrip = this.cmJoint;
 			this.cbJoint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbJoint.Location = new System.Drawing.Point(34, 0);
 			this.cbJoint.Name = "cbJoint";
@@ -243,22 +237,19 @@ namespace SimPe.Plugin.Anim
 			// 
 			// cmJoint
 			// 
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-												this.cmJoint.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+												this.cmJoint.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 																					this.miAdd,
 																					this.miRem});
 			// 
 			// miAdd
 			// 
 			this.miAdd.Enabled = false;
-			this.miAdd.Index = 0;
 			this.miAdd.Text = "&Create Joint";
 			this.miAdd.Click += new System.EventHandler(this.miAdd_Click);
 			// 
 			// miRem
 			// 
 			this.miRem.Enabled = false;
-			this.miRem.Index = 1;
 			this.miRem.Text = "&Remove Joint";
 			this.miRem.Click += new System.EventHandler(this.miRem_Click);
 			// 

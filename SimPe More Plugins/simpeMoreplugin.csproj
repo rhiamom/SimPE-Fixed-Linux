@@ -18,8 +18,7 @@
     </StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <PostBuildEvent>if not exist "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\Plugins" mkdir "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\Plugins"
-copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\Plugins\" /Y</PostBuildEvent>
+    <PostBuildEvent />
     <AssemblyTitle>SimPe More Plugins</AssemblyTitle>
     <Description>More Plugins To Show More Stuff</Description>
     <Company>Chris Hatch</Company>
@@ -177,15 +176,6 @@ copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Deb
     <Reference Include="AdvancedForms">
       <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\AdvancedForms.dll</HintPath>
     </Reference>
-    <Reference Include="ambertation.3D">
-      <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\ambertation.3D.dll</HintPath>
-    </Reference>
-    <Reference Include="ambertation.3D.mdx.binding">
-      <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\ambertation.3D.mdx.binding.dll</HintPath>
-    </Reference>
-    <Reference Include="ambertation.utilities">
-      <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\ambertation.utilities.dll</HintPath>
-    </Reference>
     <Reference Include="Eyefinder">
       <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\Eyefinder.dll</HintPath>
     </Reference>
@@ -209,6 +199,16 @@ copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Deb
     </Reference>
     <Reference Include="xsi.lib">
       <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\xsi.lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
+    <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D.mdx.binding">
+      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -78,22 +78,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ColumnHeader colLine;
 		private System.Windows.Forms.ColumnHeader colTitle;
 		private System.Windows.Forms.ColumnHeader colDesc;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu cmLangList;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem1;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem2;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem3;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu cmStrList;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem4;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem5;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.ContextMenuStrip cmLangList;
+		private System.Windows.Forms.ToolStripMenuItem menuItem1;
+		private System.Windows.Forms.ToolStripMenuItem menuItem2;
+		private System.Windows.Forms.ToolStripMenuItem menuItem3;
+		private System.Windows.Forms.ContextMenuStrip cmStrList;
+		private System.Windows.Forms.ToolStripMenuItem menuItem4;
+		private System.Windows.Forms.ToolStripMenuItem menuItem5;
+		private System.Windows.Forms.ToolStripMenuItem menuItem6;
 
 
 		#region Str
@@ -101,18 +93,12 @@ namespace SimPe.PackedFiles.UserInterface
 		/// The Str wrapper handling the packed file data
 		/// </summary>
 		private SimPe.PackedFiles.Wrapper.Str wrapper;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem7;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem8;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem9;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem10;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem11;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem12;
+		private System.Windows.Forms.ToolStripMenuItem menuItem7;
+		private System.Windows.Forms.ToolStripMenuItem menuItem8;
+		private System.Windows.Forms.ToolStripMenuItem menuItem9;
+		private System.Windows.Forms.ToolStripMenuItem menuItem10;
+		private System.Windows.Forms.ToolStripMenuItem menuItem11;
+		private System.Windows.Forms.ToolStripMenuItem menuItem12;
 
 		private StrLanguage currentLang = null;
 
@@ -141,44 +127,30 @@ namespace SimPe.PackedFiles.UserInterface
 		private void InitializeComponent()
 		{
 			this.treeView1 = new System.Windows.Forms.TreeView();
-			// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.cmLangList = new System.Windows.Forms.ContextMenu();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem3 = new System.Windows.Forms.MenuItem();
+			this.cmLangList = new System.Windows.Forms.ContextMenuStrip();
+			this.menuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem3 = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.colLine = new System.Windows.Forms.ColumnHeader();
 			this.colTitle = new System.Windows.Forms.ColumnHeader();
 			this.colDesc = new System.Windows.Forms.ColumnHeader();
-			// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.cmStrList = new System.Windows.Forms.ContextMenu();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem4 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem5 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem6 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem7 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem8 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem9 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem10 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem11 = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.menuItem12 = new System.Windows.Forms.MenuItem();
+			this.cmStrList = new System.Windows.Forms.ContextMenuStrip();
+			this.menuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuItem12 = new System.Windows.Forms.ToolStripMenuItem();
 			this.SuspendLayout();
 			//
 			// treeView1
 			//
-			this.treeView1.ContextMenu = this.cmLangList;
+			this.treeView1.ContextMenuStrip = this.cmLangList;
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.treeView1.ImageIndex = -1;
 			this.treeView1.Location = new System.Drawing.Point(0, 0);
@@ -191,30 +163,26 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// cmLangList
 			//
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-												this.cmLangList.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					   this.menuItem1,
-																					   this.menuItem2,
-																					   this.menuItem7,
-																					   this.menuItem3,
-																					   this.menuItem8,
-																					   this.menuItem9});
+			this.cmLangList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+				this.menuItem1,
+				this.menuItem2,
+				this.menuItem7,
+				this.menuItem3,
+				this.menuItem8,
+				this.menuItem9});
 			//
 			// menuItem1
 			//
-			this.menuItem1.Index = 0;
-			this.menuItem1.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
+			this.menuItem1.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C;
 			this.menuItem1.Text = "&Copy";
 			//
 			// menuItem2
 			//
-			this.menuItem2.Index = 1;
-			this.menuItem2.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
+			this.menuItem2.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V;
 			this.menuItem2.Text = "&Paste";
 			//
 			// menuItem3
 			//
-			this.menuItem3.Index = 3;
 			this.menuItem3.Text = "&Set all to these";
 			//
 			// splitter1
@@ -228,10 +196,10 @@ namespace SimPe.PackedFiles.UserInterface
 			// listView1
 			//
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						this.colLine,
-																						this.colTitle,
-																						this.colDesc});
-			this.listView1.ContextMenu = this.cmStrList;
+				this.colLine,
+				this.colTitle,
+				this.colDesc});
+			this.listView1.ContextMenuStrip = this.cmStrList;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
 			this.listView1.GridLines = true;
@@ -259,65 +227,54 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// cmStrList
 			//
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-												this.cmStrList.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuItem10,
-																					  this.menuItem4,
-																					  this.menuItem5,
-																					  this.menuItem6,
-																					  this.menuItem11,
-																					  this.menuItem12});
+			this.cmStrList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+				this.menuItem10,
+				this.menuItem4,
+				this.menuItem5,
+				this.menuItem6,
+				this.menuItem11,
+				this.menuItem12});
 			//
 			// menuItem4
 			//
-			this.menuItem4.Index = 1;
-			this.menuItem4.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
+			this.menuItem4.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C;
 			this.menuItem4.Text = "&Copy";
 			//
 			// menuItem5
 			//
-			this.menuItem5.Index = 2;
-			this.menuItem5.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
+			this.menuItem5.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V;
 			this.menuItem5.Text = "&Paste";
 			//
 			// menuItem6
 			//
-			this.menuItem6.Index = 3;
 			this.menuItem6.Text = "&Set in all languages";
 			//
 			// menuItem7
 			//
-			this.menuItem7.Index = 2;
 			this.menuItem7.Text = "Pas&te As...";
 			//
 			// menuItem8
 			//
-			this.menuItem8.Index = 4;
-			this.menuItem8.Shortcut = System.Windows.Forms.Shortcut.Ins;
+			this.menuItem8.ShortcutKeys = System.Windows.Forms.Keys.Insert;
 			this.menuItem8.Text = "&Add";
 			//
 			// menuItem9
 			//
-			this.menuItem9.Index = 5;
-			this.menuItem9.Shortcut = System.Windows.Forms.Shortcut.Del;
+			this.menuItem9.ShortcutKeys = System.Windows.Forms.Keys.Delete;
 			this.menuItem9.Text = "&Delete";
 			//
 			// menuItem10
 			//
-			this.menuItem10.DefaultItem = true;
-			this.menuItem10.Index = 0;
 			this.menuItem10.Text = "&Edit";
 			//
 			// menuItem11
 			//
-			this.menuItem11.Index = 4;
-			this.menuItem11.Shortcut = System.Windows.Forms.Shortcut.Ins;
+			this.menuItem11.ShortcutKeys = System.Windows.Forms.Keys.Insert;
 			this.menuItem11.Text = "&Add";
 			//
 			// menuItem12
 			//
-			this.menuItem12.Index = 5;
-			this.menuItem12.Shortcut = System.Windows.Forms.Shortcut.Del;
+			this.menuItem12.ShortcutKeys = System.Windows.Forms.Keys.Delete;
 			this.menuItem12.Text = "&Delete";
 			//
 			// StrListViewer

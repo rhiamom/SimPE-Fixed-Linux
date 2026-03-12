@@ -54,22 +54,16 @@ namespace SimPe.Plugin.Anim
 		private System.Windows.Forms.Label lbTimeCode;
 		private System.Windows.Forms.LinkLabel llRefresh;
 		private System.Windows.Forms.LinkLabel llClone;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu contextMenu1;
-        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-        private System.Windows.Forms.MenuItem miExp;
-        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-        private System.Windows.Forms.MenuItem miClp;
-        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-        private System.Windows.Forms.MenuItem miSlp;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem miRem;
+		private System.Windows.Forms.ContextMenuStrip contextMenu1;
+        private System.Windows.Forms.ToolStripMenuItem miExp;
+        private System.Windows.Forms.ToolStripMenuItem miClp;
+        private System.Windows.Forms.ToolStripMenuItem miSlp;
+		private System.Windows.Forms.ToolStripMenuItem miRem;
 		private System.Windows.Forms.TextBox tbDuration;
 		private System.Windows.Forms.TextBox tbName;
 		private System.Windows.Forms.Label lbDuration;
 		private System.Windows.Forms.Label lbName;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem miSort;
+		private System.Windows.Forms.ToolStripMenuItem miSort;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -122,18 +116,12 @@ namespace SimPe.Plugin.Anim
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(AnimFrameBlockControl));
 			this.tv = new System.Windows.Forms.TreeView();
-            // TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.miSlp = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.miClp = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.miExp = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.miRem = new System.Windows.Forms.MenuItem();
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			this.miSort = new System.Windows.Forms.MenuItem();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip();
+            this.miSlp = new System.Windows.Forms.ToolStripMenuItem();
+            this.miClp = new System.Windows.Forms.ToolStripMenuItem();
+			this.miExp = new System.Windows.Forms.ToolStripMenuItem();
+			this.miRem = new System.Windows.Forms.ToolStripMenuItem();
+			this.miSort = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.pn3 = new SimPe.Plugin.Anim.AnimAxisTransformControl();
@@ -170,7 +158,7 @@ namespace SimPe.Plugin.Anim
 			this.tv.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tv.Anchor")));
 			this.tv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tv.BackgroundImage")));
 			this.tv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.tv.ContextMenu = this.contextMenu1;
+			this.tv.ContextMenuStrip = this.contextMenu1;
 			this.tv.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tv.Dock")));
 			this.tv.Enabled = ((bool)(resources.GetObject("tv.Enabled")));
 			this.tv.Font = ((System.Drawing.Font)(resources.GetObject("tv.Font")));
@@ -191,8 +179,7 @@ namespace SimPe.Plugin.Anim
 			// 
 			// contextMenu1
 			// 
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-												this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+												this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 																						 this.miExp,
 																						 this.miRem,
 																						 this.miSort,
@@ -203,7 +190,6 @@ namespace SimPe.Plugin.Anim
 			// miExp
 			// 
 			this.miExp.Enabled = ((bool)(resources.GetObject("miExp.Enabled")));
-			this.miExp.Index = 0;
 			this.miExp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miExp.Shortcut")));
 			this.miExp.ShowShortcut = ((bool)(resources.GetObject("miExp.ShowShortcut")));
 			this.miExp.Text = resources.GetString("miExp.Text");
@@ -213,7 +199,6 @@ namespace SimPe.Plugin.Anim
 			// miRem
 			// 
 			this.miRem.Enabled = ((bool)(resources.GetObject("miRem.Enabled")));
-			this.miRem.Index = 1;
 			this.miRem.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miRem.Shortcut")));
 			this.miRem.ShowShortcut = ((bool)(resources.GetObject("miRem.ShowShortcut")));
 			this.miRem.Text = resources.GetString("miRem.Text");
@@ -223,7 +208,6 @@ namespace SimPe.Plugin.Anim
 			// miSort
 			// 
 			this.miSort.Enabled = ((bool)(resources.GetObject("miSort.Enabled")));
-			this.miSort.Index = 2;
 			this.miSort.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miSort.Shortcut")));
 			this.miSort.ShowShortcut = ((bool)(resources.GetObject("miSort.ShowShortcut")));
 			this.miSort.Text = resources.GetString("miSort.Text");
@@ -233,7 +217,6 @@ namespace SimPe.Plugin.Anim
             // miClp
             // 
             this.miClp.Enabled = ((bool)(resources.GetObject("miClp.Enabled")));
-            this.miClp.Index = 3;
             this.miClp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miClp.Shortcut")));
             this.miClp.ShowShortcut = ((bool)(resources.GetObject("miClp.ShowShortcut")));
             this.miClp.Text = resources.GetString("miClp.Text");
@@ -243,7 +226,6 @@ namespace SimPe.Plugin.Anim
             // miSlp
             // 
             this.miSlp.Enabled = ((bool)(resources.GetObject("miSlp.Enabled")));
-            this.miSlp.Index = 3;
             this.miSlp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miSlp.Shortcut")));
             this.miSlp.ShowShortcut = ((bool)(resources.GetObject("miSlp.ShowShortcut")));
             this.miSlp.Text = resources.GetString("miSlp.Text");

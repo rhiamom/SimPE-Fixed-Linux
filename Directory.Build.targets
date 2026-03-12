@@ -2,10 +2,10 @@
 
 	<PropertyGroup>
 		<!-- Unified output folder -->
-		<SimPeUnifiedOutDir>$(SolutionDir)bin\$(Configuration)\</SimPeUnifiedOutDir>
+		<SimPeUnifiedOutDir Condition=" '$(SolutionDir)' != '' And '$(SolutionDir)' != '*Undefined*' ">$(SolutionDir)bin\$(Configuration)\</SimPeUnifiedOutDir>
 	</PropertyGroup>
 
-	<Target Name="SimPeCopyToUnifiedBin" AfterTargets="Build">
+	<Target Name="SimPeCopyToUnifiedBin" AfterTargets="Build" Condition=" '$(SimPeUnifiedOutDir)' != '' ">
 		<!-- Ensure destination exists -->
 		<MakeDir Directories="$(SimPeUnifiedOutDir)"
 				 Condition=" '$(SimPeUnifiedOutDir)' != '' " />

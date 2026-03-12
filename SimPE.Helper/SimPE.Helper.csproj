@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -7,12 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <StartupObject />
-	  <PostBuildEvent>
-		  if "$(TargetPath)"=="" goto end
-		  if not exist "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\" mkdir "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\"
-		  copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\" /Y
-		  :end
-	  </PostBuildEvent>
+	  <PostBuildEvent />
     <Configurations>Debug;Release;x86</Configurations>
 	  <NoWarn>$(NoWarn);NU1701;CS0012</NoWarn>
 	  <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
@@ -846,15 +841,6 @@
 		<Reference Include="AdvancedForms">
 			<HintPath>..\lib\AdvancedForms.dll</HintPath>
 		</Reference>
-		<Reference Include="ambertation.3D">
-			<HintPath>..\lib\ambertation.3D.dll</HintPath>
-		</Reference>
-		<Reference Include="ambertation.3D.mdx.binding">
-			<HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
-		</Reference>
-		<Reference Include="ambertation.utilities">
-			<HintPath>..\lib\ambertation.utilities.dll</HintPath>
-		</Reference>
 		<Reference Include="NetDocks">
 			<HintPath>..\lib\NetDocks.dll</HintPath>
 		</Reference>
@@ -862,5 +848,14 @@
 			<HintPath>..\lib\SandDock.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-</Project>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
+    <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D.mdx.binding">
+      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

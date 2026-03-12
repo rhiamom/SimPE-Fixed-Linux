@@ -55,13 +55,13 @@ namespace SimPe.Plugin.UI
             this.box = new SimPe.Plugin.GeneticCategorizer(this.components);
             this.meshTable = new SimPe.Plugin.MeshTable(this.components);
             this.dlgSavePackageFile = new System.Windows.Forms.SaveFileDialog();
-            this.cmListActions = new System.Windows.Forms.ContextMenu();
-            this.miOpenPackage = new System.Windows.Forms.MenuItem();
-            this.miMoveTo = new System.Windows.Forms.MenuItem();
-            this.miClear = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
-            this.miLoadMesh = new System.Windows.Forms.MenuItem();
-            this.miApplyMesh = new System.Windows.Forms.MenuItem();
+            this.cmListActions = new System.Windows.Forms.ContextMenuStrip();
+            this.miOpenPackage = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMoveTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.miClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miLoadMesh = new System.Windows.Forms.ToolStripMenuItem();
+            this.miApplyMesh = new System.Windows.Forms.ToolStripMenuItem();
             this.cbEnablePreview = new System.Windows.Forms.CheckBox();
             this.lvTxmt = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -71,12 +71,12 @@ namespace SimPe.Plugin.UI
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-            this.cmTxmtListActions = new System.Windows.Forms.ContextMenu();
-            this.miMatUseBaseTxtr = new System.Windows.Forms.MenuItem();
-            this.miMatCopyTxtrRef = new System.Windows.Forms.MenuItem();
-            this.miMatUseTxtrRef = new System.Windows.Forms.MenuItem();
-            this.cmMeshListActions = new System.Windows.Forms.ContextMenu();
-            this.miCresAddToMeshList = new System.Windows.Forms.MenuItem();
+            this.cmTxmtListActions = new System.Windows.Forms.ContextMenuStrip();
+            this.miMatUseBaseTxtr = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMatCopyTxtrRef = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMatUseTxtrRef = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmMeshListActions = new System.Windows.Forms.ContextMenuStrip();
+            this.miCresAddToMeshList = new System.Windows.Forms.ToolStripMenuItem();
             this.matPanel = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -228,7 +228,7 @@ namespace SimPe.Plugin.UI
             // 
             // cmListActions
             // 
-            this.cmListActions.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.cmListActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miOpenPackage,
             this.miMoveTo,
             this.miClear,
@@ -238,35 +238,29 @@ namespace SimPe.Plugin.UI
             // 
             // miOpenPackage
             // 
-            this.miOpenPackage.Index = 0;
             this.miOpenPackage.Text = "Open Package...";
             this.miOpenPackage.Click += new System.EventHandler(this.Handle_OpenPackage_Command);
             // 
             // miMoveTo
             // 
-            this.miMoveTo.Index = 1;
             this.miMoveTo.Text = "Move To";
             // 
             // miClear
             // 
-            this.miClear.Index = 2;
             this.miClear.Text = "Clear";
             this.miClear.Click += new System.EventHandler(this.Handle_ClearPackage_Command);
             // 
             // menuItem3
             // 
-            this.menuItem3.Index = 3;
             this.menuItem3.Text = "-";
             // 
             // miLoadMesh
             // 
-            this.miLoadMesh.Index = 4;
             this.miLoadMesh.Text = "Load Mesh...";
             this.miLoadMesh.Click += new System.EventHandler(this.miLoadMesh_Click);
             // 
             // miApplyMesh
             // 
-            this.miApplyMesh.Index = 5;
             this.miApplyMesh.Text = "Apply Mesh";
             this.miApplyMesh.Visible = false;
             // 
@@ -349,39 +343,35 @@ namespace SimPe.Plugin.UI
             // 
             // cmTxmtListActions
             // 
-            this.cmTxmtListActions.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.cmTxmtListActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miMatUseBaseTxtr,
             this.miMatCopyTxtrRef,
             this.miMatUseTxtrRef});
             // 
             // miMatUseBaseTxtr
             // 
-            this.miMatUseBaseTxtr.Index = 0;
             this.miMatUseBaseTxtr.Text = "Use base texture";
             this.miMatUseBaseTxtr.Click += new System.EventHandler(this.miMatUseBaseTxtr_Click);
             // 
             // miMatCopyTxtrRef
             // 
             this.miMatCopyTxtrRef.Enabled = false;
-            this.miMatCopyTxtrRef.Index = 1;
             this.miMatCopyTxtrRef.Text = "Copy texture reference";
             this.miMatCopyTxtrRef.Click += new System.EventHandler(this.miMatCopyTxtrRef_Click);
             // 
             // miMatUseTxtrRef
             // 
             this.miMatUseTxtrRef.Enabled = false;
-            this.miMatUseTxtrRef.Index = 2;
             this.miMatUseTxtrRef.Text = "Use texture reference";
             this.miMatUseTxtrRef.Click += new System.EventHandler(this.miMatUseTxtrRef_Click);
             // 
             // cmMeshListActions
             // 
-            this.cmMeshListActions.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.cmMeshListActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miCresAddToMeshList});
             // 
             // miCresAddToMeshList
             // 
-            this.miCresAddToMeshList.Index = 0;
             this.miCresAddToMeshList.Text = "Add To Mesh List";
             this.miCresAddToMeshList.Click += new System.EventHandler(this.miCresAddToMeshList_Click);
             // 
@@ -756,23 +746,23 @@ namespace SimPe.Plugin.UI
 
 		private System.Windows.Forms.ListView lvTxmt;
 		private System.Windows.Forms.ListView lvCresShpe;
-		private System.Windows.Forms.ContextMenu cmTxmtListActions;
-		private System.Windows.Forms.ContextMenu cmMeshListActions;
-		private System.Windows.Forms.MenuItem miMoveTo;
-		private System.Windows.Forms.MenuItem miMatUseBaseTxtr;
-		private System.Windows.Forms.MenuItem miMatCopyTxtrRef;
-		private System.Windows.Forms.MenuItem miMatUseTxtrRef;
-		private System.Windows.Forms.MenuItem miCresAddToMeshList;
+		private System.Windows.Forms.ContextMenuStrip cmTxmtListActions;
+		private System.Windows.Forms.ContextMenuStrip cmMeshListActions;
+		private System.Windows.Forms.ToolStripMenuItem miMoveTo;
+		private System.Windows.Forms.ToolStripMenuItem miMatUseBaseTxtr;
+		private System.Windows.Forms.ToolStripMenuItem miMatCopyTxtrRef;
+		private System.Windows.Forms.ToolStripMenuItem miMatUseTxtrRef;
+		private System.Windows.Forms.ToolStripMenuItem miCresAddToMeshList;
 		private System.Windows.Forms.Panel matPanel;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Panel mainPanel;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Splitter splitter2;
-		private System.Windows.Forms.MenuItem miOpenPackage;
-		private System.Windows.Forms.MenuItem miClear;
-		private System.Windows.Forms.MenuItem miLoadMesh;
-		private System.Windows.Forms.MenuItem miApplyMesh;
+		private System.Windows.Forms.ToolStripMenuItem miOpenPackage;
+		private System.Windows.Forms.ToolStripMenuItem miClear;
+		private System.Windows.Forms.ToolStripMenuItem miLoadMesh;
+		private System.Windows.Forms.ToolStripMenuItem miApplyMesh;
 		private System.Windows.Forms.TabControl tcProperties;
 		private System.Windows.Forms.TabPage tpMaterials;
 		private System.Windows.Forms.TabPage tpMeshes;
@@ -790,7 +780,7 @@ namespace SimPe.Plugin.UI
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.SaveFileDialog dlgSavePackageFile;
         private SimPe.Plugin.GeneticCategorizer box;
-        private System.Windows.Forms.ContextMenu cmListActions;
+        private System.Windows.Forms.ContextMenuStrip cmListActions;
         private System.Windows.Forms.CheckBox cbEnablePreview;
         private ClothingPreferences tpClothing;
         private MenuItem menuItem3;

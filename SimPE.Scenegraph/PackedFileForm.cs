@@ -57,12 +57,9 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.Button button2;
         internal System.Windows.Forms.PictureBox pb;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu contextMenu1;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem miAdd;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		internal System.Windows.Forms.MenuItem miRem;
+		private System.Windows.Forms.ContextMenuStrip contextMenu1;
+		private System.Windows.Forms.ToolStripMenuItem miAdd;
+		internal System.Windows.Forms.ToolStripMenuItem miRem;
 		private System.ComponentModel.IContainer components;
         internal System.Drawing.Image imge;
 
@@ -119,12 +116,9 @@ namespace SimPe.Plugin
             this.cbtypes = new System.Windows.Forms.ComboBox();
             this.llcommit = new System.Windows.Forms.LinkLabel();
             this.lblist = new System.Windows.Forms.ListBox();
-            // TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.miAdd = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.miRem = new System.Windows.Forms.MenuItem();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip();
+            this.miAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new SimPe.Windows.Forms.WrapperBaseControl();
             this.wrapperPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
@@ -391,7 +385,7 @@ namespace SimPe.Plugin
             this.lblist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblist.ContextMenu = this.contextMenu1;
+            this.lblist.ContextMenuStrip = this.contextMenu1;
             this.lblist.HorizontalScrollbar = true;
             this.lblist.IntegralHeight = false;
             this.lblist.Location = new System.Drawing.Point(8, 32);
@@ -404,20 +398,17 @@ namespace SimPe.Plugin
             // 
             // contextMenu1
             // 
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-                                                this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+                                                this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miAdd,
             this.miRem});
             // 
             // miAdd
             // 
-            this.miAdd.Index = 0;
             this.miAdd.Text = "&Add";
             this.miAdd.Click += new System.EventHandler(this.miAdd_Click);
             // 
             // miRem
             // 
-            this.miRem.Index = 1;
             this.miRem.Text = "&Delete";
             this.miRem.Click += new System.EventHandler(this.menuItem1_Click);
             // 

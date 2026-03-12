@@ -6667,7 +6667,7 @@ namespace SimPe.Plugin
         private void miEnglishOnly_Click(object sender, System.EventArgs e)
         {
             englishOnly = !englishOnly;
-            // System.InvalidCastException: Unable to cast object of type 'System.Windows.Forms.ToolStripMenuItem' to type 'System.Windows.Forms.MenuItem'.
+            // System.InvalidCastException: Unable to cast object of type 'System.Windows.Forms.ToolStripMenuItem' to type 'System.Windows.Forms.ToolStripMenuItem'.
             ((System.Windows.Forms.ToolStripMenuItem)sender).Checked = englishOnly;
             if (englishOnly) Language.SelectedIndex = 0;
             Language.Enabled = !englishOnly;

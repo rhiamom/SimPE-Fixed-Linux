@@ -107,26 +107,16 @@ namespace SimPe.Plugin
             this.panel1 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.pb = new System.Windows.Forms.PictureBox();
-            // TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.milifo = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem4 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem7 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.mibuild = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip();
+            this.menuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.milifo = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mibuild = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.lbimg = new System.Windows.Forms.ListBox();
             this.panel2 = new SimPe.Windows.Forms.WrapperBaseControl();
             this.btex = new System.Windows.Forms.Button();
@@ -414,7 +404,7 @@ namespace SimPe.Plugin
             // 
             this.pb.BackColor = System.Drawing.SystemColors.Control;
             this.pb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pb.BackgroundImage")));
-            this.pb.ContextMenu = this.contextMenu1;
+            this.pb.ContextMenuStrip = this.contextMenu1;
             this.pb.Location = new System.Drawing.Point(0, 0);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(100, 50);
@@ -424,8 +414,7 @@ namespace SimPe.Plugin
             // 
             // contextMenu1
             // 
-            // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-                                                this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+                                                this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItem1,
             this.milifo,
             this.menuItem4,
@@ -439,55 +428,46 @@ namespace SimPe.Plugin
             // 
             // menuItem1
             // 
-            this.menuItem1.Index = 0;
             this.menuItem1.Text = "&Import...";
             this.menuItem1.Click += new System.EventHandler(this.btim_Click);
             // 
             // milifo
             // 
             this.milifo.Enabled = false;
-            this.milifo.Index = 1;
             this.milifo.Text = "Import local  LIFO";
             this.milifo.Click += new System.EventHandler(this.ImportLifo);
             // 
             // menuItem4
             // 
-            this.menuItem4.Index = 2;
             this.menuItem4.Text = "Import &Alpha Channel...";
             this.menuItem4.Click += new System.EventHandler(this.ImportAlpha);
             // 
             // menuItem6
             // 
-            this.menuItem6.Index = 3;
             this.menuItem6.Text = "&Update all Sizes";
             this.menuItem6.Click += new System.EventHandler(this.UpdateAllSizes);
             // 
             // menuItem7
             // 
-            this.menuItem7.Index = 4;
             this.menuItem7.Text = "Import &DDS...";
             this.menuItem7.Click += new System.EventHandler(this.ImportDDS);
             // 
             // mibuild
             // 
-            this.mibuild.Index = 5;
             this.mibuild.Text = "Build DXT...";
             this.mibuild.Click += new System.EventHandler(this.BuildDXT);
             // 
             // menuItem3
             // 
-            this.menuItem3.Index = 6;
             this.menuItem3.Text = "-";
             // 
             // menuItem2
             // 
-            this.menuItem2.Index = 7;
             this.menuItem2.Text = "&Export...";
             this.menuItem2.Click += new System.EventHandler(this.btex_Click);
             // 
             // menuItem5
             // 
-            this.menuItem5.Index = 8;
             this.menuItem5.Text = "Export Alpha &Channel...";
             this.menuItem5.Click += new System.EventHandler(this.ExportAlpha);
             // 
@@ -607,32 +587,22 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.LinkLabel linkLabel2;
 		internal System.Windows.Forms.LinkLabel lldel;
-		// TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.ContextMenu contextMenu1;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem1;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem2;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem3;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem4;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem5;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.ContextMenuStrip contextMenu1;
+		private System.Windows.Forms.ToolStripMenuItem menuItem1;
+		private System.Windows.Forms.ToolStripMenuItem menuItem2;
+		private System.Windows.Forms.ToolStripMenuItem menuItem3;
+		private System.Windows.Forms.ToolStripMenuItem menuItem4;
+		private System.Windows.Forms.ToolStripMenuItem menuItem5;
+		private System.Windows.Forms.ToolStripMenuItem menuItem6;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TextBox tblevel;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.LinkLabel linkLabel3;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem milifo;
+		private System.Windows.Forms.ToolStripMenuItem milifo;
 		private System.Windows.Forms.LinkLabel linkLabel4;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem menuItem7;
-		// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-		private System.Windows.Forms.MenuItem mibuild;
+		private System.Windows.Forms.ToolStripMenuItem menuItem7;
+		private System.Windows.Forms.ToolStripMenuItem mibuild;
 
 		internal Txtr wrapper = null;
 

@@ -54,8 +54,7 @@ namespace SimPe
 		}
 	}
 
-	public class ToolMenuItem  : // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-System.Windows.Forms.MenuItem
+	public class ToolMenuItem : System.Windows.Forms.ToolStripMenuItem
 	{
 		
 
@@ -403,22 +402,21 @@ System.Windows.Forms.MenuItem
 		/// </summary>
 		/// <param name="mi">The Menu you want to add Items to</param>
 		/// <param name="chghandler">A Function to call when the Package was chaged by a Tool</param>
-		public void AddMenuItems(// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-System.Windows.Forms.MenuItem mi, System.EventHandler chghandler) 
+		public void AddMenuItems(System.Windows.Forms.ToolStripMenuItem mi, System.EventHandler chghandler)
 		{
 			ITool[] tools = treg.Tools;
 			foreach (SimPe.Interfaces.ITool tool in tools)
 			{
 				ToolMenuItem item = new ToolMenuItem(tool, chghandler);
-				mi.MenuItems.Add(item);
+				mi.DropDownItems.Add(item);
 			}
 
 			foreach (SimPe.Interfaces.IToolPlugin tool in treg.Docks)
 			{
-				if (tool.GetType().GetInterface("SimPe.Interfaces.ITool", true) == typeof(SimPe.Interfaces.ITool)) 
+				if (tool.GetType().GetInterface("SimPe.Interfaces.ITool", true) == typeof(SimPe.Interfaces.ITool))
 				{
 					ToolMenuItem item = new ToolMenuItem((SimPe.Interfaces.ITool)tool, chghandler);
-					mi.MenuItems.Add(item);
+					mi.DropDownItems.Add(item);
 				}
 			}
 
@@ -431,11 +429,9 @@ System.Windows.Forms.MenuItem mi, System.EventHandler chghandler)
 		/// <param name="mi"></param>
 		/// <param name="pfd"></param>
 		/// <param name="package"></param>
-		public void EnableMenuItems(// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-System.Windows.Forms.MenuItem mi, Interfaces.Files.IPackedFileDescriptor pfd, Interfaces.Files.IPackageFile package)
+		public void EnableMenuItems(System.Windows.Forms.ToolStripMenuItem mi, Interfaces.Files.IPackedFileDescriptor pfd, Interfaces.Files.IPackageFile package)
 		{
-			// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-			foreach(System.Windows.Forms.MenuItem item in mi.MenuItems) 
+			foreach(System.Windows.Forms.ToolStripItem item in mi.DropDownItems) 
 			{
 				try 
 				{

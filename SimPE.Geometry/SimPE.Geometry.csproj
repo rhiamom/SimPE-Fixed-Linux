@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -6,9 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <StartupObject />
-    <PostBuildEvent>if not exist "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\" mkdir "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\"
-copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Debug\" /Y
-</PostBuildEvent>
+    <PostBuildEvent />
     <Configurations>Debug;Release</Configurations>
     <AssemblyName>simpe.geometry</AssemblyName>
     <RootNamespace>SimPe.Geometry</RootNamespace>
@@ -27,8 +25,14 @@ copy "$(TargetPath)" "C:\Users\rhiam\source\repos\SimPeSource\SimPE.Main\bin\Deb
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
   </ItemGroup>
 	<ItemGroup>
-		<Reference Include="ambertation.3D">
-			<HintPath>..\lib\ambertation.3D.dll</HintPath>
-		</Reference>
 	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D.mdx.binding">
+      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

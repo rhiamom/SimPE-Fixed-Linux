@@ -40,18 +40,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalLibs\AdvancedForms.dll</HintPath>
     </Reference>
-    <Reference Include="ambertation.3D, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\ambertation.3D.dll</HintPath>
-    </Reference>
-    <Reference Include="ambertation.3D.mdx.binding, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\ambertation.3D.mdx.binding.dll</HintPath>
-    </Reference>
-    <Reference Include="ambertation.utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\ambertation.utilities.dll</HintPath>
-    </Reference>
     <Reference Include="GDF, Version=0.69.20.24, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalLibs\GDF.dll</HintPath>
@@ -114,4 +102,14 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
+    <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D.mdx.binding">
+      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
