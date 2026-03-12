@@ -190,8 +190,6 @@ namespace SimPe.Plugin.Anim
 			// miExp
 			// 
 			this.miExp.Enabled = ((bool)(resources.GetObject("miExp.Enabled")));
-			this.miExp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miExp.Shortcut")));
-			this.miExp.ShowShortcut = ((bool)(resources.GetObject("miExp.ShowShortcut")));
 			this.miExp.Text = resources.GetString("miExp.Text");
 			this.miExp.Visible = ((bool)(resources.GetObject("miExp.Visible")));
 			this.miExp.Click += new System.EventHandler(this.menuItem2_Click);
@@ -199,8 +197,6 @@ namespace SimPe.Plugin.Anim
 			// miRem
 			// 
 			this.miRem.Enabled = ((bool)(resources.GetObject("miRem.Enabled")));
-			this.miRem.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miRem.Shortcut")));
-			this.miRem.ShowShortcut = ((bool)(resources.GetObject("miRem.ShowShortcut")));
 			this.miRem.Text = resources.GetString("miRem.Text");
 			this.miRem.Visible = ((bool)(resources.GetObject("miRem.Visible")));
 			this.miRem.Click += new System.EventHandler(this.menuItem1_Click);
@@ -208,8 +204,6 @@ namespace SimPe.Plugin.Anim
 			// miSort
 			// 
 			this.miSort.Enabled = ((bool)(resources.GetObject("miSort.Enabled")));
-			this.miSort.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miSort.Shortcut")));
-			this.miSort.ShowShortcut = ((bool)(resources.GetObject("miSort.ShowShortcut")));
 			this.miSort.Text = resources.GetString("miSort.Text");
 			this.miSort.Visible = ((bool)(resources.GetObject("miSort.Visible")));
             this.miSort.Click += new System.EventHandler(this.SortClick);
@@ -217,8 +211,6 @@ namespace SimPe.Plugin.Anim
             // miClp
             // 
             this.miClp.Enabled = ((bool)(resources.GetObject("miClp.Enabled")));
-            this.miClp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miClp.Shortcut")));
-            this.miClp.ShowShortcut = ((bool)(resources.GetObject("miClp.ShowShortcut")));
             this.miClp.Text = resources.GetString("miClp.Text");
             this.miClp.Visible = ((bool)(resources.GetObject("miClp.Visible")));
             this.miClp.Click += new System.EventHandler(this.menuItem4_Click);
@@ -226,8 +218,6 @@ namespace SimPe.Plugin.Anim
             // miSlp
             // 
             this.miSlp.Enabled = ((bool)(resources.GetObject("miSlp.Enabled")));
-            this.miSlp.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miSlp.Shortcut")));
-            this.miSlp.ShowShortcut = ((bool)(resources.GetObject("miSlp.ShowShortcut")));
             this.miSlp.Text = resources.GetString("miSlp.Text");
             this.miSlp.Visible = ((bool)(resources.GetObject("miSlp.Visible")));
             this.miSlp.Click += new System.EventHandler(this.menuItem3_Click);

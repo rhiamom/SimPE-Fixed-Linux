@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace SimPe.Windows.Forms
 {
@@ -35,8 +36,8 @@ namespace SimPe.Windows.Forms
 
     public partial class ResourceListViewExt : UserControl
     {
-        const uint WM_USER_SORTED_RESOURCES = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0001;
-        const uint WM_USER_FIRE_SELECTION = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0002;
+        const uint WM_USER_SORTED_RESOURCES = 0x8000u | 0x0001;
+        const uint WM_USER_FIRE_SELECTION = 0x8000u | 0x0002;
 
         
         
@@ -44,6 +45,9 @@ namespace SimPe.Windows.Forms
         ResourceViewManager manager;
         IntPtr myhandle;
         SimPe.Windows.Forms.IResourceViewFilter curfilter;
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
         ResourceViewManager.ResourceNameList lastresources;
 
         

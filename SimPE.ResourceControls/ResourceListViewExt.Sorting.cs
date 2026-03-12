@@ -91,7 +91,7 @@ namespace SimPe.Windows.Forms
 
         internal void SignalFinishedSort(IntPtr handle, int ticket)
         {
-            Ambertation.Windows.Forms.APIHelp.SendMessage(handle, WM_USER_SORTED_RESOURCES, ticket, 0);
+            SendMessage(handle, WM_USER_SORTED_RESOURCES, ticket, 0);
         }
 
         int noselectevent;

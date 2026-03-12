@@ -442,9 +442,9 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.ToolStripMenuItem menuItem5;
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.LinkLabel linkLabel2;
-		private MenuItem menuItem3;
-		private MenuItem menuItem6;
-		private MenuItem menuItem7;
+		private System.Windows.Forms.ToolStripMenuItem menuItem3;
+		private System.Windows.Forms.ToolStripMenuItem menuItem6;
+		private System.Windows.Forms.ToolStripMenuItem menuItem7;
 
 		internal Lifo wrapper = null;
 

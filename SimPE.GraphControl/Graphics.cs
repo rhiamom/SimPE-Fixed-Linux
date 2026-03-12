@@ -27,6 +27,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Collections;
 using System.Runtime.InteropServices;
+using Graphics = System.Drawing.Graphics;
 
 namespace Ambertation.Drawing
 {

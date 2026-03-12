@@ -8,28 +8,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <StartupObject />
-    <PostBuildEvent>REM Ensure local Plugins folder exists
-if not exist "$(TargetDir)Plugins" mkdir "$(TargetDir)Plugins"
-REM Copy DLL + PDB to this project's bin\Plugins
-copy /Y "$(TargetPath)" "$(TargetDir)Plugins\"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(TargetDir)Plugins\"
-REM Ensure SimPE.Main Plugins folder exists
-if not exist "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins" mkdir "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins"
-REM Copy DLL + PDB to SimPE.Main bin\Plugins
-copy /Y "$(TargetPath)" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins\"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins\"
-REM Copy as simpe.ngbh.dll + pdb for Wants plugin assembly resolution
-copy /Y "$(TargetPath)" "$(TargetDir)simpe.ngbh.dll"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(TargetDir)simpe.ngbh.pdb"
-copy /Y "$(TargetPath)" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\simpe.ngbh.dll"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\simpe.ngbh.pdb"
-REM Copy as simpe.ngbh.plugin.dll + pdb to preserve Memories compatibility
-copy /Y "$(TargetPath)" "$(TargetDir)simpe.ngbh.plugin.dll"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(TargetDir)simpe.ngbh.plugin.pdb"
-copy /Y "$(TargetPath)" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\simpe.ngbh.plugin.dll"
-copy /Y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\simpe.ngbh.plugin.pdb"
-copy /Y "$(TargetPath)" "$(TargetDir)Plugins\simpe.ngbh.plugin.dll"
-copy /Y "$(TargetPath)" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins\simpe.ngbh.plugin.dll"</PostBuildEvent>
+    <PostBuildEvent />
     <Configurations>Debug;Release;x86</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -165,4 +144,43 @@ copy /Y "$(TargetPath)" "$(SolutionDir)SimPE.Main\bin\$(Configuration)\Plugins\s
       <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <!-- Copy simpe.ngbh under its alias names to all required output locations -->
+  <Target Name="SimPeNgbhCopyAliases" AfterTargets="Build">
+    <PropertyGroup>
+      <_NgbhMainBin Condition=" '$(SolutionDir)' != '' And '$(SolutionDir)' != '*Undefined*' ">$(SolutionDir)SimPE.Main\bin\$(Configuration)\</_NgbhMainBin>
+    </PropertyGroup>
+
+    <!-- Local: /bin/Plugins -->
+    <MakeDir Directories="$(TargetDir)Plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)Plugins\simpe.ngbh.dll" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)simpe.ngbh.plugin.dll" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)Plugins\simpe.ngbh.plugin.dll" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(TargetDir)Plugins\simpe.ngbh.pdb"
+          SkipUnchangedFiles="true" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(TargetDir)simpe.ngbh.plugin.pdb"
+          SkipUnchangedFiles="true" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(TargetDir)Plugins\simpe.ngbh.plugin.pdb"
+          SkipUnchangedFiles="true" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+
+    <!-- SimPE.Main\bin and SimPE.Main\bin\Plugins (solution build only) -->
+    <MakeDir Directories="$(_NgbhMainBin)Plugins" Condition=" '$(_NgbhMainBin)' != '' " />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(_NgbhMainBin)simpe.ngbh.dll"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' " />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(_NgbhMainBin)Plugins\simpe.ngbh.dll"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' " />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(_NgbhMainBin)simpe.ngbh.plugin.dll"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' " />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(_NgbhMainBin)Plugins\simpe.ngbh.plugin.dll"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' " />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(_NgbhMainBin)simpe.ngbh.pdb"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' And Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(_NgbhMainBin)Plugins\simpe.ngbh.pdb"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' And Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(_NgbhMainBin)simpe.ngbh.plugin.pdb"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' And Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(_NgbhMainBin)Plugins\simpe.ngbh.plugin.pdb"
+          SkipUnchangedFiles="true" Condition=" '$(_NgbhMainBin)' != '' And Exists('$(TargetDir)$(TargetName).pdb')" />
+  </Target>
+
 </Project>

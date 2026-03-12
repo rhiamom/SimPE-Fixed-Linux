@@ -1,0 +1,1032 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "bidou.career.plugin/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.SystemWebAdapters": "2.3.0",
+          "Microsoft.AspNetCore.SystemWebAdapters.CoreServices": "2.3.0",
+          "SimPE.RCOL": "1.0.0",
+          "pjse.coder.plugin": "1.0.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0",
+          "pjse.coder.plugin.Reference": "4.0.6608.29748",
+          "simpe.filehandler.Reference": "1.0.0.0",
+          "simpe.names.Reference": "1.0.0.0",
+          "simpe.ngbh.Reference": "1.0.0.0",
+          "simpe.package.Reference": "1.0.0.0",
+          "simpe.workspace.plugin.Reference": "1.0.0.0"
+        },
+        "runtime": {
+          "bidou.career.plugin.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.SystemWebAdapters/2.3.0": {
+        "dependencies": {
+          "System.Runtime.Caching": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.SystemWebAdapters.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.300.26.11002"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.SystemWebAdapters.Abstractions/2.3.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.SystemWebAdapters": "2.3.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.SystemWebAdapters.Abstractions.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.300.26.11002"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.SystemWebAdapters.CoreServices/2.3.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.SystemWebAdapters": "2.3.0",
+          "Microsoft.AspNetCore.SystemWebAdapters.Abstractions": "2.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.SystemWebAdapters.CoreServices.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.300.26.11002"
+          }
+        }
+      },
+      "Microsoft.CSharp/4.7.0": {},
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/8.0.0": {},
+      "System.Configuration.ConfigurationManager/8.0.1": {
+        "dependencies": {
+          "System.Diagnostics.EventLog": "8.0.1",
+          "System.Security.Cryptography.ProtectedData": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      },
+      "System.Data.DataSetExtensions/4.5.0": {},
+      "System.Diagnostics.EventLog/8.0.1": {
+        "runtime": {
+          "lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1024.46610"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      },
+      "System.Drawing.Common/8.0.0": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "8.0.0"
+        }
+      },
+      "System.Runtime.Caching/8.0.1": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/System.Runtime.Caching.dll": {
+            "assemblyVersion": "8.0.0.1",
+            "fileVersion": "8.0.1024.46610"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Runtime.Caching.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.1",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/8.0.0": {},
+      "ambertation.3D/1.0.0": {
+        "dependencies": {
+          "System.Drawing.Common": "8.0.0",
+          "ambertation.utilities": "1.0.0"
+        },
+        "runtime": {
+          "ambertation.3D.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "ambertation.utilities/1.0.0": {
+        "dependencies": {
+          "System.Drawing.Common": "8.0.0"
+        },
+        "runtime": {
+          "ambertation.utilities.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "pjse.coder.plugin/1.0.0": {
+        "dependencies": {
+          "SimPE.GraphControl": "1.0.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.names": "1.0.0",
+          "simpe.ngbh": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.splash": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "pjse.coder.plugin.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "resources": {
+          "en-US/pjse.coder.plugin.resources.dll": {
+            "locale": "en-US"
+          }
+        }
+      },
+      "SimPE.3IDR/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.Clst": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.3IDR.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/SimPE.3IDR.resources.dll": {
+            "locale": "de"
+          },
+          "fr/SimPE.3IDR.resources.dll": {
+            "locale": "fr"
+          },
+          "it/SimPE.3IDR.resources.dll": {
+            "locale": "it"
+          },
+          "pl/SimPE.3IDR.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/SimPE.3IDR.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "SimPE.Cache/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.Cache.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SimPE.Clst/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.Clst.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/SimPE.Clst.resources.dll": {
+            "locale": "de"
+          },
+          "es/SimPE.Clst.resources.dll": {
+            "locale": "es"
+          },
+          "fr/SimPE.Clst.resources.dll": {
+            "locale": "fr"
+          },
+          "it/SimPE.Clst.resources.dll": {
+            "locale": "it"
+          },
+          "pl/SimPE.Clst.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/SimPE.Clst.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.filehandler/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.Cache": "1.0.0",
+          "SimPE.Clst": "1.0.0",
+          "SimPE.GraphControl": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "simpe.filehandler.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.filehandler.resources.dll": {
+            "locale": "de"
+          },
+          "es/simpe.filehandler.resources.dll": {
+            "locale": "es"
+          },
+          "fr/simpe.filehandler.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.filehandler.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.filehandler.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.filehandler.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.geometry/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "simpe.helper": "1.0.0"
+        },
+        "runtime": {
+          "simpe.geometry.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SimPE.GMDCExporterBase/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.GraphControl": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.geometry": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.GMDCExporterBase.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/SimPE.GMDCExporterBase.resources.dll": {
+            "locale": "de"
+          },
+          "fr/SimPE.GMDCExporterBase.resources.dll": {
+            "locale": "fr"
+          },
+          "it/SimPE.GMDCExporterBase.resources.dll": {
+            "locale": "it"
+          },
+          "ru/SimPE.GMDCExporterBase.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "SimPE.GraphControl/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.helper": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.GraphControl.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "simpe.helper/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0"
+        },
+        "runtime": {
+          "simpe.helper.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.helper.resources.dll": {
+            "locale": "de"
+          },
+          "en-US/simpe.helper.resources.dll": {
+            "locale": "en-US"
+          },
+          "es/simpe.helper.resources.dll": {
+            "locale": "es"
+          },
+          "fr/simpe.helper.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.helper.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.helper.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.helper.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.interfaces/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.helper": "1.0.0"
+        },
+        "runtime": {
+          "simpe.interfaces.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "simpe.names/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.3IDR": "1.0.0",
+          "SimPE.Clst": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "SimPE.Scenegraph": "1.0.0",
+          "SimPE.Sims": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "simpe.names.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "simpe.ngbh/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.Cache": "1.0.0",
+          "SimPE.Clst": "1.0.0",
+          "SimPE.GraphControl": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "SimPE.Scenegraph": "1.0.0",
+          "SimPE.Sims": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.geometry": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.names": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "simpe.ngbh.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.ngbh.resources.dll": {
+            "locale": "de"
+          },
+          "en-US/simpe.ngbh.resources.dll": {
+            "locale": "en-US"
+          },
+          "fr/simpe.ngbh.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.ngbh.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.ngbh.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.ngbh.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.package/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.Clst": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0"
+        },
+        "runtime": {
+          "simpe.package.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SimPE.RCOL/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.GraphControl": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.geometry": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.RCOL.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SimPE.Scenegraph/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.3IDR": "1.0.0",
+          "SimPE.Cache": "1.0.0",
+          "SimPE.Clst": "1.0.0",
+          "SimPE.GMDCExporterBase": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.splash": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.Scenegraph.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/SimPE.Scenegraph.resources.dll": {
+            "locale": "de"
+          },
+          "es/SimPE.Scenegraph.resources.dll": {
+            "locale": "es"
+          },
+          "fr/SimPE.Scenegraph.resources.dll": {
+            "locale": "fr"
+          },
+          "it/SimPE.Scenegraph.resources.dll": {
+            "locale": "it"
+          },
+          "pl/SimPE.Scenegraph.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/SimPE.Scenegraph.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "SimPE.Sims/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.3IDR": "1.0.0",
+          "SimPE.Cache": "1.0.0",
+          "SimPE.Clst": "1.0.0",
+          "SimPE.GraphControl": "1.0.0",
+          "SimPE.RCOL": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.filehandler": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0",
+          "simpe.workspace.plugin": "1.0.0"
+        },
+        "runtime": {
+          "SimPE.Sims.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/SimPE.Sims.resources.dll": {
+            "locale": "de"
+          },
+          "fr/SimPE.Sims.resources.dll": {
+            "locale": "fr"
+          },
+          "it/SimPE.Sims.resources.dll": {
+            "locale": "it"
+          },
+          "pl/SimPE.Sims.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/SimPE.Sims.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.splash/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.helper": "1.0.0"
+        },
+        "runtime": {
+          "simpe.splash.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "simpe.workspace.plugin/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "SimPE.Cache": "1.0.0",
+          "SimPE.GraphControl": "1.0.0",
+          "System.Data.DataSetExtensions": "4.5.0",
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0",
+          "simpe.helper": "1.0.0",
+          "simpe.interfaces": "1.0.0",
+          "simpe.package": "1.0.0"
+        },
+        "runtime": {
+          "simpe.workspace.plugin.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.workspace.plugin.resources.dll": {
+            "locale": "de"
+          },
+          "fr/simpe.workspace.plugin.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.workspace.plugin.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.workspace.plugin.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.workspace.plugin.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "pjse.coder.plugin.Reference/4.0.6608.29748": {
+        "runtime": {
+          "pjse.coder.plugin.dll": {
+            "assemblyVersion": "4.0.6608.29748",
+            "fileVersion": "4.0.6608.29748"
+          }
+        },
+        "resources": {
+          "en-US/pjse.coder.plugin.resources.dll": {
+            "locale": "en-US"
+          }
+        }
+      },
+      "simpe.filehandler.Reference/1.0.0.0": {
+        "runtime": {
+          "simpe.filehandler.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.filehandler.resources.dll": {
+            "locale": "de"
+          },
+          "es/simpe.filehandler.resources.dll": {
+            "locale": "es"
+          },
+          "fr/simpe.filehandler.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.filehandler.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.filehandler.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.filehandler.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.names.Reference/1.0.0.0": {
+        "runtime": {
+          "simpe.names.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "simpe.ngbh.Reference/1.0.0.0": {
+        "runtime": {
+          "simpe.ngbh.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.ngbh.resources.dll": {
+            "locale": "de"
+          },
+          "en-US/simpe.ngbh.resources.dll": {
+            "locale": "en-US"
+          },
+          "fr/simpe.ngbh.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.ngbh.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.ngbh.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.ngbh.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "simpe.package.Reference/1.0.0.0": {
+        "runtime": {
+          "simpe.package.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "simpe.workspace.plugin.Reference/1.0.0.0": {
+        "runtime": {
+          "simpe.workspace.plugin.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "de/simpe.workspace.plugin.resources.dll": {
+            "locale": "de"
+          },
+          "fr/simpe.workspace.plugin.resources.dll": {
+            "locale": "fr"
+          },
+          "it/simpe.workspace.plugin.resources.dll": {
+            "locale": "it"
+          },
+          "pl/simpe.workspace.plugin.resources.dll": {
+            "locale": "pl"
+          },
+          "ru/simpe.workspace.plugin.resources.dll": {
+            "locale": "ru"
+          }
+        }
+      },
+      "XPCommonControls/2.2.3.4": {
+        "runtime": {
+          "XPCommonControls.dll": {
+            "assemblyVersion": "2.2.3.4",
+            "fileVersion": "2.2.3.4"
+          }
+        }
+      },
+      "NetDocks/1.0.2983.24895": {
+        "runtime": {
+          "NetDocks.dll": {
+            "assemblyVersion": "1.0.2983.24895",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SandDock/2.0.2.1": {
+        "runtime": {
+          "SandDock.dll": {
+            "assemblyVersion": "2.0.2.1",
+            "fileVersion": "2.0.2.1"
+          }
+        }
+      },
+      "ambertation.3D.mdx.binding/1.0.0.0": {
+        "runtime": {
+          "ambertation.3D.mdx.binding.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "bidou.career.plugin/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNetCore.SystemWebAdapters/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9JkEduqvXuNE+vqsh16LrTIvZAa90tCFxSrWUWFr5PIrMmbMpTRcSNCClCTFVXOpzAdkCDYBXGKQ2AuPV44fPQ==",
+      "path": "microsoft.aspnetcore.systemwebadapters/2.3.0",
+      "hashPath": "microsoft.aspnetcore.systemwebadapters.2.3.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.SystemWebAdapters.Abstractions/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aSqL6kzo+A65Yyu7b9+Eyqub+b0Wc+uCQ9mz9XPcaoG0wXpFTon59HIMkXk8GTtcKFLfHh912VabkOpUyPF79w==",
+      "path": "microsoft.aspnetcore.systemwebadapters.abstractions/2.3.0",
+      "hashPath": "microsoft.aspnetcore.systemwebadapters.abstractions.2.3.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.SystemWebAdapters.CoreServices/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WINOW57h0VEh1SoWv1Hx0Gdy/9NT1r3wvaI4ZDrUsJARK40/mZA+oTSFI/CNdye9rZkcTJ1sOKC6ogWWXFcImw==",
+      "path": "microsoft.aspnetcore.systemwebadapters.coreservices/2.3.0",
+      "hashPath": "microsoft.aspnetcore.systemwebadapters.coreservices.2.3.0.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3iE7UF7MQkCv1cxzCahz+Y/guQbTqieyxyaWKhrRO91itI9cOKO76OHeQDahqG4MmW5umr3CcCvGmK92lWNlbg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.2",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
+      "path": "microsoft.win32.systemevents/8.0.0",
+      "hashPath": "microsoft.win32.systemevents.8.0.0.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gPYFPDyohW2gXNhdQRSjtmeS6FymL2crg4Sral1wtvEJ7DUqFCDWDVbbLobASbzxfic8U1hQEdC7hmg9LHncMw==",
+      "path": "system.configuration.configurationmanager/8.0.1",
+      "hashPath": "system.configuration.configurationmanager.8.0.1.nupkg.sha512"
+    },
+    "System.Data.DataSetExtensions/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-221clPs1445HkTBZPL+K9sDBdJRB8UN8rgjO3ztB0CQ26z//fmJXtlsr6whGatscsKGBrhJl5bwJuKSA8mwFOw==",
+      "path": "system.data.datasetextensions/4.5.0",
+      "hashPath": "system.data.datasetextensions.4.5.0.nupkg.sha512"
+    },
+    "System.Diagnostics.EventLog/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-n1ZP7NM2Gkn/MgD8+eOT5MulMj6wfeQMNS2Pizvq5GHCZfjlFMXV2irQlQmJhwA2VABC57M0auudO89Iu2uRLg==",
+      "path": "system.diagnostics.eventlog/8.0.1",
+      "hashPath": "system.diagnostics.eventlog.8.0.1.nupkg.sha512"
+    },
+    "System.Drawing.Common/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JkbHJjtI/dWc5dfmEdJlbe3VwgZqCkZRtfuWFh5GOv0f+gGCfBtzMpIVkmdkj2AObO9y+oiOi81UGwH3aBYuqA==",
+      "path": "system.drawing.common/8.0.0",
+      "hashPath": "system.drawing.common.8.0.0.nupkg.sha512"
+    },
+    "System.Runtime.Caching/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tdl7Q47P09UpRu0C/OQsGJU6GacBzzk4vfp5My9rodD+BchrxmajORnTthH8RxPUTPrIoVDJmLyvJcGxB267nQ==",
+      "path": "system.runtime.caching/8.0.1",
+      "hashPath": "system.runtime.caching.8.0.1.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+TUFINV2q2ifyXauQXRwy4CiBhqvDEDZeVJU7qfxya4aRYOKzVBpN+4acx25VcPB9ywUN6C0n8drWl110PhZEg==",
+      "path": "system.security.cryptography.protecteddata/8.0.0",
+      "hashPath": "system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
+    },
+    "ambertation.3D/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ambertation.utilities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "pjse.coder.plugin/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.3IDR/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.Cache/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.Clst/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.filehandler/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.geometry/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.GMDCExporterBase/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.GraphControl/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.helper/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.interfaces/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.names/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.ngbh/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.package/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.RCOL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.Scenegraph/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SimPE.Sims/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.splash/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.workspace.plugin/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "pjse.coder.plugin.Reference/4.0.6608.29748": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.filehandler.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.names.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.ngbh.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.package.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "simpe.workspace.plugin.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "XPCommonControls/2.2.3.4": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NetDocks/1.0.2983.24895": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SandDock/2.0.2.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ambertation.3D.mdx.binding/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

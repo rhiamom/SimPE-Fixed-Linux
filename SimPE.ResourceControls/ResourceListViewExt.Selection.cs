@@ -56,7 +56,7 @@ namespace SimPe.Windows.Forms
 
         void DoSignalSelectionChanged(IntPtr handle)
         {
-            Ambertation.Windows.Forms.APIHelp.SendMessage(handle, WM_USER_FIRE_SELECTION, 0, 0);
+            SendMessage(handle, WM_USER_FIRE_SELECTION, 0, 0);
         }
 
         void SelectionTimerCallback(object state)

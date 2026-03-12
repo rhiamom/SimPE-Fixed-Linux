@@ -106,9 +106,5 @@
     <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
     <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ambertation.3D.mdx.binding">
-      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+
 </Project>

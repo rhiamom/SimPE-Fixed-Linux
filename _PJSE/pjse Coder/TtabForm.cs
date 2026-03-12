@@ -34,6 +34,7 @@ using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
 using pjse;
+using Str = pjse.Str;
 
 namespace SimPe.PackedFiles.UserInterface
 {

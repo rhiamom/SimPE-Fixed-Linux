@@ -28,19 +28,23 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace SimPe
 {
     public partial class WaitControl : UserControl, IWaitingBarControl
     {
-        const uint WM_USER_CHANGED_MESSAGE = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0001;
-        const uint WM_USER_CHANGED_MAXPROGRESS = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0002;
-        const uint WM_USER_CHANGED_PROGRESS = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0003;
-        const uint WM_USER_SHOW_HIDE = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0004;
-        const uint WM_USER_SHOW_HIDE_PROGRESS = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0005;
-        const uint WM_USER_SHOW_HIDE_ANIMATION = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0006;
-        const uint WM_USER_SHOW_HIDE_TEXT = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0007;
+        const uint WM_USER_CHANGED_MESSAGE = 0x8000u | 0x0001;
+        const uint WM_USER_CHANGED_MAXPROGRESS = 0x8000u | 0x0002;
+        const uint WM_USER_CHANGED_PROGRESS = 0x8000u | 0x0003;
+        const uint WM_USER_SHOW_HIDE = 0x8000u | 0x0004;
+        const uint WM_USER_SHOW_HIDE_PROGRESS = 0x8000u | 0x0005;
+        const uint WM_USER_SHOW_HIDE_ANIMATION = 0x8000u | 0x0006;
+        const uint WM_USER_SHOW_HIDE_TEXT = 0x8000u | 0x0007;
         IntPtr myhandle;
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
 
         public WaitControl()
         {
@@ -120,7 +124,7 @@ namespace SimPe
                 {
                     msg = value;
                 }
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_CHANGED_MESSAGE, 0, 0);
+                SendMessage(myhandle, WM_USER_CHANGED_MESSAGE, 0, 0);
             }
         }
 
@@ -134,7 +138,7 @@ namespace SimPe
                 {
                     max = value;
                 }
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_CHANGED_MAXPROGRESS, value, 0);                
+                SendMessage(myhandle, WM_USER_CHANGED_MAXPROGRESS, value, 0);                
             }
         }
 
@@ -145,7 +149,7 @@ namespace SimPe
             get { return val; }
             set
             {
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_CHANGED_PROGRESS, value, 0);          
+                SendMessage(myhandle, WM_USER_CHANGED_PROGRESS, value, 0);          
             }
         }
 
@@ -178,7 +182,7 @@ namespace SimPe
             {
                 int val = 0;
                 if (value) val = 1;
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE, val, 0);   
+                SendMessage(myhandle, WM_USER_SHOW_HIDE, val, 0);   
             }
         }
 
@@ -206,7 +210,7 @@ namespace SimPe
             {
                 int val = 0;
                 if (value) val = 1;
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE_PROGRESS, val, 0); 
+                SendMessage(myhandle, WM_USER_SHOW_HIDE_PROGRESS, val, 0); 
             }
         }
 
@@ -228,7 +232,7 @@ namespace SimPe
             set
             {
                 sanim = value;
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE_ANIMATION, 0, 0);
+                SendMessage(myhandle, WM_USER_SHOW_HIDE_ANIMATION, 0, 0);
             }
         }
 
@@ -244,7 +248,7 @@ namespace SimPe
             {
                 int val = 0;
                 if (value) val = 1;
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE_TEXT, val, 0);
+                SendMessage(myhandle, WM_USER_SHOW_HIDE_TEXT, val, 0);
             }
         }
 

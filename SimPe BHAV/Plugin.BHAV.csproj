@@ -23,7 +23,7 @@
     <Description>BHAV Plugin</Description>
     <Company>Ambertation</Company>
     <Product>[DEBUG]</Product>
-    <AssemblyVersion>1.69.%2a</AssemblyVersion>
+    <AssemblyVersion>1.69.0.0</AssemblyVersion>
     <Configurations>Debug;Release;x86</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

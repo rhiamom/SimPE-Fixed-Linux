@@ -22,7 +22,7 @@
     <AssemblyTitle>SimPe Wizard : Household Wardrobe Cleaner</AssemblyTitle>
     <Product>SimPe Wizards</Product>
     <Copyright>Copywrong</Copyright>
-    <AssemblyVersion>1.69.0.%2a</AssemblyVersion>
+    <AssemblyVersion>1.69.0.0</AssemblyVersion>
     <FileVersion>1.69.0.0</FileVersion>
     <Configurations>Debug;Release;x86</Configurations>
     <PlatformTarget>AnyCPU</PlatformTarget>

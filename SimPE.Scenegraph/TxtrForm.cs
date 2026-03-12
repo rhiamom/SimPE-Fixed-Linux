@@ -424,7 +424,7 @@ namespace SimPe.Plugin
             this.menuItem3,
             this.menuItem2,
             this.menuItem5});
-            this.contextMenu1.Popup += new System.EventHandler(this.ContextPopUp);
+            this.contextMenu1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextPopUp);
             // 
             // menuItem1
             // 
@@ -1167,7 +1167,7 @@ namespace SimPe.Plugin
 			return null;
 		}
 
-		private void ContextPopUp(object sender, System.EventArgs e)
+		private void ContextPopUp(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			milifo.Enabled = false;
             this.mibuild.Enabled = System.IO.File.Exists(PathProvider.Global.NvidiaDDSTool);

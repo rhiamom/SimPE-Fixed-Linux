@@ -22,7 +22,7 @@
     <AssemblyTitle>Contains Exporters for GMDC Mesh Data</AssemblyTitle>
     <Company>Ambertation</Company>
     <Product>[DEBUG]</Product>
-    <AssemblyVersion>1.69.%2a</AssemblyVersion>
+    <AssemblyVersion>1.69.0.0</AssemblyVersion>
     <Configurations>Debug;Release;x86</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -103,6 +103,9 @@
     </Reference>
     <Reference Update="System.Xml">
       <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="xsi.lib">
+      <HintPath>..\lib\xsi.lib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

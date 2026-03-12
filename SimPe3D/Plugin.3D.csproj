@@ -22,7 +22,7 @@
     <AssemblyTitle>SimPe 3D Tools</AssemblyTitle>
     <Company>Ambertation</Company>
     <Product>[DEBUG]</Product>
-    <AssemblyVersion>1.69.%2a</AssemblyVersion>
+    <AssemblyVersion>1.69.0.0</AssemblyVersion>
     <Configurations>Debug;Release;x86</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -108,6 +108,11 @@
       <Name>System.XML</Name>
     </Reference>
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D.mdx.binding">
+      <HintPath>..\lib\ambertation.3D.mdx.binding.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimPE.Geometry\SimPE.Geometry.csproj" />
