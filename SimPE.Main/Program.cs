@@ -39,11 +39,29 @@ namespace SimPe
     {
         public static MainForm Global;
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        /// Der Haupteinstiegspunkt fï¿½r die Anwendung.
         /// </summary>
+        static void LogCrash(Exception ex, bool isTerminating)
+        {
+            try
+            {
+                string logPath = System.IO.Path.Combine(
+                    System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    "crash.log");
+                string msg = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Terminating={isTerminating}\r\n{ex}\r\n\r\n";
+                System.IO.File.AppendAllText(logPath, msg);
+            }
+            catch { }
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                LogCrash(e.ExceptionObject as Exception ?? new Exception(e.ExceptionObject?.ToString()), e.IsTerminating);
+            System.Windows.Forms.Application.ThreadException += (s, e) =>
+                LogCrash(e.Exception, false);
+
             if (System.Environment.Version.Major < 2)
             {
                 Message.Show(SimPe.Localization.GetString("NoDotNet").Replace("{VERSION}", System.Environment.Version.ToString()));
