@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.3D", "Ambertati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.utilities", "Ambertation.Utilities\ambertation.utilities.csproj", "{CC2130EB-EFB6-4A72-94FA-F5B4A6CA302C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.3D.gl.binding", "Ambertation.3D.Gl.Binding\ambertation.3D.gl.binding.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -717,6 +719,18 @@ Global
 		{CC2130EB-EFB6-4A72-94FA-F5B4A6CA302C}.Release|x64.Build.0 = Release|Any CPU
 		{CC2130EB-EFB6-4A72-94FA-F5B4A6CA302C}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
 		{CC2130EB-EFB6-4A72-94FA-F5B4A6CA302C}.Release|AnyCPU.Build.0 = Release|AnyCPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|AnyCPU.Build.0 = Release|AnyCPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

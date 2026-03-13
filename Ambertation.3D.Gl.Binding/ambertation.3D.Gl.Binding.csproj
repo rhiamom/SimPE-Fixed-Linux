@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>ambertation.3D.gl.binding</AssemblyName>
+    <RootNamespace>Ambertation</RootNamespace>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- TODO: Replace Microsoft.DirectX with OpenTK NuGet packages:
+         <PackageReference Include="OpenTK" Version="4.9.3" />
+         <PackageReference Include="OpenTK.GLControl" Version="4.9.3" />
+         <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    -->
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
+    <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
+  </ItemGroup>
+</Project>
