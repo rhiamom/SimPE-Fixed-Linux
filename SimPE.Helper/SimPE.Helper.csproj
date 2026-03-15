@@ -40,9 +40,6 @@
     <EmbeddedResource Include="IconXmlResources\xreg.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Data\simpe.layout">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="IconXmlResources\About_%24this.Icon.png" />

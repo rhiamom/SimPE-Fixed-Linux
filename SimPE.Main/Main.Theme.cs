@@ -144,12 +144,45 @@ namespace SimPe
 
             try
             {
-                Ambertation.Windows.Forms.Serializer.Global.FromFile(Helper.DataFolder.SimPeLayout);                                
+                Ambertation.Windows.Forms.Serializer.Global.FromFile(Helper.DataFolder.SimPeLayout);
             }
             catch (Exception ex)
             {
                 Helper.ExceptionMessage(ex);
             }
+
+            // Enforce correct dock containers for fixed panels.
+            // A stale/corrupt simpe.layout can move these panels to wrong containers
+            // (e.g. everything ends up in dockBottom). These assignments are authoritative.
+            if (dcResource.DockContainer != dockLeft)       dcResource.DockContainer = dockLeft;
+            if (dcResourceList.DockContainer != manager)    dcResourceList.DockContainer = manager;
+            if (dcAction.DockContainer != dockRight)        dcAction.DockContainer = dockRight;
+            if (dcFilter.DockContainer != dockRight)        dcFilter.DockContainer = dockRight;
+            if (dcPlugin.DockContainer != dockBottom)       dcPlugin.DockContainer = dockBottom;
+
+            // Remove ghost DockPanels created by the deserializer for panel names that no
+            // longer exist in the current session (e.g. stale ManagedDockPanel* entries).
+            // These show up as blank tabs in the dock areas.
+            var dockContainers = new System.Windows.Forms.Control[] { dockBottom, dockLeft, dockRight };
+            foreach (var container in dockContainers)
+            {
+                var toRemove = new System.Collections.Generic.List<Ambertation.Windows.Forms.DockPanel>();
+                foreach (System.Windows.Forms.Control c in container.Controls)
+                {
+                    var dp = c as Ambertation.Windows.Forms.DockPanel;
+                    if (dp != null && dp.Name.StartsWith("ManagedDockPanel"))
+                        toRemove.Add(dp);
+                }
+                foreach (var dp in toRemove)
+                    container.Controls.Remove(dp);
+            }
+
+            // Default Object Workshop to dockRight (user preference).
+            // Only move it if it's still sitting in dockBottom (i.e. no saved position yet).
+            var owPanel = Ambertation.Windows.Forms.ManagerSingelton.Global
+                .GetPanelWithName("dc.SimPe.Plugin.Tool.Dockable.ObectWorkshopDockTool");
+            if (owPanel != null && owPanel.DockContainer == dockBottom)
+                owPanel.DockContainer = dockRight;
 
             resourceViewManager1.RestoreLayout();
             

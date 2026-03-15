@@ -377,6 +377,7 @@ namespace SimPe
                     {
                         dctrl.Name = "dc." + idt.GetType().Namespace + "." + idt.GetType().Name;
                         dctrl.Manager = dc.Manager;
+                        dctrl.CanUndock = true;
                         dc.Controls.Add(dctrl);
                         dctrl.Visible = true;
                         System.Diagnostics.Debug.WriteLine("DOCK: after Visible=true: " + idt.GetType().Name + " Visible=" + dctrl.Visible + " dc.Visible=" + dc.Visible + " dc.Parent=" + (dc.Parent == null ? "NULL" : dc.Parent.GetType().Name));
