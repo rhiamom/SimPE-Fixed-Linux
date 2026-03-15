@@ -23,6 +23,9 @@
 
 using System;
 using System.Collections;
+using System.IO;
+using SharpCompress.Archives;
+using SharpCompress.Common;
 
 namespace SimPe.Plugin.Downloads
 {
@@ -30,26 +33,31 @@ namespace SimPe.Plugin.Downloads
 	/// Summary description for SevenZipHandler.
 	/// </summary>
 	public class SevenZipHandler : ArchiveHandler
-	{		
+	{
 		public SevenZipHandler(string filename) : base(filename)
-		{		
-		
-		}								
+		{
+
+		}
 
 		protected override StringArrayList ExtractArchive()
 		{
-			StringArrayList ret = new StringArrayList();					
-			Ambertation.SevenZip.IO.CommandlineArchive a = new Ambertation.SevenZip.IO.CommandlineArchive(this.ArchiveName);
-			Ambertation.SevenZip.IO.ArchiveFile[] content = a.ListContent();
-			a.Extract(SimPe.Helper.SimPeTeleportPath, false);
+			StringArrayList ret = new StringArrayList();
+			using var archive = ArchiveFactory.OpenArchive(this.ArchiveName);
+			var entries = new System.Collections.Generic.List<string>();
+			foreach (var entry in archive.Entries)
+				if (!entry.IsDirectory)
+					entries.Add(entry.Key);
 
-			foreach (Ambertation.SevenZip.IO.ArchiveFile desc in content)
-			{				
-				string rname = System.IO.Path.Combine(Helper.SimPeTeleportPath, desc.Name);	
-				if (System.IO.File.Exists(rname))
+			archive.WriteToDirectory(SimPe.Helper.SimPeTeleportPath,
+				new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+
+			foreach (string name in entries)
+			{
+				string rname = Path.Combine(Helper.SimPeTeleportPath, name);
+				if (File.Exists(rname))
 					ret.Add(rname);
 			}
 			return ret;
-		}		
+		}
 	}
 }

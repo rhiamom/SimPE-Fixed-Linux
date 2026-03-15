@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -838,12 +838,8 @@
     <EmbeddedResource Include="IconXmlResources\WizardSmallImage.bmp" />
   </ItemGroup>
 	<ItemGroup>
-		<Reference Include="AdvancedForms">
-			<HintPath>..\lib\AdvancedForms.dll</HintPath>
-		</Reference>
-		<Reference Include="NetDocks">
-			<HintPath>..\lib\NetDocks.dll</HintPath>
-		</Reference>
+		
+		
 		<Reference Include="SandDock">
 			<HintPath>..\lib\SandDock.dll</HintPath>
 		</Reference>
@@ -855,5 +851,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ambertation.3D.Gl.Binding\ambertation.3D.Gl.Binding.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdvancedForms\AdvancedForms.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
   </ItemGroup>
 </Project>

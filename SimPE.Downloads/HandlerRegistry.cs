@@ -51,9 +51,8 @@ namespace SimPe.Plugin.Downloads
 			AddFilehandler(ExtensionType.DisabledPackage, typeof(PackageHandler));
             AddFilehandler(ExtensionType.Sim2Pack, typeof(Sims2PackHandler));
             AddFilehandler(ExtensionType.Sim2PackCommunity, typeof(Sims2PackHandler));
-            // Nothing is 'Supported For Unpack' if SimPe folder is Windows protected
-            Ambertation.SevenZip.IO.CommandlineArchive a = new Ambertation.SevenZip.IO.CommandlineArchive("");
-            foreach (string ext in a.SupportedForUnpack)
+            // SharpCompress supported archive formats
+            foreach (string ext in new string[] { ".7z", ".rar", ".zip", ".bz2", ".gz", ".tar", ".xz" })
                 this.AddFileHandler(ext, typeof(SevenZipHandler));
 
 			this.AddTypeHandler(SimPe.Cache.PackageType.Lot, typeof(LotTypeHandler));

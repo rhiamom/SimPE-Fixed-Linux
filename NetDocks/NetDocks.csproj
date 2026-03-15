@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>NetDocks</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Ambertation.Windows.Forms.dockhint.PNG" />
+    <None Remove="Ambertation.Windows.Forms.bottom.png" />
+    <None Remove="Ambertation.Windows.Forms.pinD_f.png" />
+    <None Remove="Ambertation.Windows.Forms.left.png" />
+    <None Remove="Ambertation.Windows.Forms.closeX_f.png" />
+    <None Remove="Ambertation.Windows.Forms.pinH_f.png" />
+    <None Remove="Ambertation.Windows.Forms.pinD.png" />
+    <None Remove="Ambertation.Windows.Forms.pinV.png" />
+    <None Remove="Ambertation.Windows.Forms.closeX.png" />
+    <None Remove="Ambertation.Windows.Forms.right.png" />
+    <None Remove="Ambertation.Windows.Forms.pinH.png" />
+    <None Remove="Ambertation.Windows.Forms.dockimg.png" />
+    <None Remove="Ambertation.Windows.Forms.pinV_f.png" />
+    <None Remove="Ambertation.Windows.Forms.top.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.dockhint.PNG" LogicalName="Ambertation.Windows.Forms.dockhint.PNG" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.bottom.png" LogicalName="Ambertation.Windows.Forms.bottom.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinD_f.png" LogicalName="Ambertation.Windows.Forms.pinD_f.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.left.png" LogicalName="Ambertation.Windows.Forms.left.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.closeX_f.png" LogicalName="Ambertation.Windows.Forms.closeX_f.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinH_f.png" LogicalName="Ambertation.Windows.Forms.pinH_f.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinD.png" LogicalName="Ambertation.Windows.Forms.pinD.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinV.png" LogicalName="Ambertation.Windows.Forms.pinV.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.closeX.png" LogicalName="Ambertation.Windows.Forms.closeX.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.right.png" LogicalName="Ambertation.Windows.Forms.right.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinH.png" LogicalName="Ambertation.Windows.Forms.pinH.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.dockimg.png" LogicalName="Ambertation.Windows.Forms.dockimg.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.pinV_f.png" LogicalName="Ambertation.Windows.Forms.pinV_f.png" />
+    <EmbeddedResource Include="Ambertation.Windows.Forms.top.png" LogicalName="Ambertation.Windows.Forms.top.png" />
+  </ItemGroup>
+</Project>

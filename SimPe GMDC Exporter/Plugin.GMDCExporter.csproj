@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ProjectType>Local</ProjectType>
@@ -104,14 +104,15 @@
     <Reference Update="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="xsi.lib">
-      <HintPath>..\lib\xsi.lib.dll</HintPath>
-    </Reference>
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimPE.Geometry\SimPE.Geometry.csproj" />
     <ProjectReference Include="..\SimPE.GMDCExporterbase\SimPE.GMDCExporterBase.csproj" />
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
     <ProjectReference Include="..\SimPE.RCOL\SimPE.RCOL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\xsi.lib\xsi.lib.csproj" />
   </ItemGroup>
 </Project>

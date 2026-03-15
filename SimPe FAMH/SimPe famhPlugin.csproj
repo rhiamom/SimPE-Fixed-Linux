@@ -109,9 +109,7 @@
     <Reference Include="GDF">
       <HintPath>..\ExternalLibs\GDF.dll</HintPath>
     </Reference>
-    <Reference Include="NetDocks">
-      <HintPath>..\ExternalLibs\NetDocks.dll</HintPath>
-    </Reference>
+    
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -164,19 +162,31 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj">
-      <Project>{7d2040cb-cd32-4c78-944e-472c050f8163}</Project>
+      <Project>{7d2040cb-cd32-4c78-944e-472c050f8163}  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
+  </ItemGroup>
+</Project>
       <Name>SimPE.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimPE.Interfaces\SimPE.Interfaces.csproj">
-      <Project>{8ba84b01-58e5-4125-aa36-4a9dbd0c25c4}</Project>
+      <Project>{8ba84b01-58e5-4125-aa36-4a9dbd0c25c4}  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
+  </ItemGroup>
+</Project>
       <Name>SimPE.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimPE.Packages\SimPE.Packages.csproj">
-      <Project>{25b67dc9-167c-4d53-a51f-ec23135a30e9}</Project>
+      <Project>{25b67dc9-167c-4d53-a51f-ec23135a30e9}  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
+  </ItemGroup>
+</Project>
       <Name>SimPE.Packages</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimPE.WorkSpaceHelper\SimPE.WorkSpaceHelper.csproj">
-      <Project>{f6de1680-4d13-4e34-9eb7-72aa122ce344}</Project>
+      <Project>{f6de1680-4d13-4e34-9eb7-72aa122ce344}  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
+  </ItemGroup>
+</Project>
       <Name>SimPE.WorkSpaceHelper</Name>
     </ProjectReference>
   </ItemGroup>
@@ -188,4 +198,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj" />
+  </ItemGroup>
 </Project>
