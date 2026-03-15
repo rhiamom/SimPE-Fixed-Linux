@@ -217,6 +217,17 @@
         }
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
+      "AdvancedForms/1.0.0": {
+        "dependencies": {
+          "NetDocks": "1.0.0"
+        },
+        "runtime": {
+          "AdvancedForms.dll": {
+            "assemblyVersion": "1.0.2983.24897",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "ambertation.3D/1.0.0": {
         "dependencies": {
           "System.Drawing.Common": "8.0.0",
@@ -239,8 +250,7 @@
         },
         "runtime": {
           "ambertation.3D.gl.binding.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -251,6 +261,14 @@
         "runtime": {
           "ambertation.utilities.dll": {
             "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NetDocks/1.0.0": {
+        "runtime": {
+          "NetDocks.dll": {
+            "assemblyVersion": "1.0.2983.24895",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -379,7 +397,9 @@
       },
       "simpe.filehandler/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.Cache": "1.0.0",
           "SimPE.Clst": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
@@ -391,7 +411,8 @@
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.filehandler.dll": {
@@ -435,7 +456,9 @@
       },
       "SimPE.GMDCExporterBase/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
           "SimPE.RCOL": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
@@ -446,7 +469,8 @@
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "SimPE.GMDCExporterBase.dll": {
@@ -471,11 +495,14 @@
       },
       "SimPE.GraphControl/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
           "ambertation.3D": "1.0.0",
           "ambertation.utilities": "1.0.0",
-          "simpe.helper": "1.0.0"
+          "simpe.helper": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "SimPE.GraphControl.dll": {
@@ -486,7 +513,9 @@
       },
       "simpe.helper/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
           "ambertation.3D": "1.0.0",
           "ambertation.3D.gl.binding": "1.0.0",
@@ -535,7 +564,9 @@
       },
       "simpe.names/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.3IDR": "1.0.0",
           "SimPE.Clst": "1.0.0",
           "SimPE.RCOL": "1.0.0",
@@ -549,7 +580,8 @@
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.names.dll": {
@@ -559,7 +591,9 @@
       },
       "simpe.ngbh/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.Cache": "1.0.0",
           "SimPE.Clst": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
@@ -576,7 +610,8 @@
           "simpe.interfaces": "1.0.0",
           "simpe.names": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.ngbh.dll": {
@@ -638,8 +673,10 @@
       },
       "SimPE.RCOL/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "BCnEncoder.Net": "2.3.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
           "ambertation.3D": "1.0.0",
@@ -649,7 +686,8 @@
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "SimPE.RCOL.dll": {
@@ -734,7 +772,9 @@
       },
       "SimPE.Sims/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.3IDR": "1.0.0",
           "SimPE.Cache": "1.0.0",
           "SimPE.Clst": "1.0.0",
@@ -748,7 +788,8 @@
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
-          "simpe.workspace.plugin": "1.0.0"
+          "simpe.workspace.plugin": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "SimPE.Sims.dll": {
@@ -776,12 +817,15 @@
       },
       "simpe.splash/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
           "ambertation.3D": "1.0.0",
           "ambertation.3D.gl.binding": "1.0.0",
           "ambertation.utilities": "1.0.0",
-          "simpe.helper": "1.0.0"
+          "simpe.helper": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.splash.dll": {
@@ -876,7 +920,9 @@
       },
       "simpe.workshop.plugin/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.Cache": "1.0.0",
           "SimPE.Clst": "1.0.0",
           "SimPE.GMDCExporterBase": "1.0.0",
@@ -896,7 +942,8 @@
           "simpe.package": "1.0.0",
           "simpe.wizardbase": "1.0.0",
           "simpe.workspace.plugin": "1.0.0",
-          "wosimpe.interfaces": "1.0.0"
+          "wosimpe.interfaces": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.workshop.plugin.dll": {
@@ -926,7 +973,9 @@
       },
       "simpe.workspace.plugin/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
           "Microsoft.CSharp": "4.7.0",
+          "NetDocks": "1.0.0",
           "SimPE.Cache": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
           "System.Data.DataSetExtensions": "4.5.0",
@@ -935,7 +984,8 @@
           "ambertation.utilities": "1.0.0",
           "simpe.helper": "1.0.0",
           "simpe.interfaces": "1.0.0",
-          "simpe.package": "1.0.0"
+          "simpe.package": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "simpe.workspace.plugin.dll": {
@@ -962,6 +1012,8 @@
       },
       "Wizards of SimPe/1.0.0": {
         "dependencies": {
+          "AdvancedForms": "1.0.0",
+          "NetDocks": "1.0.0",
           "SimPE.GraphControl": "1.0.0",
           "SimPE.RCOL": "1.0.0",
           "SimPE.Scenegraph": "1.0.0",
@@ -972,7 +1024,8 @@
           "simpe.interfaces": "1.0.0",
           "simpe.package": "1.0.0",
           "simpe.workspace.plugin": "1.0.0",
-          "wosimpe.interfaces": "1.0.0"
+          "wosimpe.interfaces": "1.0.0",
+          "xsi.lib": "1.0.0"
         },
         "runtime": {
           "Wizards of SimPe.dll": {
@@ -985,6 +1038,18 @@
         "runtime": {
           "wosimpe.interfaces.dll": {
             "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "xsi.lib/1.0.0": {
+        "dependencies": {
+          "ambertation.3D": "1.0.0",
+          "ambertation.utilities": "1.0.0"
+        },
+        "runtime": {
+          "xsi.lib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -1181,22 +1246,6 @@
           }
         }
       },
-      "XPCommonControls/2.2.3.4": {
-        "runtime": {
-          "XPCommonControls.dll": {
-            "assemblyVersion": "2.2.3.4",
-            "fileVersion": "2.2.3.4"
-          }
-        }
-      },
-      "NetDocks/1.0.2983.24895": {
-        "runtime": {
-          "NetDocks.dll": {
-            "assemblyVersion": "1.0.2983.24895",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "SandDock/2.0.2.1": {
         "runtime": {
           "SandDock.dll": {
@@ -1346,6 +1395,11 @@
       "path": "system.runtime.compilerservices.unsafe/6.0.0",
       "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
     },
+    "AdvancedForms/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "ambertation.3D/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -1357,6 +1411,11 @@
       "sha512": ""
     },
     "ambertation.utilities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NetDocks/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1496,6 +1555,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "xsi.lib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "pjse.coder.plugin.Reference/4.0.6608.29748": {
       "type": "reference",
       "serviceable": false,
@@ -1547,16 +1611,6 @@
       "sha512": ""
     },
     "wosimpe.interfaces.Reference/1.69.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "XPCommonControls/2.2.3.4": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "NetDocks/1.0.2983.24895": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

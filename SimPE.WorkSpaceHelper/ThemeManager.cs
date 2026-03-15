@@ -237,10 +237,9 @@ namespace SimPe
             c.BackColor = ThemeColorLight;
         }
 
-        void SetTheme(SteepValley.Windows.Forms.XPGradientPanel gp)
+        void SetTheme(System.Windows.Forms.Panel gp)
         {
-            gp.StartColor = ThemeColorLight;
-            gp.EndColor = ThemeColor;
+            gp.BackColor = ThemeColorLight;
         }
 
         void SetTheme(SimPe.Windows.Forms.WrapperBaseControl gp)
@@ -257,7 +256,7 @@ namespace SimPe
         {
             if (o is TD.SandDock.SandDockManager) SetTheme((TD.SandDock.SandDockManager)o);
             else if (o is Ambertation.Windows.Forms.DockManager) SetTheme((Ambertation.Windows.Forms.DockManager)o);
-            else if (o is SteepValley.Windows.Forms.XPGradientPanel) SetTheme((SteepValley.Windows.Forms.XPGradientPanel)o);
+            else if (o is System.Windows.Forms.Panel) SetTheme((System.Windows.Forms.Panel)o);
             else if (o is SimPe.Windows.Forms.WrapperBaseControl) SetTheme((SimPe.Windows.Forms.WrapperBaseControl)o);
             else if (o is System.Windows.Forms.Splitter) SetTheme((System.Windows.Forms.Splitter)o);
             else if (o is System.Windows.Forms.ContextMenuStrip) SetTheme((System.Windows.Forms.ContextMenuStrip)o);

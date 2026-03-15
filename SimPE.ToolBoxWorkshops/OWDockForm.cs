@@ -35,7 +35,7 @@ namespace SimPe.Plugin.Tool.Dockable
 	{
 		private TD.SandDock.DockContainer rightSandDock;
 		internal TD.SandDock.DockableWindow dcObjectWorkshop;
-		private SteepValley.Windows.Forms.XPGradientPanel xpGradientPanel1;
+		private System.Windows.Forms.Panel xpGradientPanel1;
         private System.Windows.Forms.ToolStrip toolBar1;
         private SimPe.Wizards.Wizard wizard1;
 		private SimPe.Wizards.WizardStepPanel wizardStepPanel1;
@@ -129,7 +129,7 @@ namespace SimPe.Plugin.Tool.Dockable
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(ObjectWorkshopDock));
 			this.rightSandDock = new TD.SandDock.DockContainer();
 			this.dcObjectWorkshop = new TD.SandDock.DockableWindow();
-			this.xpGradientPanel1 = new SteepValley.Windows.Forms.XPGradientPanel();
+			this.xpGradientPanel1 = new System.Windows.Forms.Panel();
 			this.wizard1 = new SimPe.Wizards.Wizard();
 			this.wizardStepPanel1 = new SimPe.Wizards.WizardStepPanel();
 			this.button2 = new System.Windows.Forms.Button();

@@ -159,14 +159,14 @@ namespace SimPe.Plugin.Tool.Dockable
         protected int AddResultGroup(string name)
         {
             string cname = name.Trim().ToLower();
-            foreach (SteepValley.Windows.Forms.XPListViewGroup lvg in lv.Groups)
-                if (lvg.GroupText.Trim().ToLower() == cname)
-                    return lvg.GroupIndex;
+            foreach (System.Windows.Forms.ListViewGroup lvg in lv.Groups)
+                if (lvg.Header.Trim().ToLower() == cname)
+                    return lv.Groups.IndexOf(lvg);
 
-            SteepValley.Windows.Forms.XPListViewGroup g = new SteepValley.Windows.Forms.XPListViewGroup(name);
-            g.GroupIndex = lv.Groups.Count;
+            System.Windows.Forms.ListViewGroup g = new System.Windows.Forms.ListViewGroup(name);
+            int idx = lv.Groups.Count;
             lv.Groups.Add(g);
-            return g.GroupIndex;
+            return idx;
         }
         
         private void lv_DoubleClick(object sender, System.EventArgs e)

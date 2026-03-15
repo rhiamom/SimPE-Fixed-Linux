@@ -41,10 +41,10 @@ namespace SimPe
 			ToolStrip tootoolbar,
 			TD.SandDock.TabControl dc, 
 			LoadedPackage lp,
-			SteepValley.Windows.Forms.ThemedControls.XPTaskBox defaultactiontaskbox,
+			Ambertation.Windows.Forms.XPTaskBoxSimple defaultactiontaskbox,
             ContextMenuStrip defaultactionmenu,
-			SteepValley.Windows.Forms.ThemedControls.XPTaskBox toolactiontaskbox, 
-			SteepValley.Windows.Forms.ThemedControls.XPTaskBox extactiontaskbox,
+			Ambertation.Windows.Forms.XPTaskBoxSimple toolactiontaskbox, 
+			Ambertation.Windows.Forms.XPTaskBoxSimple extactiontaskbox,
 			ToolStrip actiontoolbar,
 			Ambertation.Windows.Forms.DockContainer docktooldc,
             ToolStripMenuItem helpmenu,
@@ -295,7 +295,7 @@ namespace SimPe
 		/// Load all available Action Tools
 		/// </summary>
 		void LoadActionTools(
-			SteepValley.Windows.Forms.ThemedControls.XPTaskBox taskbox, 
+			Ambertation.Windows.Forms.XPTaskBoxSimple taskbox, 
 			ToolStrip tb,
             ContextMenuStrip mi, 
 			SimPe.Interfaces.IToolAction[] tools)
@@ -318,7 +318,7 @@ namespace SimPe
 					atd.LinkLabel.Left = 12;
 					top += atd.LinkLabel.Height;
 					atd.LinkLabel.Parent = taskbox;
-					atd.LinkLabel.Visible = taskbox.IsExpanded;
+					atd.LinkLabel.Visible = true;
 					atd.LinkLabel.AutoSize = true;
 				}
 

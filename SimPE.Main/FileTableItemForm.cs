@@ -30,11 +30,11 @@ using System.Windows.Forms;
 namespace SimPe
 {
 	/// <summary>
-	/// Zusammenfassung für FileTableItemForm.
+	/// Zusammenfassung fï¿½r FileTableItemForm.
 	/// </summary>
 	public class FileTableItemForm : System.Windows.Forms.Form
 	{
-		private SteepValley.Windows.Forms.XPGradientPanel xpGradientPanel1;
+		private System.Windows.Forms.Panel xpGradientPanel1;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -56,7 +56,7 @@ namespace SimPe
 		public FileTableItemForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Erforderlich fï¿½r die Windows Form-Designerunterstï¿½tzung
 			//
 			InitializeComponent();
 
@@ -96,13 +96,13 @@ namespace SimPe
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fï¿½r die Designerunterstï¿½tzung. 
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geï¿½ndert werden.
 		/// </summary>
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileTableItemForm));
-            this.xpGradientPanel1 = new SteepValley.Windows.Forms.XPGradientPanel();
+            this.xpGradientPanel1 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -136,7 +136,6 @@ namespace SimPe
             this.xpGradientPanel1.Controls.Add(this.label1);
             this.xpGradientPanel1.Font = null;
             this.xpGradientPanel1.Name = "xpGradientPanel1";
-            this.xpGradientPanel1.Watermark = null;
             // 
             // button3
             // 

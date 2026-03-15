@@ -59,9 +59,9 @@ namespace SimPe
             
             MyButtonItem.SetLayoutInformations(this);
 
-            Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = this.tbPlugAction.IsExpanded;
-            Helper.WindowsRegistry.Layout.DefaultActionBoxExpanded = this.tbDefaultAction.IsExpanded;
-            Helper.WindowsRegistry.Layout.ToolActionBoxExpanded = this.tbExtAction.IsExpanded;
+            Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = true;
+            Helper.WindowsRegistry.Layout.DefaultActionBoxExpanded = true;
+            Helper.WindowsRegistry.Layout.ToolActionBoxExpanded = true;
 
             resourceViewManager1.StoreLayout();
         }

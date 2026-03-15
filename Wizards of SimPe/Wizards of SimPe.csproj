@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ProjectType>Local</ProjectType>
@@ -173,9 +173,6 @@
     </Reference>
     <Reference Include="soil2">
       <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\soil2.dll</HintPath>
-    </Reference>
-    <Reference Include="XPCommonControls">
-      <HintPath>C:\Users\rhiam\source\repos\SimPeSource\lib\XPCommonControls.dll</HintPath>
     </Reference>
     
   </ItemGroup>

@@ -97,7 +97,7 @@ namespace SimPe
         private System.Windows.Forms.CheckBox cbmulti;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ComboBox cbThemes;
-        private SteepValley.Windows.Forms.XPBalloonTip baloonTip;
+        private System.Windows.Forms.ToolTip baloonTip;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.CheckBox cbSimple;
         private TD.Eyefinder.HeaderControl hcPlugins;
@@ -179,8 +179,8 @@ namespace SimPe
 
         #region Vom Windows Form-Designer generierter Code
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung. 
-        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+        /// Erforderliche Methode fï¿½r die Designerunterstï¿½tzung. 
+        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geï¿½ndert werden.
         /// </summary>
         private void InitializeComponent()
         {
@@ -305,7 +305,7 @@ namespace SimPe
             this.hcCustom = new TD.Eyefinder.HeaderControl();
             this.pgcustom = new System.Windows.Forms.PropertyGrid();
             this.cbCustom = new System.Windows.Forms.ComboBox();
-            this.baloonTip = new SteepValley.Windows.Forms.XPBalloonTip(this.components);
+            this.baloonTip = new System.Windows.Forms.ToolTip(this.components);
             this.navigationButton1 = new Divelements.Navisight.NavigationButton();
             this.navigationButton2 = new Divelements.Navisight.NavigationButton();
             this.groupBox3.SuspendLayout();
@@ -1162,7 +1162,6 @@ namespace SimPe
             // 
             // baloonTip
             // 
-            this.baloonTip.Enabled = true;
             // 
             // OptionForm
             // 

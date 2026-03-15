@@ -26,12 +26,12 @@ using System;
 namespace SimPe
 {
 	/// <summary>
-	/// Zusammenfassung für LoadActionTool.
+	/// Zusammenfassung fï¿½r LoadActionTool.
 	/// </summary>
 	internal class ActionToolDescriptor
 	{
 		SimPe.Interfaces.IToolAction tool;
-		SteepValley.Windows.Forms.XPLinkedLabelIcon ll;
+		System.Windows.Forms.LinkLabel ll;
 		LoadedPackage lp;
 
 		SimPe.Events.ResourceEventArgs lasteventarg;
@@ -39,7 +39,7 @@ namespace SimPe
 		/// <summary>
 		/// Returns the generated LinkLabel
 		/// </summary>
-		public SteepValley.Windows.Forms.XPLinkedLabelIcon LinkLabel 
+		public System.Windows.Forms.LinkLabel LinkLabel 
 		{
 			get {return ll; }
 		}
@@ -71,18 +71,16 @@ namespace SimPe
 			//this.lp = lp;
 			this.tool = tool;
 
-			ll = new SteepValley.Windows.Forms.XPLinkedLabelIcon();
+			ll = new System.Windows.Forms.LinkLabel();
 			ll.Name = tool.ToString();
-			if (tool.Icon!=null)
-				if (tool.Icon is System.Drawing.Bitmap)
-					ll.Icon = System.Drawing.Icon.FromHandle(((System.Drawing.Bitmap)tool.Icon).GetHicon());
+			// XPLinkedLabelIcon.Icon not available on standard LinkLabel â€” icon displayed via menu item instead
 			ll.Text = SimPe.Localization.GetString(tool.ToString());
 			ll.LinkArea = new System.Windows.Forms.LinkArea(0, ll.Text.Length);
 			ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
 			ll.Height = 16;
 			ll.AutoSize = true;
 
-			ll.LinkClicked += new EventHandler(LinkClicked);
+			ll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler((s, e) => LinkClicked(s, e));
 
 			mi = new System.Windows.Forms.ToolStripMenuItem(ll.Text);
 			mi.Click += new EventHandler(LinkClicked);

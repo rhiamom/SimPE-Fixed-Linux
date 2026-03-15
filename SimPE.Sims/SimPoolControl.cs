@@ -360,7 +360,7 @@ namespace SimPe.PackedFiles.Wrapper
             }
 
             // Optional: if you *want* gender-based panel colors, keep this.
-            // It’s not Chris/gross, just old-school pink/blue.
+            // Itï¿½s not Chris/gross, just old-school pink/blue.
             
             if (sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female)
                 eip.PanelColor = System.Drawing.Color.LightPink;
@@ -481,8 +481,8 @@ namespace SimPe.PackedFiles.Wrapper
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimPoolControl));
-            SteepValley.Windows.Forms.XPListViewGroup xpListViewGroup1 = new SteepValley.Windows.Forms.XPListViewGroup("Unrelated", 0);
-            SteepValley.Windows.Forms.XPListViewGroup xpListViewGroup2 = new SteepValley.Windows.Forms.XPListViewGroup("Related", 1);
+            System.Windows.Forms.ListViewGroup xpListViewGroup1 = new System.Windows.Forms.ListViewGroup("0", "Unrelated");
+            System.Windows.Forms.ListViewGroup xpListViewGroup2 = new System.Windows.Forms.ListViewGroup("1", "Related");
             this.cbhousehold = new System.Windows.Forms.ComboBox();
             this.gp = new SimPe.PackedFiles.Wrapper.SimListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -512,10 +512,6 @@ namespace SimPe.PackedFiles.Wrapper
             this.columnHeader4});
             resources.ApplyResources(this.gp, "gp");
             this.gp.FullRowSelect = true;
-            xpListViewGroup1.GroupIndex = 0;
-            xpListViewGroup1.GroupText = "Unrelated";
-            xpListViewGroup2.GroupIndex = 1;
-            xpListViewGroup2.GroupText = "Related";
             this.gp.Groups.Add(xpListViewGroup1);
             this.gp.Groups.Add(xpListViewGroup2);
             this.gp.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -631,7 +627,7 @@ namespace SimPe.PackedFiles.Wrapper
 			base.Refresh();
 		}
 
-        internal SteepValley.Windows.Forms.XPListViewItemCollection Items
+        internal System.Windows.Forms.ListView.ListViewItemCollection Items
         {
             get { return this.gp.Items; }
         }

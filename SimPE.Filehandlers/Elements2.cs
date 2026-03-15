@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -35,7 +35,7 @@ using SimPe.Interfaces.Plugin;
 namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
-	/// Zusammenfassung für Elements2.
+	/// Zusammenfassung f�r Elements2.
 	/// </summary>
 	public class Elements2 : System.Windows.Forms.Form
 	{
@@ -47,7 +47,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public Elements2()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Erforderlich f�r die Windows Form-Designerunterst�tzung
 			//
 			InitializeComponent();
 
@@ -78,8 +78,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode f�r die Designerunterst�tzung. 
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor ge�ndert werden.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -100,10 +100,10 @@ namespace SimPe.PackedFiles.Wrapper
 			this.tbnrefhash = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
-			this.NrefPanel = new SteepValley.Windows.Forms.XPGradientPanel();
+			this.NrefPanel = new System.Windows.Forms.Panel();
 			this.panel4 = new SimPe.Windows.Forms.WrapperBaseControl();
 			this.label12 = new System.Windows.Forms.Label();
-			this.CpfPanel = new SteepValley.Windows.Forms.XPGradientPanel();
+			this.CpfPanel = new System.Windows.Forms.Panel();
 			this.llcpfadd = new System.Windows.Forms.LinkLabel();
 			this.llcpfchange = new System.Windows.Forms.LinkLabel();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -325,7 +325,7 @@ namespace SimPe.PackedFiles.Wrapper
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label5.Dock")));
             this.label5.Enabled = ((bool)(resources.GetObject("label5.Enabled")));
-            this.label5.Font = ((System.Drawing.Font)(resources.GetObject("label5.Font"))); // resx = null → inherit
+            this.label5.Font = ((System.Drawing.Font)(resources.GetObject("label5.Font"))); // resx = null ? inherit
             this.label5.Image = ((System.Drawing.Image)(resources.GetObject("label5.Image")));
             this.label5.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label5.ImageAlign")));
             this.label5.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label5.ImeMode")));
@@ -357,7 +357,7 @@ namespace SimPe.PackedFiles.Wrapper
             this.tbNref.Dock = System.Windows.Forms.DockStyle.None;
             this.tbNref.Enabled = true;
 
-            // Font was not present in resx → inherit
+            // Font was not present in resx ? inherit
             // this.tbNref.Font = this.Font;
             this.tbNref.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tbNref.MaxLength = 0;              // default (32767)
@@ -365,7 +365,7 @@ namespace SimPe.PackedFiles.Wrapper
             this.tbNref.PasswordChar = '\0';
             this.tbNref.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbNref.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            // tbNref.Text does NOT exist in resx → explicit
+            // tbNref.Text does NOT exist in resx ? explicit
             this.tbNref.Text = "";
             this.tbNref.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbNref.Visible = true;
@@ -500,8 +500,6 @@ namespace SimPe.PackedFiles.Wrapper
 			this.NrefPanel.TabIndex = ((int)(resources.GetObject("NrefPanel.TabIndex")));
 			this.NrefPanel.Text = resources.GetString("NrefPanel.Text");
 			this.NrefPanel.Visible = ((bool)(resources.GetObject("NrefPanel.Visible")));
-			this.NrefPanel.Watermark = ((System.Drawing.Image)(resources.GetObject("NrefPanel.Watermark")));
-			this.NrefPanel.WatermarkSize = ((System.Drawing.Size)(resources.GetObject("NrefPanel.WatermarkSize")));
             // 
             // panel4
             // 
@@ -581,8 +579,6 @@ namespace SimPe.PackedFiles.Wrapper
 			this.CpfPanel.TabIndex = ((int)(resources.GetObject("CpfPanel.TabIndex")));
 			this.CpfPanel.Text = resources.GetString("CpfPanel.Text");
 			this.CpfPanel.Visible = ((bool)(resources.GetObject("CpfPanel.Visible")));
-			this.CpfPanel.Watermark = ((System.Drawing.Image)(resources.GetObject("CpfPanel.Watermark")));
-			this.CpfPanel.WatermarkSize = ((System.Drawing.Size)(resources.GetObject("CpfPanel.WatermarkSize")));
             // 
             // llcpfadd
             // 
@@ -717,8 +713,8 @@ namespace SimPe.PackedFiles.Wrapper
 		internal System.Windows.Forms.Label label10;
 		internal System.Windows.Forms.Button btprev;
 		internal System.Windows.Forms.TextBox tbNref;
-		internal SteepValley.Windows.Forms.XPGradientPanel NrefPanel;
-		internal SteepValley.Windows.Forms.XPGradientPanel CpfPanel;
+		internal System.Windows.Forms.Panel NrefPanel;
+		internal System.Windows.Forms.Panel CpfPanel;
 		internal System.Windows.Forms.LinkLabel linkLabel1;
 		internal System.Windows.Forms.LinkLabel llcpfadd;
 		internal System.Windows.Forms.LinkLabel llcpfchange;
