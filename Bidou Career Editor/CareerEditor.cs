@@ -398,7 +398,7 @@ namespace SimPe.Plugin
 
             internalchg = true;
             languageString = new List<string>(pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages));
-            languageString.RemoveAt(0);
+            if (languageString.Count > 0) languageString.RemoveAt(0);
 
             
             gcReward.KnownObjects = new object[] { new List<String>(rewardName), new List<UInt32>(rewardGUID) };
@@ -412,7 +412,7 @@ namespace SimPe.Plugin
             this.gcUpgrade.ComboBoxWidth = this.gcReward.ComboBoxWidth = 220;
             this.gcOutfit.ComboBoxWidth = this.gcVehicle.ComboBoxWidth = 300;
             this.thmepanel1.BackgroundImage = GetImage.GetExpansionLogo(PathProvider.Global.Latest.Version);
-            this.gpmajors.BackgroundImage = GetImage.GetExpansionLogo(1);
+            // BackgroundImage omitted â€” expansion logo renders over checkboxes on .NET 8
             this.pictureBox2.Image = LoadIcon.load("information.png");
         }
 
@@ -5730,7 +5730,9 @@ namespace SimPe.Plugin
                 setUpgradeFromGUID();
 
                 Language.DataSource = languageString;
-                Language.SelectedIndex = currentLanguage - 1;
+                int langIdx = currentLanguage - 1;
+                if (langIdx >= 0 && langIdx < languageString.Count)
+                    Language.SelectedIndex = langIdx;
 
                 CareerTitle.Text = (((List<StrItem>)catalogueDesc[currentLanguage]).Count == 0) ? "" : catalogueDesc[currentLanguage, 0].Title;
 
@@ -7180,7 +7182,7 @@ namespace SimPe.Plugin
         {
             bool ok = false;
 
-            // Core Bidou/PJSE tuning BCONs – keep these.
+            // Core Bidou/PJSE tuning BCONs ï¿½ keep these.
             if (getBcon(0x1056) == null)
                 ok = makeBcon(0x1056, 2, "Tuning - Flags");
             if (getBcon(0x1057) == null)

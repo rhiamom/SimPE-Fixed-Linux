@@ -246,8 +246,15 @@ namespace SimPe
 				return null;
 			}
 			
-			Assembly a = System.Reflection.Assembly.LoadFrom(file);
-			try 
+			Assembly a;
+			try { a = System.Reflection.Assembly.LoadFrom(file); }
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("LoadPlugin LoadFrom failed: " + file + " -- " + ex.Message);
+				Console.WriteLine("LoadPlugin LoadFrom failed: " + file + " -- " + ex.Message);
+				return null;
+			}
+			try
 			{
 				Type[] mytypes = a.GetTypes();
 

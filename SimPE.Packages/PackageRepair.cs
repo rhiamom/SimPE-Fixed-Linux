@@ -120,7 +120,7 @@ namespace SimPe.Packages
 
 		public string IndexItemSize
 		{
-			get {return "0x"+Helper.HexString( hd.Index.ItemSize) +" (0x"+Helper.HexString(hd.Index.Size / hd.Index.Count)+")";}
+			get {return "0x"+Helper.HexString( hd.Index.ItemSize) +" (0x"+Helper.HexString(hd.Index.Count > 0 ? hd.Index.Size / hd.Index.Count : 0)+")";}
 		}
         
         /// <summary>

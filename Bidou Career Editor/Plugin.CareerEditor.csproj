@@ -24,6 +24,8 @@
     <Product>Career Editor</Product>
     <AssemblyVersion>2.69.20.24</AssemblyVersion>
     <Configurations>Debug;Release;x86</Configurations>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>__Debug\Plugins\</OutputPath>
@@ -102,9 +104,6 @@
     <Reference Update="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
-    <Reference Include="System.Web">
-      <Name>System.Web</Name>
-    </Reference>
     <Reference Update="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -138,9 +137,5 @@
     <ProjectReference Include="..\SimPE.RCOL\SimPE.RCOL.csproj" />
     <ProjectReference Include="..\SimPE.WorkSpaceHelper\SimPE.WorkSpaceHelper.csproj" />
     <ProjectReference Include="..\_PJSE\pjse Coder\SimPe pjse coder.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters.CoreServices" Version="2.3.0" />
   </ItemGroup>
 </Project>
