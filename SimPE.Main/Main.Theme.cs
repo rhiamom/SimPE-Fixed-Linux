@@ -55,8 +55,10 @@ namespace SimPe
 
         private void StoreLayout()
         {
-            Ambertation.Windows.Forms.Serializer.Global.ToFile(Helper.DataFolder.SimPeLayoutW);
-            
+            // Layout serialization disabled — Ambertation serializer saves incorrect state.
+            // Panels are positioned correctly by enforcement code in ReloadLayout().
+            // ToFile(SimPeLayoutW) is intentionally omitted until save logic is fixed.
+
             MyButtonItem.SetLayoutInformations(this);
 
             Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = true;
@@ -72,7 +74,6 @@ namespace SimPe
             ThemeManager.Global.CurrentTheme = gt;
         }
         
-        System.IO.Stream defaultlayout;
         /// <summary>
         /// Wrapper needed to call the Layout Change through an Event
         /// </summary>
@@ -80,31 +81,7 @@ namespace SimPe
         /// <param name="e"></param>
         void ResetLayout(object sender, EventArgs e)
 {
-    // First try to load the shipped default layout from the app's Data folder
-    try
-    {
-        string installedLayout = System.IO.Path.Combine(
-            System.Windows.Forms.Application.StartupPath,
-            "Data",
-            "simpe.layout");
-
-        if (System.IO.File.Exists(installedLayout))
-        {
-            Ambertation.Windows.Forms.Serializer.Global.FromFile(installedLayout);
-            // Save it as the user layout too, so ReloadLayout has something to work with
-            Ambertation.Windows.Forms.Serializer.Global.ToFile(Helper.DataFolder.SimPeLayout);
-        }
-        else if (defaultlayout != null)
-        {
-            // Fallback to any in-memory default layout, if someone initialized it
-            Ambertation.Windows.Forms.Serializer.Global.FromStream(defaultlayout);
-            Ambertation.Windows.Forms.Serializer.Global.ToFile(Helper.DataFolder.SimPeLayout);
-        }
-    }
-    catch (Exception ex)
-    {
-        Helper.ExceptionMessage(ex);
-    }
+    // Panel positions are enforced entirely by ReloadLayout() — no file/stream needed.
 
     Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = false;
     Helper.WindowsRegistry.Layout.DefaultActionBoxExpanded = true;
@@ -138,18 +115,11 @@ namespace SimPe
         void ReloadLayout()
         {
             this.SuspendLayout();
-            //store defaults            
-            if (defaultlayout == null) 
-                defaultlayout = Ambertation.Windows.Forms.Serializer.Global.ToStream();
 
-            try
-            {
-                Ambertation.Windows.Forms.Serializer.Global.FromFile(Helper.DataFolder.SimPeLayout);
-            }
-            catch (Exception ex)
-            {
-                Helper.ExceptionMessage(ex);
-            }
+            // Delete any stale simpe.layout — saving is disabled so any existing file is
+            // from a prior session and will produce wrong panel positions.
+            try { System.IO.File.Delete(Helper.DataFolder.SimPeLayout); } catch { }
+            try { System.IO.File.Delete(Helper.DataFolder.SimPeLayoutW); } catch { }
 
             // Enforce correct dock containers for fixed panels.
             // A stale/corrupt simpe.layout can move these panels to wrong containers
