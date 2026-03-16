@@ -26,7 +26,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using Pfim;
 using System.Windows.Forms;
 using BCnEncoder.Encoder;
 using BCnEncoder.Shared;
@@ -421,28 +421,38 @@ namespace SimPe.Plugin
 			}
 		}
 
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int SOIL_save_image_quality(
-    string filename, int imageType,
-    int width, int height, int channels,
-    byte[] data, int quality);
-
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr SOIL_load_image(
-            string filename,
-            out int width, out int height, out int channels,
-            int forceChannels);
-
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SOIL_free_image_data(IntPtr imgData);
-
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr convert_image_to_DXT1(
-    byte[] data, int width, int height, int channels, out int dxtSize);
-
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr convert_image_to_DXT5(
-            byte[] data, int width, int height, int channels, out int dxtSize);
+        private static byte[] LoadFileAsRgba(string filename, out int w, out int h)
+        {
+            using var pfimImage = Pfimage.FromFile(filename);
+            w = pfimImage.Width;
+            h = pfimImage.Height;
+            byte[] src = pfimImage.Data;
+            int stride = pfimImage.Stride;
+            byte[] rgba = new byte[w * h * 4];
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    int si = y * stride + x * 4;
+                    int di = (y * w + x) * 4;
+                    if (pfimImage.Format == Pfim.ImageFormat.Rgba32)
+                    {
+                        rgba[di]     = src[si];     // R
+                        rgba[di + 1] = src[si + 1]; // G
+                        rgba[di + 2] = src[si + 2]; // B
+                        rgba[di + 3] = src[si + 3]; // A
+                    }
+                    else // Bgra32
+                    {
+                        rgba[di]     = src[si + 2]; // R
+                        rgba[di + 1] = src[si + 1]; // G
+                        rgba[di + 2] = src[si];     // B
+                        rgba[di + 3] = src[si + 3]; // A
+                    }
+                }
+            }
+            return rgba;
+        }
 
         private static void WriteDDSFile(string path, int width, int height, string fourCC, byte[] data)
         {
@@ -470,18 +480,14 @@ namespace SimPe.Plugin
 
         public static DDSData[] BuildDDS(string imgname, int levels, ImageLoader.TxtrFormats format, string parameters)
         {
-            int w, h, ch;
-            IntPtr imgData = SOIL_load_image(imgname, out w, out h, out ch, 4);
-            if (imgData == IntPtr.Zero) return new DDSData[0];
+            int w, h;
+            byte[] rgba;
+            try { rgba = LoadFileAsRgba(imgname, out w, out h); }
+            catch { return new DDSData[0]; }
 
             string ddsfile = System.IO.Path.GetTempFileName() + ".dds";
             try
             {
-                byte[] rgba = new byte[w * h * 4];
-                Marshal.Copy(imgData, rgba, 0, rgba.Length);
-                SOIL_free_image_data(imgData);
-                imgData = IntPtr.Zero;
-
                 BCnEncoder.Shared.CompressionFormat bcFormat;
                 if (format == ImageLoader.TxtrFormats.DXT1Format)
                     bcFormat = BCnEncoder.Shared.CompressionFormat.Bc1;
@@ -510,7 +516,6 @@ namespace SimPe.Plugin
             }
             finally
             {
-                if (imgData != IntPtr.Zero) SOIL_free_image_data(imgData);
                 if (System.IO.File.Exists(ddsfile)) System.IO.File.Delete(ddsfile);
             }
         }

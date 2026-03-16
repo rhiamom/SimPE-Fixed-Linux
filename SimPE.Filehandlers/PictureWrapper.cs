@@ -23,9 +23,10 @@
 
 using System;
 using System.Drawing;
-using SimPe.Interfaces.Plugin;
-using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using Pfim;
+using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
 {
@@ -126,14 +127,14 @@ namespace SimPe.PackedFiles.Wrapper
                     return false;
                 }
 
-                // Route to SOIL2 directly for DDS/DXT — never attempt GDI+ on these
+                // Route to Pfim directly for DDS/DXT - never attempt GDI+ on these
                 if (IsDdsHeader(bytes))
                 {
-                    image = TryLoadWithSoil2(bytes);
+                    image = TryLoadWithPfim(bytes);
                     return (image != null);
                 }
 
-                // For known GDI+ formats, try GDI+ only — never attempt SOIL2
+                // For known GDI+ formats, try GDI+ only - never attempt Pfim
                 if (IsGdiPlusFormat(bytes))
                 {
                     try
@@ -151,8 +152,8 @@ namespace SimPe.PackedFiles.Wrapper
                     }
                 }
 
-                // Unknown format (likely TGA) — try SOIL2 first, then GDI+ as fallback
-                image = TryLoadWithSoil2(bytes);
+                // Unknown format (likely TGA) - try Pfim first, then GDI+ as fallback
+                image = TryLoadWithPfim(bytes);
                 if (image != null) return true;
 
                 try
@@ -257,117 +258,98 @@ namespace SimPe.PackedFiles.Wrapper
 
         #endregion
 
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr SOIL_load_image_from_memory(
-            byte[] buffer, int bufferLength,
-            out int width, out int height, out int channels,
-            int forceChannels);
-
-        [DllImport("soil2.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SOIL_free_image_data(IntPtr imgData);
-
-        private const int SoilLoadRgba = 4; // Force RGBA output
-
         // Prevent infinite retry loops when image decode fails repeatedly.
-        static readonly object soil2FailLock = new object();
-        static readonly System.Collections.Generic.HashSet<int> soil2FailSigs =
+        static readonly object pfimFailLock = new object();
+        static readonly System.Collections.Generic.HashSet<int> pfimFailSigs =
             new System.Collections.Generic.HashSet<int>();
 
-        static int GetSoil2FailSig(byte[] bytes)
+        static int GetPfimFailSig(byte[] bytes)
         {
             if (bytes == null) return 0;
             unchecked
             {
                 int h = bytes.Length;
-                int n = bytes.Length;
-                if (n > 64) n = 64; // only sample first 64 bytes
+                int n = Math.Min(bytes.Length, 64);
                 for (int i = 0; i < n; i++)
                     h = (h * 31) + bytes[i];
                 return h;
             }
         }
-        private static Image TryLoadWithSoil2(byte[] bytes)
-        {
-            int sig = GetSoil2FailSig(bytes);
-            lock (soil2FailLock)
-            {
-                if (soil2FailSigs.Contains(sig)) return null;
-            }
 
-            //System.Diagnostics.Debug.WriteLine("TryLoadWithSoil2 called");
+        private static Image TryLoadWithPfim(byte[] bytes)
+        {
+            int sig = GetPfimFailSig(bytes);
+            lock (pfimFailLock)
+            {
+                if (pfimFailSigs.Contains(sig)) return null;
+            }
 
             try
             {
-                int w, h, ch;
-                IntPtr img = SOIL_load_image_from_memory(bytes, bytes.Length, out w, out h, out ch, SoilLoadRgba);
-                // sanity checks: reject bogus decodes before allocating huge buffers
-                if (w <= 0 || h <= 0) return null;
-                if (w > 2048 || h > 2048) return null;
-                if ((long)w * (long)h > (long)2048 * (long)2048) return null;
-                if (img == IntPtr.Zero || w <= 0 || h <= 0) return null;
+                using var ms = new System.IO.MemoryStream(bytes);
+                IImage pfimImage = IsDdsHeader(bytes)
+                    ? (IImage)Dds.Create(ms, new PfimConfig())
+                    : (IImage)Targa.Create(ms, new PfimConfig());
+                using (pfimImage)
+                    return PfimToBitmap(pfimImage);
+            }
+            catch
+            {
+                lock (pfimFailLock) { pfimFailSigs.Add(sig); }
+                return null;
+            }
+        }
 
-                try
+        private static Bitmap PfimToBitmap(IImage pfimImage)
+        {
+            if (pfimImage == null || pfimImage.Width <= 0 || pfimImage.Height <= 0) return null;
+            if (pfimImage.Width > 4096 || pfimImage.Height > 4096) return null;
+
+            int w = pfimImage.Width;
+            int h = pfimImage.Height;
+            byte[] src = pfimImage.Data;
+            int srcStride = pfimImage.Stride;
+
+            Bitmap bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, w, h),
+                ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            try
+            {
+                int dstStride = Math.Abs(bmpData.Stride);
+                byte[] dst = new byte[dstStride * h];
+
+                for (int y = 0; y < h; y++)
                 {
-                    int srcStride = w * 4;
-                    long total = (long)srcStride * (long)h;
-                    if (total <= 0 || total > (long)64 * 1024 * 1024) return null; // 64MB cap
-
-                    byte[] rgba = new byte[(int)total];
-
-                    // Copy native RGBA buffer into managed array
-                    Marshal.Copy(img, rgba, 0, rgba.Length);
-
-                    Bitmap bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-                    Rectangle rect = new Rectangle(0, 0, w, h);
-                    BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-                    try
+                    int srcRow = y * srcStride;
+                    int dstRow = y * dstStride;
+                    for (int x = 0; x < w; x++)
                     {
-                        int dstStride = data.Stride;
-                        byte[] bgra = new byte[dstStride * h];
-
-                        for (int y = 0; y < h; y++)
+                        int si = srcRow + x * 4;
+                        int di = dstRow + x * 4;
+                        if (pfimImage.Format == Pfim.ImageFormat.Rgba32)
                         {
-                            int srcRow = y * srcStride;
-                            int dstRow = y * dstStride;
-
-                            for (int x = 0; x < w; x++)
-                            {
-                                int si = srcRow + (x * 4);
-                                int di = dstRow + (x * 4);
-
-                                // RGBA -> BGRA
-                                bgra[di + 0] = rgba[si + 2]; // B
-                                bgra[di + 1] = rgba[si + 1]; // G
-                                bgra[di + 2] = rgba[si + 0]; // R
-                                bgra[di + 3] = rgba[si + 3]; // A
-                            }
+                            dst[di]     = src[si + 2]; // B
+                            dst[di + 1] = src[si + 1]; // G
+                            dst[di + 2] = src[si];     // R
+                            dst[di + 3] = src[si + 3]; // A
                         }
-
-                        Marshal.Copy(bgra, 0, data.Scan0, bgra.Length);
+                        else // Bgra32 and similar
+                        {
+                            dst[di]     = src[si];     // B
+                            dst[di + 1] = src[si + 1]; // G
+                            dst[di + 2] = src[si + 2]; // R
+                            dst[di + 3] = src[si + 3]; // A
+                        }
                     }
-                    finally
-                    {
-                        bmp.UnlockBits(data);
-                    }
+                }
 
-                    return bmp;
-                }
-                finally
-                {
-                    SOIL_free_image_data(img);
-                }
+                Marshal.Copy(dst, 0, bmpData.Scan0, dst.Length);
             }
-            catch (System.ArgumentException)
+            finally
             {
-                lock (soil2FailLock) { soil2FailSigs.Add(sig); }
-                return null;
+                bmp.UnlockBits(bmpData);
             }
-            catch (Exception)
-            {
-                lock (soil2FailLock) { soil2FailSigs.Add(sig); }
-                return null;
-            }
+            return bmp;
         }
     }
 }

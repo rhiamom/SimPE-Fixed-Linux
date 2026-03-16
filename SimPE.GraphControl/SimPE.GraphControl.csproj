@@ -74,9 +74,6 @@
     <Reference Include="SandDock">
       <HintPath>..\lib\SandDock.dll</HintPath>
     </Reference>
-    <Reference Include="soil2">
-      <HintPath>..\lib\soil2.dll</HintPath>
-    </Reference>
     
   </ItemGroup>
 
