@@ -78,6 +78,7 @@ namespace SimPe
         private Ambertation.Windows.Forms.XPTaskBoxSimple tbExtAction;
         private Ambertation.Windows.Forms.XPTaskBoxSimple tbPlugAction;
         private ToolStripMenuItem miAbout;
+        private ToolStripMenuItem miWelcome;
         private ToolStripMenuItem miUpdate;
         private ToolStripMenuItem miKBase;
         private ToolStripButton biUpdate;
@@ -207,6 +208,7 @@ namespace SimPe
             this.mbiTopics = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.miAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.miWelcome = new System.Windows.Forms.ToolStripMenuItem();
             this.iAnim = new System.Windows.Forms.ImageList(this.components);
             this.xpGradientPanel3 = new System.Windows.Forms.Panel();
             this.xpGradientPanel5 = new System.Windows.Forms.Panel();
@@ -897,6 +899,7 @@ namespace SimPe
             this.miKBase,
             this.mbiTopics,
             this.toolStripMenuItem3,
+            this.miWelcome,
             this.miAbout,
             this.tsmiStopWaiting});
             this.menuBarItem5.Name = "menuBarItem5";
@@ -918,9 +921,15 @@ namespace SimPe
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
-            // 
+            //
+            // miWelcome
+            //
+            this.miWelcome.Name = "miWelcome";
+            this.miWelcome.Text = "Welcome / Disclaimer...";
+            this.miWelcome.Click += new System.EventHandler(this.Activate_miWelcome);
+            //
             // miAbout
-            // 
+            //
             resources.ApplyResources(this.miAbout, "miAbout");
             this.miAbout.Name = "miAbout";
             this.miAbout.Click += new System.EventHandler(this.Activate_miAbout);

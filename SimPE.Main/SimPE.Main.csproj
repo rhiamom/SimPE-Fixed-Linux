@@ -97,4 +97,16 @@
   <ItemGroup>
     <ProjectReference Include="..\xsi.lib\xsi.lib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="welcome-en.rtf" />
+    <EmbeddedResource Include="welcome-de.rtf" />
+    <EmbeddedResource Include="welcome-fr.rtf" />
+    <EmbeddedResource Include="welcome-it.rtf" />
+    <EmbeddedResource Include="welcome-ru.rtf" />
+    <EmbeddedResource Include="about-en.rtf" />
+    <EmbeddedResource Include="about-de.rtf" />
+    <EmbeddedResource Include="about-fr.rtf" />
+    <EmbeddedResource Include="about-it.rtf" />
+    <EmbeddedResource Include="about-ru.rtf" />
+  </ItemGroup>
 </Project>

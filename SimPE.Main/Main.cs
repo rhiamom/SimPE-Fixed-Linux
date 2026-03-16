@@ -34,14 +34,14 @@ using Ambertation.Windows.Forms;
 namespace SimPe
 {
 	/// <summary>
-	/// Zusammenfassung für MainForm.
+	/// Zusammenfassung fï¿½r MainForm.
 	/// </summary>
 	public partial class MainForm : System.Windows.Forms.Form
 	{
         public MainForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Erforderlich fï¿½r die Windows Form-Designerunterstï¿½tzung
 			//
 			InitializeComponent();
 
@@ -308,6 +308,11 @@ namespace SimPe
 		private void Activate_miAbout(object sender, System.EventArgs e)
 		{
 			About.ShowAbout();
+		}
+
+		private void Activate_miWelcome(object sender, System.EventArgs e)
+		{
+			About.ShowWelcome();
 		}
 
 		private void dc_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)

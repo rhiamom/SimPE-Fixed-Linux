@@ -812,11 +812,12 @@ public class APIHelp
 
 	public static bool CanUseLayerdWindows => GetVersionEx() switch
 	{
-		WindowsVersion.Vista => true, 
-		WindowsVersion.WindowsXP => true, 
-		WindowsVersion.Windows2000 => true, 
-		WindowsVersion.WindowsServer2003 => true, 
-		_ => false, 
+		WindowsVersion.Vista => true,
+		WindowsVersion.WindowsXP => true,
+		WindowsVersion.Windows2000 => true,
+		WindowsVersion.WindowsServer2003 => true,
+		WindowsVersion.Unknown => true, // Windows 7, 8, 10, 11 — UpdateLayeredWindow available on all
+		_ => false,
 	};
 
 	[DllImport("User32.dll")]

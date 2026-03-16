@@ -114,7 +114,7 @@ namespace SimPe.Plugin.Tool.Dockable
             this.tbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbResult.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold);
             this.tbResult.HeaderText = "Results";
-            this.tbResult.Icon = SimPe.LoadIcon.load("tbResult.png");
+            this.tbResult.Icon = SimPe.LoadIcon.load("FinderDock_tbResult.Icon.png");
             this.tbResult.IconLocation = new System.Drawing.Point(4, 0);
             this.tbResult.IconSize = new System.Drawing.Size(32, 32);
             this.tbResult.Location = new System.Drawing.Point(8, 159);
@@ -199,7 +199,7 @@ namespace SimPe.Plugin.Tool.Dockable
             // 
             // biList
             // 
-            this.biList.Image = SimPe.LoadIcon.load("biList.png");
+            this.biList.Image = SimPe.LoadIcon.load("FinderDock_biList.Image.png");
             this.biList.Name = "biList";
             this.biList.Size = new System.Drawing.Size(23, 22);
             this.biList.ToolTipText = "List View";
@@ -207,7 +207,7 @@ namespace SimPe.Plugin.Tool.Dockable
             // 
             // biTile
             // 
-            this.biTile.Image = SimPe.LoadIcon.load("biTile.Image");
+            this.biTile.Image = SimPe.LoadIcon.load("FinderDock_biTile.Image.png");
             this.biTile.Name = "biTile";
             this.biTile.Size = new System.Drawing.Size(23, 22);
             this.biTile.ToolTipText = "Tiled View";
@@ -217,7 +217,7 @@ namespace SimPe.Plugin.Tool.Dockable
             // 
             this.biDetail.Checked = true;
             this.biDetail.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.biDetail.Image = SimPe.LoadIcon.load("biDetail.Image");
+            this.biDetail.Image = SimPe.LoadIcon.load("FinderDock_biDetail.Image.png");
             this.biDetail.Name = "biDetail";
             this.biDetail.Size = new System.Drawing.Size(23, 22);
             this.biDetail.ToolTipText = "Detailed View";
