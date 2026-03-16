@@ -31,14 +31,14 @@
 		  SkipUnchangedFiles="true"
 		  Condition="Exists('$(TargetDir)$(TargetName).xml')" />
 
-		<!-- If this is a plugin assembly, also copy to Plugins\ subfolder -->
+		<!-- If this is a plugin or wizard assembly, also copy to Plugins\ subfolder -->
 		<MakeDir
 		  Directories="$(SimPeUnifiedOutDir)Plugins"
-		  Condition=" $(AssemblyName.EndsWith('.plugin')) " />
+		  Condition=" $(AssemblyName.EndsWith('.plugin')) Or $(AssemblyName.EndsWith('.wizard')) " />
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SimPeUnifiedOutDir)Plugins"
-		  SkipUnchangedFiles="true" Condition=" $(AssemblyName.EndsWith('.plugin')) And Exists('$(TargetPath)')" />
+		  SkipUnchangedFiles="true" Condition=" ($(AssemblyName.EndsWith('.plugin')) Or $(AssemblyName.EndsWith('.wizard'))) And Exists('$(TargetPath)')" />
 		<Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SimPeUnifiedOutDir)Plugins"
-		  SkipUnchangedFiles="true" Condition=" $(AssemblyName.EndsWith('.plugin')) And Exists('$(TargetDir)$(TargetName).pdb')" />
+		  SkipUnchangedFiles="true" Condition=" ($(AssemblyName.EndsWith('.plugin')) Or $(AssemblyName.EndsWith('.wizard'))) And Exists('$(TargetDir)$(TargetName).pdb')" />
 
 	</Target>
 

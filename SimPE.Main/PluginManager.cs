@@ -143,7 +143,9 @@ namespace SimPe
             string folder = Helper.SimPePluginPath;
             if (!System.IO.Directory.Exists(folder)) return;
 
-            string[] files = System.IO.Directory.GetFiles(folder, "*.plugin.dll");
+            var fileList = new System.Collections.Generic.List<string>(System.IO.Directory.GetFiles(folder, "*.plugin.dll"));
+            fileList.AddRange(System.IO.Directory.GetFiles(folder, "*.wizard.dll"));
+            string[] files = fileList.ToArray();
             System.IO.File.AppendAllText(log, $"Found {files.Length} *.plugin.dll\r\n");
             foreach (var f in files)
                 System.IO.File.AppendAllText(log, $"  {f}\r\n");

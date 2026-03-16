@@ -447,7 +447,7 @@ namespace SimPe.Wizards
 
         private void rtbAbout_LinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(e.LinkText);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.LinkText) { UseShellExecute = true });
         }
         #endregion
 
