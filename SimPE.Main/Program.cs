@@ -160,6 +160,10 @@ namespace SimPe
                 SimPe.Packages.StreamFactory.CleanupTeleport();
             }
             catch { }
+
+            // Force process exit — plugin threads and stream handles can otherwise
+            // keep the process alive after the main window closes, locking DLL files.
+            Environment.Exit(0);
         }
     }
 }
