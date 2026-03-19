@@ -65,11 +65,11 @@ namespace SimPe.Wizards
 			}
 		}
 
-		public System.Drawing.Image WizardImage
+		public Avalonia.Media.IImage WizardImage
 		{
 			get
 			{
-                return global::SimPe.Wizards.Properties.Resources.WizardIcon;
+                return null; // TODO: convert to Avalonia IImage
 			}
 		}
 
@@ -77,12 +77,12 @@ namespace SimPe.Wizards
 
 		#region IWizardForm Member
 
-        public override System.Windows.Forms.Panel WizardWindow
+        public override Avalonia.Controls.Panel WizardWindow
 		{
 			get
 			{
                 Form.rtbAbout.Visible = false;
-				return Form.pnwizard1;
+				return null; // TODO: return Avalonia Panel
 			}
 		}
 

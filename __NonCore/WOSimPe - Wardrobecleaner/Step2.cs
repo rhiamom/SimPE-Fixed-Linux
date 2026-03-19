@@ -76,14 +76,9 @@ namespace SimPe.Plugin
             get { return 3; }
         }
 
-        public override System.Windows.Forms.Panel WizardWindow
+        public override Avalonia.Controls.Panel WizardWindow
         {
-            get
-            {
-                if (this.form == null)
-                    this.form = new HouseholdBrowser();
-                return this.form;
-            }
+            get { return null; /* TODO: replace HouseholdBrowser with Avalonia panel */ }
         }
 
         #region IWizardFinish Members

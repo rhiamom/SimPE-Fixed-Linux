@@ -79,7 +79,7 @@ namespace SimPe.Wizards
 			pb.Height = 64;
 			pb.Left = 0;
 			pb.Top = 0;
-			pb.Image = we.WizardImage;
+			pb.Image = (System.Drawing.Image)(object)we.WizardImage;
 			pb.Visible = true;
 
 			LinkLabel lb1 = new LinkLabel();
@@ -158,9 +158,9 @@ namespace SimPe.Wizards
 		#endregion
 
 		#region IWizardWindow Members
-		public Panel WizardWindow 
+		public Avalonia.Controls.Panel WizardWindow
 		{
-			get { return this.pnwizard; }
+			get { return null; /* TODO: replace with Avalonia panel */ }
 		}
 
 		public string WizardMessage

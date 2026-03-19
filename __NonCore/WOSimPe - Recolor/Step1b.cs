@@ -26,7 +26,7 @@ using System;
 namespace SimPe.Wizards
 {
 	/// <summary>
-	/// Zusammenfassung für Step1.
+	/// Zusammenfassung fï¿½r Step1.
 	/// </summary>
 	public class Step1b : AWizardForm
 	{
@@ -39,11 +39,11 @@ namespace SimPe.Wizards
 
 		#region IWizardForm Member
 
-		public override System.Windows.Forms.Panel WizardWindow
+		public override Avalonia.Controls.Panel WizardWindow
 		{
 			get
 			{
-				return Step1.Form.pnwizard1b;
+				return null; // TODO: replace WinForms pnwizard1b with Avalonia panel
 			}
 		}
 

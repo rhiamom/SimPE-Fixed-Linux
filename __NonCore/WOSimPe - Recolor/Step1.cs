@@ -26,7 +26,7 @@ using System;
 namespace SimPe.Wizards
 {
 	/// <summary>
-	/// Zusammenfassung für Step1.
+	/// Zusammenfassung fï¿½r Step1.
 	/// </summary>
 	public class Step1 : AWizardForm, IWizardEntry
 	{
@@ -66,11 +66,11 @@ namespace SimPe.Wizards
 			}
 		}
 
-		public System.Drawing.Image WizardImage
+		public Avalonia.Media.IImage WizardImage
 		{
 			get
 			{
-				return Form.pb.Image;
+				return null; // TODO: convert System.Drawing.Image to Avalonia IImage
 			}
 		}
 
@@ -78,11 +78,11 @@ namespace SimPe.Wizards
 
 		#region IWizardForm Member
 
-		public override System.Windows.Forms.Panel WizardWindow
+		public override Avalonia.Controls.Panel WizardWindow
 		{
 			get
 			{
-				return Form.pnwizard1;
+				return null; // TODO: replace WinForms pnwizard1 with Avalonia panel
 			}
 		}
 

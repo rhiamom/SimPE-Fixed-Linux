@@ -41,12 +41,12 @@ namespace SimPe.Wizards
 
 		#region IWizardForm Member
 
-		public System.Windows.Forms.Panel WizardWindow
+		public Avalonia.Controls.Panel WizardWindow
 		{
 			get
             {
                 Step1.Form.DoTheWork();
-				return Step1.Form.pnwizard2;
+				return null; // TODO: return Avalonia Panel
 			}
 		}
 

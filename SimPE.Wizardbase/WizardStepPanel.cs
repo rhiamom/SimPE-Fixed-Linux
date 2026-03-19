@@ -31,7 +31,7 @@ namespace SimPe.Wizards
 	/// <summary>
 	/// Abstract Implementaion of a Wizard Step
 	/// </summary>
-	public class WizardStepPanel : Panel
+	public partial class WizardStepPanel : Panel
 	{
 		public WizardStepPanel()
 		{

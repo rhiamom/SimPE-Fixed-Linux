@@ -329,7 +329,7 @@ namespace SimPe.Wizards
 		internal static Form1 form1;
 
 		/// <summary>
-		/// Der Haupteinstiegspunkt für die Anwendung.
+		/// Der Haupteinstiegspunkt fï¿½r die Anwendung.
 		/// </summary>
 		[STAThread]			
 		static void Main() 
@@ -385,7 +385,7 @@ namespace SimPe.Wizards
 		{
 			IWizardForm now = prevsteps.Pop();
 			if (now==null) return;
-			now.WizardWindow.Visible = false;
+			{ var __wp = (System.Windows.Forms.Panel)(object)now.WizardWindow; if (__wp != null) __wp.Visible = false; }
 
 			now = prevsteps.Tail();
 			if (now==null) return;
@@ -413,7 +413,7 @@ namespace SimPe.Wizards
 			else
 			{
 				
-				now.WizardWindow.Visible = false;
+				{ var __wp = (System.Windows.Forms.Panel)(object)now.WizardWindow; if (__wp != null) __wp.Visible = false; }
 
 				now = now.Next;
 				if (now==null) return;
@@ -466,7 +466,7 @@ namespace SimPe.Wizards
 		/// <param name="step">The Step you want to Show</param>
 		void ShowStep(IWizardForm step, bool init)
 		{
-			Panel pn = step.WizardWindow;
+			Panel pn = (System.Windows.Forms.Panel)(object)step.WizardWindow;
 			//this.Height = pn.Height + 320;
 
 			pn.Visible = false;

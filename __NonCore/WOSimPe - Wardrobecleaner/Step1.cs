@@ -45,10 +45,9 @@ namespace SimPe.Plugin
             get { return "Deletes clothing entries from households in a neighbourhood."; }
         }
 
-        public System.Drawing.Image WizardImage
+        public Avalonia.Media.IImage WizardImage
         {
-            get { return global::SimPe.Wizards.Properties.Resources.WizardIcon; }
-            // get { return SetKeyName(0, "WizardIcon.png"); }
+            get { return null; /* TODO: convert from System.Drawing.Image */ }
         }
 
         private System.Drawing.Image SetKeyName(int p, string p_2)
@@ -105,14 +104,9 @@ namespace SimPe.Plugin
             get { return 2; }
         }
 
-        public override System.Windows.Forms.Panel WizardWindow
+        public override Avalonia.Controls.Panel WizardWindow
         {
-            get
-            {
-                if (this.form == null)
-                    this.form = new NeighborhoodBrowser();
-                return this.form;
-            }
+            get { return null; /* TODO: replace NeighborhoodBrowser with Avalonia panel */ }
         }
     }
 }

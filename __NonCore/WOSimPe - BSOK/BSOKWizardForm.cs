@@ -87,7 +87,7 @@ namespace SimPe.Wizards
                 foreach (KeyValuePair<uint, string> kvp in BodyShapeIds)
                     this.cbShapes.Items.Add(kvp.Value);
 
-                this.pbicon.BackgroundImage = global::SimPe.Wizards.Properties.Resources.WizardIcon;
+                // this.pbicon.BackgroundImage = global::SimPe.Wizards.Properties.Resources.WizardIcon; // TODO: restore after Avalonia port
                 pak = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\UI\\ui.package"));
                 if (System.IO.Directory.Exists(System.IO.Path.Combine(PathProvider.SimSavegameFolder, "Downloads")))
                 {

@@ -36,14 +36,14 @@ namespace SimPe.Wizards
 
 		#region IWizardForm Member
 
-		public override System.Windows.Forms.Panel WizardWindow
+		public override Avalonia.Controls.Panel WizardWindow
 		{
 			get
             {
                 Step1.Form.lbDone.Visible = false;
                 Step1.Form.linkLabel1.Visible = true;
                 Step1.Form.lvpackages.Enabled = Step1.Form.cbShapes.Enabled = true;
-                return Step1.Form.pnwizard2;
+                return null; // TODO: return Avalonia Panel
 			}
         }
 

@@ -57,13 +57,13 @@ namespace SimPe.Plugin
         {
             // Access WizardWindow first so the step can create its lazy UI controls,
             // then Init() so it can call UpdateList() etc. on the now-existing controls.
-            var panel = step.WizardWindow;
+            var avPanel = step.WizardWindow;
             step.Init(OnStepChanged);
             currentStep = step;
 
             contentPanel.Controls.Clear();
-            panel.Dock = DockStyle.Fill;
-            contentPanel.Controls.Add(panel);
+            // avPanel is Avalonia.Controls.Panel (stub returns null); WinForms panel embedding deferred to Avalonia migration
+            _ = avPanel;
 
             lblMessage.Text = step.WizardMessage;
             UpdateButtons();

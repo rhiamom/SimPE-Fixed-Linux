@@ -31,11 +31,8 @@ namespace SimPe.Windows.Forms
     // ── HelpForm ─────────────────────────────────────────────────────────────
     // Base class for About dialogs (SimPE.Main.About, ColorBinningTool.ClbAbout).
 
-    public class HelpForm : IDisposable
+    public class HelpForm : System.Windows.Forms.Form
     {
         public HelpForm() { }
-        public virtual void Dispose() { }
-        public virtual void Show() { }
-        public virtual void Close() { }
     }
 }

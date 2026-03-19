@@ -32,6 +32,9 @@ copy "$(OutDir)$(AssemblyName).dll" "$(SolutionDir)SimPE.Main\bin\$(Configuratio
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="Form1.cs" />
     <Compile Remove="Form1.Designer.cs" />
     <Compile Remove="Program.cs" />

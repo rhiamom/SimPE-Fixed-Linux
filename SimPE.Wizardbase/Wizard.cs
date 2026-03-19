@@ -34,7 +34,7 @@ namespace SimPe.Wizards
 	/// <summary>
 	/// This implements a basic Wizard
 	/// </summary>
-	public class Wizard : Panel
+	public partial class Wizard : Panel
 	{
 		int cur;
 
