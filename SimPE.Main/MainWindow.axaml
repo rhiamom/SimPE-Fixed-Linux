@@ -123,7 +123,13 @@
                                        FontWeight="SemiBold"
                                        FontSize="11"/>
                         </Border>
-                        <TreeView x:Name="ResourceTree"/>
+                        <TreeView x:Name="ResourceTree">
+                            <TreeView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}" FontSize="11"/>
+                                </DataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                     </DockPanel>
                 </Border>
 
