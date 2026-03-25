@@ -11,7 +11,9 @@ namespace SimPe.Wizards
         public System.Drawing.Color BackColor { get; set; }
         public ImageLayout BackgroundImageLayout { get; set; }
         public ControlCollection Controls { get; } = new ControlCollection();
-        public DockStyle Dock { get; set; }
+        // Dock uses object to avoid ambiguous DockStyle when both simpe.wizardbase and
+        // simpe.workspace.plugin are referenced (both define System.Windows.Forms.DockStyle)
+        public object Dock { get; set; }
         public System.Drawing.Point Location { get; set; }
         public System.Drawing.Size Size { get; set; }
         public DockPaddingEdges DockPadding { get; } = new DockPaddingEdges();
@@ -26,7 +28,7 @@ namespace SimPe.Wizards
     {
         public System.Drawing.Color BackColor { get; set; }
         public ControlCollection Controls { get; } = new ControlCollection();
-        public DockStyle Dock { get; set; }
+        public object Dock { get; set; }
         public System.Drawing.Point Location { get; set; }
         public System.Drawing.Size Size { get; set; }
         public void SuspendLayout() { }

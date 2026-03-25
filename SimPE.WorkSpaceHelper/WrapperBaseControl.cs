@@ -61,7 +61,8 @@ namespace SimPe.Windows.Forms
         public void SuspendLayout()  { }
         public void ResumeLayout(bool performLayout = true) { }
         public void PerformLayout()  { }
-        public class WFControlCollection { public void Add(object c) { } }
+        protected virtual void Dispose(bool disposing) { }
+        public class WFControlCollection { public void Add(object c) { } public void SetChildIndex(object c, int index) { } }
 
         // ── Avalonia Commit button ──────────────────────────────────────────
         private Button btCommit;

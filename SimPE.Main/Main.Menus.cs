@@ -49,9 +49,7 @@ namespace SimPe
             mi.Tag = c;
             mi.Checked = c.IsOpen;
 
-            if (c.Tag != null)
-                if (c.Tag is System.Windows.Forms.Shortcut)
-                    LoadFileWrappersExt.SetShurtcutKey(mi, (System.Windows.Forms.Shortcut)c.Tag);
+            // Shortcut key registration will be rewired to Avalonia key bindings in a future pass.
 
             /*c.VisibleChanged += new EventHandler(CloseDockControl);
             c.Closed += new EventHandler(CloseDockControl);*/

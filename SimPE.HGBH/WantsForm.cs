@@ -236,7 +236,7 @@ namespace SimPe.Plugin
             // cblock
             // 
             this.cblock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cblock.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // cblock.CheckAlign removed (layout-only, not supported in Avalonia port)
             this.cblock.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cblock.Location = new System.Drawing.Point(272, 184);
             this.cblock.Name = "cblock";
@@ -695,7 +695,6 @@ namespace SimPe.Plugin
 				lvi.ImageIndex = il.Images.Count;
 				il.Images.Add(wnt.Information.Icon);
                 Wait.Message = wnt.ToString();
-                Wait.Image = wnt.Information.Icon;
 			}
 			
 			lv.Items.Add(lvi);
@@ -722,7 +721,6 @@ namespace SimPe.Plugin
 				ihist.Images.Add(wc.Information.Icon);
 
                 Wait.Message = wc.ToString();
-                Wait.Image = wc.Information.Icon;
 			}
 
 			foreach (WantItem wi in wc.Items) 
@@ -848,7 +846,7 @@ namespace SimPe.Plugin
 			{
 				if (Helper.StartedGui==Executable.Classic && wrapper.Changed) 
 				{
-					if (MessageBox.Show(SimPe.Localization.Manager.GetString("open_wnt_from_sdsc"), SimPe.Localization.Manager.GetString("question"), MessageBoxButtons.YesNo)==DialogResult.Yes)
+					if (SimPe.Message.Show(SimPe.Localization.Manager.GetString("open_wnt_from_sdsc"), SimPe.Localization.Manager.GetString("question"), MessageBoxButtons.YesNo)==SimPe.DialogResult.Yes)
 						wrapper.SynchronizeUserData();
 				}
 
@@ -955,7 +953,6 @@ namespace SimPe.Plugin
 
                 if ((ct % 3) == 1)
                 {
-                    Wait.Image = wi.Icon;
                     Wait.Progress = ct;
                 }
 			}

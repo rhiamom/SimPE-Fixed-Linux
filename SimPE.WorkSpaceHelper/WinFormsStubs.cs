@@ -28,8 +28,13 @@ namespace System.Windows.Forms
     [Flags]
     public enum AnchorStyles { None = 0, Top = 1, Bottom = 2, Left = 4, Right = 8 }
 
+    public enum DockStyle { None, Top, Bottom, Left, Right, Fill }
+
     /// <summary>Minimal stub for System.Windows.Forms.MessageBoxButtons.</summary>
     public enum MessageBoxButtons { OK, OKCancel, YesNo, YesNoCancel, AbortRetryIgnore, RetryCancel }
+
+    /// <summary>Minimal stub for System.Windows.Forms.MessageBoxIcon.</summary>
+    public enum MessageBoxIcon { None, Error, Warning, Information, Question, Hand, Stop, Asterisk, Exclamation }
 
     /// <summary>Minimal stub for System.Windows.Forms.Padding.</summary>
     public struct Padding
@@ -50,15 +55,54 @@ namespace System.Windows.Forms
         public bool   Visible { get; set; } = true;
         public object Tag     { get; set; }
         public object Image   { get; set; }
+        public string Name    { get; set; } = "";
+        public System.Drawing.Size Size { get; set; }
         public event EventHandler Click;
         protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
     }
 
-    /// <summary>
-    /// Minimal stub for System.Windows.Forms.ToolStripMenuItem.
-    /// Only the members used by SimPe.ToolMenuItem are implemented.
-    /// </summary>
+    // ToolStrip and ToolStripButton are defined in SimPE.GMDCExporterbase (ListViewEx.cs).
+    // Do not redefine them here — it causes CS0433 ambiguity in projects that reference both.
+    //
+    // ToolStripItemCollection and ToolStripMenuItem are NOT in GMDCExporterbase, so define them here.
+
+    /// <summary>Minimal stub for System.Windows.Forms.ToolStripItemCollection.</summary>
+    public class ToolStripItemCollection : System.Collections.IEnumerable
+    {
+        private readonly System.Collections.Generic.List<ToolStripItem> _items = new();
+        public int Count => _items.Count;
+        public ToolStripItem this[int i] => _items[i];
+        public void Add(ToolStripItem item) { _items.Add(item); }
+        public void Insert(int index, ToolStripItem item) { _items.Insert(index, item); }
+        public void Remove(ToolStripItem item) { _items.Remove(item); }
+        public void Clear() { _items.Clear(); }
+        public System.Collections.IEnumerator GetEnumerator() => _items.GetEnumerator();
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.ToolStripMenuItem.</summary>
     public class ToolStripMenuItem : ToolStripItem
     {
+        public ToolStripMenuItem() { }
+        public ToolStripMenuItem(string text) { Text = text; }
+        public bool Checked { get; set; }
+        public string ToolTipText { get; set; } = "";
+        public object ShortcutKeys { get; set; }
+        public ToolStripItemCollection DropDownItems { get; } = new ToolStripItemCollection();
     }
+
+    // Control and ControlCollection are defined in SimPE.GMDCExporterbase (ListViewEx.cs).
+    // WorkSpaceHelper now references GMDCExporterbase via Wizardbase, so they must not be
+    // redefined here to avoid CS0433 ambiguity.
+
+    /// <summary>Minimal stub for System.Windows.Forms.FormClosingEventArgs.</summary>
+    public class FormClosingEventArgs : EventArgs
+    {
+        public bool Cancel { get; set; }
+        public CloseReason CloseReason { get; }
+    }
+    public delegate void FormClosingEventHandler(object sender, FormClosingEventArgs e);
+
+    public enum CloseReason { None, WindowsShutDown, MdiFormClosing, UserClosing, TaskManagerClosing, FormOwnerClosing, ApplicationExitCall }
+
+    // Shortcut is defined in SimPE.GMDCExporterbase (ListViewEx.cs) — do not redefine here.
 }

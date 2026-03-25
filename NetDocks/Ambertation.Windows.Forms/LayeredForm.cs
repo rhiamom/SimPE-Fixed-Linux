@@ -20,171 +20,111 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
+
+// Ported from WinForms LayeredForm.
+// Original used UpdateLayeredWindow / GDI alpha-blending (Windows-only).
+// On Avalonia, the Window compositor handles alpha natively.
+
+using System;
+using Avalonia;
+using Avalonia.Controls;
 
 namespace Ambertation.Windows.Forms;
 
-public class LayeredForm : Form
+/// <summary>
+/// Base class for SimPE layered/alpha-blended overlay windows.
+/// Ported from WinForms to Avalonia Window.
+/// </summary>
+public class LayeredForm : Window
 {
-	private bool colored;
+    protected LayeredForm()
+        : this(System.Drawing.Color.Blue, new System.Drawing.Size(300, 400))
+    {
+    }
 
-	private Color cl;
+    public LayeredForm(System.Drawing.Bitmap bitmap)
+    {
+        Topmost           = true;
+        SystemDecorations = SystemDecorations.None;
+        ShowInTaskbar     = false;
+        if (bitmap != null)
+        {
+            Width  = bitmap.Width;
+            Height = bitmap.Height;
+        }
+    }
 
-	private bool dorefresh;
+    public LayeredForm(System.Drawing.Color cl, System.Drawing.Size sz)
+    {
+        Topmost           = true;
+        SystemDecorations = SystemDecorations.None;
+        ShowInTaskbar     = false;
+        Width  = sz.Width;
+        Height = sz.Height;
+    }
 
-	protected override CreateParams CreateParams
-	{
-		get
-		{
-			CreateParams createParams = base.CreateParams;
-			createParams.ExStyle |= 524288;
-			createParams.ExStyle |= 128;
-			return createParams;
-		}
-	}
+    /// <summary>
+    /// Screen position of this window.
+    /// On Avalonia, Position is in device pixels; callers use it for hit-testing.
+    /// </summary>
+    internal PixelPoint ScreenLocation => Position;
 
-	internal Point ScreenLocation => base.Location;
+    // ── WinForms Form compatibility members ───────────────────────────────
 
-	protected LayeredForm()
-		: this(Color.Blue, new Size(300, 400))
-	{
-	}
+    /// <summary>Integer width/height matching WinForms Form.Width/Height.</summary>
+    public new int Width  { get => (int)base.Width;  set => base.Width  = value; }
+    public new int Height { get => (int)base.Height; set => base.Height = value; }
 
-	public LayeredForm(Bitmap bitmap)
-	{
-		Init(bitmap);
-	}
+    /// <summary>Window size as System.Drawing.Size (WinForms Form.Size compat).</summary>
+    public new System.Drawing.Size Size
+    {
+        get => new System.Drawing.Size((int)Width, (int)Height);
+        set { Width = value.Width; Height = value.Height; }
+    }
 
-	protected virtual void Init(Bitmap bitmap)
-	{
-		base.TopMost = true;
-		base.FormBorderStyle = FormBorderStyle.None;
-		base.ControlBox = false;
-		base.ShowInTaskbar = false;
-		dorefresh = false;
-		base.StartPosition = FormStartPosition.Manual;
-		if (bitmap != null)
-		{
-			base.Size = bitmap.Size;
-			colored = false;
-		}
-		else
-		{
-			colored = true;
-		}
-	}
+    /// <summary>Window title text (WinForms Form.Text compat).</summary>
+    public new string Text
+    {
+        get => Title;
+        set => Title = value ?? "";
+    }
 
-	protected Bitmap CreateBitmap(Color cl, Size sz)
-	{
-		Bitmap bitmap = new Bitmap(sz.Width, sz.Height);
-		Graphics graphics = Graphics.FromImage(bitmap);
-		SolidBrush solidBrush = new SolidBrush(cl);
-		graphics.FillRectangle(solidBrush, 0, 0, sz.Width - 1, sz.Height - 1);
-		OnCreateBitmap(graphics, bitmap);
-		solidBrush.Dispose();
-		graphics.Dispose();
-		return bitmap;
-	}
+    /// <summary>Visibility (WinForms Form.Visible compat).</summary>
+    public new bool Visible
+    {
+        get => IsVisible;
+        set { if (value) Show(); else Hide(); }
+    }
 
-	protected virtual void OnCreateBitmap(Graphics g, Bitmap bmp)
-	{
-	}
+    /// <summary>Screen bounds rectangle (WinForms Form.DesktopBounds compat).</summary>
+    public System.Drawing.Rectangle DesktopBounds
+        => new System.Drawing.Rectangle(Position.X, Position.Y, (int)Width, (int)Height);
 
-	public LayeredForm(Color cl, Size sz)
-	{
-		Init(CreateBitmap(cl, sz));
-		colored = true;
-		this.cl = cl;
-	}
+    /// <summary>Set initial bitmap — alias for SelectBitmap (WinForms compat).</summary>
+    public void Init(System.Drawing.Bitmap bmp) => SelectBitmap(bmp);
 
-	public void RefreshBitmap()
-	{
-		if (!base.Visible)
-		{
-			dorefresh = true;
-			return;
-		}
-		SelectBitmap(CreateBitmap(cl, base.Size));
-		dorefresh = false;
-	}
+    /// <summary>
+    /// Update the window's visible bitmap.
+    /// On Avalonia, painting is done through Render() overrides; this is a no-op.
+    /// </summary>
+    public void SelectBitmap(System.Drawing.Bitmap bitmap) { }
 
-	protected override void OnSizeChanged(EventArgs e)
-	{
-		base.OnSizeChanged(e);
-		if (colored)
-		{
-			RefreshBitmap();
-		}
-	}
+    /// <summary>Refresh the bitmap after a resize. No-op on Avalonia.</summary>
+    public void RefreshBitmap() { }
 
-	protected override void OnVisibleChanged(EventArgs e)
-	{
-		try
-		{
-			base.OnVisibleChanged(e);
-			if (dorefresh && base.Visible)
-			{
-				RefreshBitmap();
-			}
-		}
-		catch
-		{
-		}
-	}
+    /// <summary>
+    /// Called when a new backing bitmap is created.
+    /// On Avalonia, rendering uses Render(DrawingContext); this hook is kept for
+    /// subclass compatibility during the porting pass.
+    /// </summary>
+    protected virtual void OnCreateBitmap(System.Drawing.Graphics g, System.Drawing.Bitmap bmp) { }
 
-	public void SelectBitmap(Bitmap bitmap)
-	{
-		if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
-		{
-			throw new ApplicationException("The bitmap must be 32bpp with alpha-channel.");
-		}
-		IntPtr dC = APIHelp.GetDC(IntPtr.Zero);
-		IntPtr intPtr = APIHelp.CreateCompatibleDC(dC);
-		IntPtr intPtr2 = IntPtr.Zero;
-		IntPtr hObject = IntPtr.Zero;
-		try
-		{
-			intPtr2 = bitmap.GetHbitmap(Color.FromArgb(0));
-			hObject = APIHelp.SelectObject(intPtr, intPtr2);
-			APIHelp.Size psize = new APIHelp.Size(bitmap.Width, bitmap.Height);
-			APIHelp.Point pprSrc = new APIHelp.Point(0, 0);
-			APIHelp.Point pptDst = new APIHelp.Point(base.Left, base.Top);
-			APIHelp.BLENDFUNCTION pblend = new APIHelp.BLENDFUNCTION
-			{
-				BlendOp = 0,
-				BlendFlags = 0,
-				SourceConstantAlpha = byte.MaxValue,
-				AlphaFormat = 1
-			};
-			APIHelp.CallUpdateLayeredWindow(base.Handle, dC, ref pptDst, ref psize, intPtr, ref pprSrc, 0, ref pblend, 2);
-		}
-		finally
-		{
-			APIHelp.ReleaseDC(IntPtr.Zero, dC);
-			if (intPtr2 != IntPtr.Zero)
-			{
-				APIHelp.SelectObject(intPtr, hObject);
-				APIHelp.DeleteObject(intPtr2);
-			}
-			APIHelp.DeleteDC(intPtr);
-		}
-	}
-
-	internal bool Hit(Point scrpt)
-	{
-		if (!base.Visible)
-		{
-			return false;
-		}
-		Point screenLocation = ScreenLocation;
-		if (scrpt.X > screenLocation.X && scrpt.X < screenLocation.X + base.Width && scrpt.Y > screenLocation.Y && scrpt.Y < screenLocation.Y + base.Height)
-		{
-			return true;
-		}
-		return false;
-	}
+    /// <summary>Hit-test this window against a screen point.</summary>
+    internal bool Hit(PixelPoint scrpt)
+    {
+        if (!IsVisible) return false;
+        var loc = ScreenLocation;
+        return scrpt.X > loc.X && scrpt.X < loc.X + (int)Width &&
+               scrpt.Y > loc.Y && scrpt.Y < loc.Y + (int)Height;
+    }
 }

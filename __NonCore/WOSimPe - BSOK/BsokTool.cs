@@ -45,9 +45,9 @@ namespace SimPe.Wizards
             return "Wizards\\BSOK Wizard...";
         }
 
-        public override System.Windows.Forms.Shortcut Shortcut
+        public override int Shortcut
         {
-            get { return System.Windows.Forms.Shortcut.None; }
+            get { return 0; }
         }
     }
 }

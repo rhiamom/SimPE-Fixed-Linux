@@ -68,11 +68,11 @@ namespace SimPe.Plugin.Tool.Action
 		#endregion
 
 		#region IToolExt Member
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.None;
+				return 0; // WinForms shortcut — rewired to Avalonia key bindings in a future pass
 			}
 		}
 

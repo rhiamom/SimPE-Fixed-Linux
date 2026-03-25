@@ -103,11 +103,11 @@ namespace pjOBJDTool
                 return LoadIcon.load("Object Tool.png");
             }
         }
-        public override System.Windows.Forms.Shortcut Shortcut
+        public override int Shortcut
         {
             get
             {
-                return System.Windows.Forms.Shortcut.None;
+                return 0;
             }
         }
         #endregion

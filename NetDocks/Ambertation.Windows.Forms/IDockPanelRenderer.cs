@@ -21,8 +21,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
- using System.Drawing;
-using System.Windows.Forms;
+using System.Drawing;
+// DockStyle, Padding defined locally in WinFormsCompat.cs
 
 namespace Ambertation.Windows.Forms;
 
@@ -46,7 +46,7 @@ public interface IDockPanelRenderer
 
 	void RenderGrip(DockContainer dc, NCPaintEventArgs e, Rectangle r);
 
-	void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, PaintEventArgs e);
+	void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, Graphics g);
 
 	Padding GetPanelBorderSize(DockContainer dc, DockPanel dp, ButtonOrientation orient);
 

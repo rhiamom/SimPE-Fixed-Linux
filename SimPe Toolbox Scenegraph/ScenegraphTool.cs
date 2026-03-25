@@ -27,7 +27,7 @@ using SimPe.Interfaces;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für ImportSemiTool.
+	/// Zusammenfassung fï¿½r ImportSemiTool.
 	/// </summary>
 	public class ScenegraphTool : Interfaces.AbstractTool, Interfaces.ITool	
 	{
@@ -79,11 +79,11 @@ namespace SimPe.Plugin
 			}
 		}
 
-		public override System.Windows.Forms.Shortcut Shortcut
+		public override int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.CtrlG;
+				return 0;
 			}
 		}
 		#endregion

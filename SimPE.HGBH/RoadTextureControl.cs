@@ -228,7 +228,7 @@ namespace SimPe.Plugin
             // 
             // xpTaskBoxSimple1
             // 
-            this.xpTaskBoxSimple1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            // this.xpTaskBoxSimple1.Anchor removed - XPTaskBoxSimple is Avalonia Control
             this.xpTaskBoxSimple1.BackColor = System.Drawing.Color.Transparent;
             this.xpTaskBoxSimple1.Controls.Add(this.tbTxmt);
             this.xpTaskBoxSimple1.Controls.Add(this.label6);
@@ -240,7 +240,7 @@ namespace SimPe.Plugin
             this.xpTaskBoxSimple1.IconSize = new System.Drawing.Size(32, 32);
             this.xpTaskBoxSimple1.Location = new System.Drawing.Point(392, 88);
             this.xpTaskBoxSimple1.Name = "xpTaskBoxSimple1";
-            this.xpTaskBoxSimple1.Padding = new System.Windows.Forms.Padding(4, 44, 4, 4);
+            this.xpTaskBoxSimple1.Padding = new Avalonia.Thickness(4, 44, 4, 4);
             this.xpTaskBoxSimple1.Size = new System.Drawing.Size(288, 100);
             this.xpTaskBoxSimple1.TabIndex = 11;
             // 
@@ -274,14 +274,14 @@ namespace SimPe.Plugin
             // 
             // cbType
             // 
-            this.cbType.Enabled = false;
+            // this.cbType.Enabled removed - EnumComboBox is Avalonia ComboBox
             this.cbType.Enum = null;
-            this.cbType.Location = new System.Drawing.Point(240, 64);
+            // this.cbType.Location removed - layout-only
             this.cbType.Name = "cbType";
             this.cbType.ResourceManager = null;
-            this.cbType.Size = new System.Drawing.Size(120, 21);
-            this.cbType.TabIndex = 13;
-            this.cbType.Text = "enumComboBox1";
+            // this.cbType.Size removed - layout-only
+            // this.cbType.TabIndex removed - layout-only
+            // this.cbType.Text removed - not supported on Avalonia ComboBox
             // 
             // RoadTextureControl
             // 
@@ -298,7 +298,7 @@ namespace SimPe.Plugin
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            // this.Font removed - WrapperBaseControl does not have Font property
             this.HeaderText = "Road Texture";
             this.Name = "RoadTextureControl";
             this.Size = new System.Drawing.Size(688, 296);

@@ -186,20 +186,20 @@ namespace SimPe.Plugin
             // 
             // spc
             // 
-            this.spc.BackColor = System.Drawing.Color.White;
-            this.spc.ContextMenuStrip = this.menu;
-            this.spc.Dock = System.Windows.Forms.DockStyle.Left;
-            this.spc.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.spc.Location = new System.Drawing.Point(0, 0);
+            // this.spc.BackColor removed - SimPoolControl does not expose BackColor
+            // this.spc.ContextMenuStrip removed - not supported
+            // this.spc.Dock removed - not supported
+            // this.spc.Font removed - not supported
+            // this.spc.Location removed - layout-only
             this.spc.Name = "spc";
             this.spc.Package = null;
-            this.spc.Padding = new System.Windows.Forms.Padding(1);
+            this.spc.Padding = new Avalonia.Thickness(1);
             this.spc.RightClickSelect = false;
             this.spc.SelectedElement = null;
             this.spc.SelectedSim = null;
             this.spc.SimDetails = false;
-            this.spc.Size = new System.Drawing.Size(264, 292);
-            this.spc.TabIndex = 0;
+            // this.spc.Size removed - layout-only
+            // this.spc.TabIndex removed - layout-only
             this.spc.TileColumns = new int[] {
         1};
             this.spc.SelectedSimChanged += new SimPe.PackedFiles.Wrapper.SimPoolControl.SelectedSimHandler(this.spc_SelectedSimChanged);
@@ -232,11 +232,9 @@ namespace SimPe.Plugin
             // 
             // simslot
             // 
-            this.simslot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.simslot.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.simslot.Location = new System.Drawing.Point(264, 0);
+            // this.simslot.Anchor removed - NgbhSlotUI does not expose Anchor
+            // this.simslot.Font removed - not supported
+            // this.simslot.Location removed - layout-only
             this.simslot.Name = "simslot";
             this.simslot.NgbhResource = null;
             this.simslot.SimPoolControl = this.spc;
@@ -258,12 +256,10 @@ namespace SimPe.Plugin
             // 
             // nsui
             // 
-            this.nsui.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.nsui.BackColor = System.Drawing.Color.Transparent;
-            this.nsui.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.nsui.Location = new System.Drawing.Point(280, 8);
+            // this.nsui.Anchor removed - NgbhSlotUI does not expose Anchor
+            // this.nsui.BackColor removed - not supported
+            // this.nsui.Font removed - not supported
+            // this.nsui.Location removed - layout-only
             this.nsui.Name = "nsui";
             this.nsui.NgbhResource = null;
             this.nsui.SimPoolControl = null;
@@ -275,14 +271,13 @@ namespace SimPe.Plugin
             // 
             // nssel
             // 
-            this.nssel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.nssel.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.nssel.Location = new System.Drawing.Point(8, 8);
+            // this.nssel.Anchor removed - NgbhSlotSelection does not expose Anchor
+            // this.nssel.Font removed - not supported
+            // this.nssel.Location removed - layout-only
             this.nssel.Name = "nssel";
             this.nssel.NgbhResource = null;
-            this.nssel.Size = new System.Drawing.Size(264, 276);
-            this.nssel.TabIndex = 0;
+            // this.nssel.Size removed - layout-only
+            // this.nssel.TabIndex removed - layout-only
             this.nssel.SelectedSlotChanged += new System.EventHandler(this.nssel_SelectedSlotChanged);
             // 
             // pnBadge
@@ -303,7 +298,7 @@ namespace SimPe.Plugin
             this.shelper.Location = new System.Drawing.Point(0, 0);
             this.shelper.Name = "shelper";
             this.shelper.NgbhResource = null;
-            this.shelper.Padding = new System.Windows.Forms.Padding(8);
+            // this.shelper.Padding removed - NgbhSkillHelper (UserControl) does not expose Padding
             this.shelper.SimPoolControl = this.spc;
             this.shelper.Size = new System.Drawing.Size(680, 292);
             this.shelper.Slot = null;
@@ -361,10 +356,10 @@ namespace SimPe.Plugin
             this.Controls.Add(this.pnBadge);
             this.Controls.Add(this.pnDebug);
             this.Controls.Add(this.toolBar1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            // this.Font removed - WrapperBaseControl does not expose Font
             this.HeaderText = "Sim Memory Editor";
             this.Name = "ExtNgbhUI";
-            this.Size = new System.Drawing.Size(680, 368);
+            // this.Size removed - layout-only
             this.Controls.SetChildIndex(this.toolBar1, 0);
             this.Controls.SetChildIndex(this.pnDebug, 0);
             this.Controls.SetChildIndex(this.pnBadge, 0);

@@ -25,6 +25,9 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using TreeNodeCollection = System.Windows.Forms.TreeNode.TreeNodeCollection;
+// Disambiguate DockStyle — defined identically in both simpe.wizardbase and simpe.workspace.plugin
+using WFDockStyle = System.Windows.Forms.DockStyle;
 
 namespace SimPe.Plugin.Tool.Dockable
 {

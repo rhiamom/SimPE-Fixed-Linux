@@ -70,11 +70,11 @@ namespace SimPe.Plugin.Tool
 		#endregion
 
 		#region IToolExt Member
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.CtrlShiftD;
+				return 0;
 			}
 		}
 

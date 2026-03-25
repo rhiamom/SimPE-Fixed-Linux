@@ -29,7 +29,7 @@ using SimPe.Plugin.Tool.Dockable;
 namespace SimPe.Plugin.Tool
 {
 	/// <summary>
-	/// Zusammenfassung für ImportSemiTool.
+	/// Zusammenfassung fï¿½r ImportSemiTool.
 	/// </summary>
     public class ObjectsTool : SimPe.Interfaces.IToolPlus	
 	{
@@ -68,12 +68,9 @@ namespace SimPe.Plugin.Tool
 
 		#region IToolExt Member
 
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
-			get
-			{
-				return System.Windows.Forms.Shortcut.CtrlShiftW;
-			}
+			get { return 0; }
 		}
 
 		public System.Drawing.Image Icon

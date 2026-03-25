@@ -103,11 +103,11 @@ namespace SimPe.Plugin
                 return Helper.LoadImage(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.CareerIcon.png"));
             }
         }
-        public override System.Windows.Forms.Shortcut Shortcut
+        public override int Shortcut
         {
             get
             {
-                return System.Windows.Forms.Shortcut.None;
+                return 0;
             }
         }
         #endregion

@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>NetDocks</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    
     <TargetFramework>net8.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
@@ -13,10 +12,14 @@
   <PropertyGroup>
     <RootNamespace />
   </PropertyGroup>
-  <!-- All source excluded — WinForms docking library, will be replaced with Avalonia docking -->
+  <!-- NetDocksStubs.cs deleted — real Avalonia-ported source files included below.
+       Files that still reference System.Windows.Forms will have compile errors
+       until they are ported in a future pass; this is expected. -->
   <ItemGroup>
-    <Compile Remove="**\*.cs" />
-    <Compile Include="NetDocksStubs.cs" />
+    <Compile Remove="NetDocksStubs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Ambertation.Windows.Forms.dockhint.PNG" />

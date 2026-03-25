@@ -29,7 +29,7 @@ using System;
 namespace SimPe.Actions.Default
 {
 	/// <summary>
-	/// Zusammenfassung für ExportAction.
+	/// Zusammenfassung fï¿½r ExportAction.
 	/// </summary>
 	public class DeleteAction : AbstractActionDefault
 	{
@@ -86,11 +86,11 @@ namespace SimPe.Actions.Default
 			}
 		}
 
-		public override System.Windows.Forms.Shortcut Shortcut
+		public override int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.ShiftDel;
+				return 0; // System.Windows.Forms.Shortcut.ShiftDel â€” not available on Mac
 			}
 		}
 

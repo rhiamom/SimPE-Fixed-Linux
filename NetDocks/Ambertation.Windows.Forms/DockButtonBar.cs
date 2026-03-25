@@ -20,235 +20,156 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System.Collections.Generic;
-using System.ComponentModel;
+
+// Ported from WinForms DockButtonBar.
+// Original: extends WinForms UserControl, implements IButtonContainer.
+//   Drew dock tab buttons for collapsed panels via OnPaint(PaintEventArgs).
+//   Responded to OnMouseDown(MouseEventArgs) to expand a collapsed panel.
+// On Avalonia: extends Avalonia UserControl.
+//   Rendering will use Render(DrawingContext) in a future pass.
+//   Pointer events replace WinForms mouse events.
+
+using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 
 namespace Ambertation.Windows.Forms;
 
-[ToolboxItem(false)]
+/// <summary>
+/// Bar showing buttons for collapsed dock panels.
+/// Ported from WinForms DockButtonBar : UserControl, IButtonContainer.
+/// On Avalonia, rendering and pointer interaction will be wired in a future pass.
+/// </summary>
 public class DockButtonBar : UserControl, IButtonContainer
 {
-	public class DockPanelList : List<DockPanel>
-	{
-	}
+    /// <summary>Typed list of DockPanels — used throughout the docking pipeline.</summary>
+    public class DockPanelList : List<DockPanel> { }
 
-	private IContainer components;
+    // ── State ─────────────────────────────────────────────────────────────
 
-	private DockPanelList panels;
+    private DockPanelList panels;
+    private Dictionary<DockContainer, DockPanelList> containers;
+    private DockManager manager;
+    private DockPanelButtonManager buttonData;
 
-	private DockPanelList hidden;
+    // ── Properties ────────────────────────────────────────────────────────
 
-	private Dictionary<DockContainer, DockPanelList> containers;
+    public DockManager Manager => manager;
 
-	private DockManager manager;
+    protected DockPanelButtonManager ButtonData => buttonData;
 
-	private DockPanelButtonManager buttonData;
+    public DockPanel Highlight { get => null; set { } }
 
-	public DockManager Manager => manager;
+    public DockStyle Dock { get; set; }
 
-	protected DockPanelButtonManager ButtonData => buttonData;
+    public ButtonOrientation BestOrientation
+    {
+        get
+        {
+            if (Dock == DockStyle.Bottom) return ButtonOrientation.Top;
+            if (Dock == DockStyle.Left)   return ButtonOrientation.Right;
+            if (Dock == DockStyle.Top)    return ButtonOrientation.Bottom;
+            return ButtonOrientation.Left;
+        }
+    }
 
-	public DockPanel Highlight
-	{
-		get
-		{
-			return null;
-		}
-		set
-		{
-		}
-	}
+    // ── Constructor ───────────────────────────────────────────────────────
 
-	public ButtonOrientation BestOrientation
-	{
-		get
-		{
-			if (Dock == DockStyle.Bottom)
-			{
-				return ButtonOrientation.Top;
-			}
-			if (Dock == DockStyle.Left)
-			{
-				return ButtonOrientation.Right;
-			}
-			if (Dock == DockStyle.Top)
-			{
-				return ButtonOrientation.Bottom;
-			}
-			return ButtonOrientation.Left;
-		}
-	}
+    public DockButtonBar(DockManager manager)
+    {
+        this.manager = manager;
+        panels     = new DockPanelList();
+        containers = new Dictionary<DockContainer, DockPanelList>();
+    }
 
-	protected override void Dispose(bool disposing)
-	{
-		if (disposing && components != null)
-		{
-			components.Dispose();
-		}
-		base.Dispose(disposing);
-	}
+    // ── Visibility ────────────────────────────────────────────────────────
 
-	private void InitializeComponent()
-	{
-		this.components = new System.ComponentModel.Container();
-		base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-	}
+    protected void SetVisibleState()
+    {
+        bool visible = panels.Count > 0;
+        if (visible == IsVisible)
+            InvalidateVisual();
+        else if (manager?.Renderer?.DockPanelRenderer != null)
+        {
+            Width  = manager.Renderer.DockPanelRenderer.Dimension.Buttons;
+            Height = Width;
+        }
+        IsVisible = visible;
+    }
 
-	public DockButtonBar(DockManager manager)
-	{
-		InitializeComponent();
-		this.manager = manager;
-		panels = new DockPanelList();
-		containers = new Dictionary<DockContainer, DockPanelList>();
-	}
+    // ── Container management ──────────────────────────────────────────────
 
-	protected void SetVisibleState()
-	{
-		bool flag = panels.Count > 0;
-		if (flag == base.Visible)
-		{
-			Refresh();
-		}
-		else
-		{
-			base.Width = Manager.Renderer.DockPanelRenderer.Dimension.Buttons;
-			base.Height = base.Width;
-		}
-		base.Visible = flag;
-	}
+    public bool Contains(DockContainer dc) => containers.ContainsKey(dc);
 
-	public bool Contains(DockContainer dc)
-	{
-		return containers.ContainsKey(dc);
-	}
+    public void Add(DockContainer c)
+    {
+        var raw    = c.GetDockedPanels();
+        var docked = new DockPanelList();
+        docked.AddRange(raw);
+        containers[c] = docked;
+        foreach (DockPanel p in docked)
+        {
+            p.SeperateInDockBar = false;
+            if (!panels.Contains(p)) panels.Add(p);
+        }
+        if (panels.Count > 0)
+            panels[panels.Count - 1].SeperateInDockBar = true;
+        SetVisibleState();
+    }
 
-	public void Add(DockContainer c)
-	{
-		DockPanelList dockedPanels = c.GetDockedPanels();
-		containers[c] = dockedPanels;
-		foreach (DockPanel item in dockedPanels)
-		{
-			item.SeperateInDockBar = false;
-			if (!panels.Contains(item))
-			{
-				AddPanel(item);
-			}
-		}
-		if (panels.Count > 0)
-		{
-			panels[panels.Count - 1].SeperateInDockBar = true;
-		}
-		SetVisibleState();
-	}
+    public void Remove(DockContainer c)
+    {
+        if (containers.ContainsKey(c)) { DoRemove(c); SetVisibleState(); }
+    }
 
-	private void AddPanel(DockPanel p)
-	{
-		panels.Add(p);
-	}
+    internal void SilentRemove(DockContainer c)
+    {
+        if (containers.ContainsKey(c)) DoRemove(c);
+    }
 
-	public void Remove(DockContainer c)
-	{
-		if (containers.ContainsKey(c))
-		{
-			DoRemove(c);
-			SetVisibleState();
-		}
-	}
+    private void DoRemove(DockContainer c)
+    {
+        if (!containers.TryGetValue(c, out DockPanelList list) || list == null) return;
+        containers.Remove(c);
+        foreach (DockPanel p in list)
+        {
+            p.SeperateInDockBar = false;
+            panels.Remove(p);
+        }
+    }
 
-	internal void SilentRemove(DockContainer c)
-	{
-		if (containers.ContainsKey(c))
-		{
-			DoRemove(c);
-		}
-	}
+    public void Clear()
+    {
+        foreach (DockPanel p in panels) p.SeperateInDockBar = false;
+        panels.Clear();
+        containers.Clear();
+        SetVisibleState();
+    }
 
-	private void DoRemove(DockContainer c)
-	{
-		DockPanelList dockPanelList = containers[c];
-		if (dockPanelList == null)
-		{
-			return;
-		}
-		containers.Remove(c);
-		foreach (DockPanel item in dockPanelList)
-		{
-			RemovePanel(item);
-		}
-	}
+    private DockContainer FindDock(DockPanel p)
+    {
+        foreach (var kv in containers)
+            foreach (DockPanel item in kv.Value)
+                if (item == p) return kv.Key;
+        return null;
+    }
 
-	private void RemovePanel(DockPanel p)
-	{
-		p.SeperateInDockBar = false;
-		panels.Remove(p);
-	}
+    // ── IButtonContainer ─────────────────────────────────────────────────
 
-	public void Clear()
-	{
-		foreach (DockPanel panel in panels)
-		{
-			panel.SeperateInDockBar = false;
-		}
-		panels.Clear();
-		containers.Clear();
-		SetVisibleState();
-	}
+    public DockPanelList GetButtons() => panels;
 
-	private DockContainer FindDock(DockPanel p)
-	{
-		foreach (DockContainer key in containers.Keys)
-		{
-			DockPanelList dockPanelList = containers[key];
-			foreach (DockPanel item in dockPanelList)
-			{
-				if (item == p)
-				{
-					return key;
-				}
-			}
-		}
-		return null;
-	}
+    public Padding GetBorderSize(ButtonOrientation orient)
+        => manager?.Renderer?.DockPanelRenderer?.GetBarBorderSize(orient) ?? Ambertation.Windows.Forms.Padding.Empty;
 
-	protected override void OnMouseDown(MouseEventArgs e)
-	{
-		base.OnMouseDown(e);
-		if (ButtonData == null || e.Button != MouseButtons.Left)
-		{
-			return;
-		}
-		Point mouse = new Point(e.X, e.Y);
-		DockPanel hitPanel = ButtonData.GetHitPanel(mouse);
-		if (hitPanel != null)
-		{
-			DockContainer dockContainer = FindDock(hitPanel);
-			if (dockContainer != null)
-			{
-				dockContainer.Expand();
-				hitPanel.EnsureVisible();
-			}
-		}
-	}
+    // ── Rendering ─────────────────────────────────────────────────────────
 
-	protected override void OnPaint(PaintEventArgs e)
-	{
-		base.OnPaint(e);
-		Manager.Renderer.DockPanelRenderer.RenderButtonBarBackground(new NCPaintEventArgs(e.Graphics, base.Bounds, base.Bounds, null), new Rectangle(0, 0, base.Width, base.Height), BestOrientation);
-		NCPaintEventArgs e2 = new NCPaintEventArgs(e.Graphics, base.ClientRectangle, base.Bounds, null);
-		buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(this, e2);
-		buttonData.Render(renderbackgroundbar: false);
-	}
-
-	public DockPanelList GetButtons()
-	{
-		return panels;
-	}
-
-	public Padding GetBorderSize(ButtonOrientation orient)
-	{
-		return manager.Renderer.DockPanelRenderer.GetBarBorderSize(orient);
-	}
+    public override void Render(DrawingContext context)
+    {
+        // Dock button bar rendering will be implemented here in a future pass.
+        // Original called: Manager.Renderer.DockPanelRenderer.RenderButtonBarBackground(...)
+        // and ConstructButtonData(...).Render(renderbackgroundbar: false).
+        base.Render(context);
+    }
 }

@@ -66,11 +66,11 @@ namespace SimPe.Actions.Default
             }
         }*/
 
-        public override System.Windows.Forms.Shortcut Shortcut
+        public override int Shortcut
         {
             get
             {
-                return System.Windows.Forms.Shortcut.CtrlT; // for "Toggle"...
+                return 0; // System.Windows.Forms.Shortcut.CtrlT — not available on Mac
             }
         }
     }

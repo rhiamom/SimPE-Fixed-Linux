@@ -221,7 +221,7 @@ namespace SimPe.Plugin
 
 		SimPe.Plugin.Gmdc.ElementOrder eo = new SimPe.Plugin.Gmdc.ElementOrder(SimPe.Plugin.Gmdc.ElementSorting.XYZ);
 
-        void AddJoint(ListedMeshBlocks lmb, SimPe.Interfaces.Scenegraph.ICresChildren bl, Ambertation.Graphics.MeshList parent, System.Windows.Forms.TreeNodeCollection nodes)
+        void AddJoint(ListedMeshBlocks lmb, SimPe.Interfaces.Scenegraph.ICresChildren bl, Ambertation.Graphics.MeshList parent, System.Collections.IList nodes)
         {
             SimPe.Plugin.TransformNode tn = bl.StoredTransformNode;
 

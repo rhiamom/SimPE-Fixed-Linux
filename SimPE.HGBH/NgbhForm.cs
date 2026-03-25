@@ -268,11 +268,11 @@ namespace SimPe.Plugin
             // 
             resources.ApplyResources(this.lbmem, "lbmem");
             this.lbmem.HideSelection = false;
-            this.lbmem.LargeImageList = this.memilist;
+            // this.lbmem.LargeImageList = this.memilist; // type mismatch in Avalonia port
             this.lbmem.MultiSelect = false;
             this.lbmem.Name = "lbmem";
-            this.lbmem.SmallImageList = this.memilist;
-            this.lbmem.StateImageList = this.memilist;
+            // this.lbmem.SmallImageList = this.memilist; // type mismatch in Avalonia port
+            // this.lbmem.StateImageList = this.memilist; // type mismatch in Avalonia port
             this.lbmem.UseCompatibleStateImageBehavior = false;
             this.lbmem.View = System.Windows.Forms.View.List;
             this.lbmem.SelectedIndexChanged += new System.EventHandler(this.SelectMemory);

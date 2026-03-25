@@ -216,5 +216,44 @@ namespace Ambertation.Windows.Forms
 
         private System.Drawing.Image mIcon;
         private string mstrHeaderText;
+
+        // ── WinForms-compat stubs used by Wizards of SimPe/Option.cs ──────────
+        public new System.Drawing.Color BackColor { get; set; }
+        public System.Drawing.Size  Size       { get; set; }
+        public System.Drawing.Point Location   { get; set; }
+        // Padding accepts any WinForms-compat Padding struct via object to avoid cross-assembly type dependency
+        public object Padding { get; set; }
+        // Dock/DockPadding stored as object to avoid requiring System.Windows.Forms reference
+        public object Dock { get; set; }
+        public XPTaskBoxDockPaddingEdges DockPadding { get; } = new XPTaskBoxDockPaddingEdges();
+        public bool Visible { get; set; } = true;
+        public XPTaskBoxControlCollection Controls { get; } = new XPTaskBoxControlCollection();
+        public new void SuspendLayout() { }
+        public new void ResumeLayout(bool b = false) { }
+        public void PerformLayout() { }
+        public event EventHandler Resize;
+    }
+
+    /// <summary>
+    /// DockPaddingEdges stub for XPTaskBoxSimple.
+    /// Mirrors System.Windows.Forms.DockPaddingEdges but is self-contained.
+    /// </summary>
+    public class XPTaskBoxDockPaddingEdges
+    {
+        public int All    { get; set; }
+        public int Left   { get; set; }
+        public int Right  { get; set; }
+        public int Top    { get; set; }
+        public int Bottom { get; set; }
+    }
+
+    /// <summary>Minimal ControlCollection stub for XPTaskBoxSimple WinForms compatibility.</summary>
+    public class XPTaskBoxControlCollection
+    {
+        private readonly System.Collections.Generic.List<object> _list = new();
+        public int Count => _list.Count;
+        public void Add(object c)    { _list.Add(c); }
+        public void Remove(object c) { _list.Remove(c); }
+        public void Clear()          { _list.Clear(); }
     }
 }

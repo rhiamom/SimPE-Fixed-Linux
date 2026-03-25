@@ -33,6 +33,7 @@ copy "$(OutDir)$(AssemblyName).dll" "$(SolutionDir)SimPE.Main\bin\$(Configuratio
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
+    <ProjectReference Include="..\SimPE.GMDCExporterbase\SimPE.GMDCExporterbase.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Form1.cs" />

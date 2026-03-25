@@ -20,206 +20,110 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
+
+// Ported from WinForms ManagerSingelton.
+// Original implemented IMessageFilter (Windows message pump hook) for drag-dock.
+// On Avalonia: IMessageFilter removed; panel registry and GetPanelWithName() kept.
+// Drag-dock will be re-implemented using Avalonia pointer events in a future pass.
+
+using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Ambertation.Windows.Forms;
 
-public class ManagerSingelton : IMessageFilter
+/// <summary>
+/// Singleton registry of all DockPanels known to the docking system.
+/// On macOS/Avalonia, used to look up panels by name; drag-docking is not yet implemented.
+/// </summary>
+public class ManagerSingelton
 {
-	private static ManagerSingelton glob;
+    private static ManagerSingelton glob;
 
-	private DockPanel startdrag;
+    private readonly List<DockPanel>            known     = new();
+    private readonly List<DockPanelFloatingForm> floats   = new();
+    private DockManager dm;
+    private BaseRenderer _tabRenderer;
 
-	private NCMouseEventArgs events;
+    private int pnid;
 
-	private DockButtonBar.DockPanelList known;
+    public static ManagerSingelton Global
+    {
+        get
+        {
+            if (glob == null)
+                glob = new ManagerSingelton();
+            return glob;
+        }
+    }
 
-	private List<DockPanelFloatingForm> knownf;
+    public DockManager MainDockManager => dm;
 
-	private bool topmostfloats;
+    /// <summary>Whether floating windows should always stay on top.</summary>
+    public bool TopmostFloats { get; set; } = true;
 
-	private BaseRenderer dock;
+    /// <summary>
+    /// Renderer used by TabControl. Returns null until a TabControl is constructed;
+    /// rendering will be wired in a future pass.
+    /// </summary>
+    public BaseRenderer TabRenderer
+    {
+        get => _tabRenderer;
+        internal set => _tabRenderer = value;
+    }
 
-	private BaseRenderer tab;
+    // ── Dock renderer (used by DockManager constructor in the original) ────
 
-	private DockManager dm;
+    /// <summary>Global dock renderer. Returns null until a DockManager sets one.</summary>
+    public BaseRenderer DockRenderer { get; internal set; }
 
-	private int pnid;
+    private ManagerSingelton()
+    {
+        pnid = 0;
+        dm   = null;
+    }
 
-	public static ManagerSingelton Global
-	{
-		get
-		{
-			if (glob == null)
-			{
-				glob = new ManagerSingelton();
-			}
-			return glob;
-		}
-	}
+    internal void SetMainManager(DockManager m)
+    {
+        if (dm == null)
+            dm = m;
+    }
 
-	public bool TopmostFloats
-	{
-		get
-		{
-			return topmostfloats;
-		}
-		set
-		{
-			topmostfloats = value;
-		}
-	}
+    internal void AddPanel(DockPanel dp)
+    {
+        if (!known.Contains(dp))
+        {
+            known.Add(dp);
+            if (dp.Name == "")
+            {
+                dp.Name = "ManagedDockPanel" + pnid;
+                pnid++;
+            }
+        }
+    }
 
-	public BaseRenderer DockRenderer => dock;
+    internal void RemovePanel(DockPanel dp)
+    {
+        known.Remove(dp);
+    }
 
-	public BaseRenderer TabRenderer => tab;
+    internal void AddFloatForm(DockPanelFloatingForm form)
+    {
+        if (!floats.Contains(form)) floats.Add(form);
+    }
 
-	public DockManager MainDockManager => dm;
+    internal void RemoveFloatForm(DockPanelFloatingForm form)
+    {
+        floats.Remove(form);
+    }
 
-	public bool HasDragPanelForMouseMove => startdrag != null;
-
-	private ManagerSingelton()
-	{
-		topmostfloats = false;
-		pnid = 0;
-		dm = null;
-		known = new DockButtonBar.DockPanelList();
-		startdrag = null;
-		Application.AddMessageFilter(this);
-		dock = new GlossyRenderer();
-		knownf = new List<DockPanelFloatingForm>();
-		tab = new WhidbeyTabRenderer();
-	}
-
-	~ManagerSingelton()
-	{
-		Application.RemoveMessageFilter(this);
-	}
-
-	internal void SetMainManager(DockManager m)
-	{
-		if (dm == null)
-		{
-			dm = m;
-		}
-	}
-
-	internal void AddFloatForm(DockPanelFloatingForm f)
-	{
-		if (!knownf.Contains(f))
-		{
-			knownf.Add(f);
-			f.Disposed += f_Disposed;
-		}
-	}
-
-	private void f_Disposed(object sender, EventArgs e)
-	{
-		DockPanelFloatingForm f = sender as DockPanelFloatingForm;
-		RemoveFloatForm(f);
-	}
-
-	internal void RemoveFloatForm(DockPanelFloatingForm f)
-	{
-		if (knownf.Contains(f))
-		{
-			f.Disposed -= f_Disposed;
-			knownf.Remove(f);
-		}
-	}
-
-	internal void AddPanel(DockPanel dp)
-	{
-		if (!known.Contains(dp))
-		{
-			known.Add(dp);
-			dp.Disposed += dp_Disposed;
-			if (dp.Name == "")
-			{
-				dp.Name = "ManagedDockPanel" + pnid;
-				pnid++;
-			}
-		}
-	}
-
-	private void dp_Disposed(object sender, EventArgs e)
-	{
-		DockPanel dp = sender as DockPanel;
-		RemovePanel(dp);
-	}
-
-	internal void RemovePanel(DockPanel dp)
-	{
-		if (known.Contains(dp))
-		{
-			dp.Disposed -= dp_Disposed;
-			known.Remove(dp);
-		}
-	}
-
-	public DockPanel GetPanelWithName(string name)
-	{
-		foreach (DockPanel item in known)
-		{
-			if (item.Name == name)
-			{
-				return item;
-			}
-		}
-		return null;
-	}
-
-	public void SetDragPanelOnMouseMove(DockPanel p, NCMouseEventArgs e)
-	{
-		events = e;
-		if (startdrag == null)
-		{
-			startdrag = p;
-		}
-	}
-
-	public void ResetDragPanelOnMouseMove()
-	{
-		startdrag = null;
-		events = null;
-	}
-
-	public bool PreFilterMessage(ref Message m)
-	{
-		if (m.Msg == 28)
-		{
-			Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
-			foreach (DockPanelFloatingForm item in knownf)
-			{
-				item.SendeActivateEvent((int)m.WParam != 0);
-			}
-		}
-		else if (m.Msg == 49395)
-		{
-			Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
-			if (m.LParam.ToInt32() == 0 && (m.WParam.ToInt32() == 1 || m.WParam.ToInt32() == 0))
-			{
-				foreach (DockPanelFloatingForm item2 in knownf)
-				{
-					item2.SendeActivateEvent((int)m.WParam == 0);
-				}
-			}
-		}
-		if (startdrag != null)
-		{
-			if (m.Msg == 514 || m.Msg == 162)
-			{
-				ResetDragPanelOnMouseMove();
-			}
-			if (m.Msg == 512)
-			{
-				startdrag.StartDockModeFloat(events);
-				ResetDragPanelOnMouseMove();
-			}
-		}
-		return false;
-	}
+    /// <summary>Returns the first panel with the given Name, or null.</summary>
+    public DockPanel GetPanelWithName(string name)
+    {
+        foreach (DockPanel item in known)
+        {
+            if (item.Name == name)
+                return item;
+        }
+        return null;
+    }
 }

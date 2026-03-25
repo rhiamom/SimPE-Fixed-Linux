@@ -23,14 +23,21 @@
 
 using System;
 using System.Collections;
-using System.Windows.Forms;
 
 namespace SimPe
 {
+	// Replaces System.Windows.Forms.SortOrder (same integer values).
+	public enum SortOrder
+	{
+		None       = 0,
+		Ascending  = 1,
+		Descending = 2,
+	}
+
 	/// <summary>
 	/// ListView Column Sorter
 	/// </summary>
-	public class  ColumnSorter : IComparer
+	public class ColumnSorter : IComparer
 	{
 		public ColumnSorter()
 		{
@@ -39,34 +46,33 @@ namespace SimPe
 		}
 		int cc;
 		SortOrder so;
+
 		/// <summary>
 		/// The Currently active Column
 		/// </summary>
-		public int CurrentColumn 
+		public int CurrentColumn
 		{
-			get {return cc;}
+			get { return cc; }
 			set {
-				if (cc!=value) 
+				if (cc != value)
 				{
 					cc = value;
-					if (Changed!=null) Changed(this, new EventArgs());
+					if (Changed != null) Changed(this, new EventArgs());
 				}
 			}
 		}
 
-
-
 		/// <summary>
 		/// The Sort Order
 		/// </summary>
-		public SortOrder Sorting 
+		public SortOrder Sorting
 		{
-			get {return so;}
+			get { return so; }
 			set {
-				if (so!=value)
+				if (so != value)
 				{
 					so = value;
-					if (Changed!=null) Changed(this, new EventArgs());
+					if (Changed != null) Changed(this, new EventArgs());
 				}
 			}
 		}
@@ -76,41 +82,44 @@ namespace SimPe
 		/// <summary>
 		/// The Compare Function to use
 		/// </summary>
-		/// <param name="x">fisrt ListViewItem</param>
+		/// <param name="x">first ListViewItem</param>
 		/// <param name="y">second ListViewItem</param>
-		/// <returns>0 if the ListViewItem match</returns>
+		/// <returns>0 if the items match</returns>
 		public int Compare(object x, object y)
 		{
-			ListViewItem rowA = (ListViewItem)x;
-			ListViewItem rowB = (ListViewItem)y;
-            
-			if (Sorting==SortOrder.Ascending) 
-			{
-				return String.Compare(rowA.SubItems[CurrentColumn].Text,
-					rowB.SubItems[CurrentColumn].Text);
-			} 
-			else 
-			{
-				return String.Compare(rowB.SubItems[CurrentColumn].Text,
-					rowA.SubItems[CurrentColumn].Text);
-			}
+			// Access SubItems via dynamic so this assembly has no System.Windows.Forms dependency.
+			dynamic rowA = x;
+			dynamic rowB = y;
 
-		}		
+			if (Sorting == SortOrder.Ascending)
+			{
+				return String.Compare(
+					(string)rowA.SubItems[CurrentColumn].Text,
+					(string)rowB.SubItems[CurrentColumn].Text);
+			}
+			else
+			{
+				return String.Compare(
+					(string)rowB.SubItems[CurrentColumn].Text,
+					(string)rowA.SubItems[CurrentColumn].Text);
+			}
+		}
 	}
 
 	/// <summary>
-	/// ListView Column Sorter
+	/// ListView multi-column sorter
 	/// </summary>
-	public class  ColumnsSorter : IComparer
+	public class ColumnsSorter : IComparer
 	{
 		int[] co;
+
 		/// <summary>
-		/// The Currently active Column
+		/// The Currently active Columns
 		/// </summary>
 		public int[] ColumnOrder
 		{
 			get { return co; }
-			set {co = value; }
+			set { co = value; }
 		}
 
 		/// <summary>
@@ -118,7 +127,7 @@ namespace SimPe
 		/// </summary>
 		public SortOrder Sorting = SortOrder.Ascending;
 
-		public ColumnsSorter() : this (new int[0]) {}
+		public ColumnsSorter() : this(new int[0]) { }
 
 		public ColumnsSorter(int[] columns)
 		{
@@ -128,28 +137,31 @@ namespace SimPe
 		/// <summary>
 		/// The Compare Function to use
 		/// </summary>
-		/// <param name="x">fisrt ListViewItem</param>
+		/// <param name="x">first ListViewItem</param>
 		/// <param name="y">second ListViewItem</param>
-		/// <returns>0 if the ListViewItem match</returns>
+		/// <returns>0 if the items match</returns>
 		public int Compare(object x, object y)
 		{
-			ListViewItem rowA = (ListViewItem)x;
-			ListViewItem rowB = (ListViewItem)y;
+			// Access SubItems via dynamic so this assembly has no System.Windows.Forms dependency.
+			dynamic rowA = x;
+			dynamic rowB = y;
 
-			if (Sorting!=SortOrder.Ascending) 
+			if (Sorting != SortOrder.Ascending)
 			{
-				rowB = (ListViewItem)x;
-				rowA = (ListViewItem)y;
+				dynamic tmp = rowB;
+				rowB = rowA;
+				rowA = tmp;
 			}
 
-			for (int cc=0; cc<co.Length; cc++) 
+			for (int cc = 0; cc < co.Length; cc++)
 			{
-				int cmp = String.Compare(rowA.SubItems[co[cc]].Text, rowB.SubItems[co[cc]].Text);
-				if (cmp!=0) return cmp;
+				int cmp = String.Compare(
+					(string)rowA.SubItems[co[cc]].Text,
+					(string)rowB.SubItems[co[cc]].Text);
+				if (cmp != 0) return cmp;
 			}
 
 			return 0;
-
-		}		
+		}
 	}
 }

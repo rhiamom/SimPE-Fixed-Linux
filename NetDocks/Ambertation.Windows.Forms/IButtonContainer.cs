@@ -21,7 +21,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
- using System.Windows.Forms;
+// DockPanel, Padding, ButtonOrientation, DockButtonBar defined in this namespace
 
 namespace Ambertation.Windows.Forms;
 

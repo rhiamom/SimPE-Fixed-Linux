@@ -21,33 +21,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-using Avalonia.Media.Imaging;
-
 namespace SimPe
 {
     /// <summary>
     /// Provides standard SimPE images.
     /// GDI+ rendering is not available cross-platform; placeholder images return null.
-    /// Real images can be loaded later from embedded resources via Avalonia asset loading.
+    /// Types use System.Drawing.Image so callers in WinForms-origin code compile directly.
     /// </summary>
     public static class GetImage
     {
         /// <summary>Generic "something went wrong" image (null placeholder).</summary>
-        public static Bitmap? Fail => null;
+        public static System.Drawing.Image? Fail => null;
 
         /// <summary>Generic "no sim" placeholder image (null placeholder).</summary>
-        public static Bitmap? NoOne => null;
+        public static System.Drawing.Image? NoOne => null;
 
         /// <summary>Generic "network/lot" placeholder image (null placeholder).</summary>
-        public static Bitmap? Network => null;
+        public static System.Drawing.Image? Network => null;
 
         /// <summary>Generic "demo" placeholder image (null placeholder).</summary>
-        public static Bitmap? Demo => null;
+        public static System.Drawing.Image? Demo => null;
 
         /// <summary>Returns a logo image for an expansion pack (null placeholder).</summary>
-        public static Bitmap? GetExpansionLogo(int expansionId) => null;
+        public static System.Drawing.Image? GetExpansionLogo(int expansionId) => null;
 
         /// <summary>Returns an icon-sized image for an expansion pack (null placeholder).</summary>
-        public static Bitmap? GetExpansionIcon(int expansionId) => null;
+        public static System.Drawing.Image? GetExpansionIcon(int expansionId) => null;
     }
 }

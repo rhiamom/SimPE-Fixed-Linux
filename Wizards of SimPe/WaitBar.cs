@@ -110,12 +110,12 @@ namespace SimPe.Wizards
 			}
 		}
 
-		public Image Image
+		public Avalonia.Media.Imaging.Bitmap Image
 		{
 			get { return null; }
-			set 
-			{				
-			
+			set
+			{
+
 			}
 		}
 

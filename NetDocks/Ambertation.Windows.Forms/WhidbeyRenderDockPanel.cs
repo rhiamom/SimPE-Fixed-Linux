@@ -298,25 +298,25 @@ public class WhidbeyRenderDockPanel : BaseDockPanelRenderer, IDockPanelRenderer
 		e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockGripColor), r);
 	}
 
-	public void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, PaintEventArgs e)
+	public void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, Graphics g)
 	{
 		Rectangle clientRectangle = rbh.ClientRectangle;
-		e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeBackgroundColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, clientRectangle.Width - 1, clientRectangle.Height - 1));
+		g.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeBackgroundColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, clientRectangle.Width - 1, clientRectangle.Height - 1));
 		if (rbh.ContainerDock == DockStyle.Right)
 		{
-			e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, 3, clientRectangle.Height - 1));
+			g.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, 3, clientRectangle.Height - 1));
 		}
 		else if (rbh.ContainerDock == DockStyle.Left)
 		{
-			e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Width - 4, clientRectangle.Top, 3, clientRectangle.Height - 1));
+			g.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Width - 4, clientRectangle.Top, 3, clientRectangle.Height - 1));
 		}
 		else if (rbh.ContainerDock == DockStyle.Bottom)
 		{
-			e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, clientRectangle.Width - 1, 3));
+			g.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Top, clientRectangle.Width - 1, 3));
 		}
 		else if (rbh.ContainerDock == DockStyle.Top)
 		{
-			e.Graphics.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Height - 4, clientRectangle.Width - 1, 3));
+			g.FillRectangle(new SolidBrush(base.ColorTable.DockReSizeGripColor), new Rectangle(clientRectangle.Left, clientRectangle.Height - 4, clientRectangle.Width - 1, 3));
 		}
 	}
 

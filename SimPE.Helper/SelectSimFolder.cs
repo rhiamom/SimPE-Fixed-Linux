@@ -2,7 +2,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Copyright (C) 2025 by GramzeSweatshop                                 *
+ *   Copyright (C) 2025 by GramzeSweatShop                                 *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,299 +22,183 @@
  ***************************************************************************/
 
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace SimPe
 {
-	/// <summary>
-	/// Summary description for SelectSimFolder.
-	/// </summary>
-    class SelectSimFolder : System.Windows.Forms.Form
+    /// <summary>
+    /// Dialog that lets the user pick a Sims 2 install folder — either by
+    /// choosing a known expansion from the drop-down or by browsing freely.
+    /// Ported from WinForms Form to Avalonia Window.
+    /// </summary>
+    internal class SelectSimFolder : Avalonia.Controls.Window
     {
-        class FolderWrapper
+        // ── inner type ────────────────────────────────────────────────────────
+        sealed class FolderWrapper
         {
-            string name, folder;
+            readonly string _name;
+            readonly string _folder;
+
             public FolderWrapper(string name, string folder)
             {
-                this.name = SimPe.Localization.GetString(name);
-                this.folder = folder;
+                _name   = Localization.GetString(name);
+                _folder = folder;
             }
 
-            public string Folder
-            {
-                get { return folder; }
-            }
+            public string Folder => _folder;
 
-            public override string ToString()
-            {
-                return folder;
-                //return name+": "+folder;
-            }
-
+            public override string ToString() => _folder;
         }
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.FolderBrowserDialog fbd;
-        private System.Windows.Forms.ComboBox tbFolder;
-        private System.Windows.Forms.Button btCancel;
-        private System.Windows.Forms.Button btOK;
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.Container components = null;
 
-        public SelectSimFolder()
+        // ── controls ──────────────────────────────────────────────────────────
+        readonly TextBox  _tbPath;
+        readonly ComboBox _cbPresets;
+
+        // ── result ────────────────────────────────────────────────────────────
+        bool _confirmed;
+
+        // ── constructor ───────────────────────────────────────────────────────
+        SelectSimFolder()
         {
-            //
-            // Required designer variable.
-            //
-            InitializeComponent();
+            Title           = "Select Sim Folder";
+            Width           = 680;
+            SizeToContent   = SizeToContent.Height;
+            CanResize       = false;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+            // ── preset combo ──────────────────────────────────────────────────
+            _cbPresets = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
+            var presets = new List<FolderWrapper>();
             foreach (ExpansionItem ei in PathProvider.Global.Expansions)
+                presets.Add(new FolderWrapper(ei.Name, ei.RealInstallFolder));
+            _cbPresets.ItemsSource = presets;
+            _cbPresets.SelectionChanged += (_, _) =>
             {
-                this.tbFolder.Items.Add(new FolderWrapper(ei.Name, ei.RealInstallFolder));
-            }
-        }
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+                if (_cbPresets.SelectedItem is FolderWrapper fw)
+                    _tbPath.Text = fw.Folder;
+            };
+
+            // ── path text box ─────────────────────────────────────────────────
+            _tbPath = new TextBox { HorizontalAlignment = HorizontalAlignment.Stretch };
+
+            // ── browse button ─────────────────────────────────────────────────
+            var btnBrowse = new Button { Content = "Browse…", MinWidth = 80 };
+            btnBrowse.Click += async (_, _) => await BrowseAsync();
+
+            // ── OK / Cancel ───────────────────────────────────────────────────
+            var btnOK = new Button { Content = "OK", MinWidth = 80,
+                                     HorizontalAlignment = HorizontalAlignment.Right };
+            btnOK.Click += (_, _) => { _confirmed = true; Close(); };
+
+            var btnCancel = new Button { Content = "Cancel", MinWidth = 80,
+                                         HorizontalAlignment = HorizontalAlignment.Right };
+            btnCancel.Click += (_, _) => { _confirmed = false; Close(); };
+
+            // ── layout ────────────────────────────────────────────────────────
+            // Row 0: [Presets combo] [Browse]
+            // Row 1: [Folder: label] [path textbox]
+            // Row 2: [OK] [Cancel]  (right-aligned)
+
+            var grid = new Grid
             {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
+                Margin = new Thickness(12),
+                RowDefinitions = new RowDefinitions("Auto,8,Auto,12,Auto"),
+                ColumnDefinitions = new ColumnDefinitions("Auto,8,*,8,Auto"),
+            };
+
+            // Row 0: preset selector
+            var lbPreset = new TextBlock
+            {
+                Text = "Preset:",
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeight.Bold,
+            };
+            Grid.SetRow(lbPreset,  0); Grid.SetColumn(lbPreset,  0);
+            Grid.SetRow(_cbPresets, 0); Grid.SetColumn(_cbPresets, 2); Grid.SetColumnSpan(_cbPresets, 3);
+
+            // Row 2: path entry + browse
+            var lbFolder = new TextBlock
+            {
+                Text = "Folder:",
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeight.Bold,
+            };
+            Grid.SetRow(lbFolder, 2); Grid.SetColumn(lbFolder, 0);
+            Grid.SetRow(_tbPath,  2); Grid.SetColumn(_tbPath,  2);
+            Grid.SetRow(btnBrowse, 2); Grid.SetColumn(btnBrowse, 4);
+
+            // Row 4: OK / Cancel
+            var btnPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Spacing = 8,
+            };
+            btnPanel.Children.Add(btnOK);
+            btnPanel.Children.Add(btnCancel);
+            Grid.SetRow(btnPanel, 4); Grid.SetColumn(btnPanel, 0); Grid.SetColumnSpan(btnPanel, 5);
+
+            grid.Children.Add(lbPreset);
+            grid.Children.Add(_cbPresets);
+            grid.Children.Add(lbFolder);
+            grid.Children.Add(_tbPath);
+            grid.Children.Add(btnBrowse);
+            grid.Children.Add(btnPanel);
+
+            Content = grid;
+
+            // Keyboard: Enter = OK, Escape = Cancel
+            KeyDown += (_, e) =>
+            {
+                if (e.Key == Avalonia.Input.Key.Return) { _confirmed = true;  Close(); }
+                if (e.Key == Avalonia.Input.Key.Escape) { _confirmed = false; Close(); }
+            };
+        }
+
+        // ── browse ────────────────────────────────────────────────────────────
+        async Task BrowseAsync()
+        {
+            var opts = new Avalonia.Platform.Storage.FolderPickerOpenOptions
+            {
+                Title           = "Select Folder",
+                AllowMultiple   = false,
+            };
+
+            if (System.IO.Directory.Exists(_tbPath.Text))
+            {
+                var start = await StorageProvider.TryGetFolderFromPathAsync(new Uri(_tbPath.Text));
+                if (start != null)
+                    opts.SuggestedStartLocation = start;
             }
-            base.Dispose(disposing);
+
+            var results = await StorageProvider.OpenFolderPickerAsync(opts);
+            if (results.Count > 0)
+                _tbPath.Text = results[0].Path.LocalPath;
         }
 
-        #region Windows Form Designer generated code
+        // ── public API ────────────────────────────────────────────────────────
+
         /// <summary>
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
+        /// Shows the dialog and returns the chosen folder path, or
+        /// <paramref name="path"/> unchanged if the user cancels.
+        /// Must be called from the UI thread (awaited).
         /// </summary>
-        #region Windows Form Designer generated code
-        /// <summary>
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        public static async Task<string> ShowDialogAsync(
+            Window owner, string path)
         {
-            this.btOK = new System.Windows.Forms.Button();
-            this.btCancel = new System.Windows.Forms.Button();
-            this.tbFolder = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.btOK);
-            this.panel1.Controls.Add(this.btCancel);
-            this.panel1.Controls.Add(this.tbFolder);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Font = new System.Drawing.Font(
-                "Verdana", 8.25F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(674, 80);
-            this.panel1.TabIndex = 0;
-            // 
-            // btOK
-            // 
-            this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            this.btOK.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btOK.Location = new System.Drawing.Point(512, 52);
-            this.btOK.Name = "btOK";
-            this.btOK.Size = new System.Drawing.Size(75, 23);
-            this.btOK.TabIndex = 6;
-            this.btOK.Text = "OK";
-            this.btOK.Click += new System.EventHandler(this.btOK_Click);
-            // 
-            // btCancel
-            // 
-            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btCancel.Location = new System.Drawing.Point(592, 52);
-            this.btCancel.Name = "btCancel";
-            this.btCancel.Size = new System.Drawing.Size(75, 23);
-            this.btCancel.TabIndex = 5;
-            this.btCancel.Text = "Cancel";
-            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
-            // 
-            // tbFolder
-            // 
-            this.tbFolder.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFolder.Location = new System.Drawing.Point(64, 8);
-            this.tbFolder.Name = "tbFolder";
-            this.tbFolder.Size = new System.Drawing.Size(520, 21);
-            this.tbFolder.TabIndex = 3;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.button1.Location = new System.Drawing.Point(592, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Browse...";
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font(
-                "Tahoma", 8.25F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 8);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Folder:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
-            // SelectSimFolder
-            // 
-            this.AcceptButton = this.btOK;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
-            this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(674, 80);
-            this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font(
-                "Tahoma", 8.25F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "SelectSimFolder";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Select Sim Folder";
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-        }
-        #endregion
-
-
-        public static string ShowDialog(string path)
-        {
-            SelectSimFolder f = new SelectSimFolder();
-            f.tbFolder.Text = path;
-
-            if (f.ShowDialog() == DialogResult.OK)
-                return f.tbFolder.Text;
-
-            return path;
-        }
-
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-            if (System.IO.Directory.Exists(tbFolder.Text))
-                fbd.SelectedPath = tbFolder.Text;
-
-            if (fbd.ShowDialog() == DialogResult.OK)
-                tbFolder.Text = fbd.SelectedPath;
-        }
-        
-        private void btOK_Click(object sender, System.EventArgs e)
-        {
-            this.DialogResult = DialogResult.OK;
-            Close();
-        }
-
-        private void btCancel_Click(object sender, System.EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            Close();
+            var dlg = new SelectSimFolder();
+            dlg._tbPath.Text = path;
+            await dlg.ShowDialog(owner);
+            return dlg._confirmed ? dlg._tbPath.Text : path;
         }
     }
-	/// <summary>
-	/// a type editor for db connections
-	/// </summary>
-	public class SelectSimFolderUITypeEditor : 
-		System.Drawing.Design.UITypeEditor 
-	{
-		
-		/// <summary>
-		/// constructor
-		/// </summary>
-		public SelectSimFolderUITypeEditor() 
-		{
-				
-		}
 
-		/// <summary>
-		/// display a modal form 
-		/// </summary>
-		/// <param name="context">
-		/// see documentation on ITypeDescriptorContext
-		/// </param>
-		/// <returns>
-		/// the style of the editor
-		/// </returns>
-		public override System.Drawing.Design.UITypeEditorEditStyle GetEditStyle(
-			System.ComponentModel.ITypeDescriptorContext context) 
-		{
-
-			return System.Drawing.Design.UITypeEditorEditStyle.Modal ;
-		}
-
-		/// <summary>
-		/// used to show the connection
-		/// </summary>
-		/// <param name="context">
-		/// see documentation on ITypeDescriptorContext
-		/// </param>
-		/// <param name="provider">
-		/// see documentation on IServiceProvider
-		/// </param>
-		/// <param name="value">
-		/// the value prior to editing
-		/// </param>
-		/// <returns>
-		/// the new connection string after editing
-		/// </returns>
-		public override object EditValue(
-			System.ComponentModel.ITypeDescriptorContext context,
-			System.IServiceProvider provider, 
-			object value) 
-		{
-			return this.EditValue(value as string);
-		}			
-
-		/// <summary>
-		/// show the form for the new connection 
-		/// string based on an an existing one
-		/// </summary>
-		/// <param name="value">
-		/// the value prior to editing
-		/// </param>
-		/// <returns>
-		/// the new connection string after editing
-		/// </returns>
-		public string EditValue(string value) 
-		{
-			return SimPe.SelectSimFolder.ShowDialog(value);
-		}
-	}
+    // SelectSimFolderUITypeEditor (WinForms UITypeEditor for property grids) removed:
+    // UITypeEditor is a WinForms design-time concept with no Avalonia equivalent,
+    // and no callers exist in the current codebase.
 }
-#endregion

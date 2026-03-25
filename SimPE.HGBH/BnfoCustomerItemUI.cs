@@ -25,8 +25,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
 using Ambertation.Windows.Forms;
 
 namespace SimPe.Plugin
@@ -34,49 +33,21 @@ namespace SimPe.Plugin
 	/// <summary>
 	/// Summary description for BnfoCustomerItemUI.
 	/// </summary>
-	public class BnfoCustomerItemUI : System.Windows.Forms.UserControl
+	public class BnfoCustomerItemUI : Avalonia.Controls.UserControl
 	{
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
-
 		public BnfoCustomerItemUI()
 		{
-			SetStyle(
-				ControlStyles.SupportsTransparentBackColor |
-				ControlStyles.AllPaintingInWmPaint |
-				//ControlStyles.Opaque |
-				ControlStyles.UserPaint |
-				ControlStyles.ResizeRedraw 
-				| ControlStyles.DoubleBuffer
-				,true);
-
-			// Required designer variable.
 			InitializeComponent();
 
-			try 
+			try
 			{
-				tb.Visible = Helper.XmlRegistry.HiddenMode;
+				tb.IsVisible = Helper.XmlRegistry.HiddenMode;
 				SetContent();
-			} 
-			catch {}
-		}
-
-		/// <summary> 
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				BnfoCustomerItemsUI = null;
-				if(components != null)
-				{
-					components.Dispose();
-				}
 			}
-			base.Dispose( disposing );
+			catch {}
 		}
 
 		#region Windows Form Designer generated code
@@ -86,52 +57,34 @@ namespace SimPe.Plugin
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BnfoCustomerItemUI));
-            this.tb = new System.Windows.Forms.TextBox();
+            this.tb = new Avalonia.Controls.TextBox();
             this.pb = new LabeledProgressBar();
-            this.SuspendLayout();
-            // 
+
             // tb
-            // 
-            resources.ApplyResources(this.tb, "tb");
-            this.tb.HideSelection = false;
-            this.tb.Name = "tb";
-            this.tb.ReadOnly = true;
-            this.tb.TextChanged += new System.EventHandler(this.tb_TextChanged);
-            // 
+            this.tb.IsReadOnly = true;
+            this.tb.TextChanged += (s, e) => tb_TextChanged(s, EventArgs.Empty);
+
             // pb
-            // 
-            this.pb.BackColor = System.Drawing.Color.Transparent;
             this.pb.DisplayOffset = 0;
-            resources.ApplyResources(this.pb, "pb");
-            
             this.pb.Maximum = 2000;
-            this.pb.Name = "pb";
             this.pb.NumberFormat = "N0";
             this.pb.NumberOffset = -1000;
             this.pb.NumberScale = 0.005;
-            
             this.pb.SelectedColor = System.Drawing.Color.Gold;
-            
             this.pb.TokenCount = 11;
             this.pb.UnselectedColor = System.Drawing.Color.Black;
             this.pb.Value = 1000;
             this.pb.ChangedValue += new System.EventHandler(this.pb_Changed);
-            // 
-            // BnfoCustomerItemUI
-            // 
-            this.Controls.Add(this.pb);
-            this.Controls.Add(this.tb);
-            resources.ApplyResources(this, "$this");
-            this.Name = "BnfoCustomerItemUI";
-            this.ResumeLayout(false);
-            this.PerformLayout();
 
+            var panel = new Avalonia.Controls.StackPanel();
+            panel.Children.Add(this.tb);
+            panel.Children.Add(this.pb);
+            Content = panel;
 		}
 		#endregion
 
 		BnfoCustomerItem item;
-		private System.Windows.Forms.TextBox tb;
+		private Avalonia.Controls.TextBox tb;
 	
 		[System.ComponentModel.Browsable(false)]
 		public BnfoCustomerItem Item
@@ -175,13 +128,13 @@ namespace SimPe.Plugin
 			{
 				tb.Text = Helper.BytesToHexList(item.Data);
 				pb.Value = item.LoyaltyScore;				
-				pb.Enabled = true;
+				pb.IsEnabled = true;
 			} 
 			else 
 			{
 				tb.Text = "";
 				pb.Value = 0;
-				pb.Enabled = false;
+				pb.IsEnabled = false;
 			}
 			intern = false;
 		}
@@ -203,12 +156,12 @@ namespace SimPe.Plugin
 			if (pb.Value<0 && pb.SelectedColor!=Color.Coral) 
 			{
 				pb.SelectedColor = Color.Coral;
-				pb.Refresh();
+				pb.InvalidateVisual();
 			}
 			else if (pb.Value>=0 && pb.SelectedColor!=Color.Gold) 
 			{
 				pb.SelectedColor = Color.Gold;
-				pb.Refresh();
+				pb.InvalidateVisual();
 			}
 
 			item.LoyaltyScore = pb.Value;

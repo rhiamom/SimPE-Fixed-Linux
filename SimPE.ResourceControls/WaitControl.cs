@@ -28,29 +28,14 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-
 namespace SimPe
 {
     public partial class WaitControl : UserControl, IWaitingBarControl
     {
-        const uint WM_USER_CHANGED_MESSAGE = 0x8000u | 0x0001;
-        const uint WM_USER_CHANGED_MAXPROGRESS = 0x8000u | 0x0002;
-        const uint WM_USER_CHANGED_PROGRESS = 0x8000u | 0x0003;
-        const uint WM_USER_SHOW_HIDE = 0x8000u | 0x0004;
-        const uint WM_USER_SHOW_HIDE_PROGRESS = 0x8000u | 0x0005;
-        const uint WM_USER_SHOW_HIDE_ANIMATION = 0x8000u | 0x0006;
-        const uint WM_USER_SHOW_HIDE_TEXT = 0x8000u | 0x0007;
-        IntPtr myhandle;
-
-        [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
-
         public WaitControl()
         {
             msg = "";
             InitializeComponent();
-            myhandle = Handle;
 
             Message = "";
             MaxProgress = 0;
@@ -64,49 +49,6 @@ namespace SimPe
             {
                 ThemeManager.Global.AddControl(this.statusStrip1);
             }
-        }
-
-        protected override void WndProc(ref System.Windows.Forms.Message m)
-        {
-            if (m.HWnd == Handle)
-            {
-                if (m.Msg == WM_USER_SHOW_HIDE)
-                {
-                    if (m.WParam.ToInt32() == 1) SetWaiting(true);
-                    else SetWaiting(false);
-                }
-                else if (m.Msg == WM_USER_CHANGED_MESSAGE)
-                {
-                    this.tbInfo.Text = Message;
-                    //this.statusStrip1.Invalidate();
-                }
-                else if (m.Msg == WM_USER_CHANGED_MAXPROGRESS)
-                {
-                    this.pb.Value = this.pb.Minimum;
-                    this.pb.Maximum = Math.Max(Math.Max(1, pb.Minimum), m.WParam.ToInt32());
-                    DoShowProgress(this.pb.Maximum>1);
-                }
-                else if (m.Msg == WM_USER_CHANGED_PROGRESS)
-                {
-                    SetProgress(m.WParam.ToInt32());
-                }
-                else if (m.Msg == WM_USER_SHOW_HIDE_PROGRESS)
-                {
-                    if (m.WParam.ToInt32() == 1) DoShowProgress(true);
-                    else DoShowProgress(false);
-                }
-                else if (m.Msg == WM_USER_SHOW_HIDE_ANIMATION)
-                {
-                    if (m.WParam.ToInt32() == 1) DoShowAnimation(true);
-                    else DoShowAnimation(false);
-                }
-                else if (m.Msg == WM_USER_SHOW_HIDE_TEXT)
-                {
-                    if (m.WParam.ToInt32() == 1) DoShowText(true);
-                    else DoShowText(false);
-                }
-            }
-            base.WndProc(ref m);
         }
 
         string msg;
@@ -124,7 +66,7 @@ namespace SimPe
                 {
                     msg = value;
                 }
-                SendMessage(myhandle, WM_USER_CHANGED_MESSAGE, 0, 0);
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => { this.tbInfo.Text = this.msg; });
             }
         }
 
@@ -138,7 +80,8 @@ namespace SimPe
                 {
                     max = value;
                 }
-                SendMessage(myhandle, WM_USER_CHANGED_MAXPROGRESS, value, 0);                
+                var _mp = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => { this.pb.Value = this.pb.Minimum; this.pb.Maximum = Math.Max(Math.Max(1, pb.Minimum), _mp); DoShowProgress(this.pb.Maximum > 1); });
             }
         }
 
@@ -149,7 +92,8 @@ namespace SimPe
             get { return val; }
             set
             {
-                SendMessage(myhandle, WM_USER_CHANGED_PROGRESS, value, 0);          
+                var _pv = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => SetProgress(_pv));
             }
         }
 
@@ -180,9 +124,8 @@ namespace SimPe
             get { return wait; }
             set
             {
-                int val = 0;
-                if (value) val = 1;
-                SendMessage(myhandle, WM_USER_SHOW_HIDE, val, 0);   
+                var _sw = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => SetWaiting(_sw));
             }
         }
 
@@ -208,9 +151,8 @@ namespace SimPe
             get { return spb; }
             set
             {
-                int val = 0;
-                if (value) val = 1;
-                SendMessage(myhandle, WM_USER_SHOW_HIDE_PROGRESS, val, 0); 
+                var _sp = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => DoShowProgress(_sp));
             }
         }
 
@@ -232,7 +174,8 @@ namespace SimPe
             set
             {
                 sanim = value;
-                SendMessage(myhandle, WM_USER_SHOW_HIDE_ANIMATION, 0, 0);
+                var _sa = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => DoShowAnimation(_sa));
             }
         }
 
@@ -246,9 +189,8 @@ namespace SimPe
             get { return stxt; }
             set
             {
-                int val = 0;
-                if (value) val = 1;
-                SendMessage(myhandle, WM_USER_SHOW_HIDE_TEXT, val, 0);
+                var _st = value;
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => DoShowText(_st));
             }
         }
 
@@ -265,15 +207,10 @@ namespace SimPe
             get { return Waiting; }
         }
 
-        public Image Image
+        public Avalonia.Media.Imaging.Bitmap Image
         {
-            get
-            {
-                return null;
-            }
-            set
-            {                
-            }
+            get { return null; }
+            set { }
         }
 
         public int Value { get; internal set; }

@@ -454,7 +454,7 @@ namespace SimPe.Wizards
 		{
 			if ((prevsteps.Count>1)) 
 			{
-				e.Cancel = (MessageBox.Show("This Wizard is not finished yet.\n\nDo you want to quit anyway?", "Information", MessageBoxButtons.YesNo)!=DialogResult.Yes);
+				e.Cancel = (SimPe.Message.Show("This Wizard is not finished yet.\n\nDo you want to quit anyway?", "Information", MessageBoxButtons.YesNo)!=SimPe.DialogResult.Yes);
 			}
 
 			if (!e.Cancel) Helper.XmlRegistry.Flush();

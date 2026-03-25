@@ -27,6 +27,7 @@ using System.Threading;
 using System.Collections;
 using System.Drawing;
 using Ambertation.Threading;
+using TreeNodeCollection = System.Windows.Forms.TreeNode.TreeNodeCollection;
 
 namespace SimPe.Plugin.Tool.Dockable
 {	
@@ -401,7 +402,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				
 				if (oci.Thumbnail!=null) 
 				{
-					Wait.Image =oci.Thumbnail;
+					Wait.UpdateImage(oci.Thumbnail);
 					ObjectReader.changedcache = true;
 				}
 			}

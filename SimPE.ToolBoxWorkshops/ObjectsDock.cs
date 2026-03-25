@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using TreeNodeCollection = System.Windows.Forms.TreeNode.TreeNodeCollection;
 
 namespace SimPe.Plugin.Tool.Dockable
 {

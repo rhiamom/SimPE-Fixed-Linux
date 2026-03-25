@@ -34,5 +34,6 @@ namespace SimPe.Windows.Forms
     public class HelpForm : System.Windows.Forms.Form
     {
         public HelpForm() { }
+        protected override void Dispose(bool disposing) { base.Dispose(disposing); }
     }
 }

@@ -74,23 +74,20 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		#region IToolExt Member
 
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
-			get
-			{
-				return System.Windows.Forms.Shortcut.None;
-			}
+			get { return 0; }
 		}
 
 		public System.Drawing.Image Icon
 		{
 			get
 			{
-				return dc.TabImage;
+				return dc.TabImage as System.Drawing.Image;
 			}
-		}	
+		}
 
-		public virtual bool Visible 
+		public virtual bool Visible
 		{
 			get { return GetDockableControl().IsDocked ||  GetDockableControl().IsFloating; }
 		}

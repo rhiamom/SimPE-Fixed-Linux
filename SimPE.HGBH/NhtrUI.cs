@@ -64,7 +64,6 @@ namespace SimPe.Plugin
                 ThemeManager tm = ThemeManager.Global.CreateChild();
                 tm.AddControl(this.tb);
                 tm.AddControl(this.lb);
-                tm.AddControl(this.pg);
 		}
 		
 
@@ -84,99 +83,39 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NhtrUI));
-            this.lb = new System.Windows.Forms.ListBox();
-            this.tb = new System.Windows.Forms.TextBox();
-            this.cb = new System.Windows.Forms.ComboBox();
-            this.pg = new System.Windows.Forms.PropertyGrid();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // lb
-            // 
-            resources.ApplyResources(this.lb, "lb");
-            this.lb.Name = "lb";
-            this.lb.SelectedIndexChanged += new System.EventHandler(this.lb_SelectedIndexChanged);
-            // 
-            // tb
-            // 
-            resources.ApplyResources(this.tb, "tb");
-            this.tb.Name = "tb";
-            this.tb.ReadOnly = true;
-            // 
-            // cb
-            // 
-            resources.ApplyResources(this.cb, "cb");
-            this.cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb.Name = "cb";
-            this.cb.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // pg
-            // 
-            resources.ApplyResources(this.pg, "pg");
-            this.pg.BackColor = System.Drawing.SystemColors.Control;
-            this.pg.LineColor = System.Drawing.SystemColors.ScrollBar;
-            this.pg.Name = "pg";
-            this.pg.ToolbarVisible = false;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.cb);
-            this.panel1.Controls.Add(this.lb);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.tb);
-            this.panel2.Controls.Add(this.pg);
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
-            // 
-            // splitter1
-            // 
-            resources.ApplyResources(this.splitter1, "splitter1");
-            this.splitter1.Name = "splitter1";
-            this.splitter1.TabStop = false;
-            // 
-            // NhtrUI
-            // 
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.panel1);
-            resources.ApplyResources(this, "$this");
-            this.Name = "NhtrUI";
-            this.Controls.SetChildIndex(this.panel1, 0);
-            this.Controls.SetChildIndex(this.splitter1, 0);
-            this.Controls.SetChildIndex(this.panel2, 0);
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.ResumeLayout(false);
+            this.lb = new Avalonia.Controls.ListBox();
+            this.tb = new Avalonia.Controls.TextBox { IsReadOnly = true };
+            this.cb = new Avalonia.Controls.ComboBox();
 
+            this.lb.SelectionChanged += (s, e) => lb_SelectedIndexChanged(s, System.EventArgs.Empty);
+            this.cb.SelectionChanged += (s, e) => comboBox1_SelectedIndexChanged(s, System.EventArgs.Empty);
+
+            // Layout: 3-column grid — combo+list | splitter | textbox
+            var grid = new Avalonia.Controls.Grid();
+            grid.ColumnDefinitions = new Avalonia.Controls.ColumnDefinitions("*,4,*");
+
+            var leftPanel = new Avalonia.Controls.DockPanel();
+            Avalonia.Controls.DockPanel.SetDock(this.cb, Avalonia.Controls.Dock.Top);
+            leftPanel.Children.Add(this.cb);
+            leftPanel.Children.Add(this.lb);
+            Avalonia.Controls.Grid.SetColumn(leftPanel, 0);
+            grid.Children.Add(leftPanel);
+
+            var splitter = new Avalonia.Controls.GridSplitter();
+            Avalonia.Controls.Grid.SetColumn(splitter, 1);
+            grid.Children.Add(splitter);
+
+            Avalonia.Controls.Grid.SetColumn(this.tb, 2);
+            grid.Children.Add(this.tb);
+
+            Content = grid;
 		}
-		#endregion
 
-		private System.Windows.Forms.ListBox lb;
-		private System.Windows.Forms.TextBox tb;
-		private System.Windows.Forms.ComboBox cb;
-		private System.Windows.Forms.PropertyGrid pg;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Splitter splitter1;
+		private Avalonia.Controls.ListBox lb;
+		private Avalonia.Controls.TextBox tb;
+		private Avalonia.Controls.ComboBox cb;
 
 		public Nhtr Nhtr
 		{
@@ -199,8 +138,8 @@ namespace SimPe.Plugin
 				
 				if (cb.Items.Count>0) cb.SelectedIndex = 0;
 
-				lb.Enabled = true;
-				this.Enabled = true;
+				lb.IsEnabled = true;
+				this.IsEnabled = true;
 			} 
 			else 
 			{
@@ -217,15 +156,13 @@ namespace SimPe.Plugin
 
 		private void lb_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (lb.SelectedItem==null) 
+			if (lb.SelectedItem==null)
 			{
 				tb.Text = "";
-				pg.SelectedObject = null;
 			}
-			else 
+			else
 			{
 				tb.Text = ((lb.SelectedItem as CountedListItem ).Object as NhtrItem).ToLongString();
-				pg.SelectedObject = ((lb.SelectedItem as CountedListItem ).Object as NhtrItem);
 			}
 		}
 

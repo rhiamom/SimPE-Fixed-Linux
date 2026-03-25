@@ -34,5 +34,8 @@ namespace SimPe.Windows.Forms
         {
             SetStyle(System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer, true);
         }
+
+        // Avalonia has no WM_PAINT-style Update; this is a no-op.
+        public new void Update() { }
     }
 }

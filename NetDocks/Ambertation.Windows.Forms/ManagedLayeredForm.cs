@@ -20,49 +20,48 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System.Drawing;
-using System.Windows.Forms;
+
+// Ported from WinForms ManagedLayeredForm.
+// Original: extends WinForms Form via LayeredForm, with WndProc and mouse event overrides.
+// On Avalonia: extends LayeredForm (Avalonia Window). Mouse events use Avalonia pointer events.
+// The InitializeComponent designer-generated code is removed; layout is handled by Avalonia.
+
+using System.Drawing;
+using Avalonia.Input;
 
 namespace Ambertation.Windows.Forms;
 
+/// <summary>
+/// A managed layered overlay window (dock hints, overlays) owned by a DockManager.
+/// Ported from WinForms ManagedLayeredForm : LayeredForm.
+/// On Avalonia, this extends LayeredForm (Avalonia Window).
+/// </summary>
 public class ManagedLayeredForm : LayeredForm
 {
-	private DockManager manager;
+    private DockManager manager;
 
-	internal DockManager Manager => manager;
+    internal DockManager Manager => manager;
 
-	protected ManagedLayeredForm(DockManager manager)
-	{
-		this.manager = manager;
-	}
+    protected ManagedLayeredForm(DockManager manager)
+    {
+        this.manager = manager;
+    }
 
-	internal ManagedLayeredForm(DockManager manager, Bitmap bitmap)
-		: base(bitmap)
-	{
-		this.manager = manager;
-	}
+    internal ManagedLayeredForm(DockManager manager, Bitmap bitmap)
+        : base(bitmap)
+    {
+        this.manager = manager;
+    }
 
-	internal ManagedLayeredForm(DockManager manager, Color cl, Size sz)
-		: base(cl, sz)
-	{
-		this.manager = manager;
-	}
+    internal ManagedLayeredForm(DockManager manager, Color cl, Size sz)
+        : base(cl, sz)
+    {
+        this.manager = manager;
+    }
 
-	internal virtual void MouseOver(Point pt, bool hit)
-	{
-	}
-
-	protected override void OnMouseUp(MouseEventArgs e)
-	{
-		base.OnMouseUp(e);
-	}
-
-	private void InitializeComponent()
-	{
-		base.SuspendLayout();
-		base.ClientSize = new System.Drawing.Size(1115, 759);
-		base.Name = "ManagedLayeredForm";
-		base.ResumeLayout(false);
-	}
+    /// <summary>
+    /// Called when a pointer enters or leaves the hit area of this overlay.
+    /// On Avalonia, wired via Avalonia pointer events instead of WndProc.
+    /// </summary>
+    internal virtual void MouseOver(System.Drawing.Point pt, bool hit) { }
 }

@@ -20,77 +20,70 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
+
+// Ported from WinForms TabPage.
+// Original used System.Windows.Forms attributes (DesignerSerializationVisibility,
+//   ReadOnly, Browsable) and System.Windows.Forms.DockStyle.
+// On Avalonia: DockStyle is the local enum defined in WinFormsCompat.cs.
+//   WinForms designer attributes removed; Browsable/ReadOnly kept via ComponentModel.
+
+using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Ambertation.Windows.Forms;
 
+/// <summary>
+/// A tab page inside a TabControl — a DockPanel constrained to Dock=Fill.
+/// Ported from WinForms TabPage : DockPanel.
+/// </summary>
 public class TabPage : DockPanel
 {
-	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	[ReadOnly(true)]
-	[Browsable(false)]
-	public new DockStyle Dock
-	{
-		get
-		{
-			return base.Dock;
-		}
-		set
-		{
-		}
-	}
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [ReadOnly(true)]
+    [Browsable(false)]
+    public new DockStyle Dock
+    {
+        get => base.Dock;
+        set { }
+    }
 
-	[Browsable(false)]
-	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	[ReadOnly(true)]
-	public override bool ShowCollapseButton
-	{
-		get
-		{
-			return base.ShowCollapseButton;
-		}
-		set
-		{
-		}
-	}
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [ReadOnly(true)]
+    public override bool ShowCollapseButton
+    {
+        get => base.ShowCollapseButton;
+        set { }
+    }
 
-	public TabControl TabControl => base.Manager as TabControl;
+    public TabControl TabControl => Manager as TabControl;
 
-	public override bool OnlyChild => false;
+    public override bool OnlyChild => false;
 
-	[ReadOnly(true)]
-	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-	[Browsable(false)]
-	public override string ButtonText
-	{
-		get
-		{
-			return base.CaptionText;
-		}
-		set
-		{
-			base.CaptionText = value;
-		}
-	}
+    [ReadOnly(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public override string ButtonText
+    {
+        get => base.CaptionText;
+        set => base.CaptionText = value;
+    }
 
-	public TabPage()
-		: this(null)
-	{
-	}
+    public TabPage()
+        : this(null)
+    {
+    }
 
-	public TabPage(TabControl tc)
-		: base(tc)
-	{
-		base.Dock = DockStyle.Fill;
-		base.ShowCollapseButton = false;
-	}
+    public TabPage(TabControl tc)
+        : base(tc)
+    {
+        base.Dock              = DockStyle.Fill;
+        base.ShowCollapseButton = false;
+    }
 
-	protected override void OnDockChanged(EventArgs e)
-	{
-		base.Dock = DockStyle.Fill;
-		base.OnDockChanged(e);
-	}
+    protected override void OnDockChanged(EventArgs e)
+    {
+        base.Dock = DockStyle.Fill;
+        base.OnDockChanged(e);
+    }
 }

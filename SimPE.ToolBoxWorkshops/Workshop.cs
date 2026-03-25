@@ -1134,7 +1134,7 @@ namespace SimPe.Plugin
 
             if (SimPe.PathProvider.Global.EPInstalled < 16 && ((!System.IO.File.Exists(ScenegraphHelper.GMND_PACKAGE)) || (!System.IO.File.Exists(ScenegraphHelper.MMAT_PACKAGE))) && (!this.cbColor.Checked))
             {
-                if (MessageBox.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo) == DialogResult.No) return;
+                if (SimPe.Message.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo) == SimPe.DialogResult.No) return;
             }
 
             if (this.cbColorExt.Checked) if (sfd.ShowDialog() != DialogResult.OK) return;

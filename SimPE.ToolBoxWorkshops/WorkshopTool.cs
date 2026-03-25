@@ -65,7 +65,7 @@ namespace SimPe.Plugin
 		{
 			if (Helper.StartedGui == Executable.Default) 
 			{
-				if (Message.Show(SimPe.Localization.GetString("ObsoleteOW"), SimPe.Localization.GetString("Warning"), System.Windows.Forms.MessageBoxButtons.YesNo)==System.Windows.Forms.DialogResult.No)
+				if (Message.Show(SimPe.Localization.GetString("ObsoleteOW"), SimPe.Localization.GetString("Warning"), System.Windows.Forms.MessageBoxButtons.YesNo)==SimPe.DialogResult.No)
 					return new ToolResult(false, false);
 			}
 
@@ -99,15 +99,9 @@ namespace SimPe.Plugin
 
 		#region IToolExt Member
 		
-		public override System.Windows.Forms.Shortcut Shortcut
+		public override int Shortcut
 		{
-			get
-			{
-				if (Helper.StartedGui == Executable.Default) 
-					return System.Windows.Forms.Shortcut.None;
-				else
-					return System.Windows.Forms.Shortcut.CtrlW;
-			}
+			get { return 0; }
 		}
 		#endregion
 	}

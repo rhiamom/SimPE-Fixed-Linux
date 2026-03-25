@@ -366,12 +366,10 @@ namespace SimPe.Plugin
             // cbtype
             // 
             resources.ApplyResources(this.cbtype, "cbtype");
-            this.cbtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbtype.Enum = null;
-            this.cbtype.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cbtype.Name = "cbtype";
             this.cbtype.ResourceManager = null;
-            this.cbtype.SelectedIndexChanged += new System.EventHandler(this.cbtype_SelectedIndexChanged);
+            this.cbtype.SelectionChanged += (s, e) => cbtype_SelectedIndexChanged(s, System.EventArgs.Empty);
             // 
             // cbObjs
             // 
@@ -707,18 +705,18 @@ namespace SimPe.Plugin
 		void UpdateSelectedItem()
 		{
 			bool use = (!item.MemoryCacheItem.IsToken && !item.MemoryCacheItem.IsInventory);			
-			this.cbMems.Visible = use;
+			this.cbMems.IsVisible = use;
 			this.rbMems.Checked = use;
 			if (use) SelectNgbhItem(cbMems, item);
 
 
 			use = item.MemoryCacheItem.IsToken && !item.MemoryCacheItem.IsInventory;
-			this.cbToks.Visible = use;
+			this.cbToks.IsVisible = use;
 			this.rbToks.Checked = use;
 			if (use)  SelectNgbhItem(cbToks, item);
 
 			use = (!item.MemoryCacheItem.IsToken && item.MemoryCacheItem.IsInventory);
-			this.cbObjs.Visible = use;
+			this.cbObjs.IsVisible = use;
 			this.rbObjs.Checked = use;
 			if (use) SelectNgbhItem(cbObjs, item);
 		}
@@ -781,18 +779,7 @@ namespace SimPe.Plugin
 
 		private void pg_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e)
 		{
-			if (item==null) return;
-			string[] n = e.ChangedItem.Label.Split(new char[] {':'}, 2);
-			if (n.Length>0)
-			{
-				int v = Helper.StringToInt32(n[0], -1, 16);
-				if (v>=0) 
-				{
-					item.PutValue(v, (ushort)((Ambertation.BaseChangeableNumber)e.ChangedItem.Value).Value);
-					chgraw = true;
-					UpdateNgbhItemsListView();
-				}
-			}
+			// PropertyGrid not available on Mac; this event never fires.
 		}
 
 		private void tabPage3_VisibleChanged(object sender, System.EventArgs e)
@@ -933,25 +920,25 @@ namespace SimPe.Plugin
 		private void rbObjs_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (inter) return;
-			cbObjs.Visible = true;
-			cbMems.Visible = false;
-			cbToks.Visible = false;
+			cbObjs.IsVisible = true;
+			cbMems.IsVisible = false;
+			cbToks.IsVisible = false;
 		}
 
 		private void rbMems_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (inter) return;
-			cbObjs.Visible = false;
-			cbMems.Visible = true;
-			cbToks.Visible = false;
+			cbObjs.IsVisible = false;
+			cbMems.IsVisible = true;
+			cbToks.IsVisible = false;
 		}
 
 		private void rbToks_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (inter) return;
-			cbObjs.Visible = false;
-			cbMems.Visible = false;
-			cbToks.Visible = true;
+			cbObjs.IsVisible = false;
+			cbMems.IsVisible = false;
+			cbToks.IsVisible = true;
 		}
 
 		

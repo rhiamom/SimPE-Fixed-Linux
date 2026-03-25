@@ -20,65 +20,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
+
+// Ported from WinForms TabControl.
+// Original: extends BaseDockManager, used ManagerSingelton.Global.TabRenderer
+//   and WinForms ToolboxItem/ToolboxBitmap designer attributes.
+// On Avalonia: WinForms designer attributes removed.
+//   ManagerSingelton.Global.TabRenderer is now a property on ManagerSingelton.
+//   TabRenderer defaults to null until rendering is wired in a future pass.
+
+using System;
 
 namespace Ambertation.Windows.Forms;
 
-[Designer(typeof(DockContainerDesigner))]
-[ToolboxBitmap(typeof(DockManager), "Floaters.dockimg.png")]
-[ToolboxItem(true)]
+/// <summary>
+/// Tab container — holds TabPages and renders them as a tab strip.
+/// Ported from WinForms TabControl : BaseDockManager.
+/// On Avalonia, tab rendering will be implemented in a future pass.
+/// </summary>
 public class TabControl : BaseDockManager
 {
-	public override bool OneChild => false;
+    public override bool OneChild => false;
 
-	protected override bool MeAsCenterDock => true;
+    protected override bool MeAsCenterDock => true;
 
-	public TabControl()
-		: base(ManagerSingelton.Global.TabRenderer)
-	{
-	}
+    public TabControl()
+        : base(ManagerSingelton.Global.TabRenderer)
+    {
+    }
 
-	protected override void CleanUp()
-	{
-	}
+    protected override void CleanUp() { }
 
-	protected override void OnControlAdded(ControlEventArgs e)
-	{
-		TabPage tabPage = e.Control as TabPage;
-		if (tabPage == null)
-		{
-			throw new Exception("You can only add TabPage Controls to a TabControl! (tried to add " + e.Control.GetType().Name + ")");
-		}
-		base.OnControlAdded(e);
-	}
+    internal override void StartDockMode(DockPanel dock)  { }
 
-	internal override void StartDockMode(DockPanel dock)
-	{
-	}
+    internal override void StopDockMode(DockPanel dock)
+    {
+        AddPage(dock as TabPage);
+    }
 
-	internal override void StopDockMode(DockPanel dock)
-	{
-		AddPage(dock as TabPage);
-	}
+    internal override void MouseMoved(System.Drawing.Point scrpt) { }
 
-	internal override void MouseMoved(Point scrpt)
-	{
-	}
+    public void AddPage(TabPage tp)
+    {
+        if (tp != null) DockPanelInt(tp, DockStyle.Fill);
+    }
 
-	public void AddPage(TabPage tp)
-	{
-		DockPanelInt(tp, DockStyle.Fill);
-	}
-
-	public override void Collapse(bool animated)
-	{
-	}
-
-	public override void Expand(bool animated)
-	{
-	}
+    public override void Collapse(bool animated = true) { }
+    public override void Expand(bool animated = true)   { }
 }

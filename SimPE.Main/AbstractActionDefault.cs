@@ -26,7 +26,7 @@ using System;
 namespace SimPe.Actions.Default
 {
 	/// <summary>
-	/// Zusammenfassung für ExportAction.
+	/// Zusammenfassung fï¿½r ExportAction.
 	/// </summary>
 	public abstract class AbstractActionDefault : SimPe.Interfaces.IToolAction
 	{
@@ -50,11 +50,11 @@ namespace SimPe.Actions.Default
 
 		#region IToolExt Member
 
-		public virtual System.Windows.Forms.Shortcut Shortcut
+		public virtual int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.None;
+				return 0; // System.Windows.Forms.Shortcut.None
 			}
 		}
 

@@ -88,7 +88,7 @@ namespace SimPe.Wizards
 			lb1.Top = 0;
 			lb1.AutoSize = true;
 			lb1.Text = we.WizardCaption;
-			lb1.Font = new Font("Georgia", (float)10, FontStyle.Bold | FontStyle.Italic);
+			lb1.Font = new Font("Georgia", (float)10, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic);
 			lb1.LinkColor = Color.FromArgb(0xE5, 0x53, 0x00);
 			lb1.Tag = we;
 			lb1.LinkClicked += new LinkLabelLinkClickedEventHandler(StartWizard);

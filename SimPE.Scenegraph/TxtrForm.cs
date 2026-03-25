@@ -1032,7 +1032,7 @@ namespace SimPe.Plugin
 
 			if (ratio != newratio) 
 			{
-				if (MessageBox.Show("The File you want to import does not have the correct aspect Ratio!\n\nDo you want SimPe to crop the Image?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes) 
+				if (SimPe.Message.Show("The File you want to import does not have the correct aspect Ratio!\n\nDo you want SimPe to crop the Image?", "Warning", MessageBoxButtons.YesNo) == SimPe.DialogResult.Yes) 
 				{
 					int w = Convert.ToInt32(img.Height * ratio);
 					int h = img.Height;

@@ -32,7 +32,7 @@ namespace Ambertation.Graphics;
 [TypeConverter(typeof(ExpandableObjectConverter))]
 public class ViewportSetting : ViewportSettingBasic
 {
-	protected DirectXPanel parent;
+	protected GlPanel parent;
 	protected float angx, angy, angz, rad, camoffset;
 	protected Vector3 campos, camtarget, pos, center;
 	protected float fov, aspect, near, far;
@@ -81,7 +81,7 @@ public class ViewportSetting : ViewportSettingBasic
 	[Browsable(false)] public float InputRotationScale => 100f;
 	[Browsable(false)] public float InputScaleScale => 100f;
 
-	internal ViewportSetting(DirectXPanel parent) : base(parent)
+	internal ViewportSetting(GlPanel parent) : base(parent)
 	{
 		flname = null; this.parent = parent; Reset();
 		autolightmesh = false; useleft = false; useeff = false; alphablend = true; paused = false;

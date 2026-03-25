@@ -365,7 +365,7 @@ namespace SimPe.Plugin
 		{
 			lv.Clear();
 			if (lv.SmallImageList!=null)
-				lv.SmallImageList.Images.Clear();
+				lv.SmallImageList.Clear();
 		}
 
 
@@ -423,7 +423,7 @@ namespace SimPe.Plugin
 			this.Refresh(false);
         }
 
-		public ListView.ListViewItemCollection Items
+		public ListViewItemCollection Items
 		{
 			get { return lv.Items;}
 		}
@@ -433,8 +433,8 @@ namespace SimPe.Plugin
 		{
 			get { return sil;}
 			set 
-			{ 
-				lv.SmallImageList = value;
+			{
+				// lv.SmallImageList not assigned (type mismatch in Avalonia port)
 				sil = value;
 			}
 		}
@@ -690,7 +690,7 @@ namespace SimPe.Plugin
 						items.Insert(itemIndex, item1);											
 						this.AddItemAt(item1, itemIndex);
 
-						this.lv.FocusedItem.Focused = false;
+						// this.lv.FocusedItem.Focused = false; // not supported in Avalonia port
 					}
 				}
 				catch (Exception exception1)

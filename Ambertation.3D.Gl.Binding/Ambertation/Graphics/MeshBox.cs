@@ -160,6 +160,20 @@ public class MeshBox : MeshList, IDisposable
 		else txtrstream = null;
 	}
 
+	public void SetTexture(Avalonia.Media.Imaging.Bitmap avBmp)
+	{
+		txtrstream?.Close();
+		txtrmb = null;
+		if (txtr != null) { txtr.Dispose(); txtr = null; }
+		if (avBmp != null)
+		{
+			txtrstream = new MemoryStream();
+			avBmp.Save(txtrstream);
+			txtrstream.Seek(0, SeekOrigin.Begin);
+		}
+		else txtrstream = null;
+	}
+
 	public void SetTexture(MeshBox mb) { txtrstream?.Close(); txtrstream = null; txtrmb = mb; }
 
 	internal GlCullMode GetCullMode(GlCullMode def)

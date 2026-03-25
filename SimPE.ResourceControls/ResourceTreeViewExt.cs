@@ -90,11 +90,7 @@ namespace SimPe.Windows.Forms
         protected bool SetResourceMaps(ResourceMaps maps, bool selectevent, bool dontselect, bool nosave)
         {
             last = maps;
-            if (FileTable.WrapperRegistry != null)
-            {
-                tv.ImageList = FileTable.WrapperRegistry.WrapperImageList;
-                tv.StateImageList = tv.ImageList;
-            }
+            // tv.ImageList / StateImageList are WinForms-only; not applicable in Avalonia.
             if (!nosave) SaveLastSelection();
 
             this.Clear();

@@ -233,11 +233,11 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		#region IToolExt Member
 
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.None;
+				return 0;
 			}
 		}
 

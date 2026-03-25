@@ -20,63 +20,58 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
+
+// Ported from WinForms RubberBandHelper.
+// Original: extends WinForms Control, overlays drag-resize rubber-band on a DockContainer.
+//   Used SetStyle(ControlStyles.*) and OnPaint(PaintEventArgs) / OnMouseMove(MouseEventArgs).
+// On Avalonia: extends Avalonia.Controls.Control.
+//   SetStyle() calls removed (Avalonia handles double-buffering natively).
+//   Rendering will use Render(DrawingContext) in a future pass.
+//   Drag-resize rubber band is no-op on Mac (fixed layout).
+
+using System.Collections.Generic;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 
 namespace Ambertation.Windows.Forms;
 
-[ToolboxItem(false)]
-public class RubberBandHelper : Control
+/// <summary>
+/// Visual overlay during drag-resize of a DockContainer.
+/// Ported from WinForms RubberBandHelper : Control.
+/// On Avalonia, drag-resize is no-op; the class is kept for API compatibility.
+/// </summary>
+public class RubberBandHelper : Avalonia.Controls.Control
 {
-	private DockContainer dc;
+    private DockContainer dc;
+    private Dictionary<object, bool> map;
+    private DockStyle dock;
 
-	private Dictionary<Control, bool> map;
+    public DockStyle ContainerDock => dock;
 
-	private DockStyle dock;
+    /// <summary>The bounding rectangle of this rubber-band overlay (zero-based).</summary>
+    public System.Drawing.Rectangle ClientRectangle
+        => new System.Drawing.Rectangle(0, 0, (int)Width, (int)Height);
 
-	public DockStyle ContainerDock => dock;
+    internal RubberBandHelper(DockContainer dc)
+    {
+        this.dc = dc;
+        map = new Dictionary<object, bool>();
+        // On Mac, no rubber-band overlay is drawn; dock style is captured for API callers.
+        dock = dc.Dock is DockStyle ds ? ds : DockStyle.None;
+    }
 
-	internal RubberBandHelper(DockContainer dc)
-	{
-		SetStyle(ControlStyles.ResizeRedraw, value: true);
-		SetStyle(ControlStyles.OptimizedDoubleBuffer, value: true);
-		SetStyle(ControlStyles.UserPaint, value: true);
-		SetStyle(ControlStyles.AllPaintingInWmPaint, value: true);
-		this.dc = dc;
-		map = new Dictionary<Control, bool>();
-		foreach (Control control in dc.Controls)
-		{
-			map[control] = control.Visible;
-			control.Visible = false;
-		}
-		Dock = DockStyle.Fill;
-		dock = dc.Dock;
-		dc.Controls.Add(this);
-	}
+    internal void Close()
+    {
+        // On Mac, no rubber-band to remove.
+    }
 
-	internal void Close()
-	{
-		dc.Controls.Remove(this);
-		foreach (Control key in map.Keys)
-		{
-			if (key is DockPanel)
-			{
-				((DockPanel)key).NCRefresh();
-			}
-			key.Visible = map[key];
-		}
-	}
-
-	protected override void OnMouseMove(MouseEventArgs e)
-	{
-		base.OnMouseMove(e);
-	}
-
-	protected override void OnPaint(PaintEventArgs e)
-	{
-		base.OnPaint(e);
-		dc.Manager.Renderer.DockPanelRenderer.RenderResizePanel(dc, this, e);
-	}
+    public override void Render(DrawingContext context)
+    {
+        // Rubber-band resize rendering will be implemented here using Avalonia
+        // DrawingContext in a future pass.
+        if (dc?.Manager?.Renderer?.DockPanelRenderer != null)
+            dc.Manager.Renderer.DockPanelRenderer.RenderResizePanel(dc, this, null);
+        base.Render(context);
+    }
 }

@@ -62,12 +62,9 @@ namespace SimPe.Plugin.Tool.Window
 
 		#region IToolExt Member
 
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
-			get
-			{				
-				return System.Windows.Forms.Shortcut.None;
-			}
+			get { return 0; }
 		}
 
 		public bool Visible

@@ -407,7 +407,7 @@ namespace SimPe
                 Helper.XmlRegistry.LockDocks = true;
                 Helper.XmlRegistry.Flush();
 
-                return !(Message.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}", SimPe.Localization.GetString("PresetClassic")),
+                return !(System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}", SimPe.Localization.GetString("PresetClassic")),
                     SimPe.Localization.GetString("Information"), System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
             }
             public string[] Help() { return new string[] { "-classicpreset", null }; }
@@ -423,7 +423,7 @@ namespace SimPe
 
                 ForceModernLayout();
 
-                return (Message.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}",
+                return (System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}",
                     SimPe.Localization.GetString("PresetModern")), SimPe.Localization.GetString("Information"),
                     System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
             }

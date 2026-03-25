@@ -76,11 +76,11 @@ namespace SimPe.Plugin
 			}
 		}
 
-		public override System.Windows.Forms.Shortcut Shortcut
+		public override int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.CtrlF;
+				return 0;
 			}
 		}
 		#endregion

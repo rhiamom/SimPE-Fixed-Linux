@@ -126,7 +126,7 @@ public class ViewportSettingBasic
 	public event EventHandler ChangedAttribute;
 	public event EventHandler ChangedState;
 
-	internal ViewportSettingBasic(DirectXPanel parent)
+	internal ViewportSettingBasic(GlPanel parent)
 	{
 		txtr = true;
 		fm = FillModes.Default;

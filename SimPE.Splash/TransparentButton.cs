@@ -49,7 +49,7 @@ namespace SimPe.Windows.Forms
             }
         }
         
-        protected override void OnPaint(PaintEventArgs pevent)
+        protected virtual void OnPaint(PaintEventArgs pevent)
         {
             //base.OnPaint(pevent);
             if (img!=null) pevent.Graphics.DrawImage(img, 0, 0);

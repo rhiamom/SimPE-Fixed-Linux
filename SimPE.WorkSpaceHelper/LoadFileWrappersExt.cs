@@ -62,10 +62,9 @@ namespace SimPe
             CreateExcludeList();
         }
 
-        public static void SetShurtcutKey(System.Windows.Forms.ToolStripMenuItem mi, Shortcut sc)
+        public static void SetShurtcutKey(System.Windows.Forms.ToolStripMenuItem mi, int sc)
         {
-            try { mi.ShortcutKeys = Helper.ToKeys(sc); }
-            catch (Exception) { System.Diagnostics.Debug.WriteLine("Conversion Error from " + sc); }
+            // No-op on Mac: keyboard shortcut mapping not implemented in Avalonia port.
         }
 
 		/// <summary>

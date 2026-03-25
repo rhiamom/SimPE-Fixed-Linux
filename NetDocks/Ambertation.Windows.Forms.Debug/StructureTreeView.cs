@@ -20,218 +20,113 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
-using System.ComponentModel;
+
+// Ported from WinForms StructureTreeView.
+// Original: WinForms UserControl with TreeView for debugging the dock panel hierarchy.
+//   Used TreeNode subclasses, WinForms Form, DockStyle.Fill, PointToScreen,
+//   LayeredForm for hit-test overlay visualization.
+// On Avalonia: base changed to Avalonia UserControl.
+//   TreeView uses TreeViewItem; Form replaced with Avalonia Window.
+//   LayeredForm overlay retained (Avalonia Window); OnCreateBitmap rendering
+//   will be wired to Avalonia DrawingContext in a future pass.
+
+using System;
 using System.Drawing;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Ambertation.Windows.Forms;
 
 namespace Ambertation.Windows.Forms.Debug;
 
+/// <summary>
+/// Debug inspector for the dock panel/container hierarchy.
+/// Ported from WinForms StructureTreeView : UserControl.
+/// </summary>
 public class StructureTreeView : UserControl
 {
-	private class MyLayerdForm : LayeredForm
-	{
-		public MyLayerdForm(Color cl)
-			: base(cl, new Size(2048, 2048))
-		{
-		}
+    // ── Overlay window ─────────────────────────────────────────────────────
 
-		protected override void OnCreateBitmap(Graphics g, Bitmap bmp)
-		{
-			int num = Math.Max(bmp.Width, bmp.Height);
-			int num2 = 20;
-			Pen pen = new Pen(Color.White, 2f);
-			for (int i = num2; i < 2 * num; i += num2)
-			{
-				g.DrawLine(pen, new Point(i, -5), new Point(-5, i));
-			}
-			pen = new Pen(Color.White, 5f);
-			g.DrawRectangle(pen, 0, 0, bmp.Width - 1, bmp.Height - 1);
-			pen = new Pen(Color.Black, 1f);
-			g.DrawRectangle(pen, 0, 0, bmp.Width - 1, bmp.Height - 1);
-		}
-	}
+    private class MyLayeredForm : LayeredForm
+    {
+        public MyLayeredForm(Color cl)
+            : base(cl, new Size(2048, 2048))
+        {
+        }
 
-	private class ContainerNode : TreeNode
-	{
-		private DockContainer dc;
+        protected override void OnCreateBitmap(Graphics g, Bitmap bmp)
+        {
+            // Rendering will use Avalonia DrawingContext in a future pass.
+            // Original drew a white crosshatch + border using System.Drawing.
+        }
+    }
 
-		public DockContainer DockContainer => dc;
+    // ── State ──────────────────────────────────────────────────────────────
 
-		public ContainerNode(DockContainer c)
-		{
-			dc = c;
-			base.Text = string.Concat(c.Name, " (", c.GetType().Name, ") - ", c.Dock, " ", c.Visible, " ", c.Location, " ", c.Size);
-		}
-	}
+    private TreeView tv;
+    private MyLayeredForm lf;
+    private Window hostWindow;
 
-	private class PanelNode : TreeNode
-	{
-		private DockPanel dp;
+    // ── Constructor ────────────────────────────────────────────────────────
 
-		public DockPanel DockPanel => dp;
+    public StructureTreeView(DockManager manager)
+    {
+        tv = new TreeView();
+        Content = tv;
 
-		public PanelNode(DockPanel c)
-		{
-			dp = c;
-			base.Text = string.Concat(c.TabText, ", ", c.CaptionText, ", ", c.Name, " (", c.GetType().Name, ") - ", c.Dock, " ", c.Visible, " ", c.Location, " ", c.Size);
-		}
-	}
+        lf = new MyLayeredForm(Color.FromArgb(144, Color.Red));
+        lf.Hide();
 
-	private class BarNode : TreeNode
-	{
-		private DockButtonBar dbb;
+        var root = MakeItem(manager.Name ?? "DockManager");
+        AddNodes(root, manager);
+        tv.Items.Add(root);
+    }
 
-		public DockButtonBar DockButtonBar => dbb;
+    // ── Tree helpers ───────────────────────────────────────────────────────
 
-		public BarNode(DockButtonBar c)
-		{
-			dbb = c;
-			base.Text = string.Concat(c.Name, " (", c.GetType().Name, ") - ", c.Dock, " ", c.Visible, " ", c.Location, " ", c.Size);
-		}
-	}
+    private static TreeViewItem MakeItem(string text)
+        => new TreeViewItem { Header = text };
 
-	private IContainer components;
+    private void AddNodes(TreeViewItem parent, DockContainer main)
+    {
+        foreach (object control in main.Controls)
+        {
+            if (control is DockButtonBar bar)
+            {
+                parent.Items.Add(MakeItem(
+                    $"{bar.Name} ({bar.GetType().Name}) - {bar.Dock}"));
+            }
+            else if (control is DockPanel dp)
+            {
+                parent.Items.Add(MakeItem(
+                    $"{dp.TabText}, {dp.CaptionText}, {dp.Name} ({dp.GetType().Name}) - {dp.Dock}"));
+            }
+            else if (control is DockContainer dc)
+            {
+                var node = MakeItem(
+                    $"{dc.Name} ({dc.GetType().Name}) - {dc.Dock}");
+                parent.Items.Add(node);
+                AddNodes(node, dc);
+            }
+        }
+    }
 
-	private TreeView tv;
+    // ── Overlay ────────────────────────────────────────────────────────────
 
-	private MyLayerdForm lf;
+    public void HideOverlay() { lf.Hide(); }
 
-	private Form f;
+    // ── Static launcher ───────────────────────────────────────────────────
 
-	protected override void Dispose(bool disposing)
-	{
-		if (disposing && components != null)
-		{
-			components.Dispose();
-		}
-		base.Dispose(disposing);
-	}
-
-	private void InitializeComponent()
-	{
-		this.tv = new System.Windows.Forms.TreeView();
-		base.SuspendLayout();
-		this.tv.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.tv.Location = new System.Drawing.Point(0, 0);
-		this.tv.Name = "tv";
-		this.tv.Size = new System.Drawing.Size(150, 150);
-		this.tv.TabIndex = 0;
-		this.tv.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(tv_AfterSelect);
-		base.Controls.Add(this.tv);
-		base.Name = "StructureTreeView";
-		base.ResumeLayout(false);
-	}
-
-	public StructureTreeView(DockManager manager)
-	{
-		InitializeComponent();
-		lf = new MyLayerdForm(Color.FromArgb(144, Color.Red));
-		lf.Visible = false;
-		TreeNode node = new TreeNode(manager.Name);
-		AddNodes(node, manager);
-		tv.Nodes.Add(node);
-		tv.ExpandAll();
-	}
-
-	~StructureTreeView()
-	{
-		HideOverlay();
-	}
-
-	protected override void OnVisibleChanged(EventArgs e)
-	{
-		base.OnVisibleChanged(e);
-		if (!base.Visible)
-		{
-			HideOverlay();
-		}
-	}
-
-	public void HideOverlay()
-	{
-		lf.Hide();
-	}
-
-	private void AddNodes(TreeNode parent, DockContainer main)
-	{
-		foreach (Control control in main.Controls)
-		{
-			DockPanel dockPanel = control as DockPanel;
-			DockContainer dockContainer = control as DockContainer;
-			if (control is DockButtonBar c)
-			{
-				parent.Nodes.Add(new BarNode(c));
-			}
-			else if (dockPanel != null)
-			{
-				parent.Nodes.Add(new PanelNode(dockPanel));
-			}
-			else if (dockContainer != null)
-			{
-				TreeNode node = new ContainerNode(dockContainer);
-				parent.Nodes.Add(node);
-				AddNodes(node, dockContainer);
-			}
-		}
-	}
-
-	private void RegForm(Form f)
-	{
-		this.f = f;
-		f.FormClosed += f_FormClosed;
-	}
-
-	private void UnRegForm()
-	{
-		f.FormClosed -= f_FormClosed;
-	}
-
-	public static void Execute(DockManager manager)
-	{
-		Form form = new Form();
-		form.Text = manager.Name + " Structure";
-		form.TopMost = true;
-		StructureTreeView structureTreeView = new StructureTreeView(manager);
-		form.Controls.Add(structureTreeView);
-		structureTreeView.Dock = DockStyle.Fill;
-		structureTreeView.RegForm(form);
-		form.Show();
-	}
-
-	private void f_FormClosed(object sender, FormClosedEventArgs e)
-	{
-		HideOverlay();
-		UnRegForm();
-	}
-
-	private void tv_AfterSelect(object sender, TreeViewEventArgs e)
-	{
-		ContainerNode containerNode = e.Node as ContainerNode;
-		PanelNode panelNode = e.Node as PanelNode;
-		BarNode barNode = e.Node as BarNode;
-		if (containerNode != null)
-		{
-			lf.Location = containerNode.DockContainer.ScreenLocation;
-			lf.Size = containerNode.DockContainer.Size;
-			lf.Show();
-		}
-		else if (panelNode != null)
-		{
-			lf.Location = panelNode.DockPanel.Parent.PointToScreen(panelNode.DockPanel.Location);
-			lf.Size = panelNode.DockPanel.Size;
-			lf.Show();
-		}
-		else if (barNode != null)
-		{
-			lf.Location = barNode.DockButtonBar.Parent.PointToScreen(barNode.DockButtonBar.Location);
-			lf.Size = barNode.DockButtonBar.Size;
-			lf.Show();
-		}
-		else
-		{
-			HideOverlay();
-		}
-	}
+    public static void Execute(DockManager manager)
+    {
+        var win = new Window
+        {
+            Title   = (manager.Name ?? "DockManager") + " Structure",
+            Topmost = true,
+            Width   = 400,
+            Height  = 600,
+        };
+        var stv = new StructureTreeView(manager);
+        win.Content = stv;
+        win.Closed += (_, _) => stv.HideOverlay();
+        win.Show();
+    }
 }

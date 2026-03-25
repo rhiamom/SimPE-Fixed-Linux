@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using SimPe;
 using SimPe.Interfaces.Plugin.Scanner;
 using SimPe.Plugin.Scanner;
 
@@ -62,7 +63,7 @@ namespace SimPe.Plugin
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tbscanners;
-        private System.Windows.Forms.CheckedListBox lbscanners;
+        private CheckedListBox lbscanners;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList ilist;
         private System.Windows.Forms.PictureBox thumb;
@@ -411,7 +412,7 @@ namespace SimPe.Plugin
             this.ilist = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbscanners = new System.Windows.Forms.TabPage();
-            this.lbscanners = new System.Windows.Forms.CheckedListBox();
+            this.lbscanners = new CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tboperations = new System.Windows.Forms.TabPage();
             this.pnop = new System.Windows.Forms.Panel();

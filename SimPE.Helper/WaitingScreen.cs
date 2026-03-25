@@ -36,7 +36,17 @@ namespace SimPe
     {
         /// <summary>Display a new WaitingScreen image.</summary>
         public static void UpdateImage(AvBitmap? image) { Screen.doUpdate(image); }
-        /// <summary>The WaitingScreen image.</summary>
+        /// <summary>Display a new WaitingScreen image from a System.Drawing.Image.</summary>
+        public static void UpdateImage(System.Drawing.Image? img)
+        {
+            if (img == null) { Screen.doUpdate((AvBitmap?)null); return; }
+            var bm = img as System.Drawing.Bitmap ?? new System.Drawing.Bitmap(img);
+            using var ms = new System.IO.MemoryStream();
+            bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            ms.Position = 0;
+            Screen.doUpdate(new AvBitmap(ms));
+        }
+        /// <summary>The WaitingScreen image (Avalonia Bitmap).</summary>
         public static AvBitmap? Image { get { return scr == null ? null : scr.prevImage; } set { Screen.doUpdate(value); } }
         /// <summary>Display a new WaitingScreen message.</summary>
         public static void UpdateMessage(string msg) { Screen.doUpdate(msg); }
@@ -44,6 +54,21 @@ namespace SimPe
         public static string Message { get { return scr == null ? "" : scr.prevMessage; } set { Screen.doUpdate(value); } }
         /// <summary>Display a new WaitingScreen image and message.</summary>
         public static void Update(AvBitmap? image, string msg) { Screen.doUpdate(image, msg); }
+        /// <summary>Overload accepting System.Drawing.Bitmap for WinForms-origin callers.</summary>
+        public static void Update(System.Drawing.Bitmap? bm, string msg)
+        {
+            if (bm == null) { Screen.doUpdate((AvBitmap?)null, msg); return; }
+            using var ms = new System.IO.MemoryStream();
+            bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            ms.Position = 0;
+            Screen.doUpdate(new AvBitmap(ms), msg);
+        }
+        /// <summary>Overload accepting System.Drawing.Image for WinForms-origin callers.</summary>
+        public static void Update(System.Drawing.Image? img, string msg)
+        {
+            if (img == null) { Screen.doUpdate((AvBitmap?)null, msg); return; }
+            Update(img as System.Drawing.Bitmap ?? new System.Drawing.Bitmap(img), msg);
+        }
         /// <summary>Show the WaitingScreen for a specific window.</summary>
         public static void Wait(Window form) { Screen.doWait(form); }
         /// <summary>Show the WaitingScreen.</summary>

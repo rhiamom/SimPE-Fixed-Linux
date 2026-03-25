@@ -55,16 +55,16 @@ namespace SimPe.Plugin.Tool.Action
         {
             if (!ChangeEnabledStateEventHandler(null, e))
             {
-                System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
+                Message.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
                     this.ToString());
                 return;
             }
             string messige = "All the Male ";
             if (e.Items.Count > 0)
                 messige = "The selected ";
-            if (Message.Show(messige + "sims will be deleted from your Neighbourhood!\nYou MUST commit the changes to the neighbourhood after this procedure.\nYou can not undo this, so make sure you have created a Backup!\n\nDelete the Sims?", "Warning", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+            if (Message.Show(messige + "sims will be deleted from your Neighbourhood!\nYou MUST commit the changes to the neighbourhood after this procedure.\nYou can not undo this, so make sure you have created a Backup!\n\nDelete the Sims?", "Warning", System.Windows.Forms.MessageBoxButtons.YesNo) == SimPe.DialogResult.No)
                 return;
-            deleteInvalidDna = (Message.Show("Delete all orphan DNA, Scores and Wants records as well?", "Clean Up", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
+            deleteInvalidDna = (Message.Show("Delete all orphan DNA, Scores and Wants records as well?", "Clean Up", System.Windows.Forms.MessageBoxButtons.YesNo) == SimPe.DialogResult.Yes);
             int c = 0;
             if (e.Items.Count > 0)
             {
@@ -337,11 +337,11 @@ namespace SimPe.Plugin.Tool.Action
 		#endregion
 
 		#region IToolExt Member
-		public System.Windows.Forms.Shortcut Shortcut
+		public int Shortcut
 		{
 			get
 			{
-				return System.Windows.Forms.Shortcut.None;
+				return 0;
 			}
 		}
 

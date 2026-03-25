@@ -20,92 +20,86 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
- using System;
-using System.Drawing;
-using System.Windows.Forms;
+
+// Ported from WinForms BaseDockManager.
+// Original: abstract class extending DockContainer (WinForms), with a BaseRenderer,
+//   floating panel list, and abstract drag-dock methods (StartDockMode, StopDockMode,
+//   MouseMoved) implemented via WinForms message pump.
+// On Avalonia: DockContainer base is now our Avalonia port.
+//   Drag-dock abstract methods are kept as no-ops.
+//   BaseRenderer is kept as a property for rendering pipeline compatibility.
+
+using System;
+using System.Collections.Generic;
 
 namespace Ambertation.Windows.Forms;
 
+/// <summary>
+/// Abstract base for the dock manager hierarchy.
+/// Ported from WinForms BaseDockManager : DockContainer.
+/// On Avalonia, drag-dock operations are no-op.
+/// </summary>
 public abstract class BaseDockManager : DockContainer
 {
-	private BaseRenderer rnd;
+    private BaseRenderer _renderer;
 
-	protected bool dockmode;
+    protected bool dockmode;
 
-	protected DockButtonBar.DockPanelList floatingpanels;
+    protected List<DockPanel> floatingpanels;
 
-	public BaseRenderer Renderer
-	{
-		get
-		{
-			return rnd;
-		}
-		set
-		{
-			rnd = value;
-		}
-	}
+    // ── Properties ────────────────────────────────────────────────────────
 
-	public bool DockMode => dockmode;
+    public BaseRenderer Renderer
+    {
+        get => _renderer;
+        set => _renderer = value;
+    }
 
-	protected abstract bool MeAsCenterDock { get; }
+    public bool DockMode => dockmode;
 
-	public BaseDockManager(BaseRenderer renderer)
-		: base(null)
-	{
-		rnd = renderer;
-		floatingpanels = new DockButtonBar.DockPanelList();
-	}
+    protected abstract bool MeAsCenterDock { get; }
 
-	internal void NotifyFloating(DockPanel dp)
-	{
-		if (dp.Floating && !floatingpanels.Contains(dp))
-		{
-			floatingpanels.Add(dp);
-		}
-		else if (!dp.Floating && floatingpanels.Contains(dp))
-		{
-			floatingpanels.Remove(dp);
-		}
-	}
+    // ── Constructor ───────────────────────────────────────────────────────
 
-	internal abstract void StartDockMode(DockPanel dock);
+    protected BaseDockManager(BaseRenderer renderer)
+        : base(null)
+    {
+        _renderer      = renderer;
+        floatingpanels = new List<DockPanel>();
+    }
 
-	internal abstract void StopDockMode(DockPanel dock);
+    // ── Floating panel tracking ───────────────────────────────────────────
 
-	internal abstract void MouseMoved(Point scrpt);
+    internal void NotifyFloating(DockPanel dp)
+    {
+        if (dp.Floating && !floatingpanels.Contains(dp))
+            floatingpanels.Add(dp);
+        else if (!dp.Floating && floatingpanels.Contains(dp))
+            floatingpanels.Remove(dp);
+    }
 
-	internal virtual void DockPanelInt(DockPanel dp, DockStyle style)
-	{
-		bool flag = false;
-		SuspendLayout();
-		if (style == DockStyle.Fill && MeAsCenterDock)
-		{
-			flag = true;
-			dp.DockControl(this);
-			ResumeLayout();
-			return;
-		}
-		foreach (DockContainer container in containers)
-		{
-			if (container.Dock == style)
-			{
-				flag = true;
-				dp.DockControl(container);
-				break;
-			}
-		}
-		if (!flag)
-		{
-			DockContainer dockContainer = CreateNewContainer(-1, after: false, toplevel: true, style);
-			dockContainer.SetNoCleanUpIntern(val: true);
-			dockContainer.Visible = true;
-			dockContainer.Width = Math.Max(dockContainer.Width, dp.Width);
-			dockContainer.Height = Math.Max(dockContainer.Height, dp.Height);
-			dp.DockControl(dockContainer);
-			dockContainer.SetNoCleanUpIntern(val: false);
-		}
-		ResumeLayout();
-	}
+    // ── Drag-dock stubs (no-op on Mac) ────────────────────────────────────
+
+    internal virtual void StartDockMode(DockPanel dock) { }
+    internal virtual void StopDockMode(DockPanel dock)  { }
+    internal virtual void MouseMoved(System.Drawing.Point scrpt) { }
+
+    /// <summary>
+    /// Dock a panel at the given style position.
+    /// On Mac, docking interactions are no-op — panel is placed in the first
+    /// matching container or this manager if MeAsCenterDock.
+    /// </summary>
+    internal virtual void DockPanelInt(DockPanel dp, object style)
+    {
+        // No physical layout on Mac; DockPanel.DockContainer already handles
+        // the container assignment for logical tracking.
+    }
+
+    // ── Container removal (no-op on Mac) ─────────────────────────────────
+
+    internal void Remove(DockContainer dc) { }
+
+    // ── Hint hover (no-op on Mac) ─────────────────────────────────────────
+
+    protected void MouseOverHint(object sender, EventArgs e) { }
 }
