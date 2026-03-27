@@ -39,55 +39,55 @@ namespace SimPe.Plugin.Tool.Dockable
 			
 			try { dock.cbTask.SelectedIndex = LastOWAction;	} 
 			catch {	dock.cbTask.SelectedIndex = 0;}
-			dock.cbTask.SelectedIndexChanged += new EventHandler(cbTask_SelectedIndexChanged);
+			dock.cbTask.SelectionChanged += (s, e) => cbTask_SelectedIndexChanged(s, EventArgs.Empty);
 
-			dock.cbDesc.Checked = ChangeDescription;
-			dock.cbDesc.CheckedChanged += new EventHandler(cbDesc_CheckedChanged);
+			dock.cbDesc.IsChecked = ChangeDescription;
+			dock.cbDesc.IsCheckedChanged += (s, e) => cbDesc_CheckedChanged(s, EventArgs.Empty);
 
-			dock.cbgid.Checked = SetCustomGroup;
-			dock.cbgid.CheckedChanged += new EventHandler(cbgid_CheckedChanged);
+			dock.cbgid.IsChecked = SetCustomGroup;
+			dock.cbgid.IsCheckedChanged += (s, e) => cbgid_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbfix.Checked = FixCloned;
-			dock.cbfix.CheckedChanged += new EventHandler(cbfix_CheckedChanged);
+            dock.cbfix.IsChecked = FixCloned;
+			dock.cbfix.IsCheckedChanged += (s, e) => cbfix_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbclean.Checked = FixCloned;
-			dock.cbclean.CheckedChanged += new EventHandler(cbclean_CheckedChanged);
+            dock.cbclean.IsChecked = FixCloned;
+			dock.cbclean.IsCheckedChanged += (s, e) => cbclean_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbRemTxt.Checked = RemoveNoneDefaultLangaugeStrings;
-			dock.cbRemTxt.CheckedChanged += new EventHandler(cbRemTxt_CheckedChanged);
+            dock.cbRemTxt.IsChecked = RemoveNoneDefaultLangaugeStrings;
+			dock.cbRemTxt.IsCheckedChanged += (s, e) => cbRemTxt_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbparent.Checked = CreateStandAlone;
-			dock.cbparent.CheckedChanged += new EventHandler(cbparent_CheckedChanged);
+            dock.cbparent.IsChecked = CreateStandAlone;
+			dock.cbparent.IsCheckedChanged += (s, e) => cbparent_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbdefault.Checked = PullDefaultColorOnly;
-			dock.cbdefault.CheckedChanged += new EventHandler(cbdefault_CheckedChanged);
+            dock.cbdefault.IsChecked = PullDefaultColorOnly;
+			dock.cbdefault.IsCheckedChanged += (s, e) => cbdefault_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbwallmask.Checked = PullWallmasks;
-			dock.cbwallmask.CheckedChanged += new EventHandler(cbwallmask_CheckedChanged);
+            dock.cbwallmask.IsChecked = PullWallmasks;
+			dock.cbwallmask.IsCheckedChanged += (s, e) => cbwallmask_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbanim.Checked = PullAnimations;
-			dock.cbanim.CheckedChanged += new EventHandler(cbanim_CheckedChanged);
+            dock.cbanim.IsChecked = PullAnimations;
+			dock.cbanim.IsCheckedChanged += (s, e) => cbanim_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbstrlink.Checked = PullStrLinkedResources;
-			dock.cbstrlink.CheckedChanged += new EventHandler(cbstrlink_CheckedChanged);
+            dock.cbstrlink.IsChecked = PullStrLinkedResources;
+			dock.cbstrlink.IsCheckedChanged += (s, e) => cbstrlink_CheckedChanged(s, EventArgs.Empty);
 
-            dock.cbOrgGmdc.Checked = ReferenceOriginalMesh;
-			dock.cbOrgGmdc.CheckedChanged += new EventHandler(cbOrgGmdc_CheckedChanged);
+            dock.cbOrgGmdc.IsChecked = ReferenceOriginalMesh;
+			dock.cbOrgGmdc.IsCheckedChanged += (s, e) => cbOrgGmdc_CheckedChanged(s, EventArgs.Empty);
 		}
 
         public void SetDefaults()
         {
-            dock.cbDesc.Checked = true;
-            dock.cbgid.Checked = true;
-            dock.cbfix.Checked = true;
-            dock.cbclean.Checked = true;
-            dock.cbRemTxt.Checked = true;
-            dock.cbparent.Checked = false;
-            dock.cbdefault.Checked = true;
-            dock.cbwallmask.Checked = true;
-            dock.cbanim.Checked = false;
-            dock.cbstrlink.Checked = true;
-            dock.cbOrgGmdc.Checked = false;			
+            dock.cbDesc.IsChecked = true;
+            dock.cbgid.IsChecked = true;
+            dock.cbfix.IsChecked = true;
+            dock.cbclean.IsChecked = true;
+            dock.cbRemTxt.IsChecked = true;
+            dock.cbparent.IsChecked = false;
+            dock.cbdefault.IsChecked = true;
+            dock.cbwallmask.IsChecked = true;
+            dock.cbanim.IsChecked = false;
+            dock.cbstrlink.IsChecked = true;
+            dock.cbOrgGmdc.IsChecked = false;			
         }
 
 		#region Properties
@@ -281,18 +281,18 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		public void Dispose()
 		{
-			dock.cbTask.SelectedIndexChanged -= new EventHandler(cbTask_SelectedIndexChanged);
-			dock.cbDesc.CheckedChanged -= new EventHandler(cbDesc_CheckedChanged);
-			dock.cbgid.CheckedChanged -= new EventHandler(cbgid_CheckedChanged);
-			dock.cbfix.CheckedChanged -= new EventHandler(cbfix_CheckedChanged);
-			dock.cbclean.CheckedChanged -= new EventHandler(cbclean_CheckedChanged);
-			dock.cbRemTxt.CheckedChanged -= new EventHandler(cbRemTxt_CheckedChanged);
-			dock.cbparent.CheckedChanged -= new EventHandler(cbparent_CheckedChanged);
-			dock.cbdefault.CheckedChanged -= new EventHandler(cbdefault_CheckedChanged);
-			dock.cbwallmask.CheckedChanged -= new EventHandler(cbwallmask_CheckedChanged);
-			dock.cbanim.CheckedChanged -= new EventHandler(cbanim_CheckedChanged);
-			dock.cbstrlink.CheckedChanged -= new EventHandler(cbstrlink_CheckedChanged);
-			dock.cbOrgGmdc.CheckedChanged -= new EventHandler(cbOrgGmdc_CheckedChanged);
+			dock.cbTask.SelectionChanged -= (s, e) => cbTask_SelectedIndexChanged(s, EventArgs.Empty);
+			dock.cbDesc.IsCheckedChanged -= (s, e) => cbDesc_CheckedChanged(s, EventArgs.Empty);
+			dock.cbgid.IsCheckedChanged -= (s, e) => cbgid_CheckedChanged(s, EventArgs.Empty);
+			dock.cbfix.IsCheckedChanged -= (s, e) => cbfix_CheckedChanged(s, EventArgs.Empty);
+			dock.cbclean.IsCheckedChanged -= (s, e) => cbclean_CheckedChanged(s, EventArgs.Empty);
+			dock.cbRemTxt.IsCheckedChanged -= (s, e) => cbRemTxt_CheckedChanged(s, EventArgs.Empty);
+			dock.cbparent.IsCheckedChanged -= (s, e) => cbparent_CheckedChanged(s, EventArgs.Empty);
+			dock.cbdefault.IsCheckedChanged -= (s, e) => cbdefault_CheckedChanged(s, EventArgs.Empty);
+			dock.cbwallmask.IsCheckedChanged -= (s, e) => cbwallmask_CheckedChanged(s, EventArgs.Empty);
+			dock.cbanim.IsCheckedChanged -= (s, e) => cbanim_CheckedChanged(s, EventArgs.Empty);
+			dock.cbstrlink.IsCheckedChanged -= (s, e) => cbstrlink_CheckedChanged(s, EventArgs.Empty);
+			dock.cbOrgGmdc.IsCheckedChanged -= (s, e) => cbOrgGmdc_CheckedChanged(s, EventArgs.Empty);
 
 			dock = null;
 			xrk = null;
@@ -304,74 +304,74 @@ namespace SimPe.Plugin.Tool.Dockable
 		#region Events
 		private void cbDesc_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			ChangeDescription = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			ChangeDescription = cb.IsChecked == true;
 		}
 
 		private void cbgid_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			SetCustomGroup = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			SetCustomGroup = cb.IsChecked == true;
 		}
 
 		private void cbTask_SelectedIndexChanged(object sender, EventArgs e)
 		{
-            System.Windows.Forms.ComboBox cb = sender as System.Windows.Forms.ComboBox;
+            Avalonia.Controls.ComboBox cb = sender as Avalonia.Controls.ComboBox;
 			LastOWAction = cb.SelectedIndex;
 		}
 
 		private void cbfix_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			FixCloned = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			FixCloned = cb.IsChecked == true;
 		}
 
 		private void cbclean_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			Cleanup = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			Cleanup = cb.IsChecked == true;
 		}
 
 		private void cbRemTxt_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			RemoveNoneDefaultLangaugeStrings = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			RemoveNoneDefaultLangaugeStrings = cb.IsChecked == true;
 		}
 
 		private void cbparent_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			CreateStandAlone = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			CreateStandAlone = cb.IsChecked == true;
 		}
 
 		private void cbdefault_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			PullDefaultColorOnly = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			PullDefaultColorOnly = cb.IsChecked == true;
 		}
 
 		private void cbwallmask_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			PullWallmasks = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			PullWallmasks = cb.IsChecked == true;
 		}
 
 		private void cbanim_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			PullAnimations = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			PullAnimations = cb.IsChecked == true;
 		}
 
 		private void cbstrlink_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			PullStrLinkedResources = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			PullStrLinkedResources = cb.IsChecked == true;
 		}
 
 		private void cbOrgGmdc_CheckedChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
-			ReferenceOriginalMesh = cb.Checked;
+			Avalonia.Controls.CheckBox cb = sender as Avalonia.Controls.CheckBox;
+			ReferenceOriginalMesh = cb.IsChecked == true;
 		}
 		#endregion
 	}

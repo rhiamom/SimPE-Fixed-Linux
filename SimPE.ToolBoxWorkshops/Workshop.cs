@@ -23,9 +23,10 @@
 
 using System;
 using System.Drawing;
+using SimPe.Scenegraph.Compat;
+using SelectionMode = Avalonia.Controls.SelectionMode;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
 using SimPe;
 using SimPe.Data;
 using SimPe.Interfaces;
@@ -38,21 +39,21 @@ namespace SimPe.Plugin
 	/// </summary>
 	public class Workshop : Avalonia.Controls.Window
 	{
-		private System.Windows.Forms.TabControl tabControl2;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.TextBox tbflname;
-		private System.Windows.Forms.Button button1;
+		private Avalonia.Controls.TabControl tabControl2;
+		private Avalonia.Controls.TabItem tabPage1;
+		private Avalonia.Controls.TabItem tabPage2;
+		private Avalonia.Controls.TextBox tbflname;
+		private Avalonia.Controls.Button button1;
 		private System.Windows.Forms.OpenFileDialog ofd;
-		private System.Windows.Forms.CheckBox cbfix;
-		private System.Windows.Forms.CheckBox cbclean;
-		private System.Windows.Forms.CheckBox cbdefault;
-		private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TreeView tv;
-        private System.Windows.Forms.ImageList ilist;
-        private System.Windows.Forms.CheckBox cbparent;
-        private System.Windows.Forms.CheckBox cbwallmask;
-        private System.Windows.Forms.CheckBox cbanim;
+		private Avalonia.Controls.CheckBox cbfix;
+		private Avalonia.Controls.CheckBox cbclean;
+		private Avalonia.Controls.CheckBox cbdefault;
+		private Avalonia.Controls.TabItem tabPage3;
+        private SimPe.Scenegraph.Compat.TreeView tv;
+        private SimPe.Scenegraph.Compat.ImageList ilist;
+        private Avalonia.Controls.CheckBox cbparent;
+        private Avalonia.Controls.CheckBox cbwallmask;
+        private Avalonia.Controls.CheckBox cbanim;
         private System.ComponentModel.IContainer components;
         private System.ComponentModel.ComponentResourceManager resources1;
 
@@ -91,43 +92,42 @@ namespace SimPe.Plugin
             //
             InitializeComponent();
 
-            btclone.Enabled = false;
-            btclone.Refresh();
+            btclone.IsEnabled = false;
             this.tabControl1.SelectedIndex = 1;
-            lbobj.SelectionMode = SelectionMode.One;
-            this.cbColor.Visible = false;
-            this.cbColor.Checked = false;
-            this.cbColorExt.Enabled = true;
-            this.cbColorExt.Checked = true;
-            this.rbColor.Enabled = true;
+            lbobj.SelectionMode = SelectionMode.Single;
+            this.cbColor.IsVisible = false;
+            this.cbColor.IsChecked = false;
+            this.cbColorExt.IsEnabled = true;
+            this.cbColorExt.IsChecked = true;
+            this.rbColor.IsEnabled = true;
 
-            this.tviapl = new TreeNode("Appliances"); tv.Nodes.Add(tviapl);
-            this.tvideco = new TreeNode("Decorative"); tv.Nodes.Add(tvideco);
-            this.tvielectro = new TreeNode("Electronics"); tv.Nodes.Add(tvielectro);
-            this.tvigeneral = new TreeNode("General"); tv.Nodes.Add(tvigeneral);
-            this.tvilight = new TreeNode("Lights"); tv.Nodes.Add(tvilight);
-            this.tviplumb = new TreeNode("Plumbing"); tv.Nodes.Add(tviplumb);
-            this.tviseating = new TreeNode("Seating"); tv.Nodes.Add(tviseating);
-            this.tvisurfaces = new TreeNode("Surfaces"); tv.Nodes.Add(tvisurfaces);
-            this.tvihobby = new TreeNode("Hobbies"); tv.Nodes.Add(tvihobby);
-            this.tviaspiration = new TreeNode("Aspiration Rewards"); tv.Nodes.Add(tviaspiration);
-            this.tvicareer = new TreeNode("Career Rewards"); tv.Nodes.Add(tvicareer);
-            this.tviother = new TreeNode("Others"); tv.Nodes.Add(tviother);
+            this.tviapl = new SimPe.Scenegraph.Compat.TreeNode("Appliances"); tv.Nodes.Add(tviapl);
+            this.tvideco = new SimPe.Scenegraph.Compat.TreeNode("Decorative"); tv.Nodes.Add(tvideco);
+            this.tvielectro = new SimPe.Scenegraph.Compat.TreeNode("Electronics"); tv.Nodes.Add(tvielectro);
+            this.tvigeneral = new SimPe.Scenegraph.Compat.TreeNode("General"); tv.Nodes.Add(tvigeneral);
+            this.tvilight = new SimPe.Scenegraph.Compat.TreeNode("Lights"); tv.Nodes.Add(tvilight);
+            this.tviplumb = new SimPe.Scenegraph.Compat.TreeNode("Plumbing"); tv.Nodes.Add(tviplumb);
+            this.tviseating = new SimPe.Scenegraph.Compat.TreeNode("Seating"); tv.Nodes.Add(tviseating);
+            this.tvisurfaces = new SimPe.Scenegraph.Compat.TreeNode("Surfaces"); tv.Nodes.Add(tvisurfaces);
+            this.tvihobby = new SimPe.Scenegraph.Compat.TreeNode("Hobbies"); tv.Nodes.Add(tvihobby);
+            this.tviaspiration = new SimPe.Scenegraph.Compat.TreeNode("Aspiration Rewards"); tv.Nodes.Add(tviaspiration);
+            this.tvicareer = new SimPe.Scenegraph.Compat.TreeNode("Career Rewards"); tv.Nodes.Add(tvicareer);
+            this.tviother = new SimPe.Scenegraph.Compat.TreeNode("Others"); tv.Nodes.Add(tviother);
 
-            this.tvistairs = new TreeNode("Stairs"); tv.Nodes.Add(tvistairs);
-            this.tviperson = new TreeNode("Persons"); tv.Nodes.Add(tviperson);
-            this.tviarchsup = new TreeNode("ArchitecturalSupports"); tv.Nodes.Add(tviarchsup);
-            this.tvisimtype = new TreeNode("SimTypes"); tv.Nodes.Add(tvisimtype);
-            this.tvidoor = new TreeNode("Doors"); tv.Nodes.Add(tvidoor);
-            this.tvimodstair = new TreeNode("ModularStairs"); tv.Nodes.Add(tvimodstair);
-            this.tvimodstairport = new TreeNode("ModularStairPorts"); tv.Nodes.Add(tvimodstairport);
-            this.tvivehicle = new TreeNode("Vehicles"); tv.Nodes.Add(tvivehicle);
-            this.tvioutfit = new TreeNode("Outfits"); tv.Nodes.Add(tvioutfit);
-            this.tvimemory = new TreeNode("Memories"); tv.Nodes.Add(tvimemory);
-            this.tvitemplate = new TreeNode("Templates"); tv.Nodes.Add(tvitemplate);
-            this.tviwindow = new TreeNode("Windows"); tv.Nodes.Add(tviwindow);
+            this.tvistairs = new SimPe.Scenegraph.Compat.TreeNode("Stairs"); tv.Nodes.Add(tvistairs);
+            this.tviperson = new SimPe.Scenegraph.Compat.TreeNode("Persons"); tv.Nodes.Add(tviperson);
+            this.tviarchsup = new SimPe.Scenegraph.Compat.TreeNode("ArchitecturalSupports"); tv.Nodes.Add(tviarchsup);
+            this.tvisimtype = new SimPe.Scenegraph.Compat.TreeNode("SimTypes"); tv.Nodes.Add(tvisimtype);
+            this.tvidoor = new SimPe.Scenegraph.Compat.TreeNode("Doors"); tv.Nodes.Add(tvidoor);
+            this.tvimodstair = new SimPe.Scenegraph.Compat.TreeNode("ModularStairs"); tv.Nodes.Add(tvimodstair);
+            this.tvimodstairport = new SimPe.Scenegraph.Compat.TreeNode("ModularStairPorts"); tv.Nodes.Add(tvimodstairport);
+            this.tvivehicle = new SimPe.Scenegraph.Compat.TreeNode("Vehicles"); tv.Nodes.Add(tvivehicle);
+            this.tvioutfit = new SimPe.Scenegraph.Compat.TreeNode("Outfits"); tv.Nodes.Add(tvioutfit);
+            this.tvimemory = new SimPe.Scenegraph.Compat.TreeNode("Memories"); tv.Nodes.Add(tvimemory);
+            this.tvitemplate = new SimPe.Scenegraph.Compat.TreeNode("Templates"); tv.Nodes.Add(tvitemplate);
+            this.tviwindow = new SimPe.Scenegraph.Compat.TreeNode("Windows"); tv.Nodes.Add(tviwindow);
 
-            this.tvigarden = new TreeNode("Garden"); tv.Nodes.Add(tvigarden);
+            this.tvigarden = new SimPe.Scenegraph.Compat.TreeNode("Garden"); tv.Nodes.Add(tvigarden);
         }
 
 		/// <summary>
@@ -179,7 +179,7 @@ namespace SimPe.Plugin
 		/// <param name="group">The group for this Object</param>
         void PutItemToTree(Data.Alias a, Image img, SimPe.Data.ObjectTypes type, SimPe.PackedFiles.Wrapper.ObjFunctionSort functionsort, SimPe.PackedFiles.Wrapper.ObjBuildType buildtype, string name, uint group)
         {
-            TreeNode node = new TreeNode(a.Name + " (0x" + Helper.HexString(group) + ")");
+            TreeNode node = new SimPe.Scenegraph.Compat.TreeNode(a.Name + " (0x" + Helper.HexString(group) + ")");
 			node.Tag = a;
 			if (img!=null) 
 			{
@@ -327,13 +327,11 @@ namespace SimPe.Plugin
 				WaitingScreen.Wait();
 				this.ilist.ImageSize = new Size(Helper.XmlRegistry.OWThumbSize, Helper.XmlRegistry.OWThumbSize);
 				//LoadCachIndex();
-				lbobj.BeginUpdate();
 				tv.BeginUpdate();
 				lbobj.Items.Clear();
 				this.CleanTree();		
-				lbobj.Sorted = false;
-				lbobj.Enabled = false;
-				this.tv.Enabled = false;
+				lbobj.IsEnabled = false;
+				this.tv.IsEnabled = false;
 				tv.Sorted = false;
 
 				SimPe.Plugin.Tool.Dockable.ObjectLoader ol = new SimPe.Plugin.Tool.Dockable.ObjectLoader(this.ilist);
@@ -366,266 +364,120 @@ namespace SimPe.Plugin
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
-            this.resources1 = new System.ComponentModel.ComponentResourceManager(typeof(PreviewForm));
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Workshop));
-            this.lbobj = new System.Windows.Forms.ListBox();
-            this.btclone = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pb = new System.Windows.Forms.PictureBox();
-            this.rbColor = new System.Windows.Forms.RadioButton();
-            this.rbClone = new System.Windows.Forms.RadioButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tClone = new System.Windows.Forms.TabPage();
-            this.cbanim = new System.Windows.Forms.CheckBox();
-            this.cbwallmask = new System.Windows.Forms.CheckBox();
-            this.cbparent = new System.Windows.Forms.CheckBox();
-            this.cbclean = new System.Windows.Forms.CheckBox();
-            this.cbfix = new System.Windows.Forms.CheckBox();
-            this.cbdefault = new System.Windows.Forms.CheckBox();
-            this.cbgid = new System.Windows.Forms.CheckBox();
-            this.tColor = new System.Windows.Forms.TabPage();
-            this.cbColorExt = new System.Windows.Forms.CheckBox();
-            this.cbColor = new System.Windows.Forms.CheckBox();
+            this.lbobj = new Avalonia.Controls.ListBox();
+            this.btclone = new Avalonia.Controls.Button();
+            this.groupBox1 = new SimPe.Scenegraph.Compat.GroupBox();
+            this.pb = new SimPe.Scenegraph.Compat.PictureBox();
+            this.rbColor = new Avalonia.Controls.RadioButton();
+            this.rbClone = new Avalonia.Controls.RadioButton();
+            this.tabControl1 = new Avalonia.Controls.TabControl();
+            this.tClone = new Avalonia.Controls.TabItem();
+            this.cbanim = new Avalonia.Controls.CheckBox();
+            this.cbwallmask = new Avalonia.Controls.CheckBox();
+            this.cbparent = new Avalonia.Controls.CheckBox();
+            this.cbclean = new Avalonia.Controls.CheckBox();
+            this.cbfix = new Avalonia.Controls.CheckBox();
+            this.cbdefault = new Avalonia.Controls.CheckBox();
+            this.cbgid = new Avalonia.Controls.CheckBox();
+            this.tColor = new Avalonia.Controls.TabItem();
+            this.cbColorExt = new Avalonia.Controls.CheckBox();
+            this.cbColor = new Avalonia.Controls.CheckBox();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.tbseek = new System.Windows.Forms.TextBox();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tv = new System.Windows.Forms.TreeView();
-            this.ilist = new System.Windows.Forms.ImageList(this.components);
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
-            this.tbflname = new System.Windows.Forms.TextBox();
+            this.tbseek = new Avalonia.Controls.TextBox();
+            this.tabControl2 = new Avalonia.Controls.TabControl();
+            this.tabPage1 = new Avalonia.Controls.TabItem();
+            this.tabPage3 = new Avalonia.Controls.TabItem();
+            this.tv = new SimPe.Scenegraph.Compat.TreeView();
+            this.ilist = new SimPe.Scenegraph.Compat.ImageList();
+            this.tabPage2 = new Avalonia.Controls.TabItem();
+            this.button1 = new Avalonia.Controls.Button();
+            this.tbflname = new Avalonia.Controls.TextBox();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tClone.SuspendLayout();
-            this.tColor.SuspendLayout();
-            this.tabControl2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             // 
             // lbobj
             // 
-            this.lbobj.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbobj.IntegralHeight = false;
-            this.lbobj.Location = new System.Drawing.Point(8, 32);
-            this.lbobj.Name = "lbobj";
-            this.lbobj.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbobj.Size = new System.Drawing.Size(464, 192);
-            this.lbobj.TabIndex = 0;
-            this.lbobj.SelectedIndexChanged += new System.EventHandler(this.Select);
+            this.lbobj.SelectionChanged += (s, e) => this.Select(s, EventArgs.Empty);
             // 
             // btclone
             // 
-            this.btclone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btclone.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btclone.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btclone.Location = new System.Drawing.Point(408, 212);
-            this.btclone.Name = "btclone";
-            this.btclone.Size = new System.Drawing.Size(75, 23);
-            this.btclone.TabIndex = 1;
-            this.btclone.Text = "Start";
-            this.btclone.Click += new System.EventHandler(this.Start);
+            this.btclone.Content = "Start";
+            this.btclone.Click += (s, e) => this.Start(s, e);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.pb);
-            this.groupBox1.Controls.Add(this.rbColor);
-            this.groupBox1.Controls.Add(this.rbClone);
-            this.groupBox1.Controls.Add(this.tabControl1);
-            this.groupBox1.Controls.Add(this.btclone);
-            this.groupBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(8, 272);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(488, 240);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
             // 
             // pb
             // 
-            this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Location = new System.Drawing.Point(8, 24);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(128, 128);
-            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pb.TabIndex = 6;
-            this.pb.TabStop = false;
             // 
             // rbColor
             // 
-            this.rbColor.Checked = true;
-            this.rbColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.rbColor.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbColor.Location = new System.Drawing.Point(16, 176);
-            this.rbColor.Name = "rbColor";
-            this.rbColor.Size = new System.Drawing.Size(120, 24);
-            this.rbColor.TabIndex = 5;
-            this.rbColor.TabStop = true;
-            this.rbColor.Text = "Colour Options";
-            this.rbColor.CheckedChanged += new System.EventHandler(this.rbColor_CheckedChanged);
+            this.rbColor.IsChecked = true;
+            this.rbColor.Content = "Colour Options";
+            this.rbColor.IsCheckedChanged += (s, e) => this.rbColor_CheckedChanged(s, EventArgs.Empty);
             // 
             // rbClone
             // 
-            this.rbClone.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.rbClone.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbClone.Location = new System.Drawing.Point(16, 156);
-            this.rbClone.Name = "rbClone";
-            this.rbClone.Size = new System.Drawing.Size(120, 24);
-            this.rbClone.TabIndex = 4;
-            this.rbClone.Text = "Clone";
-            this.rbClone.CheckedChanged += new System.EventHandler(this.rbClone_CheckedChanged);
+            this.rbClone.Content = "Clone";
+            this.rbClone.IsCheckedChanged += (s, e) => this.rbClone_CheckedChanged(s, EventArgs.Empty);
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tClone);
-            this.tabControl1.Controls.Add(this.tColor);
-            this.tabControl1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.Location = new System.Drawing.Point(150, 24);
-            this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(328, 184);
-            this.tabControl1.TabIndex = 3;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabChanged);
+            this.tabControl1.SelectionChanged += (s, e) => this.TabChanged(s, EventArgs.Empty);
             // 
             // tClone
             // 
-            this.tClone.Controls.Add(this.cbanim);
-            this.tClone.Controls.Add(this.cbwallmask);
-            this.tClone.Controls.Add(this.cbparent);
-            this.tClone.Controls.Add(this.cbclean);
-            this.tClone.Controls.Add(this.cbfix);
-            this.tClone.Controls.Add(this.cbdefault);
-            this.tClone.Controls.Add(this.cbgid);
-            this.tClone.Location = new System.Drawing.Point(4, 22);
-            this.tClone.Name = "tClone";
-            this.tClone.Size = new System.Drawing.Size(320, 158);
-            this.tClone.TabIndex = 0;
-            this.tClone.Text = "Clone Settings";
+            this.tClone.Header = "Clone Settings";
             // 
             // cbanim
             // 
-            this.cbanim.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbanim.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbanim.Location = new System.Drawing.Point(8, 128);
-            this.cbanim.Name = "cbanim";
-            this.cbanim.Size = new System.Drawing.Size(120, 24);
-            this.cbanim.TabIndex = 9;
-            this.cbanim.Text = "Pull Animations";
+            this.cbanim.Content = "Pull Animations";
             // 
             // cbwallmask
             // 
-            this.cbwallmask.Checked = true;
-            this.cbwallmask.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbwallmask.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbwallmask.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbwallmask.Location = new System.Drawing.Point(8, 108);
-            this.cbwallmask.Name = "cbwallmask";
-            this.cbwallmask.Size = new System.Drawing.Size(272, 24);
-            this.cbwallmask.TabIndex = 8;
-            this.cbwallmask.Text = "Pull Wallmasks (as described by Numenor)";
+            this.cbwallmask.IsChecked = true;
+            this.cbwallmask.Content = "Pull Wallmasks (as described by Numenor)";
             // 
             // cbparent
             // 
-            this.cbparent.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbparent.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbparent.Location = new System.Drawing.Point(8, 88);
-            this.cbparent.Name = "cbparent";
-            this.cbparent.Size = new System.Drawing.Size(192, 24);
-            this.cbparent.TabIndex = 7;
-            this.cbparent.Text = "Create a stand-alone object";
-            this.cbparent.CheckedChanged += new System.EventHandler(this.cbfix_CheckedChanged);
+            this.cbparent.Content = "Create a stand-alone object";
+            this.cbparent.IsCheckedChanged += (s, e) => this.cbfix_CheckedChanged(s, EventArgs.Empty);
             // 
             // cbclean
             // 
-            this.cbclean.Checked = true;
-            this.cbclean.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbclean.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbclean.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbclean.Location = new System.Drawing.Point(24, 48);
-            this.cbclean.Name = "cbclean";
-            this.cbclean.Size = new System.Drawing.Size(272, 24);
-            this.cbclean.TabIndex = 6;
-            this.cbclean.Text = "Remove useless Files (sug. by.  Numenor)";
+            this.cbclean.IsChecked = true;
+            this.cbclean.Content = "Remove useless Files (sug. by.  Numenor)";
             // 
             // cbfix
             // 
-            this.cbfix.Checked = true;
-            this.cbfix.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbfix.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbfix.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbfix.Location = new System.Drawing.Point(8, 28);
-            this.cbfix.Name = "cbfix";
-            this.cbfix.Size = new System.Drawing.Size(224, 24);
-            this.cbfix.TabIndex = 5;
-            this.cbfix.Text = "Fix Cloned Files (sug. by.  wes_h)";
-            this.cbfix.CheckedChanged += new System.EventHandler(this.cbfix_CheckedChanged);
+            this.cbfix.IsChecked = true;
+            this.cbfix.Content = "Fix Cloned Files (sug. by.  wes_h)";
+            this.cbfix.IsCheckedChanged += (s, e) => this.cbfix_CheckedChanged(s, EventArgs.Empty);
             // 
             // cbdefault
             // 
-            this.cbdefault.Checked = true;
-            this.cbdefault.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbdefault.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbdefault.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbdefault.Location = new System.Drawing.Point(8, 68);
-            this.cbdefault.Name = "cbdefault";
-            this.cbdefault.Size = new System.Drawing.Size(224, 24);
-            this.cbdefault.TabIndex = 3;
-            this.cbdefault.Text = "Pull only default Colour";
-            this.cbdefault.CheckedChanged += new System.EventHandler(this.cbRCOLClone_CheckedChanged);
+            this.cbdefault.IsChecked = true;
+            this.cbdefault.Content = "Pull only default Colour";
+            this.cbdefault.IsCheckedChanged += (s, e) => this.cbRCOLClone_CheckedChanged(s, EventArgs.Empty);
             // 
             // cbgid
             // 
-            this.cbgid.Checked = true;
-            this.cbgid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbgid.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbgid.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbgid.Location = new System.Drawing.Point(8, 8);
-            this.cbgid.Name = "cbgid";
-            this.cbgid.Size = new System.Drawing.Size(248, 24);
-            this.cbgid.TabIndex = 2;
-            this.cbgid.Text = "Set Custom Group ID (0x1c050000)";
+            this.cbgid.IsChecked = true;
+            this.cbgid.Content = "Set Custom Group ID (0x1c050000)";
             // 
             // tColor
             // 
-            this.tColor.Controls.Add(this.cbColorExt);
-            this.tColor.Controls.Add(this.cbColor);
-            this.tColor.Location = new System.Drawing.Point(4, 22);
-            this.tColor.Name = "tColor";
-            this.tColor.Size = new System.Drawing.Size(320, 158);
-            this.tColor.TabIndex = 1;
-            this.tColor.Text = "Colour Options";
+            this.tColor.Header = "Colour Options";
             // 
             // cbColorExt
             // 
-            this.cbColorExt.Checked = true;
-            this.cbColorExt.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbColorExt.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbColorExt.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbColorExt.Location = new System.Drawing.Point(8, 8);
-            this.cbColorExt.Name = "cbColorExt";
-            this.cbColorExt.Size = new System.Drawing.Size(224, 24);
-            this.cbColorExt.TabIndex = 4;
-            this.cbColorExt.Text = "Create Colour Extension Package";
+            this.cbColorExt.IsChecked = true;
+            this.cbColorExt.Content = "Create Colour Extension Package";
             // 
             // cbColor
             // 
-            this.cbColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbColor.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbColor.Location = new System.Drawing.Point(8, 28);
-            this.cbColor.Name = "cbColor";
-            this.cbColor.Size = new System.Drawing.Size(224, 24);
-            this.cbColor.TabIndex = 3;
-            this.cbColor.Text = "Enable All Colour Options";
+            this.cbColor.Content = "Enable All Colour Options";
             // 
             // sfd
             // 
@@ -634,97 +486,46 @@ namespace SimPe.Plugin
             // 
             // tbseek
             // 
-            this.tbseek.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbseek.Location = new System.Drawing.Point(8, 8);
-            this.tbseek.Name = "tbseek";
-            this.tbseek.Size = new System.Drawing.Size(464, 21);
-            this.tbseek.TabIndex = 3;
-            this.tbseek.TextChanged += new System.EventHandler(this.SeekItem);
+            this.tbseek.TextChanged += (s, e) => this.SeekItem(s, EventArgs.Empty);
             // 
             // tabControl2
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl2.Controls.Add(this.tabPage1);
-            this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage2);
-            this.tabControl2.Location = new System.Drawing.Point(8, 8);
-            this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 1;
-            this.tabControl2.Size = new System.Drawing.Size(488, 256);
-            this.tabControl2.TabIndex = 4;
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.TabChange);
+            this.tabControl2.SelectionChanged += (s, e) => this.TabChange(s, EventArgs.Empty);
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lbobj);
-            this.tabPage1.Controls.Add(this.tbseek);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(480, 230);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Object Listing";
+            this.tabPage1.Header = "Object Listing";
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tv);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(480, 230);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Grouped Objects";
+            this.tabPage3.Header = "Grouped Objects";
             // 
             // tv
             // 
-            this.tv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tv.HideSelection = false;
             this.tv.ImageIndex = 0;
             this.tv.ImageList = this.ilist;
-            this.tv.Location = new System.Drawing.Point(8, 8);
-            this.tv.Name = "tv";
             this.tv.SelectedImageIndex = 0;
-            this.tv.Size = new System.Drawing.Size(464, 216);
-            this.tv.TabIndex = 0;
-            this.tv.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SelectTv);
+            this.tv.AfterSelect += (s, e) => this.SelectTv(s, e);
             // 
             // ilist
             // 
-            this.ilist.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
+            this.ilist.ColorDepth = SimPe.Scenegraph.Compat.ColorDepth.Depth24Bit;
             this.ilist.ImageSize = new System.Drawing.Size(16, 16);
-            this.ilist.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.tbflname);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(480, 230);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Load Object";
+            this.tabPage2.Header = "Load Object";
             // 
             // button1
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.button1.Location = new System.Drawing.Point(397, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Browse...";
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Content = "Browse...";
+            this.button1.Click += (s, e) => this.button1_Click(s, e);
             // 
             // tbflname
             // 
-            this.tbflname.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbflname.Location = new System.Drawing.Point(8, 12);
-            this.tbflname.Name = "tbflname";
-            this.tbflname.ReadOnly = true;
-            this.tbflname.Size = new System.Drawing.Size(464, 21);
-            this.tbflname.TabIndex = 0;
+            this.tbflname.IsReadOnly = true;
             // 
             // ofd
             // 
@@ -732,41 +533,26 @@ namespace SimPe.Plugin
             // 
             // Workshop
             // 
-            this.Width = 512;
-            this.Height = 518;
-            this.MinWidth = 520;
-            this.MinHeight = 320;
             this.Title = "Object Workshop (biggest thanks to RGiles and Numenor)";
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tClone.ResumeLayout(false);
-            this.tColor.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
 		}
 		#endregion
 
-		private System.Windows.Forms.ListBox lbobj;
-		private System.Windows.Forms.Button btclone;
+		private Avalonia.Controls.ListBox lbobj;
+		private Avalonia.Controls.Button btclone;
 
 		SimPe.Packages.GeneratableFile package;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.CheckBox cbgid;
-		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tClone;
-		private System.Windows.Forms.TabPage tColor;
-		private System.Windows.Forms.RadioButton rbClone;
-		private System.Windows.Forms.RadioButton rbColor;
-		private System.Windows.Forms.CheckBox cbColor;
-		private System.Windows.Forms.CheckBox cbColorExt;
+		private SimPe.Scenegraph.Compat.GroupBox groupBox1;
+		private Avalonia.Controls.CheckBox cbgid;
+		private Avalonia.Controls.TabControl tabControl1;
+		private Avalonia.Controls.TabItem tClone;
+		private Avalonia.Controls.TabItem tColor;
+		private Avalonia.Controls.RadioButton rbClone;
+		private Avalonia.Controls.RadioButton rbColor;
+		private Avalonia.Controls.CheckBox cbColor;
+		private Avalonia.Controls.CheckBox cbColorExt;
 		private System.Windows.Forms.SaveFileDialog sfd;
-		private System.Windows.Forms.TextBox tbseek;
-		private System.Windows.Forms.PictureBox pb;
+		private Avalonia.Controls.TextBox tbseek;
+		private SimPe.Scenegraph.Compat.PictureBox pb;
 		IProviderRegistry prov;
 		SimPe.Interfaces.Files.IPackageFile simpe_pkg;
 		public Interfaces.Files.IPackageFile Execute(IProviderRegistry prov, SimPe.Interfaces.Files.IPackageFile simpe_pkg) 		
@@ -777,7 +563,7 @@ namespace SimPe.Plugin
 			prov.OpcodeProvider.LoadPackage();
 			if (prov.OpcodeProvider.BasePackage == null) 
 			{
-				MessageBox.Show("The objects.package was not found.\n\nPlease set the Path to your Sims 2 installation in the Extra->Options... Dialog.");
+				System.Console.WriteLine("The objects.package was not found. Please set the Path to your Sims 2 installation in the Extra->Options... Dialog.");
 				return null;
 			}
 			package = null;
@@ -794,12 +580,9 @@ namespace SimPe.Plugin
 		private void Select(object sender, System.EventArgs e)
 		{
 			if (tbseek.Tag != null) return;
-			btclone.Enabled = false;
-			btclone.Refresh();
+			btclone.IsEnabled = false;
 			if (lbobj.SelectedIndex<0) return;
-			btclone.Enabled = true;
-			btclone.Refresh();
-
+			btclone.IsEnabled = true;
 			IAlias a = (IAlias)lbobj.Items[lbobj.SelectedIndex];
 			tbseek.Tag = true;
 			if (sender!=null) tbseek.Text = a.Name;
@@ -813,7 +596,6 @@ namespace SimPe.Plugin
 		{
 			try 
 			{
-				this.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
 				IAlias a = new Data.Alias(0, "");
 				Interfaces.Files.IPackedFileDescriptor pfd = null;
 				uint localgroup = Data.MetaData.LOCAL_GROUP;
@@ -835,12 +617,12 @@ namespace SimPe.Plugin
 					} else return;
 				}
 
-                if (this.rbClone.Checked)
+                if ((this.rbClone.IsChecked == true))
                 {
                     if (tabControl2.SelectedIndex < 2)
                     {
                         WaitingScreen.Wait();
-                        try { this.RecolorClone(pfd, localgroup, this.cbdefault.Checked, this.cbwallmask.Checked, this.cbanim.Checked); }
+                        try { this.RecolorClone(pfd, localgroup, (this.cbdefault.IsChecked == true), (this.cbwallmask.IsChecked == true), (this.cbanim.IsChecked == true)); }
                         finally { WaitingScreen.Stop(this); }
                     }
 
@@ -848,14 +630,14 @@ namespace SimPe.Plugin
                     FixObject fo = new FixObject(package, FixVersion.UniversityReady, true);
                     System.Collections.Hashtable map = null;
 
-                    if (this.cbfix.Checked)
+                    if ((this.cbfix.IsChecked == true))
                     {
                         map = fo.GetNameMap(true);
                         if (map == null) return;
                     }
 
 
-                    if (this.cbfix.Checked)
+                    if ((this.cbfix.IsChecked == true))
                     {
                         if (sfd.ShowDialog() == DialogResult.OK)
                         {
@@ -865,7 +647,7 @@ namespace SimPe.Plugin
                                 package.FileName = sfd.FileName;
                                 fo.Fix(map, true);
 
-                                if (cbclean.Checked) fo.CleanUp();
+                                if ((cbclean.IsChecked == true)) fo.CleanUp();
                                 package.Save();
 
 
@@ -878,13 +660,13 @@ namespace SimPe.Plugin
                         }
                     }
 
-                    if ((this.cbgid.Checked) && (package != null))
+                    if (((this.cbgid.IsChecked == true)) && (package != null))
                     {
                         WaitingScreen.Wait();
                         try
                         {
                             fo.FixGroup();
-                            if (this.cbfix.Checked) package.Save();
+                            if ((this.cbfix.IsChecked == true)) package.Save();
 
                         }
                         finally { WaitingScreen.Stop(this); }
@@ -892,7 +674,7 @@ namespace SimPe.Plugin
                 }
                 else //if Recolor
                 {
-                    if (this.cbColor.Checked) cbColorExt.Checked = false;
+                    if ((this.cbColor.IsChecked == true)) cbColorExt.IsChecked = false;
 
                     if (tabControl2.SelectedIndex == 0)
                     {
@@ -1079,7 +861,7 @@ namespace SimPe.Plugin
 			
 
 			//allways for recolors
-			if (this.rbColor.Checked) 
+			if ((this.rbColor.IsChecked == true)) 
 			{
 				exclude.Add("stdMatEnvCubeTextureName");
 				exclude.Add("TXTR");
@@ -1090,7 +872,7 @@ namespace SimPe.Plugin
 				
 
 				//for clones only when cbparent is not checked
-				//if (!this.cbparent.Checked) 
+				//if (!(this.cbparent.IsChecked == true)) 
 				{					
 					exclude.Add("TXTR");
 					exclude.Add("stdMatEnvCubeTextureName");					
@@ -1105,7 +887,7 @@ namespace SimPe.Plugin
 			objclone.RcolModelClone(modelname, exclude);
 
 			//for clones only when cbparent is checked
-			if ((this.cbparent.Checked) && (!this.rbColor.Checked)) 
+			if (((this.cbparent.IsChecked == true)) && (!(this.rbColor.IsChecked == true))) 
 			{
 				string[] names = Scenegraph.LoadParentModelNames(package, true);
 				SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(null);
@@ -1120,10 +902,10 @@ namespace SimPe.Plugin
 			}
 
 			//for clones only when cbparent is not checked
-			if ((!this.cbparent.Checked) && (!this.rbColor.Checked)) 
+			if ((!(this.cbparent.IsChecked == true)) && (!(this.rbColor.IsChecked == true))) 
 			{
 				string[] modelnames = modelname;
-				if (!cbclean.Checked) modelnames = null;
+				if (!(cbclean.IsChecked == true)) modelnames = null;
 				objclone.RemoveSubsetReferences(Scenegraph.GetParentSubsets(package), modelnames);
 			}
 		}
@@ -1132,25 +914,25 @@ namespace SimPe.Plugin
         {
             // we need packages in the Gmaes and the Download Folder
 
-            if (SimPe.PathProvider.Global.EPInstalled < 16 && ((!System.IO.File.Exists(ScenegraphHelper.GMND_PACKAGE)) || (!System.IO.File.Exists(ScenegraphHelper.MMAT_PACKAGE))) && (!this.cbColor.Checked))
+            if (SimPe.PathProvider.Global.EPInstalled < 16 && ((!System.IO.File.Exists(ScenegraphHelper.GMND_PACKAGE)) || (!System.IO.File.Exists(ScenegraphHelper.MMAT_PACKAGE))) && (!(this.cbColor.IsChecked == true)))
             {
                 if (SimPe.Message.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo) == SimPe.DialogResult.No) return;
             }
 
-            if (this.cbColorExt.Checked) if (sfd.ShowDialog() != DialogResult.OK) return;
+            if ((this.cbColorExt.IsChecked == true)) if (sfd.ShowDialog() != DialogResult.OK) return;
 
             //create a Cloned Object to get all needed Files for the Process
-            bool old = cbgid.Checked;
-            cbgid.Checked = false;
+            bool old = (cbgid.IsChecked == true);
+            cbgid.IsChecked = false;
             WaitingScreen.Wait();
             try
             {
                 WaitingScreen.UpdateMessage("Collecting needed Files");
                 if ((package == null) && (pfd != null)) RecolorClone(pfd, localgroup, false, false, false);
 
-                cbgid.Checked = old;
+                (cbgid.IsChecked == true) = old;
 
-                if (this.cbColor.Checked)
+                if ((this.cbColor.IsChecked == true))
                 {
                     ObjectRecolor or = new ObjectRecolor(package);
                     or.EnableColorOptions();
@@ -1170,7 +952,7 @@ namespace SimPe.Plugin
 
                 SimPe.Packages.GeneratableFile npackage = SimPe.Packages.GeneratableFile.LoadFromStream((System.IO.BinaryReader)null);
                 //Create the Templae for an additional MMAT
-                if (this.cbColorExt.Checked)
+                if ((this.cbColorExt.IsChecked == true))
                 {
 
                     npackage.FileName = sfd.FileName;
@@ -1210,8 +992,7 @@ namespace SimPe.Plugin
 			try 
 			{
 				string name = tbseek.Text.TrimStart().ToLower();
-				if (lbobj.SelectionMode != SelectionMode.One) lbobj.ClearSelected();
-				for (int i=0; i<lbobj.Items.Count; i++)
+				if (lbobj.SelectionMode != SelectionMode.Single)				for (int i=0; i<lbobj.Items.Count; i++)
 				{
 					IAlias a = (IAlias)lbobj.Items[i];
 					if (a.Name!=null) 
@@ -1220,7 +1001,6 @@ namespace SimPe.Plugin
 						{
 							tbseek.Text = a.Name.TrimStart();
 							tbseek.SelectionStart = name.Length;
-							tbseek.SelectionLength = Math.Max(0, tbseek.Text.Length - name.Length);
 							lbobj.SelectedIndex = i;
 							break;
 						}
@@ -1229,7 +1009,6 @@ namespace SimPe.Plugin
 						{
 							tbseek.Text = a.Name.TrimStart();
 							tbseek.SelectionStart = name.Length+2;
-							tbseek.SelectionLength = Math.Max(0, tbseek.Text.Length - (name.Length+2));
 							lbobj.SelectedIndex = i;
 							break;
 						}
@@ -1249,8 +1028,8 @@ namespace SimPe.Plugin
 			if (tabControl1.Tag!=null) return;
 
 			tabControl1.Tag = true;
-			if (this.tabControl1.SelectedIndex==0) rbClone.Checked = true;
-			else rbColor.Checked = true;
+			if (this.tabControl1.SelectedIndex==0) rbClone.IsChecked = true;
+			else rbColor.IsChecked = true;
 			tabControl1.Tag = null;
 		}
 
@@ -1260,31 +1039,26 @@ namespace SimPe.Plugin
 			{
 				package = SimPe.Packages.GeneratableFile.LoadFromFile(ofd.FileName);
 				tbflname.Text = ofd.FileName;
-				this.btclone.Enabled = System.IO.File.Exists(tbflname.Text);
-				btclone.Refresh();
+				this.btclone.IsEnabled = System.IO.File.Exists(tbflname.Text);
 			}
 		}
 
 		private void cbRCOLClone_CheckedChanged(object sender, System.EventArgs e)
 		{
-			//cbparent.Enabled = cbRCOLClone.Checked;
+			//cbparent.Enabled = (cbRCOLClone.IsChecked == true);
 		}
 
 		private void cbfix_CheckedChanged(object sender, System.EventArgs e)
 		{
-			cbclean.Enabled = (cbfix.Checked || cbparent.Checked);
-			cbclean.Refresh();
+			cbclean.IsEnabled = ((cbfix.IsChecked == true) || (cbparent.IsChecked == true));
 		}
 
-		private void SelectTv(object sender, System.Windows.Forms.TreeViewEventArgs e)
+		private void SelectTv(object sender, SimPe.Scenegraph.Compat.TreeViewEventArgs e)
 		{
-			btclone.Enabled = false;
-			btclone.Refresh();
+			btclone.IsEnabled = false;
 			if (tv.SelectedNode==null) return;
 			if (tv.SelectedNode.Tag == null) return;
-			btclone.Enabled = true;
-			btclone.Refresh();
-
+			btclone.IsEnabled = true;
 			IAlias a = (IAlias)tv.SelectedNode.Tag;
 			
 			if (a.Tag[2]==null) pb.Image = null;
@@ -1295,8 +1069,7 @@ namespace SimPe.Plugin
 		{
 			if (tabControl2.SelectedIndex==0) {BuildListing(); this.Select(null, null);}
 			else if (tabControl2.SelectedIndex==1) {BuildListing(); this.SelectTv(null, null);}
-			else this.btclone.Enabled = System.IO.File.Exists(tbflname.Text);
-			btclone.Refresh();
+			else this.btclone.IsEnabled = System.IO.File.Exists(tbflname.Text);
 		}
 
 		delegate void InvokeTargetLoad(SimPe.Cache.ObjectCacheItem oci, SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii, Alias a);
@@ -1309,13 +1082,11 @@ namespace SimPe.Plugin
 
 		private void invoke_Finished(object sender, EventArgs e)
 		{
-			lbobj.Enabled = true;
-			this.tv.Enabled = true;
+			lbobj.IsEnabled = true;
+			this.tv.IsEnabled = true;
 
-			lbobj.Sorted = true;
 			tv.Sorted = true;
 			tv.EndUpdate();
-			lbobj.EndUpdate();				
 			WaitingScreen.Stop(this);			
 		}
 

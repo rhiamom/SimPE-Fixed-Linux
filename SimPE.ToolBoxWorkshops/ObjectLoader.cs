@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 using System;
-using System.Windows.Forms;
 using System.Threading;
 using System.Collections;
 using System.Drawing;
 using Ambertation.Threading;
-using TreeNodeCollection = System.Windows.Forms.TreeNode.TreeNodeCollection;
+using SimPe.Scenegraph.Compat;
+using TreeNodeCollection = SimPe.Scenegraph.Compat.TreeNode.TreeNodeCollection;
 
 namespace SimPe.Plugin.Tool.Dockable
 {	

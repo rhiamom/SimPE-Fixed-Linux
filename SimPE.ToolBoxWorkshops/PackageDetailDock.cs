@@ -26,7 +26,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
 
 namespace SimPe.Plugin.Tool.Dockable
 {
@@ -35,7 +34,7 @@ namespace SimPe.Plugin.Tool.Dockable
 	/// </summary>
 	public class dcPackageDetails : Ambertation.Windows.Forms.DockPanel
 	{
-        private System.Windows.Forms.Panel xpGradientPanel1;
+        private Avalonia.Controls.StackPanel xpGradientPanel1;
 		protected SimPe.Plugin.Tool.Dockable.NeighborhoodPreview np;
 		private SimPe.Plugin.Tool.Dockable.ObjectPreview op;
 		/// <summary> 
@@ -73,49 +72,33 @@ namespace SimPe.Plugin.Tool.Dockable
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(dcPackageDetails));
-            this.xpGradientPanel1 = new System.Windows.Forms.Panel();
+            this.xpGradientPanel1 = new Avalonia.Controls.StackPanel();
             this.np = new SimPe.Plugin.Tool.Dockable.NeighborhoodPreview();
             this.op = new SimPe.Plugin.Tool.Dockable.ObjectPreview();
-            this.xpGradientPanel1.SuspendLayout();
-            this.SuspendLayout();
             // 
             // xpGradientPanel1
             // 
-            this.xpGradientPanel1.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(this.xpGradientPanel1, "xpGradientPanel1");
             
-            this.xpGradientPanel1.Controls.Add(this.np);
-            this.xpGradientPanel1.Controls.Add(this.op);
-            this.xpGradientPanel1.Name = "xpGradientPanel1";
+            this.xpGradientPanel1.Children.Add(this.np);
+            this.xpGradientPanel1.Children.Add(this.op);
             // 
             // np
             // 
-            this.np.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.np, "np");
-            this.np.Name = "np";
             // 
             // op
             // 
-            resources.ApplyResources(this.op, "op");
-            this.op.BackColor = System.Drawing.Color.Transparent;
             this.op.LoadCustomImage = true;
-            this.op.Name = "op";
             this.op.SelectedObject = null;
             this.op.SelectedXObject = null;
             // 
             // dcPackageDetails
             // 
-            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.xpGradientPanel1);
             this.FloatingSize = new System.Drawing.Size(592, 376);
             this.Image = ((System.Drawing.Image)(resources.GetObject("$this.Image")));
-            this.Name = "dcPackageDetails";
             this.TabImage = ((System.Drawing.Image)(resources.GetObject("$this.TabImage")));
             this.TabText = "Details";
             this.VisibleChanged += new System.EventHandler(this.dcPackageDetails_VisibleChanged);
-            this.xpGradientPanel1.ResumeLayout(false);
-            this.xpGradientPanel1.PerformLayout();
-            this.ResumeLayout(false);
 		}
 		#endregion
 
@@ -128,8 +111,8 @@ namespace SimPe.Plugin.Tool.Dockable
 		{
 			this.op.SetFromPackage(pkg);
             this.np.SetFromPackage(pkg);
-			op.Visible = op.Loaded;
-			np.Visible = np.Loaded;
+			op.IsVisible = op.Loaded;
+			np.IsVisible = np.Loaded;
 		}
 	}
 }

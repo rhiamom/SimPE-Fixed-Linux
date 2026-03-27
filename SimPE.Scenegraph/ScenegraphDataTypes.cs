@@ -359,7 +359,10 @@ namespace SimPe.Scenegraph.Compat
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public bool Visible { get; set; } = true;
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
+        public bool IsVisible { get; set; } = true;
+        public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool IsEnabled { get; set; } = true;
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public System.Drawing.Font Font { get; set; }
 

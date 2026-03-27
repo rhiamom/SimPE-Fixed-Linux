@@ -26,47 +26,39 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
+using Image = System.Drawing.Image;
 
 namespace SimPe.Plugin.Tool.Dockable
 {
 	/// <summary>
 	/// Summary description for ObjectPreview.
 	/// </summary>
-	public class NeighborhoodPreview : System.Windows.Forms.UserControl
+	public class NeighborhoodPreview : Avalonia.Controls.UserControl
 	{
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label lbName;
-		private System.Windows.Forms.PictureBox pb;
-		private System.Windows.Forms.Label lbAbout;
-		private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lbPop;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label lbUni;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label lbVer;
-		private System.Windows.Forms.Label lbType;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lbholi;
-		/// <summary> 
+		private TextBlock label1;
+		private TextBlock label3;
+		private TextBlock lbName;
+		private PictureBox pb;
+		private TextBlock lbAbout;
+		private TextBlock label2;
+        private TextBlock lbPop;
+		private TextBlock label4;
+		private TextBlock lbUni;
+		private TextBlock label5;
+		private TextBlock lbVer;
+		private TextBlock lbType;
+        private TextBlock label6;
+        private TextBlock label7;
+        private TextBlock lbholi;
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		public NeighborhoodPreview()
 		{
-			SetStyle(
-				ControlStyles.SupportsTransparentBackColor |
-				ControlStyles.AllPaintingInWmPaint |
-				//ControlStyles.Opaque |
-				ControlStyles.UserPaint |
-				ControlStyles.ResizeRedraw 
-				| ControlStyles.DoubleBuffer
-				,true);
-
-			BackColor = Color.Transparent;
 			loaded = false;			
 
 			// Required designer variable.
@@ -79,7 +71,7 @@ namespace SimPe.Plugin.Tool.Dockable
 		/// <summary> 
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected virtual void Dispose( bool disposing )
 		{
 			if( disposing )
 			{
@@ -88,7 +80,6 @@ namespace SimPe.Plugin.Tool.Dockable
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
 		}
 
 		#region Windows Form Designer generated code
@@ -98,127 +89,21 @@ namespace SimPe.Plugin.Tool.Dockable
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NeighborhoodPreview));
-            this.pb = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbName = new System.Windows.Forms.Label();
-            this.lbAbout = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lbPop = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lbUni = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbVer = new System.Windows.Forms.Label();
-            this.lbType = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lbholi = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // pb
-            // 
-            this.pb.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.pb, "pb");
-            this.pb.Name = "pb";
-            this.pb.TabStop = false;
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // lbName
-            // 
-            resources.ApplyResources(this.lbName, "lbName");
-            this.lbName.Name = "lbName";
-            // 
-            // lbAbout
-            // 
-            resources.ApplyResources(this.lbAbout, "lbAbout");
-            this.lbAbout.MaximumSize = new System.Drawing.Size(800, 0);
-            this.lbAbout.Name = "lbAbout";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // lbPop
-            // 
-            resources.ApplyResources(this.lbPop, "lbPop");
-            this.lbPop.Name = "lbPop";
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // lbUni
-            // 
-            resources.ApplyResources(this.lbUni, "lbUni");
-            this.lbUni.Name = "lbUni";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // lbVer
-            // 
-            resources.ApplyResources(this.lbVer, "lbVer");
-            this.lbVer.Name = "lbVer";
-            // 
-            // lbType
-            // 
-            resources.ApplyResources(this.lbType, "lbType");
-            this.lbType.Name = "lbType";
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // lbholi
-            // 
-            resources.ApplyResources(this.lbholi, "lbholi");
-            this.lbholi.Name = "lbholi";
-            // 
-            // NeighborhoodPreview
-            // 
-            this.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.lbholi);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.pb);
-            this.Controls.Add(this.lbType);
-            this.Controls.Add(this.lbVer);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.lbUni);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.lbPop);
-            this.Controls.Add(this.lbAbout);
-            this.Controls.Add(this.lbName);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label3);
-            this.DoubleBuffered = true;
-            this.Name = "NeighborhoodPreview";
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            this.ResumeLayout(false);
-
+            this.pb = new SimPe.Scenegraph.Compat.PictureBox();
+            this.label1 = new Avalonia.Controls.TextBlock();
+            this.label3 = new Avalonia.Controls.TextBlock();
+            this.lbName = new Avalonia.Controls.TextBlock();
+            this.lbAbout = new Avalonia.Controls.TextBlock();
+            this.label2 = new Avalonia.Controls.TextBlock();
+            this.lbPop = new Avalonia.Controls.TextBlock();
+            this.label4 = new Avalonia.Controls.TextBlock();
+            this.lbUni = new Avalonia.Controls.TextBlock();
+            this.label5 = new Avalonia.Controls.TextBlock();
+            this.lbVer = new Avalonia.Controls.TextBlock();
+            this.lbType = new Avalonia.Controls.TextBlock();
+            this.label6 = new Avalonia.Controls.TextBlock();
+            this.label7 = new Avalonia.Controls.TextBlock();
+            this.lbholi = new Avalonia.Controls.TextBlock();
 		}
 		#endregion
 
@@ -244,8 +129,8 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		protected void ClearScreen()
 		{
-			label5.Visible = Helper.XmlRegistry.HiddenMode;
-            lbVer.Visible = Helper.XmlRegistry.HiddenMode;
+			label5.IsVisible = Helper.XmlRegistry.HiddenMode;
+            lbVer.IsVisible = Helper.XmlRegistry.HiddenMode;
 
 			if (this.CatalogDescription!=null) 
 			{
@@ -296,20 +181,20 @@ namespace SimPe.Plugin.Tool.Dockable
                 {
                     if (idno.Type == SimPe.Plugin.NeighborhoodType.Normal)
                     {
-                        this.label2.Visible = true; this.lbPop.Visible = true;
+                        this.label2.IsVisible = true; this.lbPop.IsVisible = true;
                         lbPop.Text = pkg.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE).Length.ToString();
                     }
                     else
                     {
-                        this.label2.Visible = false; this.lbPop.Visible = false;
+                        this.label2.IsVisible = false; this.lbPop.IsVisible = false;
                     }
 
                     if (idno.Type == SimPe.Plugin.NeighborhoodType.Normal || (idno.Type == SimPe.Plugin.NeighborhoodType.Suburb && (idno.Subep == Data.MetaData.NeighbourhoodEP.Business || idno.Subep == Data.MetaData.NeighbourhoodEP.MansionGarden)))
                     {
-                        this.label4.Visible = true; 
-                        this.label7.Visible = true; 
-                        this.lbUni.Visible = true; 
-                        this.lbholi.Visible = true;
+                        this.label4.IsVisible = true; 
+                        this.label7.IsVisible = true; 
+                        this.lbUni.IsVisible = true; 
+                        this.lbholi.IsVisible = true;
                         lbUni.Text = System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(pkg.FileName), "*_University*.package").Length.ToString();
                         lbholi.Text = System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(pkg.FileName), "*_Vacation*.package").Length.ToString();
                     }
@@ -329,7 +214,7 @@ namespace SimPe.Plugin.Tool.Dockable
                 }
                 else
                 {
-                    this.label2.Visible = false; this.label4.Visible = false; this.label7.Visible = false; this.lbPop.Visible = false; this.lbUni.Visible = false; this.lbholi.Visible = false;
+                    this.label2.IsVisible = false; this.label4.IsVisible = false; this.label7.IsVisible = false; this.lbPop.IsVisible = false; this.lbUni.IsVisible = false; this.lbholi.IsVisible = false;
                     if (pkg.FileName.Contains ("Tutorial"))
                     {
                         this.lbType.Text = "Tutorial Neighbourhood";

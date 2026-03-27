@@ -47,8 +47,10 @@ namespace System.Windows.Forms
     public class ToolStripItem
     {
         public string Text    { get; set; } = string.Empty;
-        public bool   Enabled { get; set; } = true;
-        public bool   Visible { get; set; } = true;
+        public bool   Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool   IsEnabled { get; set; } = true;
+        public bool   Visible { get => IsVisible; set => IsVisible = value; }
+        public bool   IsVisible { get; set; } = true;
         public object Tag     { get; set; }
         public object Image   { get; set; }
         public string Name    { get; set; } = "";
@@ -57,9 +59,77 @@ namespace System.Windows.Forms
         protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
     }
 
-    // ToolStrip and ToolStripButton are defined in SimPE.GMDCExporterbase (ListViewEx.cs).
-    // Do not redefine them here — it causes CS0433 ambiguity in projects that reference both.
-    //
+    /// <summary>Minimal stub for System.Windows.Forms.ToolStrip.</summary>
+    public class ToolStrip
+    {
+        public string Text { get; set; } = string.Empty;
+        public bool Enabled { get; set; } = true;
+        public bool Visible { get; set; } = true;
+        public bool ShowItemToolTips { get; set; } = true;
+        public int ImageScalingSize_Width { get; set; } = 16;
+        public System.Drawing.Size ImageScalingSize { get; set; } = new System.Drawing.Size(16, 16);
+        public System.Drawing.Point Location { get; set; }
+        public System.Drawing.Size Size { get; set; }
+        public int TabIndex { get; set; }
+        public string Name { get; set; } = "";
+        public ToolStripItemCollection Items { get; } = new ToolStripItemCollection();
+        public void SuspendLayout() { }
+        public void ResumeLayout(bool performLayout = false) { }
+        public void PerformLayout() { }
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.ToolStripButton.</summary>
+    public class ToolStripButton : ToolStripItem
+    {
+        public ToolStripButton() { }
+        public ToolStripButton(string text) { Text = text; }
+        public bool Checked { get; set; }
+        public System.Drawing.Font Font { get; set; }
+        public object ImageScaling { get; set; }
+        public object Overflow { get; set; }
+        public bool Available { get; set; } = true;
+        public System.Drawing.ContentAlignment ImageAlign { get; set; }
+        public object Alignment { get; set; }
+        public object DisplayStyle { get; set; }
+        public object TextImageRelation { get; set; }
+        public System.Drawing.Rectangle Bounds { get; set; }
+        public void SetBounds(System.Drawing.Rectangle r) { }
+        public event EventHandler VisibleChanged;
+        public event EventHandler AvailableChanged;
+        public event EventHandler CheckedChanged;
+        protected virtual void OnCheckedChanged(EventArgs e) => CheckedChanged?.Invoke(this, e);
+        protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
+        public new event EventHandler Click;
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.ToolTip.</summary>
+    public class ToolTip : IDisposable
+    {
+        public ToolTip() { }
+        public ToolTip(System.ComponentModel.IContainer container) { }
+        public void SetToolTip(object control, string caption) { }
+        public void Dispose() { }
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.LinkLabel (maps to Button in Avalonia).</summary>
+    public class LinkLabel
+    {
+        public string Text { get; set; } = string.Empty;
+        public bool Enabled { get; set; } = true;
+        public bool Visible { get; set; } = true;
+        public bool TabStop { get; set; }
+        public string Name { get; set; } = "";
+        public object Tag { get; set; }
+        public event LinkLabelLinkClickedEventHandler LinkClicked;
+        protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs e) => LinkClicked?.Invoke(this, e);
+    }
+
+    public class LinkLabelLinkClickedEventArgs : EventArgs
+    {
+        public LinkLabelLinkClickedEventArgs() { }
+    }
+    public delegate void LinkLabelLinkClickedEventHandler(object sender, LinkLabelLinkClickedEventArgs e);
+
     // ToolStripItemCollection and ToolStripMenuItem are NOT in GMDCExporterbase, so define them here.
 
     /// <summary>Minimal stub for System.Windows.Forms.ToolStripItemCollection.</summary>
@@ -101,6 +171,18 @@ namespace System.Windows.Forms
     public enum CloseReason { None, WindowsShutDown, MdiFormClosing, UserClosing, TaskManagerClosing, FormOwnerClosing, ApplicationExitCall }
 
     // Shortcut is defined in SimPE.GMDCExporterbase (ListViewEx.cs) — do not redefine here.
+
+    /// <summary>Minimal stub for System.Windows.Forms.SaveFileDialog.</summary>
+    public class SaveFileDialog : IDisposable
+    {
+        public string FileName { get; set; } = string.Empty;
+        public string Filter { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string InitialDirectory { get; set; } = string.Empty;
+        public bool OverwritePrompt { get; set; } = true;
+        public SimPe.DialogResult ShowDialog() => SimPe.DialogResult.Cancel;
+        public void Dispose() { }
+    }
 
     /// <summary>Minimal stub for System.Windows.Forms.FolderBrowserDialog.</summary>
     public class FolderBrowserDialog : IDisposable

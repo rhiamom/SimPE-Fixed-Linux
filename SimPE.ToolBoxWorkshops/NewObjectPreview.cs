@@ -30,7 +30,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Image = System.Drawing.Image;
 
 namespace SimPe.Plugin.Tool.Dockable
 {
@@ -38,16 +39,6 @@ namespace SimPe.Plugin.Tool.Dockable
     {
         public SimpleObjectPreview()
         {
-            SetStyle(
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.AllPaintingInWmPaint |
-                //ControlStyles.Opaque |
-                ControlStyles.UserPaint |
-                ControlStyles.ResizeRedraw
-                | ControlStyles.DoubleBuffer
-                , true);
-
-            BackColor = Color.Transparent;
             loadimg = true;
 
             InitializeComponent();
@@ -245,13 +236,13 @@ namespace SimPe.Plugin.Tool.Dockable
             cbCat.SelectedIndex = cbCat.Items.Count - 1;
             if (cbCat.Items.Count == 1)
             {
-                cbCat.Visible = false;
-                lbCat.Visible = true;
+                cbCat.IsVisible = false;
+                lbCat.IsVisible = true;
             }
             else
             {
-                cbCat.Visible = true;
-                lbCat.Visible = false;
+                cbCat.IsVisible = true;
+                lbCat.IsVisible = false;
             }
         }
 
