@@ -37,13 +37,6 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   </ItemGroup>
-  <!-- Dead code / Windows-only files excluded from build -->
-  <ItemGroup>
-    <Compile Remove="HexViewControl.cs" />
-    <Compile Remove="HexEditControl.cs" />
-    <Compile Remove="AnimatedDesigner.cs" />
-    <Compile Remove="UxTheme.cs" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
   </ItemGroup>

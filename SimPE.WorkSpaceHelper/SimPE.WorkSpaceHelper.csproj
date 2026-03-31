@@ -62,17 +62,6 @@
     <EmbeddedResource Include="pattern.gif" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Exclude WinForms-only files that have no Avalonia equivalent yet -->
-    <Compile Remove="GlossyRenderer.cs" />
-    <Compile Remove="ToolStripColorTable.cs" />
-    <Compile Remove="MyButtonItem.cs" />
-    <Compile Remove="ResourceLoader.cs" />
-    <Compile Remove="LoadFileWrappersExt.cs" />
-    <Compile Remove="LoadHelpTopics.cs" />
-    <Compile Remove="ToolMenuItemExt.cs" />
-    <Compile Remove="LoadFileWrappers.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />

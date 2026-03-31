@@ -72,10 +72,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="GlobCtrl.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ambertation.3D\ambertation.3D.csproj" />
     <ProjectReference Include="..\Ambertation.Utilities\ambertation.utilities.csproj" />
   </ItemGroup>

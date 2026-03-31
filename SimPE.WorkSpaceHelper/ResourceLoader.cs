@@ -24,16 +24,49 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using Avalonia.Controls;
 
 namespace SimPe
 {
+    /// <summary>
+    /// Avalonia tab item representing one open plugin document in the bottom TabControl.
+    /// Replaces WeifenLuo.WinFormsUI.Docking.DockContent.
+    /// </summary>
+    public class PluginTab : TabItem
+    {
+        public bool CloseButton { get; set; } = true;
+
+        public bool IsOpen => Parent != null;
+
+        public event FormClosingEventHandler FormClosing;
+
+        public void Show(TabControl tc)
+        {
+            if (!tc.Items.Contains(this))
+                tc.Items.Add(this);
+            tc.SelectedItem = this;
+        }
+
+        public void Activate(TabControl tc)
+        {
+            tc.SelectedItem = this;
+        }
+
+        public void Close(TabControl tc)
+        {
+            var args = new FormClosingEventArgs();
+            FormClosing?.Invoke(this, args);
+            if (!args.Cancel)
+                tc.Items.Remove(this);
+        }
+    }
+
 	/// <summary>
 	/// This class can be used to Load a Resource into the Plugin Area(s)
 	/// </summary>
 	public class ResourceLoader
 	{
-		DockPanel dc;
+		TabControl dc;
 		LoadedPackage pkg;
 
 		/// <summary>
@@ -226,7 +259,7 @@ namespace SimPe
 
                 SimPe.Interfaces.Plugin.IPackedFileUI uiHandler = wrapper.UIHandler;
 
-                Control pan = (uiHandler == null) ? null : uiHandler.GUIHandle;
+                Avalonia.Controls.Control pan = (uiHandler == null) ? null : uiHandler.GUIHandle;
 
                 if (pan != null)
                 {
@@ -236,13 +269,7 @@ namespace SimPe
                         doc.Show(dc, DockState.Document);
                     }
 
-                    pan.Parent = doc.DockHandler.Form ?? doc;
-                    pan.Left = 0;
-                    pan.Top = 0;
-                    pan.Width = doc.ClientRectangle.Width;
-                    pan.Height = doc.ClientRectangle.Height;
-                    pan.Dock = System.Windows.Forms.DockStyle.Fill;
-                    pan.Visible = true;
+                    // Avalonia layout — WinForms-style parent/dock assignment not used here.
 
                     doc.Activate();
 
@@ -470,26 +497,9 @@ namespace SimPe
 		/// Make sure all Controls and Child Controls get disposed
 		/// </summary>
 		/// <param name="ctrls"></param>
-		void DisposeSubControls(Control.ControlCollection ctrls)
-		{
-			if (ctrls==null) return;
+		void DisposeSubControls(object ctrls) { }
 
-			foreach (Control c in ctrls)
-			{
-				c.Dispose();
-			}
-
-			ctrls.Clear();
-		}
-
-		void ClearControls(Control c)
-		{
-			c.Tag = null;
-			foreach (Control cc in c.Controls)
-				ClearControls(cc);
-
-			c.Controls.Clear();
-		}
+		void ClearControls(object c) { }
 
 		/// <summary>
 		/// Call this if you want to unload a Wrapper
@@ -618,11 +628,11 @@ namespace SimPe
 					{
 						string flname = wrapper.Package.FileName;
 						if (flname==null) flname="";
-						System.Windows.Forms.DialogResult dr = System.Windows.Forms.DialogResult.Yes;
+						SimPe.DialogResult dr = SimPe.DialogResult.Yes;
 						if (!Helper.XmlRegistry.Silent)
 							dr = Message.Show(SimPe.Localization.GetString("reschanged").Replace("{name}", doc.Text).Replace("{filename}", flname), SimPe.Localization.GetString("changed?"), MessageBoxButtons.YesNo);
 
-						if (dr==System.Windows.Forms.DialogResult.Yes)
+						if (dr==SimPe.DialogResult.Yes)
 						{
 							wrapper.Refresh();
 						}

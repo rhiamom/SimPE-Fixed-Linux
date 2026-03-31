@@ -33,11 +33,6 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-  <!-- WinForms form files excluded — will be replaced with Avalonia windows -->
-  <ItemGroup>
-    <Compile Remove="SplashForm.cs" />
-    <Compile Remove="HelpForm.cs" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Update="TransparentButton.cs">
       <SubType>UserControl</SubType>

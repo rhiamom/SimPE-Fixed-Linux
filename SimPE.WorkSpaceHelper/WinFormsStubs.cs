@@ -54,8 +54,10 @@ namespace System.Windows.Forms
         public object Tag     { get; set; }
         public object Image   { get; set; }
         public string Name    { get; set; } = "";
+        public string ToolTipText { get; set; } = "";
         public System.Drawing.Size Size { get; set; }
         public event EventHandler Click;
+        public event EventHandler EnabledChanged;
         protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
     }
 
@@ -151,9 +153,10 @@ namespace System.Windows.Forms
         public ToolStripMenuItem() { }
         public ToolStripMenuItem(string text) { Text = text; }
         public bool Checked { get; set; }
-        public string ToolTipText { get; set; } = "";
         public object ShortcutKeys { get; set; }
         public ToolStripItemCollection DropDownItems { get; } = new ToolStripItemCollection();
+        public event EventHandler CheckedChanged;
+        public void PerformClick() { }
     }
 
     // Control and ControlCollection are defined in SimPE.GMDCExporterbase (ListViewEx.cs).

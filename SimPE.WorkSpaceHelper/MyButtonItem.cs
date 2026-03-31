@@ -37,57 +37,9 @@ namespace SimPe
         static int counter = 0;
 
         #region Layout stuff
-        public static void GetLayoutInformations(Control b)
-        {
-            ArrayList list = Helper.XmlRegistry.Layout.VisibleToolbarButtons;
-            GetLayoutInformations(b, list);
-        }
-
-        static void GetLayoutInformations(Control b, ArrayList list)
-        {
-            foreach (Control c in b.Controls)
-                GetLayoutInformations(c, list);
-
-            ToolStrip tb = b as ToolStrip;
-            if (tb != null)
-            {
-                foreach (object o in tb.Items)
-                {
-                    MyButtonItem mbi = o as MyButtonItem;
-                    if (mbi != null)
-                        //if (!mbi.HaveDock)
-                        mbi.Visible = list.Contains(mbi.Name);
-                }
-            }
-
-        }
-
-        public static void SetLayoutInformations(Control b)
-        {
-            ArrayList list = new ArrayList();
-            SetLayoutInformations(b, list);
-
-            Helper.XmlRegistry.Layout.VisibleToolbarButtons = list;
-        }
-
-        static void SetLayoutInformations(Control b, ArrayList list)
-        {
-            foreach (Control c in b.Controls)
-                SetLayoutInformations(c, list);
-
-            ToolStrip tb = b as ToolStrip;
-            if (tb != null)
-            {
-                foreach (object o in tb.Items)
-                {
-                    MyButtonItem mbi = o as MyButtonItem;
-                    if (mbi != null)
-                        if (mbi.Visible /*&& !mbi.HaveDock*/)
-                            list.Add(mbi.Name);
-                }
-            }
-
-        }
+        // Layout traversal is a no-op in the Avalonia port — ToolStrip is a stub with no visual tree.
+        public static void GetLayoutInformations(object b) { }
+        public static void SetLayoutInformations(object b) { }
         #endregion
         static int namect = 0;
         string name;

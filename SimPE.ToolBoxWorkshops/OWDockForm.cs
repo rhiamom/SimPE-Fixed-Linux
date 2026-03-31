@@ -25,7 +25,7 @@ using System.Drawing;
 using SimPe.Scenegraph.Compat;
 using System.Collections;
 using System.ComponentModel;
-using TreeNodeCollection = SimPe.Scenegraph.Compat.TreeNode.TreeNodeCollection;
+using TreeNodeCollection = SimPe.Scenegraph.Compat.ITreeNodeCollection;
 // Disambiguate DockStyle — defined identically in both simpe.wizardbase and simpe.workspace.plugin
 
 namespace SimPe.Plugin.Tool.Dockable
@@ -141,16 +141,16 @@ namespace SimPe.Plugin.Tool.Dockable
 			this.splitter1 = new Avalonia.Controls.GridSplitter();
 			this.panel1 = new Avalonia.Controls.StackPanel();
 			this.wizardStepPanel3 = new SimPe.Wizards.WizardStepPanel();
-			this.gbClone = new Avalonia.Controls.StackPanel();
-			this.gbRecolor = new Avalonia.Controls.StackPanel();
-			this.cbColorExt = new Avalonia.Controls.CheckBox();
-			this.cbgid = new Avalonia.Controls.CheckBox();
-			this.cbfix = new Avalonia.Controls.CheckBox();
-			this.cbdefault = new Avalonia.Controls.CheckBox();
-			this.cbclean = new Avalonia.Controls.CheckBox();
-			this.cbparent = new Avalonia.Controls.CheckBox();
-			this.cbwallmask = new Avalonia.Controls.CheckBox();
-			this.cbanim = new Avalonia.Controls.CheckBox();
+			this.gbClone = new Ambertation.Windows.Forms.XPTaskBoxSimple();
+			this.gbRecolor = new Ambertation.Windows.Forms.XPTaskBoxSimple();
+			this.cbColorExt = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbgid = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbfix = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbdefault = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbclean = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbparent = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbwallmask = new Ambertation.Windows.Forms.TransparentCheckBox();
+			this.cbanim = new Ambertation.Windows.Forms.TransparentCheckBox();
 			this.panel2 = new Avalonia.Controls.StackPanel();
 			this.cbTask = new Avalonia.Controls.ComboBox();
 			this.label3 = new Avalonia.Controls.TextBlock();
@@ -202,12 +202,12 @@ namespace SimPe.Plugin.Tool.Dockable
 			this.cbTask.SelectionChanged += (s, e) => this.cbTask_SelectedIndexChanged(s, EventArgs.Empty);
 
 			// CheckBox initial state
-			this.cbColorExt.IsChecked = true;
-			this.cbgid.IsChecked = true;
-			this.cbfix.IsChecked = true;
-			this.cbdefault.IsChecked = true;
-			this.cbclean.IsChecked = true;
-			this.cbwallmask.IsChecked = true;
+			this.cbColorExt.Checked = true;
+			this.cbgid.Checked = true;
+			this.cbfix.Checked = true;
+			this.cbdefault.Checked = true;
+			this.cbclean.Checked = true;
+			this.cbwallmask.Checked = true;
 			this.biCatalog.Checked = true;
 
 			// ToolStrip items
@@ -272,7 +272,6 @@ namespace SimPe.Plugin.Tool.Dockable
 					this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.custom.png")));
 
 					lb.Items.Clear();
-					lb.Sorted = false;
 					tv.Nodes.Clear();
 					tv.Sorted = true;
 					tv.ImageList = ilist;
@@ -355,7 +354,7 @@ namespace SimPe.Plugin.Tool.Dockable
 			string[][] cats = oci.ObjectCategory;
 			foreach (string[] ss in cats)				
 			{
-				this.tv.BeginInvoke(new GetParentNodeHandler(GetParentNode), new object[] {tv.Nodes, ss, 0, oci, a});				
+				Avalonia.Threading.Dispatcher.UIThread.Post(() => GetParentNode(tv.Nodes, ss, 0, oci, a));
 			}
 
 			//if (oci.Thumbnail!=null) a.Name = "* "+a.Name;				
@@ -364,14 +363,13 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void ol_Finished(object sender, EventArgs e)
 		{
-			lb.Sorted = true;	
 		}
 
 		private void Activate_biCatalog(object sender, System.EventArgs e)
 		{
 			biCatalog.Checked = !biCatalog.Checked;
 			this.tv.Visible = biCatalog.Checked;
-			this.lb.Visible = !biCatalog.Checked;
+			this.lb.IsVisible = !biCatalog.Checked;
 			
 			lb_SelectedIndexChanged(lb, null);
 			tv_AfterSelect(tv, null);
@@ -384,7 +382,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void button2_Click(object sender, System.EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
+			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
 			ofd.Filter = ExtensionProvider.BuildFilterString(
 				new SimPe.ExtensionType[] {
 											  SimPe.ExtensionType.Package,
@@ -421,7 +419,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void lb_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (wizard1.CurrentStepNumber==this.wizardStepPanel2.Index && lb.Visible) 
+			if (wizard1.CurrentStepNumber==this.wizardStepPanel2.Index && lb.IsVisible)
 			{
 				wizard1.NextEnabled = (lb.SelectedIndex>=0);
 			}	
@@ -543,13 +541,13 @@ namespace SimPe.Plugin.Tool.Dockable
 				}
 
 				this.animatedImagelist1.Stop();
-				if (package!=null) this.lbfinload.Visible = settings.RemoteResult;
+				if (package!=null) this.lbfinload.IsVisible = settings.RemoteResult;
 				else this.lberr.IsVisible = true;
-				
+
 			}
 
 			this.lbwait.IsVisible = false;
-			this.lbfinished.Visible = !this.lbfinload.Visible && !lberr.Visible;
+			this.lbfinished.IsVisible = !this.lbfinload.IsVisible && !lberr.IsVisible;
 		}
 
 		private void wizardStepPanel3_Activate(SimPe.Wizards.Wizard sender, SimPe.Wizards.WizardEventArgs e)
@@ -573,7 +571,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void cbfix_CheckedChanged(object sender, System.EventArgs e)
 		{
-			cbclean.IsEnabled = cbfix.Checked;
+			cbclean.Enabled = cbfix.Checked;
 		}
 
 		

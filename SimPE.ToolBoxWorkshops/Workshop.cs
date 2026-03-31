@@ -930,7 +930,7 @@ namespace SimPe.Plugin
                 WaitingScreen.UpdateMessage("Collecting needed Files");
                 if ((package == null) && (pfd != null)) RecolorClone(pfd, localgroup, false, false, false);
 
-                (cbgid.IsChecked == true) = old;
+                cbgid.IsChecked = old;
 
                 if ((this.cbColor.IsChecked == true))
                 {

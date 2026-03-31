@@ -291,10 +291,19 @@ namespace SimPe.Scenegraph.Compat
 
     // ── TreeNode / TreeView compat ────────────────────────────────────────────
 
+    /// <summary>Common interface for both TreeNode.TreeNodeCollection and TreeView.TreeNodeCollection.</summary>
+    public interface ITreeNodeCollection : IEnumerable
+    {
+        int Count { get; }
+        TreeNode this[int index] { get; }
+        TreeNode Add(TreeNode node);
+        void Clear();
+    }
+
     /// <summary>Minimal TreeNode — replaces System.Windows.Forms.TreeNode.</summary>
     public class TreeNode
     {
-        public class TreeNodeCollection : IEnumerable
+        public class TreeNodeCollection : ITreeNodeCollection
         {
             private readonly List<TreeNode> _nodes = new List<TreeNode>();
             private readonly TreeNode _owner;
@@ -334,7 +343,7 @@ namespace SimPe.Scenegraph.Compat
     /// <summary>Minimal TreeView — replaces System.Windows.Forms.TreeView.</summary>
     public class TreeView
     {
-        public class TreeNodeCollection : IEnumerable
+        public class TreeNodeCollection : ITreeNodeCollection
         {
             private readonly List<TreeNode> _nodes = new List<TreeNode>();
             public int Count => _nodes.Count;
