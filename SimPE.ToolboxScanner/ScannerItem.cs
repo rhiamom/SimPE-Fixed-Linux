@@ -80,8 +80,8 @@ namespace SimPe.Plugin
 			filename = "";
 		}
 
-		System.Windows.Forms.ListViewItem lvi;
-		public System.Windows.Forms.ListViewItem ListViewItem
+		SimPe.Scenegraph.Compat.ListViewItem lvi;
+		public SimPe.Scenegraph.Compat.ListViewItem ListViewItem
 		{
 			get 
 			{

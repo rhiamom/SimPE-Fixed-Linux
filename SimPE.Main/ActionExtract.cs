@@ -110,7 +110,7 @@ namespace SimPe.Actions.Default
 						excount++;
 						Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile")+" "+name, ex);
 						if (excount>=5) 
-							if (Message.Show(Localization.Manager.GetString("ask000"), Localization.Manager.GetString("proceed"), MessageBoxButtons.YesNo)==System.Windows.Forms.DialogResult.Yes) 
+							if (Message.Show(Localization.Manager.GetString("ask000"), Localization.Manager.GetString("proceed"), MessageBoxButtons.YesNo)==SimPe.DialogResult.Yes) 
 								i=pfds.Length;
 					}
 				

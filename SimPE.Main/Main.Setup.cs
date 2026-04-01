@@ -108,23 +108,23 @@ namespace SimPe
 
             remote.LoadedResource += new ChangedResourceEvent(rh_LoadedResource);
             
-            package.UpdateRecentFileMenu(this.miRecent);
+            // TODO: package.UpdateRecentFileMenu(this.miRecent);
 
             InitTheme();
 
             dockBottom.Height = (int)((this.Height * 3) / 4);
             this.Title += " (Version " + Helper.SimPeVersion.ProductVersion + ")";
-            
+
 
 
             InitMenuItems();
             this.dcPlugin.Open();
-            Ambertation.Windows.Forms.ToolStripRuntimeDesigner.Add(tbContainer);
-            Ambertation.Windows.Forms.ToolStripRuntimeDesigner.LineUpToolBars(tbContainer);
-            this.menuBar1.ContextMenuStrip = tbContainer.TopToolStripPanel.ContextMenuStrip;
+            // TODO: Ambertation.Windows.Forms.ToolStripRuntimeDesigner.Add(tbContainer);
+            // TODO: Ambertation.Windows.Forms.ToolStripRuntimeDesigner.LineUpToolBars(tbContainer);
+            // TODO: this.menuBar1.ContextMenuStrip = tbContainer.TopToolStripPanel.ContextMenuStrip;
 
-            Ambertation.Windows.Forms.Serializer.Global.Register(tbContainer);
-            Ambertation.Windows.Forms.Serializer.Global.Register(manager);
+            // TODO: Ambertation.Windows.Forms.Serializer.Global.Register(tbContainer);
+            // TODO: Ambertation.Windows.Forms.Serializer.Global.Register(manager);
 
             this.Closing += (_, _) => saveProfile();
 

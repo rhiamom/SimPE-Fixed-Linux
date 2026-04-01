@@ -14,7 +14,7 @@
 
 namespace Ambertation.Windows.Forms
 {
-    public class HexViewControl : System.Windows.Forms.Control
+    public class HexViewControl : Avalonia.Controls.Control
     {
         public enum ViewState { Hex, SignedDec, UnsignedDec }
 
@@ -49,6 +49,7 @@ namespace Ambertation.Windows.Forms
         public bool                  ShowGrid           { get; set; }
         public ViewState             View               { get; set; }
         public int                   SelectionLength    => 0;
+        public bool                  Visible            { get => IsVisible; set => IsVisible = value; }
 
         public event System.EventHandler DataChanged;
         public event System.EventHandler SelectionChanged;
@@ -63,7 +64,7 @@ namespace Ambertation.Windows.Forms
         }
     }
 
-    public class HexEditControl : System.Windows.Forms.Control
+    public class HexEditControl : Avalonia.Controls.Control
     {
         public System.Drawing.Font        LabelFont  { get; set; }
         public System.Drawing.Font        TextBoxFont { get; set; }

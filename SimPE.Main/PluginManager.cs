@@ -40,10 +40,10 @@ namespace SimPe
 		internal PluginManager(
             ToolStripMenuItem toolmenu, 
 			ToolStrip tootoolbar,
-			WeifenLuo.WinFormsUI.Docking.DockPanel dc,
+			object dc,
 			LoadedPackage lp,
 			Ambertation.Windows.Forms.XPTaskBoxSimple defaultactiontaskbox,
-            ContextMenuStrip defaultactionmenu,
+            SimPe.Scenegraph.Compat.ContextMenuStrip defaultactionmenu,
 			Ambertation.Windows.Forms.XPTaskBoxSimple toolactiontaskbox, 
 			Ambertation.Windows.Forms.XPTaskBoxSimple extactiontaskbox,
 			ToolStrip actiontoolbar,
@@ -298,7 +298,7 @@ namespace SimPe
 		void LoadActionTools(
 			Ambertation.Windows.Forms.XPTaskBoxSimple taskbox, 
 			ToolStrip tb,
-            ContextMenuStrip mi, 
+            SimPe.Scenegraph.Compat.ContextMenuStrip mi, 
 			SimPe.Interfaces.IToolAction[] tools)
 		{			
 			if (tools==null) tools = FileTable.ToolRegistry.Actions;

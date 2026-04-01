@@ -42,7 +42,7 @@ namespace SimPe.Plugin.Scanner
 		/// <summary>
 		/// Called before a new Scan is stared
 		/// </summary>
-		void InitScan(System.Windows.Forms.ListView lv);
+		void InitScan(SimPe.Scenegraph.Compat.ListView lv);
 
 		/// <summary>
 		/// Called if a non Cached Item was found that should be displayed
@@ -51,7 +51,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="ps">The State of this File for this Scanner</param>
 		/// <param name="lvi">The ListView Item that is used to display</param>
 		/// <remarks>This needs to update the cache Item!</remarks>
-		void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi);
+		void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi);
 
 		/// <summary>
 		/// Called if a Cached Item was found that should be displayed
@@ -59,7 +59,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="si">The Object representing the ScannedFile</param>
 		/// <param name="ps">The State of this File for this Scanner</param>
 		/// <param name="lvi">The ListView Item that is used to display</param>
-		void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi);
+		void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi);
 
 		/// <summary>
 		/// Called after the Scan was Finished completley
@@ -93,7 +93,7 @@ namespace SimPe.Plugin.Scanner
 		/// <summary>
 		/// Returns null or a valid Control, that will be displayed on the Controls Tab
 		/// </summary>
-		System.Windows.Forms.Control OperationControl
+		Avalonia.Controls.Control OperationControl
 		{
 			get;
 		}

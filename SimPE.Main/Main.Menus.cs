@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using DialogResult = System.Windows.Forms.DialogResult;
 using System.Data;
 using SimPe.Events;
 
@@ -213,7 +214,7 @@ namespace SimPe
                 // If Helper.GameRootPath is already set,
                 // you can prefill the dialog here.
 
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     // Values have already been saved inside GameRootDialog:
                     // Helper.GameRootPath

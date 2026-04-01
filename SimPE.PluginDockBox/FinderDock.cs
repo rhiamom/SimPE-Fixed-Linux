@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
 using Ambertation.Windows.Forms;
+using Compat = SimPe.Scenegraph.Compat;
 using System.Media;
 
 
@@ -44,7 +45,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
         System.Collections.Generic.List<string> packages;
         System.Threading.Thread[] threads;
-        private Panel pnContainer;
+        private Avalonia.Controls.StackPanel pnContainer;
         SimPe.Interfaces.AFinderTool searchtool;
         int runningthreads;
         public FinderDock()
@@ -57,13 +58,13 @@ namespace SimPe.Plugin.Tool.Dockable
             tm.AddControl(this.tbResult);
             tm.AddControl(this.toolBar1);
             if (Helper.XmlRegistry.UseBigIcons)
-                toolBar1.ImageScalingSize = new System.Drawing.Size(32, 32);            
+                // toolBar1.ImageScalingSize = new System.Drawing.Size(32, 32); // n/a in Avalonia
 
             sorter = new ColumnSorter();
             sorter.CurrentColumn = 0;
             lv.ListViewItemSorter = sorter;
 
-            lv.View = System.Windows.Forms.View.Details;
+            lv.View = SimPe.Scenegraph.Compat.View.Details;
 
             packages = new System.Collections.Generic.List<string>();
             threads = new System.Threading.Thread[Helper.XmlRegistry.SortProcessCount / 2];
@@ -111,18 +112,12 @@ namespace SimPe.Plugin.Tool.Dockable
 
         private void cbTask_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            pnContainer.Controls.Clear();
+            pnContainer?.Children.Clear();
             if (cbTask.SelectedItem == null) return;
 
-            Control c = ((SimPe.Interfaces.AFinderTool)cbTask.SelectedItem).SearchGui;
-            pnContainer.Height = c.Height;
-            pnContainer.Controls.Add(c);
-            c.Parent = pnContainer;
-            c.Left = 0;
-            c.Top = 0;
-            c.Dock = System.Windows.Forms.DockStyle.Top;
-            c.Visible = true;
-            c.Refresh();
+            Avalonia.Controls.Control c = ((SimPe.Interfaces.AFinderTool)cbTask.SelectedItem).SearchGui;
+            pnContainer?.Children.Add(c);
+            c.IsVisible = true;
         }
 
         public void ClearResults()
@@ -149,7 +144,7 @@ namespace SimPe.Plugin.Tool.Dockable
             for (int i = 0; i < strings.Count; i++)
             {
 
-                ColumnHeader ch = new ColumnHeader();
+                Compat.ColumnHeader ch = new Compat.ColumnHeader();
                 ch.Text = (string)strings[i];
                 ch.Width = (int)widths[i];
                 lv.Columns.Add(ch);
@@ -159,11 +154,11 @@ namespace SimPe.Plugin.Tool.Dockable
         protected int AddResultGroup(string name)
         {
             string cname = name.Trim().ToLower();
-            foreach (System.Windows.Forms.ListViewGroup lvg in lv.Groups)
+            foreach (SimPe.Scenegraph.Compat.ListViewGroup lvg in lv.Groups)
                 if (lvg.Header.Trim().ToLower() == cname)
                     return lv.Groups.IndexOf(lvg);
 
-            System.Windows.Forms.ListViewGroup g = new System.Windows.Forms.ListViewGroup(name);
+            SimPe.Scenegraph.Compat.ListViewGroup g = new SimPe.Scenegraph.Compat.ListViewGroup(name);
             int idx = lv.Groups.Count;
             lv.Groups.Add(g);
             return idx;
@@ -179,34 +174,32 @@ namespace SimPe.Plugin.Tool.Dockable
 
         private void Activate_biList(object sender, System.EventArgs e)
         {
-            lv.View = System.Windows.Forms.View.List;
-            biList.Checked = true;
-            biTile.Checked = false;
-            biDetail.Checked = false;
+            lv.View = SimPe.Scenegraph.Compat.View.List;
+            biList.IsChecked = true;
+            biTile.IsChecked = false;
+            biDetail.IsChecked = false;
         }
 
         private void Activate_biTile(object sender, System.EventArgs e)
         {
-            lv.View = System.Windows.Forms.View.Tile;
-            biList.Checked = false;
-            biTile.Checked = true;
-            biDetail.Checked = false;
+            lv.View = SimPe.Scenegraph.Compat.View.Tile;
+            biList.IsChecked = false;
+            biTile.IsChecked = true;
+            biDetail.IsChecked = false;
         }
 
         private void Activate_biDetails(object sender, System.EventArgs e)
         {
-            lv.View = System.Windows.Forms.View.Details;
-            biList.Checked = false;
-            biTile.Checked = false;
-            biDetail.Checked = true;
+            lv.View = SimPe.Scenegraph.Compat.View.Details;
+            biList.IsChecked = false;
+            biTile.IsChecked = false;
+            biDetail.IsChecked = true;
         }
 
-        private void lv_ColumnClick(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+        private void lv_ColumnClick(object sender, System.EventArgs e)
         {
-            ((ListView)sender).ListViewItemSorter = sorter;
-            ((ColumnSorter)((ListView)sender).ListViewItemSorter).CurrentColumn = e.Column;
-            ((ListView)sender).Sort();
-        }		                
+            // TODO: column click sorting not available in Avalonia port
+        }                
 
         private void lv_SelectedIndexChanged(object sender, System.EventArgs e)
         {
@@ -280,7 +273,7 @@ namespace SimPe.Plugin.Tool.Dockable
             FileTable.FileIndex.Load();
             packages.Clear();
             truncated = false;
-            pnErr.Visible = false;
+            pnErr.IsVisible = false;
 
             foreach (FileTableItem fti in SimPe.FileTable.FileIndex.BaseFolders)
             {
@@ -366,7 +359,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
             if (searchtool!=null) searchtool.NotifyFinishedSearch();
             pnErr.Text = pnErr.Text.Replace("{nr}", Helper.XmlRegistry.MaxSearchResults.ToString());
-            pnErr.Visible = truncated;
+            pnErr.IsVisible = truncated;
             Wait.Stop();
 
             System.Diagnostics.Debug.WriteLine("Done Searching");

@@ -35,10 +35,10 @@ namespace SimPe
 	/// </summary>
 	public class About : SimPe.Windows.Forms.HelpForm
     {
-		private System.Windows.Forms.RichTextBox rtb;
-		private System.Windows.Forms.Button button1;
-        private Button button2;
-        private WebBrowser wb;
+		private Avalonia.Controls.TextBox rtb;
+		private Avalonia.Controls.Button button1;
+        private Avalonia.Controls.Button button2;
+        private object wb;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -54,48 +54,16 @@ namespace SimPe
 			// Erforderlich f�r die Windows Form-Designerunterst�tzung
 			//
 			InitializeComponent();
-            button2.BackColor = SystemColors.Control;
-            this.FormBorderStyle = FormBorderStyle.None;
-			           
-            wb.Navigating += new WebBrowserNavigatingEventHandler(wb_Navigating);
-            wb.Navigated += new WebBrowserNavigatedEventHandler(wb_Navigated);
-            wb.IsWebBrowserContextMenuEnabled = Helper.QARelease;
-            wb.AllowNavigation = true;
-
-            wb.Visible = html;
-            rtb.Visible = !html;
+            // wb not available in Avalonia port
+			rtb.IsVisible = !html;
 		}
 
-        void wb_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        void wb_Navigated(object sender, EventArgs e)
         {
             
         }
 
-        void wb_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (e.Url.OriginalString.StartsWith("about:")) return;
-            if (e.TargetFrameName != "_blank")
-            {
-                e.Cancel = true;
-                System.Windows.Forms.Help.ShowHelp(wb, e.Url.OriginalString);
-                //wb.Navigate(e.Url, true);
-            }
-        }
-
-		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        void wb_Navigating(object sender, EventArgs e) { }
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -104,84 +72,16 @@ namespace SimPe
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
-            this.rtb = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.wb = new System.Windows.Forms.WebBrowser();
-            this.SuspendLayout();
-            // 
-            // rtb
-            // 
-            this.rtb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtb.BackColor = System.Drawing.Color.White;
-            this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.rtb.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtb.Location = new System.Drawing.Point(33, 132);
-            this.rtb.Name = "rtb";
-            this.rtb.ReadOnly = true;
-            this.rtb.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtb.Size = new System.Drawing.Size(724, 295);
-            this.rtb.TabIndex = 2;
-            this.rtb.Text = "";
-            this.rtb.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.rtb_LinkClicked);
-            this.rtb.Enter += new System.EventHandler(this.rtb_Enter);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(342, 170);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
-            // 
-            // button2
-            // 
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(695, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(64, 23);
-            this.button2.TabIndex = 4;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // wb
-            // 
-            this.wb.AllowNavigation = false;
-            this.wb.AllowWebBrowserDrop = false;
-            this.wb.IsWebBrowserContextMenuEnabled = false;
-            this.wb.Location = new System.Drawing.Point(33, 132);
-            this.wb.MinimumSize = new System.Drawing.Size(20, 20);
-            this.wb.Name = "wb";
-            this.wb.Size = new System.Drawing.Size(728, 295);
-            this.wb.TabIndex = 5;
-            this.wb.WebBrowserShortcutsEnabled = false;
-            // 
-            // About
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(773, 443);
-            this.Controls.Add(this.wb);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.rtb);
-            this.Controls.Add(this.button1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "About";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "About";
-            this.ResumeLayout(false);
-
+			this.rtb = new Avalonia.Controls.TextBox { IsReadOnly = true };
+			this.button1 = new Avalonia.Controls.Button();
+			this.button2 = new Avalonia.Controls.Button();
+			this.button2.Click += (s, e) => button2_Click(s, null);
 		}
 		#endregion
 
 		void LoadResource(string flname)
 		{
-            rtb.Visible = true;
+            rtb.IsVisible = true;
 			System.Diagnostics.FileVersionInfo v = Helper.SimPeVersion;
 			System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream("SimPe."+flname+"-"+System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName+".rtf");
 			if (s==null) s = this.GetType().Assembly.GetManifestResourceStream("SimPe."+flname+"-en.rtf");
@@ -191,7 +91,7 @@ namespace SimPe
 				string vtext = Helper.VersionToString(v); //v.FileMajorPart +"."+v.FileMinorPart;
 				if (Helper.QARelease) vtext = "QA " + vtext;
 				if (Helper.DebugMode) vtext += " [debug]";
-				rtb.Rtf = sr.ReadToEnd().Replace("\\{Version\\}", vtext);
+				rtb.Text = sr.ReadToEnd().Replace("\\{Version\\}", vtext);
 			} 
 			else 
 			{
@@ -204,9 +104,8 @@ namespace SimPe
 		/// </summary>
 		public static void ShowAbout()
 		{
-           
 			About f = new About();
-			f.Text = SimPe.Localization.GetString("About");
+			f.Title = SimPe.Localization.GetString("About");
 
 			f.LoadResource("about");
             SimPe.Splash.Screen.Stop();
@@ -219,34 +118,14 @@ namespace SimPe
 		public static void ShowWelcome()
 		{
 			About f = new About();
-			f.Text = SimPe.Localization.GetString("Welcome");
+			f.Title = SimPe.Localization.GetString("Welcome");
             f.LoadResource("welcome");
             SimPe.Splash.Screen.Stop();
 
-            // Detach rtb from bottom so we can shrink it and add a checkbox row below it
-            f.rtb.Anchor = System.Windows.Forms.AnchorStyles.Top
-                         | System.Windows.Forms.AnchorStyles.Left
-                         | System.Windows.Forms.AnchorStyles.Right;
-            f.rtb.Height = f.ClientSize.Height - f.rtb.Top - 30;
-
-            // Add "Don't show this again" checkbox at bottom-right, outside the text box
-            CheckBox cbDontShow = new CheckBox();
-            cbDontShow.Text = "Don't show this again on startup";
-            cbDontShow.AutoSize = true;
-            cbDontShow.Checked = !Helper.XmlRegistry.ShowWelcomeOnStartup;
-            cbDontShow.BackColor = System.Drawing.SystemColors.Control;
-            cbDontShow.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-                              | System.Windows.Forms.AnchorStyles.Right;
-            f.Controls.Add(cbDontShow);
-            cbDontShow.BringToFront();
-            // Position after adding so AutoSize has calculated Width
-            cbDontShow.Location = new System.Drawing.Point(
-                f.ClientSize.Width - cbDontShow.Width - 16,
-                f.ClientSize.Height - cbDontShow.Height - 6);
-
+            // TODO: "Don't show again" checkbox not ported to Avalonia
 			f.ShowDialog();
 
-            Helper.XmlRegistry.ShowWelcomeOnStartup = !cbDontShow.Checked;
+            // Helper.XmlRegistry.ShowWelcomeOnStartup = ...; // not ported
 		}
 
         //static System.Threading.Thread uthread;
@@ -337,8 +216,7 @@ namespace SimPe
             string html = GetHtmlBase();
 			try 
 			{
-				f.Text = SimPe.Localization.GetString("Tutorials");			
-							
+				f.Title = SimPe.Localization.GetString("Tutorials");
 
 				text += "<p>";
 				if (System.IO.File.Exists(Introduction(true)))
@@ -353,45 +231,29 @@ namespace SimPe
 					text += "\n                    <a href=\""+TazzMannTutorial(false)+"\"><span class=\"serif\">TazzMann:</span> SimPE - From the Ground Up</a>";
 					text += "\n                </li>";
 				}
-				//text += WebUpdate.GetTutorials().Replace("<ul>", "<ul class=\"nobullet\">");			
 				text += "</p>";
 
-				//text = text.Replace("<li>", "");
-				//text = text.Replace("</li>", "<br /><br />");
-
-                f.wb.DocumentText = html.Replace("{CONTENT}", text);
+                // f.wb.DocumentText not available in Avalonia port
                 SaveTutorials(text);
-				text = Ambertation.Html2Rtf.Convert(text);
-				text = text.Replace("(http://", @"\pard\par         (http://");
-				
-				f.rtb.Rtf = text;
-			} 
+				f.rtb.Text = text;
+			}
 			catch (Exception ex)
 			{
-                f.wb.DocumentText = html.Replace("{CONTENT}", GetStoredTutorials());
-				f.rtb.Rtf = GetStoredTutorials();
-                if (f.rtb.Rtf == "")
+				f.rtb.Text = GetStoredTutorials();
+                if (string.IsNullOrEmpty(f.rtb.Text))
                 {
-                    f.rtb.Rtf = ex.Message;
-                    f.wb.DocumentText = html.Replace("{CONTENT}", ex.Message);
+                    f.rtb.Text = ex.Message;
                 }
 			}
 
             Wait.SubStop();
-            SimPe.Splash.Screen.Stop();		
+            SimPe.Splash.Screen.Stop();
 			f.ShowDialog();
 		}
 
-		private void rtb_LinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e)
+		private void rtb_LinkClicked(object sender, EventArgs e)
 		{
-			try 
-			{
-				System.Windows.Forms.Help.ShowHelp(this, e.LinkText.Replace("http://localhost", Helper.SimPePath));
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(ex);
-			}
+			// TODO: link handling not ported
 		}
 
 		private void rtb_Enter(object sender, System.EventArgs e)

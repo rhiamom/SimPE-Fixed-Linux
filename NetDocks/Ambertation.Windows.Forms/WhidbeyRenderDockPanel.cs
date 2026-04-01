@@ -129,7 +129,7 @@ public class WhidbeyRenderDockPanel : BaseDockPanelRenderer, IDockPanelRenderer
 				}
 				else
 				{
-					container.Left = Math.Max(container.Parent.Width - container.Width, container.Left - 10);
+					container.Left = Math.Max((int)container.Parent.Width - container.Width, container.Left - 10);
 				}
 			}
 			else

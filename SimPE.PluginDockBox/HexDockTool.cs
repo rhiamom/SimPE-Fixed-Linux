@@ -47,7 +47,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		public void RefreshDock(object sender, SimPe.Events.ResourceEventArgs es)
 		{
-			rd.button1.Enabled = false;
+			rd.button1.IsEnabled = false;
 			if (!rd.dcHex.IsFloating && !rd.dcHex.IsDocked) return;
 			if (es.HasFileDescriptor) 
 			{
@@ -60,7 +60,7 @@ namespace SimPe.Plugin.Tool.Dockable
 							rd.hexpfd = e.Resource.FileDescriptor;
 							SimPe.Interfaces.Files.IPackedFile pf = e.Resource.Package.Read(e.Resource.FileDescriptor);
 							rd.hvc.Data = pf.UncompressedData;
-							rd.button1.Enabled = true;
+							rd.button1.IsEnabled = true;
 							return;
 						} 
 						catch {}

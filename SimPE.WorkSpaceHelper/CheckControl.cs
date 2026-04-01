@@ -84,14 +84,14 @@ namespace SimPe
         CheckItem chkSimFolder;
         CheckItem chkCache;
         CheckItem chkFileTable;
-        Button    button1;
+        Avalonia.Controls.Button button1;
 
         public CheckControl()
         {
             chkSimFolder = new CheckItem { CanFix = true, Caption = "Sims Folder" };
             chkCache     = new CheckItem { CanFix = true, Caption = "Cache" };
             chkFileTable = new CheckItem { CanFix = true, Caption = "File Table" };
-            button1      = new Button { Content = "Run Check" };
+            button1      = new Avalonia.Controls.Button { Content = "Run Check" };
 
             chkSimFolder.CalledCheck += chkSimFolder_CalledCheck;
             chkSimFolder.ClickedFix  += chkSimFolder_ClickedFix;

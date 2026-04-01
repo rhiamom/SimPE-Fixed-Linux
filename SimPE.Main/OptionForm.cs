@@ -33,7 +33,7 @@ namespace SimPe
     /// <summary>
     /// Zusammenfassung f�r OptionForm.
     /// </summary>
-    public partial class OptionForm : System.Windows.Forms.Form
+    public partial class OptionForm : Avalonia.Controls.Window
     {
         
 
@@ -59,7 +59,7 @@ namespace SimPe
 
 
                 for (byte i = 1; i < 0x44; i++) this.cblang.Items.Add(new SimPe.PackedFiles.Wrapper.StrLanguage(i));
-                tc.SelectedTab = tpSettings;
+                tc.SelectedItem = tpSettings;
 
                 SimPe.GuiTheme[] gts = (SimPe.GuiTheme[])System.Enum.GetValues(typeof(SimPe.GuiTheme));
                 foreach (SimPe.GuiTheme gt in gts) cbThemes.Items.Add(gt);
@@ -123,8 +123,8 @@ namespace SimPe
             this.tbUsername.Text = Helper.XmlRegistry.Username;
             this.tbPassword.Text = Helper.XmlRegistry.Password;*/
 
-            this.tbep1.ReadOnly = (PathProvider.Global.EPInstalled < 1);
-            this.tbep2.ReadOnly = (PathProvider.Global.EPInstalled < 2);
+            this.tbep1.IsReadOnly = (PathProvider.Global.EPInstalled < 1);
+            this.tbep2.IsReadOnly = (PathProvider.Global.EPInstalled < 2);
             this.button5.Enabled = (PathProvider.Global.EPInstalled >= 1);
             this.btNightlife.Enabled = (PathProvider.Global.EPInstalled >= 2);
             llsetep1.Enabled = button5.Enabled;
@@ -210,19 +210,19 @@ namespace SimPe
         private void button2_Click(object sender, System.EventArgs e)
         {
             if (System.IO.Directory.Exists(tbgame.Text)) fbd.SelectedPath = tbgame.Text;
-            if (fbd.ShowDialog() == DialogResult.OK) this.tbgame.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK) this.tbgame.Text = fbd.SelectedPath;
         }
 
         private void button3_Click(object sender, System.EventArgs e)
         {
             if (System.IO.Directory.Exists(tbsavegame.Text)) fbd.SelectedPath = tbsavegame.Text;
-            if (fbd.ShowDialog() == DialogResult.OK) this.tbsavegame.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK) this.tbsavegame.Text = fbd.SelectedPath;
         }
 
         private void button4_Click(object sender, System.EventArgs e)
         {
             if (System.IO.Directory.Exists(tbdds.Text)) ofd.InitialDirectory = tbdds.Text;
-            if (ofd.ShowDialog() == DialogResult.OK) this.tbdds.Text = System.IO.Path.GetDirectoryName(ofd.FileName);
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) this.tbdds.Text = System.IO.Path.GetDirectoryName(ofd.FileName);
         }
 
         private void label2_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
@@ -243,7 +243,7 @@ namespace SimPe
         private void button5_Click(object sender, System.EventArgs e)
         {
             if (System.IO.Directory.Exists(tbep1.Text)) fbd.SelectedPath = tbep1.Text;
-            if (fbd.ShowDialog() == DialogResult.OK) this.tbep1.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK) this.tbep1.Text = fbd.SelectedPath;
         }
 
         private void ClearCaches(object sender, System.EventArgs e)
@@ -254,23 +254,24 @@ namespace SimPe
         private void DDSChanged(object sender, System.EventArgs e)
         {
             string name = System.IO.Path.Combine(this.tbdds.Text, "nvdxt.exe");
-            lldds.Visible = (!System.IO.File.Exists(name));
-            lldds2.Visible = lldds.Visible;
+            lldds.IsVisible = (!System.IO.File.Exists(name));
+            lldds2.Visible = lldds.IsVisible;
         }
 
         private void LoadDDS(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
         {
-            System.Windows.Forms.Help.ShowHelp(this, "http://developer.nvidia.com/object/nv_texture_tools.html");
+            // TODO: open help URL — System.Windows.Forms.Help not available on Avalonia/Mac
+            // System.Windows.Forms.Help.ShowHelp(this, "http://developer.nvidia.com/object/nv_texture_tools.html");
         }
 
-        private void visualStyleLinkLabel1_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void visualStyleLinkLabel1_LinkClicked(object sender, SimPe.Scenegraph.Compat.LinkLabelLinkClickedEventArgs e)
         {
             tbep1.Text = SimPe.PathProvider.Global[Expansions.University].RealInstallFolder;
         }
 
-        void EnablePanel(TabPage page)
+        void EnablePanel(Avalonia.Controls.TabItem page)
         {
-            tc.SelectedTab = page;
+            tc.SelectedItem = page;
         }
 
         private void SelectCategory(object sender, System.EventArgs e)
@@ -325,12 +326,12 @@ namespace SimPe
             if (wrapper.Priority < 0)
             {
                 pn.Text = "(" + wrapper.WrapperDescription.Name + ")";
-                pn.ForeColor = SystemColors.ControlDarkDark;
+                // pn.ForeColor = SystemColors.ControlDarkDark; // TODO: Avalonia theming
             }
             else
             {
                 pn.Text = wrapper.WrapperDescription.Name;
-                pn.ForeColor = SystemColors.ControlText;
+                // pn.ForeColor = SystemColors.ControlText; // TODO: Avalonia theming
             }
             pn.Text = "     " + pn.Text;
 
@@ -338,7 +339,7 @@ namespace SimPe
 
         internal Image GetShrinkImage(PluginPanel pn)
         {
-            if (pn.Height == pn.DisplayRectangle.Top + 1)
+            if (pn.Height == PluginPanel.HeaderHeight + 1)
             {
                 return Helper.LoadImage(typeof(SimPe.Helper).Assembly.GetManifestResourceStream("SimPe.IconXmlResources.expand.png"));
             }
@@ -362,7 +363,7 @@ namespace SimPe
 #else
 		const int height = 116;
 #endif
-        public Control BuildPanel(SimPe.Interfaces.IWrapper wrapper, ThemeManager tm, int index)
+        public Avalonia.Controls.Control BuildPanel(SimPe.Interfaces.IWrapper wrapper, ThemeManager tm, int index)
         {
             if (uids == null) uids = new ArrayList();
             if (wrappers == null) wrappers = new ArrayList();
@@ -372,10 +373,17 @@ namespace SimPe
 
 
 
+            // TODO: rebuild plugin panel UI in Avalonia — WinForms absolute-layout code below
+            // is commented out pending Avalonia rewrite.
+            PluginPanel pn = new PluginPanel();
+            SetPanel(wrapper, pn);
+            pn.Tag = wrapper;
+            wrappers.Add(pn);
+            uids.Add(wrapper.WrapperDescription.UID);
+            return pn;
+#if false // TODO: rebuild plugin panel UI in Avalonia — WinForms absolute-layout code below
             const int imgwidth = 22;
             int top = 4 + index * (height + 4);
-            PluginPanel pn = new PluginPanel();
-            pn.Parent = cnt;
             pn.Top = top;
             pn.Left = 4;
             pn.Width = cnt.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth - 2 - 2 * pn.Left;
@@ -396,7 +404,7 @@ namespace SimPe
             #region Author
             Label lbauthor = new Label();
             lbauthor.Parent = pn;
-            lbauthor.Top = pn.DisplayRectangle.Top + 8;
+            lbauthor.Top = PluginPanel.HeaderHeight + 8;
             lbauthor.Left = 8;
             lbauthor.Text = "Author:";
             lbauthor.Width = 85;
@@ -539,7 +547,7 @@ namespace SimPe
                 pb.Width = imgwidth;
                 pb.Height = imgwidth;
                 pb.Left = pn.Width - 2 * pb.Width - 16;
-                pb.Top = pn.DisplayRectangle.Top + 4; //pn.DisplayRectangle.Top + 4 + pb.Height + 4; //pn.Height - 2*pb.Height -16;
+                pb.Top = PluginPanel.HeaderHeight + 4; //PluginPanel.HeaderHeight + 4 + pb.Height + 4; //pn.Height - 2*pb.Height -16;
                 pb.Anchor = AnchorStyles.Top | AnchorStyles.Right;
                 var stream = typeof(SimPe.Helper).Assembly.GetManifestResourceStream("SimPe.IconXmlResources.multienabled.png");
                 if (stream != null)
@@ -550,10 +558,10 @@ namespace SimPe
 
                 pb = new PictureBox();
                 pb.Parent = pn;
-                pb.Width = pn.DisplayRectangle.Top + 1;
-                pb.Height = pn.DisplayRectangle.Top;
+                pb.Width = PluginPanel.HeaderHeight + 1;
+                pb.Height = PluginPanel.HeaderHeight;
                 pb.SizeMode = PictureBoxSizeMode.CenterImage;
-                pb.Top = (pn.DisplayRectangle.Top + 1 - pb.Height) / 2;
+                pb.Top = (PluginPanel.HeaderHeight + 1 - pb.Height) / 2;
                 pb.Left = pn.Width - 3 * pb.Width - pb.Top;
                 pb.Anchor = AnchorStyles.Top | AnchorStyles.Right;
                 var asm = System.Reflection.Assembly.Load("simpe.helper");
@@ -569,10 +577,10 @@ namespace SimPe
             {
                 pb = new PictureBox();
                 pb.Parent = pn;
-                pb.Width = pn.DisplayRectangle.Top + 1;
-                pb.Height = pn.DisplayRectangle.Top;
+                pb.Width = PluginPanel.HeaderHeight + 1;
+                pb.Height = PluginPanel.HeaderHeight;
                 pb.SizeMode = PictureBoxSizeMode.CenterImage;
-                pb.Top = (pn.DisplayRectangle.Top + 1 - pb.Height) / 2;
+                pb.Top = (PluginPanel.HeaderHeight + 1 - pb.Height) / 2;
                 if (wrapper.AllowMultipleInstances) pb.Left = pn.Width - 4 * pb.Width - pb.Top;
                 else pb.Left = pn.Width - 3 * pb.Width - pb.Top;
                 pb.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -589,8 +597,8 @@ namespace SimPe
             ipb.SizeMode = PictureBoxSizeMode.StretchImage;
             if (wrapper.WrapperDescription.Icon != null)
             {
-                ipb.Height = Math.Min(wrapper.WrapperDescription.Icon.Height, pn.DisplayRectangle.Top - 2);
-                ipb.Width = Math.Min(wrapper.WrapperDescription.Icon.Width, pn.DisplayRectangle.Top - 2);
+                ipb.Height = Math.Min(wrapper.WrapperDescription.Icon.Height, PluginPanel.HeaderHeight - 2);
+                ipb.Width = Math.Min(wrapper.WrapperDescription.Icon.Width, PluginPanel.HeaderHeight - 2);
                 ipb.Image = wrapper.WrapperDescription.Icon;
             }
             else
@@ -602,10 +610,10 @@ namespace SimPe
 
             PictureBox pbe = new PictureBox();
             pbe.Parent = pn;
-            pbe.Width = pn.DisplayRectangle.Top + 1;
-            pbe.Height = pn.DisplayRectangle.Top;
+            pbe.Width = PluginPanel.HeaderHeight + 1;
+            pbe.Height = PluginPanel.HeaderHeight;
             pbe.SizeMode = PictureBoxSizeMode.CenterImage;
-            pbe.Top = (pn.DisplayRectangle.Top + 1 - pbe.Height) / 2;
+            pbe.Top = (PluginPanel.HeaderHeight + 1 - pbe.Height) / 2;
             pbe.Left = pn.Width - pbe.Width - pbe.Top;
             pbe.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pbe.Image = GetShrinkImage(pn);
@@ -619,7 +627,7 @@ namespace SimPe
             pb.Width = imgwidth;
             pb.Height = imgwidth;
             pb.Left = pn.Width - pb.Width - 8;
-            pb.Top = pn.DisplayRectangle.Top + 4; //pn.Height - pb.Height -8;
+            pb.Top = PluginPanel.HeaderHeight + 4; //pn.Height - pb.Height -8;
             pb.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pb.Image = GetImage(wrapper);
             pb.Tag = pn;
@@ -629,10 +637,10 @@ namespace SimPe
 
             pb = new PictureBox();
             pb.Parent = pn;
-            pb.Width = pn.DisplayRectangle.Top + 1;
-            pb.Height = pn.DisplayRectangle.Top;
+            pb.Width = PluginPanel.HeaderHeight + 1;
+            pb.Height = PluginPanel.HeaderHeight;
             pb.SizeMode = PictureBoxSizeMode.CenterImage;
-            pb.Top = (pn.DisplayRectangle.Top + 1 - pb.Height) / 2;
+            pb.Top = (PluginPanel.HeaderHeight + 1 - pb.Height) / 2;
             pb.Left = pn.Width - 2 * pb.Width - pb.Top;
             pb.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pb.Image = GetImage(wrapper).GetThumbnailImage(16, 16, new Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero);
@@ -650,6 +658,7 @@ namespace SimPe
             uids.Add(wrapper.WrapperDescription.UID);
             pb_ExpandClick(pbe, null);
             return pn;
+#endif // end WinForms layout block
         }
 
         public void Execute(Icon icon)
@@ -658,17 +667,18 @@ namespace SimPe
             tm.Parent = ThemeManager.Global;
 
             OptionForm f = this;
-            if (icon != null) f.Icon = icon;
+            // if (icon != null) f.Icon = icon; // TODO: convert System.Drawing.Icon to Avalonia.Controls.WindowIcon
             SimPe.Interfaces.IWrapper[] wrappers = FileTable.WrapperRegistry.AllWrappers;
 
             for (int ct = wrappers.Length - 1; ct >= 0; ct--)
             {
                 SimPe.Interfaces.IWrapper wrapper = wrappers[ct];
-                f.cnt.Controls.Add(f.BuildPanel(wrapper, tm, ct));
+                f.BuildPanel(wrapper, tm, ct);
+                // TODO: add built panel to cnt.Children (Avalonia StackPanel) — cnt.Controls.Add not available
             }
 
             f.uids.Clear();
-            if (f.cnt.Controls.Count > 0) f.cnt.Controls[0].Focus();
+            // TODO: f.cnt.Children[0].Focus() — cnt is StackPanel, no Controls.Count/Focus compat
 
             f.Execute();
 
@@ -686,33 +696,22 @@ namespace SimPe
                 PluginPanel pn = (PluginPanel)sender;
                 pn.Focus();
             }
-            else if (sender is Control)
-            {
-                PluginPanel pn = (PluginPanel)((Control)sender).Parent;
-                pn.Focus();
-            }
+            // TODO: parent navigation for non-PluginPanel senders needs Avalonia visual tree
         }
 
         PluginPanel lastpn;
         private void pn_Focused(object sender, EventArgs e)
         {
             PluginPanel pn = (PluginPanel)sender;
-            pn.BackColor = SystemColors.Window;
-            pn.Font = new Font(pn.Font.Name, pn.Font.Size, FontStyle.Bold, pn.Font.Unit);
-
+            // TODO: pn.BackColor / pn.Font — Avalonia Panel theming not yet ported
             btpup.Enabled = wrappers[0] != pn;
             btpdown.Enabled = wrappers[wrappers.Count - 1] != pn;
-
             lastpn = pn;
-            if (pn.Controls.Count > 9) pn.Controls[9].BackColor = pn.BackColor;
         }
 
         private void pn_LostFocus(object sender, EventArgs e)
         {
-            PluginPanel pn = (PluginPanel)sender;
-            pn.BackColor = SystemColors.ControlLight;
-            pn.Font = new Font(pn.Font.Name, pn.Font.Size, FontStyle.Regular, pn.Font.Unit);
-            if (pn.Controls.Count > 9) pn.Controls[9].BackColor = pn.BackColor;
+            // TODO: pn.BackColor / pn.Font — Avalonia Panel theming not yet ported
         }
 
         private void pb_Click(object sender, EventArgs e)
@@ -724,10 +723,10 @@ namespace SimPe
             wrapper.Priority *= -1;
             SetPanel(wrapper, pn);
 
-            Image i = this.GetImage(wrapper);
-
-            SetBackgroundColor(pn.Controls[pn.Controls.Count - 2], i, true);
-            SetBackgroundColor(pn.Controls[pn.Controls.Count - 3], i, false);
+            // TODO: SetBackgroundColor on icon PictureBoxes — needs Avalonia UI rewrite
+            // Image i = this.GetImage(wrapper);
+            // SetBackgroundColor(pn.Controls[pn.Controls.Count - 2], i, true);
+            // SetBackgroundColor(pn.Controls[pn.Controls.Count - 3], i, false);
         }
 
         int FindPanelIndex(PluginPanel pn)
@@ -763,7 +762,8 @@ namespace SimPe
             wrappers[index] = pn2;
             wrappers[index + o] = pn1;
 
-            cnt.Controls.SetChildIndex(pn1, index + o);
+            // TODO: reorder cnt.Children for Avalonia (StackPanel has no SetChildIndex).
+            // cnt.Controls.SetChildIndex(pn1, index + o);
         }
 
         private void btpup_Click(object sender, System.EventArgs e)
@@ -793,31 +793,32 @@ namespace SimPe
 
         void SetBackgroundColor(object sender, Image i, bool small)
         {
-            PictureBox pb = (PictureBox)sender;
+            // TODO: update icon images — PictureBox pattern needs Avalonia rewrite
+            System.Windows.Forms.PictureBox pb = sender as System.Windows.Forms.PictureBox;
+            if (pb == null) return;
             if (small) pb.Image = i.GetThumbnailImage(16, 16, new Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero);
             else pb.Image = i;
-            /*if (wrapper.Priority<0) pb.BackColor = Color.FromArgb(0x70FF5B60);
-            else pb.BackColor = Color.FromArgb(0x7087D300);*/
         }
 
         private void pb_ExpandClick(object sender, EventArgs e)
         {
-            PictureBox pb = (PictureBox)sender;
-            PluginPanel pn = (PluginPanel)pb.Tag;
+            System.Windows.Forms.PictureBox pb = sender as System.Windows.Forms.PictureBox;
+            PluginPanel pn = pb != null ? (PluginPanel)pb.Tag : null;
+            if (pn == null) return;
 
-            if (pn.Height == pn.DisplayRectangle.Top + 1)
+            if (pn.Height == PluginPanel.HeaderHeight + 1)
             {
-                pn.Controls[pn.Controls.Count - 1].Visible = true;
+                pn.Children[pn.Children.Count - 1].IsVisible = true;
                 pn.Height = height;
             }
             else
             {
-                pn.Controls[pn.Controls.Count - 1].Visible = false;
-                pn.Height = pn.DisplayRectangle.Top + 1;
+                pn.Children[pn.Children.Count - 1].IsVisible = false;
+                pn.Height = PluginPanel.HeaderHeight + 1;
             }
 
 
-            pb.Image = GetShrinkImage(pn);
+            if (pb != null) pb.Image = GetShrinkImage(pn);
             SimPe.Interfaces.IWrapper wrapper = (SimPe.Interfaces.IWrapper)pn.Tag;
             //SetBackgroundColor(pb, wrapper);
         }
@@ -881,7 +882,7 @@ namespace SimPe
         private void btNightlife_Click(object sender, System.EventArgs e)
         {
             if (System.IO.Directory.Exists(tbep2.Text)) fbd.SelectedPath = tbep2.Text;
-            if (fbd.ShowDialog() == DialogResult.OK) this.tbep2.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK) this.tbep2.Text = fbd.SelectedPath;
         }
 
         private void cbblur_CheckedChanged(object sender, System.EventArgs e)
@@ -901,7 +902,7 @@ namespace SimPe
 
         private void cbLock_CheckedChanged(object sender, System.EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
+            Ambertation.Windows.Forms.TransparentCheckBox cb = sender as Ambertation.Windows.Forms.TransparentCheckBox;
 
             if (cb.Checked) this.LockDocksClick(sender, e);
             else this.UnlockDocksClick(sender, e);
@@ -914,54 +915,31 @@ namespace SimPe
 
         void cbautobak_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbautobak.CheckState == CheckState.Checked && Helper.XmlRegistry.AutoBackup == false)
-                MessageBox.Show(Localization.GetString("cbautobak_CheckedChanged"), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (cbautobak.Checked && Helper.XmlRegistry.AutoBackup == false)
+                { /* TODO: show backup warning message to user */ }
         }
 
-        class MyPropertyGrid : PropertyGrid
+        class MyPropertyGrid : SimPe.Scenegraph.Compat.PropertyGridStub
         {
-
         }
     }
 
     /// <summary>
-    /// Replacement for TD.Eyefinder.HeaderControl used in plugin list panels.
-    /// Draws its own header strip and overrides DisplayRectangle to match HeaderControl behavior.
+    /// Header panel stub — WinForms GDI+ drawing replaced; Avalonia renders header via styles.
     /// </summary>
-    internal sealed class PluginPanel : Panel
+    internal sealed class PluginPanel : Avalonia.Controls.Panel
     {
         public const int HeaderHeight = 22;
+        public string Text { get; set; } = "";
 
-        // Override DisplayRectangle so existing code using pn.DisplayRectangle.Top still works
-        public override Rectangle DisplayRectangle =>
-            new Rectangle(0, HeaderHeight, ClientSize.Width, Math.Max(0, ClientSize.Height - HeaderHeight));
+        // WinForms layout compat — stored values, no actual Avalonia layout effect.
+        public int Top    { get; set; }
+        public int Left   { get; set; }
+        public int Bottom => Top + (int)Height;
+        public new int Width  { get => (int)base.Width;  set => base.Width  = value; }
+        public new int Height { get => (int)base.Height; set => base.Height = value; }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            var g = e.Graphics;
-            // Header background
-            using (var brush = new SolidBrush(BackColor))
-                g.FillRectangle(brush, 0, 0, Width, HeaderHeight);
-            // Header text
-            if (!string.IsNullOrEmpty(Text))
-                using (var brush = new SolidBrush(ForeColor))
-                using (var sf = new StringFormat { LineAlignment = StringAlignment.Center })
-                    g.DrawString(Text, Font, brush, new RectangleF(4, 0, Width - 8, HeaderHeight), sf);
-            // Separator line
-            using (var pen = new Pen(SystemColors.ControlDark))
-                g.DrawLine(pen, 0, HeaderHeight - 1, Width - 1, HeaderHeight - 1);
-        }
-
-        protected override void OnBackColorChanged(EventArgs e) { base.OnBackColorChanged(e); Invalidate(); }
-        protected override void OnForeColorChanged(EventArgs e) { base.OnForeColorChanged(e); Invalidate(); }
-        protected override void OnFontChanged(EventArgs e) { base.OnFontChanged(e); Invalidate(); }
-        protected override void OnTextChanged(EventArgs e) { base.OnTextChanged(e); Invalidate(); }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-            if (e.Y < HeaderHeight) Focus();
-        }
+        // WinForms Controls compat — wraps Avalonia Children collection.
+        public new Avalonia.Controls.Controls Controls => Children;
     }
 }

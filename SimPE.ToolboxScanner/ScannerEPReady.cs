@@ -64,7 +64,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{		
 			ps.Data = new uint[1];
 			ps.Data[0] = (uint)ReadyState.Yes;
@@ -96,7 +96,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			if (ps.State != TriState.Null) 
 			{
@@ -118,7 +118,7 @@ namespace SimPe.Plugin.Scanner
 			selection = items;
 			if (!active) 
 			{
-				OperationControl.Enabled = false;
+				OperationControl.IsEnabled = false;
 				return;
 			}
 
@@ -129,16 +129,16 @@ namespace SimPe.Plugin.Scanner
 				{
 					if ((ReadyState)ps.Data[0]!=ReadyState.Yes) 
 					{
-						OperationControl.Enabled = true;
+						OperationControl.IsEnabled = true;
 						return;
 					}
 				}
 			} //foreach 
-			OperationControl.Enabled = false;
+			OperationControl.IsEnabled = false;
 		}
 
 
-		protected override System.Windows.Forms.Control CreateOperationControl()
+		protected override Avalonia.Controls.Control CreateOperationControl()
 		{
 			ScannerPanelForm.Form.pnep.Tag = this;
 			return ScannerPanelForm.Form.pnep;

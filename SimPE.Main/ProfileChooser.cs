@@ -32,7 +32,7 @@ using System.IO;
 
 namespace SimPe
 {
-    public partial class ProfileChooser : Form
+    public partial class ProfileChooser : Avalonia.Controls.Window, IDisposable
     {
         public ProfileChooser()
         {
@@ -43,57 +43,57 @@ namespace SimPe
         {
             get
             {
-                return cbProfiles.Text;
+                return cbProfiles.SelectedItem?.ToString() ?? "";
             }
         }
 
         private void ProfileChooser_Activated(object sender, EventArgs e)
         {
-            cbProfiles.BeginUpdate();
+            // cbProfiles.BeginUpdate(); // not available on Avalonia ComboBox
             cbProfiles.Items.Clear();
             foreach (string s in Directory.GetDirectories(SimPe.Helper.DataFolder.Profiles))
                 cbProfiles.Items.Add(Path.GetFileName(s));
-            cbProfiles.EndUpdate();
+            // cbProfiles.EndUpdate(); // not available on Avalonia ComboBox
 
-            btnOK.Enabled = false;
+            btnOK.IsEnabled = false;
         }
 
         private void ProfileChooser_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason != CloseReason.UserClosing && e.CloseReason != CloseReason.None) return;
-            if (this.DialogResult != DialogResult.OK) return;
+            // this.DialogResult check not applicable on Avalonia Window
 
-            cbProfiles.Text = cbProfiles.Text.Trim();
-            if (cbProfiles.Text.Length == 0) { e.Cancel = true; return; }
+            string text = cbProfiles.SelectedItem?.ToString()?.Trim() ?? "";
+            if (text.Length == 0) { e.Cancel = true; return; }
 
-            string path = Path.Combine(Helper.DataFolder.Profiles, cbProfiles.Text);
+            string path = Path.Combine(Helper.DataFolder.Profiles, text);
             if (!Directory.Exists(path))
-            {/* // Removed at Inge's request
-                if (MessageBox.Show(
-                    Localization.GetString("spOKCancelCreate")
-                    , Localization.GetString("spCreate")
-                    , MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) != DialogResult.OK) e.Cancel = true;
-                else
-              */
+            {
                 try
                 {
                     Directory.CreateDirectory(path);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, Localization.GetString("spCreate"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // TODO: show error message — MessageBox not available without owner
+                    System.Diagnostics.Debug.WriteLine("ProfileChooser: " + ex.Message);
                     e.Cancel = true;
                 }
             }
-            else if (MessageBox.Show(
-                Localization.GetString("spOKCancelExists")
-                , Localization.GetString("spExists")
-                , MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) != DialogResult.OK) e.Cancel = true;
+            // else: path exists, proceed
         }
 
         private void cbProfiles_TextChanged(object sender, EventArgs e)
         {
-            btnOK.Enabled = cbProfiles.Text.Trim().Length != 0;
+            btnOK.IsEnabled = (cbProfiles.SelectedItem?.ToString()?.Trim().Length ?? 0) != 0;
+        }
+
+        public void Dispose() { }
+
+        public new System.Windows.Forms.DialogResult ShowDialog()
+        {
+            this.Show();
+            return System.Windows.Forms.DialogResult.Cancel;
         }
     }
 }

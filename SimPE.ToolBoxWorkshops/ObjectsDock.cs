@@ -37,6 +37,10 @@ using TreeNode = SimPe.Scenegraph.Compat.TreeNode;
 using TreeView = SimPe.Scenegraph.Compat.TreeView;
 using TreeViewEventArgs = SimPe.Scenegraph.Compat.TreeViewEventArgs;
 using TreeNodeCollection = SimPe.Scenegraph.Compat.TreeNode.TreeNodeCollection;
+using LinkLabel = SimPe.Scenegraph.Compat.LinkLabel;
+using ToolTip = SimPe.Scenegraph.Compat.ToolTip;
+using DialogResult = System.Windows.Forms.DialogResult;
+using LinkLabelLinkClickedEventArgs = SimPe.Scenegraph.Compat.LinkLabelLinkClickedEventArgs;
 
 namespace SimPe.Plugin.Tool.Dockable
 {
@@ -241,7 +245,7 @@ namespace SimPe.Plugin.Tool.Dockable
             this.gbRecolor = new Avalonia.Controls.StackPanel();
             this.cbColorExt = new Avalonia.Controls.CheckBox();
             this.gbClone = new Avalonia.Controls.StackPanel();
-            this.llCloneDef = new System.Windows.Forms.LinkLabel();
+            this.llCloneDef = new SimPe.Scenegraph.Compat.LinkLabel();
             this.cbstrlink = new Avalonia.Controls.CheckBox();
             this.cbDesc = new Avalonia.Controls.CheckBox();
             this.cbOrgGmdc = new Avalonia.Controls.CheckBox();
@@ -279,7 +283,7 @@ namespace SimPe.Plugin.Tool.Dockable
             this.biAbort = new System.Windows.Forms.ToolStripButton();
             this.biCatalog = new System.Windows.Forms.ToolStripButton();
             this.ilist = new SimPe.Scenegraph.Compat.ImageList();
-            this.toolTip1 = new System.Windows.Forms.ToolTip();
+            this.toolTip1 = new SimPe.Scenegraph.Compat.ToolTip();
 
             // Wizard events
             this.wizard1.FinishEnabled = false;
@@ -337,7 +341,7 @@ namespace SimPe.Plugin.Tool.Dockable
             this.biCatalog.Checked = true;
 
             // LinkLabel
-            this.llCloneDef.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SetDefaultsForClone);
+            this.llCloneDef.LinkClicked += this.SetDefaultsForClone;
 
             // ImageList
             this.ilist.ColorDepth = SimPe.Scenegraph.Compat.ColorDepth.Depth32Bit;
@@ -502,7 +506,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				);
 
 			package = null;
-			if (ofd.ShowDialog()==DialogResult.OK) 
+			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				package = SimPe.Packages.GeneratableFile.LoadFromFile(ofd.FileName);
 				wizard1.JumpToStep(2);

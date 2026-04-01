@@ -26,7 +26,7 @@ using System;
 namespace SimPe.Actions.Default
 {
 	/// <summary>
-	/// Zusammenfassung für ExportAction.
+	/// Zusammenfassung fï¿½r ExportAction.
 	/// </summary>
 	public class ReplaceAction : AbstractActionDefault
 	{

@@ -60,7 +60,7 @@ namespace SimPe.Plugin.Tool.Dockable
                     rd.tbinstance2.Text = "0x" + Helper.HexString(es[0].Resource.FileDescriptor.SubType);
                 }
 
-            rd.pntypes.Enabled = check;
+            rd.pntypes.IsEnabled = check;
 
             //Set Compression State
             int tct = 0;
@@ -75,15 +75,15 @@ namespace SimPe.Plugin.Tool.Dockable
             else if (tct == es.Count) rd.cbComp.SelectedIndex = 1;
             else rd.cbComp.SelectedIndex = 2;
 
-            rd.cbComp.Enabled = (es.Count > 0);
-            rd.lbComp.Enabled = (es.Count > 0);
+            rd.cbComp.IsEnabled = (es.Count > 0);
+            rd.lbComp.IsEnabled = (es.Count > 0);
 
             rd.items = es;
             rd.guipackage = es.LoadedPackage;
 
             if (es.Loaded)
                 if (!es.LoadedPackage.Package.LoadedCompressedState)
-                    rd.cbComp.Enabled = false;
+                    rd.cbComp.IsEnabled = false;
         }
 
         #endregion

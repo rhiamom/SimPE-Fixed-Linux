@@ -33,9 +33,11 @@ using System.Windows.Forms;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Control = Avalonia.Controls.Control;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using TextBox = Avalonia.Controls.TextBox;
+using Button = Avalonia.Controls.Button;
 
 namespace SimPe.Plugin
 {

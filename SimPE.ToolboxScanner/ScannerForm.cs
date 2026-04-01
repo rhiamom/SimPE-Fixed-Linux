@@ -24,8 +24,6 @@
 using System;
 using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
 using SimPe;
 using SimPe.Interfaces.Plugin.Scanner;
 using SimPe.Plugin.Scanner;
@@ -37,67 +35,55 @@ namespace SimPe.Plugin
     /// </summary>
     internal class ScannerForm : Avalonia.Controls.Window
     {
-        #region Windows Form Designer generated code
-        private System.Windows.Forms.Button btclear;
-        private System.Windows.Forms.TabPage tbcache;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button btscan;
-        private System.Windows.Forms.TabPage tbidentify;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ListBox lbid;
-        private System.Windows.Forms.ListBox lbscandebug;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tbflname;
-        private System.Windows.Forms.ComboBox lbprop;
-        private System.Windows.Forms.LinkLabel llSave;
-        private System.Windows.Forms.SaveFileDialog sfd;
-        private System.Windows.Forms.CheckBox cbrec;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.ComboBox cbfolder;
-        private System.Windows.Forms.FolderBrowserDialog fbd;
-        private ProgressBar pb;
-        private System.Windows.Forms.ListView lv;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tbscanners;
-        private CheckedListBox lbscanners;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ImageList ilist;
-        private System.Windows.Forms.PictureBox thumb;
-        private System.Windows.Forms.GroupBox gbinfo;
-        private System.Windows.Forms.LinkLabel llopen;
-        private System.Windows.Forms.CheckBox cbenable;
-        private System.Windows.Forms.Label lbname;
-        private System.Windows.Forms.Label lbtype;
-        private System.Windows.Forms.TabPage tboperations;
-        private System.Windows.Forms.Panel pnop;
-        private ToolTip toolTip1;
-        private System.Windows.Forms.Panel panel1;
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components;
-        #endregion
+        private Avalonia.Controls.Button btclear;
+        private Avalonia.Controls.TabItem tbcache;
+        private Avalonia.Controls.Button button2;
+        private Avalonia.Controls.Button button3;
+        private Avalonia.Controls.Button btscan;
+        private Avalonia.Controls.TabItem tbidentify;
+        private Avalonia.Controls.TextBlock label5;
+        private Avalonia.Controls.ListBox lbid;
+        private Avalonia.Controls.ListBox lbscandebug;
+        private Avalonia.Controls.TextBlock label6;
+        private Avalonia.Controls.TextBox tbflname;
+        private Avalonia.Controls.ComboBox lbprop;
+        private Avalonia.Controls.Button llSave;
+        private SaveFileDialogStub sfd;
+        private Avalonia.Controls.CheckBox cbrec;
+        private Avalonia.Controls.Button linkLabel1;
+        private Avalonia.Controls.ComboBox cbfolder;
+        private FolderBrowserDialogStub fbd;
+        private Avalonia.Controls.ProgressBar pb;
+        private SimPe.Scenegraph.Compat.ListView lv;
+        private SimPe.Scenegraph.Compat.ColumnHeader columnHeader1;
+        private SimPe.Scenegraph.Compat.ColumnHeader columnHeader2;
+        private SimPe.Scenegraph.Compat.ColumnHeader columnHeader3;
+        private Avalonia.Controls.TabControl tabControl1;
+        private Avalonia.Controls.TabItem tbscanners;
+        private SimPe.Scenegraph.Compat.CheckedListBox lbscanners;
+        private Avalonia.Controls.TextBlock label1;
+        private SimPe.Scenegraph.Compat.ImageList ilist;
+        private SimPe.Scenegraph.Compat.PictureBoxCompat thumb;
+        private SimPe.Scenegraph.Compat.GroupBox gbinfo;
+        private Avalonia.Controls.Button llopen;
+        private Avalonia.Controls.CheckBox cbenable;
+        private Avalonia.Controls.TextBlock lbname;
+        private Avalonia.Controls.TextBlock lbtype;
+        private Avalonia.Controls.TabItem tboperations;
+        private Avalonia.Controls.StackPanel pnop;
 
         /// <summary>
         /// Create a new Instance
         /// </summary>
         public ScannerForm()
         {
-            //
-            // Required designer variable.
-            //
-            InitializeComponent();
+            BuildLayout();
             scanClicked = Scan;
 
             //hide the Identifier Tab in non Creator Mode
             if (!UserVerification.HaveUserId)
             {
-                this.tabControl1.TabPages.Remove(this.tbidentify);
-                this.tabControl1.TabIndex = 0;
+                this.tabControl1.Items.Remove(this.tbidentify);
             }
 
             //load the Group Cache
@@ -148,11 +134,9 @@ namespace SimPe.Plugin
                 this.lbscandebug.Items.Add(name);
             }
 
-            pnop.Enabled = false;
+            pnop.IsEnabled = false;
             sorter = new ColumnSorter();
             lv.ListViewItemSorter = sorter;
-
-            // llSave.Left = lv.Right - llSave.Width;
         }
 
         SimPe.Cache.PackageCacheFile cachefile;
@@ -164,79 +148,176 @@ namespace SimPe.Plugin
         ColumnSorter sorter;
         int controltop = 0;
         ScannerItem lastitem;
+        bool _settingCbenable = false;
 
         public string FileName
         {
             get { return flname; }
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        protected virtual void Dispose(bool disposing)
+        private void BuildLayout()
         {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
+            // Controls
+            cbfolder = new Avalonia.Controls.ComboBox();
+            cbfolder.Items.Add("Download Folder");
+            cbfolder.Items.Add("Teleport Folder");
+            cbfolder.Items.Add("Neighbourhoods Folder");
+            cbfolder.Items.Add("Bodyshop Sim Templates Folder");
+            cbfolder.Items.Add("Browse for Folder...");
+            cbfolder.SelectionChanged += (s, e) => SelectFolder(s, EventArgs.Empty);
+
+            fbd = new FolderBrowserDialogStub { ShowNewFolderButton = false };
+            sfd = new SaveFileDialogStub { Filter = "Comma Seperated Values (*.csv)|*.csv|All Files (*.*)|*.*" };
+
+            pb = new Avalonia.Controls.ProgressBar { Minimum = 0, Maximum = 1000, Value = 0 };
+
+            lv = new SimPe.Scenegraph.Compat.ListView { FullRowSelect = true, HideSelection = false };
+            columnHeader1 = new SimPe.Scenegraph.Compat.ColumnHeader { Text = "Filename", Width = 281 };
+            columnHeader2 = new SimPe.Scenegraph.Compat.ColumnHeader { Text = "Enabled", Width = 57 };
+            columnHeader3 = new SimPe.Scenegraph.Compat.ColumnHeader { Text = "Type", Width = 104 };
+            lv.Columns.Add(columnHeader1);
+            lv.Columns.Add(columnHeader2);
+            lv.Columns.Add(columnHeader3);
+            ilist = new SimPe.Scenegraph.Compat.ImageList { ImageSize = new System.Drawing.Size(48, 48) };
+            lv.LargeImageList = ilist;
+            lv.ColumnClick += (s, e) => SortList(s, EventArgs.Empty);
+            lv.SelectedIndexChanged += (s, e) => SelectItem(s, EventArgs.Empty);
+
+            lbscanners = new SimPe.Scenegraph.Compat.CheckedListBox { CheckOnClick = true, HorizontalScrollbar = true };
+            label1 = new Avalonia.Controls.TextBlock { Text = "active Scanners:" };
+            pnop = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Vertical };
+
+            btclear = new Avalonia.Controls.Button { Content = "Clear Cache" };
+            btclear.Click += (s, e) => ClearCache(s, EventArgs.Empty);
+            button2 = new Avalonia.Controls.Button { Content = "Reload Cache" };
+            button2.Click += (s, e) => ReloadCache(s, EventArgs.Empty);
+            button3 = new Avalonia.Controls.Button { Content = "Reload FileTable" };
+            button3.Click += (s, e) => ReloadFileTable(s, EventArgs.Empty);
+
+            lbid = new Avalonia.Controls.ListBox();
+            label5 = new Avalonia.Controls.TextBlock { Text = "loaded Identifiers:" };
+            lbscandebug = new Avalonia.Controls.ListBox();
+            label6 = new Avalonia.Controls.TextBlock { Text = "loaded Scanners:" };
+
+            btscan = new Avalonia.Controls.Button { Content = "Scan" };
+            btscan.Click += (s, e) => ScanButtonClicked(s, EventArgs.Empty);
+
+            cbrec = new Avalonia.Controls.CheckBox { Content = "Recursive" };
+
+            lbprop = new Avalonia.Controls.ComboBox();
+            llSave = new Avalonia.Controls.Button { Content = "save...", IsEnabled = false };
+            llSave.Click += (s, e) => llSave_LinkClicked(s, EventArgs.Empty);
+
+            tbflname = new Avalonia.Controls.TextBox { IsReadOnly = true };
+
+            cbenable = new Avalonia.Controls.CheckBox { Content = "Enabled" };
+            cbenable.IsCheckedChanged += (s, e) => SetEnabledState(s, EventArgs.Empty);
+
+            lbtype = new Avalonia.Controls.TextBlock { Text = "Type" };
+            lbname = new Avalonia.Controls.TextBlock { Text = "Caption" };
+
+            llopen = new Avalonia.Controls.Button { Content = "open" };
+            llopen.Click += (s, e) => OpenPackage(s, EventArgs.Empty);
+
+            thumb = new SimPe.Scenegraph.Compat.PictureBoxCompat();
+
+            gbinfo = new SimPe.Scenegraph.Compat.GroupBox { Text = "Information" };
+
+            linkLabel1 = new Avalonia.Controls.Button { Content = "scan" };
+            linkLabel1.Click += (s, e) => Scan(s, EventArgs.Empty);
+
+            // Tab items
+            var scannerTabContent = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Vertical };
+            scannerTabContent.Children.Add(label1);
+            scannerTabContent.Children.Add(lbscanners);
+            tbscanners = new Avalonia.Controls.TabItem { Header = "Scanner Settings", Content = scannerTabContent };
+
+            tboperations = new Avalonia.Controls.TabItem { Header = "Operations", Content = pnop };
+
+            var cacheTabContent = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Vertical };
+            cacheTabContent.Children.Add(btclear);
+            cacheTabContent.Children.Add(button2);
+            cacheTabContent.Children.Add(button3);
+            tbcache = new Avalonia.Controls.TabItem { Header = "Cache", Content = cacheTabContent };
+
+            var identifyTabContent = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Vertical };
+            identifyTabContent.Children.Add(label5);
+            identifyTabContent.Children.Add(lbid);
+            identifyTabContent.Children.Add(label6);
+            identifyTabContent.Children.Add(lbscandebug);
+            tbidentify = new Avalonia.Controls.TabItem { Header = "Scanners", Content = identifyTabContent };
+
+            tabControl1 = new Avalonia.Controls.TabControl();
+            tabControl1.Items.Add(tbscanners);
+            tabControl1.Items.Add(tboperations);
+            tabControl1.Items.Add(tbcache);
+            tabControl1.Items.Add(tbidentify);
+
+            // gbinfo layout
+            var gbinfoStack = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Vertical };
+            gbinfoStack.Children.Add(thumb);
+            gbinfoStack.Children.Add(cbenable);
+            gbinfoStack.Children.Add(lbname);
+            gbinfoStack.Children.Add(lbtype);
+            gbinfoStack.Children.Add(tbflname);
+            gbinfoStack.Children.Add(lbprop);
+            gbinfoStack.Children.Add(llSave);
+            gbinfoStack.Children.Add(llopen);
+            gbinfo.Content = gbinfoStack;
+
+            // Root layout
+            var topBar = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            topBar.Children.Add(cbfolder);
+            topBar.Children.Add(linkLabel1);
+
+            var bottomBar = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            bottomBar.Children.Add(btscan);
+            bottomBar.Children.Add(cbrec);
+
+            var root = new Avalonia.Controls.DockPanel { LastChildFill = true };
+            Avalonia.Controls.DockPanel.SetDock(topBar, Avalonia.Controls.Dock.Top);
+            Avalonia.Controls.DockPanel.SetDock(bottomBar, Avalonia.Controls.Dock.Bottom);
+            Avalonia.Controls.DockPanel.SetDock(pb, Avalonia.Controls.Dock.Bottom);
+            Avalonia.Controls.DockPanel.SetDock(tabControl1, Avalonia.Controls.Dock.Left);
+            Avalonia.Controls.DockPanel.SetDock(gbinfo, Avalonia.Controls.Dock.Right);
+            root.Children.Add(topBar);
+            root.Children.Add(bottomBar);
+            root.Children.Add(pb);
+            root.Children.Add(tabControl1);
+            root.Children.Add(gbinfo);
+            root.Children.Add(lv);
+
+            Title = "Folder Scanner";
+            Width = 964;
+            Height = 602;
+            WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner;
+            Content = root;
         }
 
         /// <summary>
         /// Display a control on the Panel
         /// </summary>
-        /// <param name="ctrl">The control you want to show</param>
-        /// <param name="indent">should the control be indented?</param>
-        /// <param name="space">should we add an additional 8 Pixels to the controltop</param>
-        void ShowControl(System.Windows.Forms.Control ctrl, bool indent, bool space)
+        void ShowControl(Avalonia.Controls.Control ctrl, bool indent, bool space)
         {
-            ctrl.Parent = this.pnop;
-
-            if (indent) ctrl.Left = 16;
-            else ctrl.Left = 0;
-
-            if (ctrl.GetType() == typeof(Panel))
-            {
-                ctrl.Width = pnop.Width - ctrl.Left;
-                //this.visualStyleProvider1.SetVisualStyleSupport(ctrl, true);
-            }
-
-            ctrl.Top = controltop;
-            controltop += ctrl.Height;
-            if (space) controltop += 8;
-
-            ctrl.Visible = true;
+            pnop.Children.Add(ctrl);
+            if (indent)
+                ctrl.Margin = new Avalonia.Thickness(16, 0, 0, space ? 8 : 0);
+            else
+                ctrl.Margin = new Avalonia.Thickness(0, 0, 0, space ? 8 : 0);
         }
 
         /// <summary>
         /// Display the Controls of a Scanner
         /// </summary>
-        /// <param name="scanner"></param>
         void ShowControls(IScanner scanner)
         {
-            System.Windows.Forms.Control ctrl = scanner.OperationControl;
+            Avalonia.Controls.Control ctrl = scanner.OperationControl;
             if (ctrl == null) return;
 
-            Label lb = new Label();
-            lb.AutoSize = true;
-            lb.Text = scanner.ToString() + ":";
-            lb.Font = new System.Drawing.Font("Verdana", 8.25f, System.Drawing.FontStyle.Bold);
-            lb.ForeColor = this.gbinfo.ForeColor;
-            //this.visualStyleProvider1.SetVisualStyleSupport(lb, true);
-
-            Panel pn = new Panel();
-            pn.Width = pnop.Width - 20;
-            pn.Height = 1;
-            pn.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
-            pn.BackColor = Color.FromArgb(0x77, lb.ForeColor);
+            var lb = new Avalonia.Controls.TextBlock { Text = scanner.ToString() + ":" };
 
             ShowControl(lb, false, false);
-            ShowControl(pn, false, true);
             ShowControl(ctrl, true, true);
-
-            controltop += 16;
         }
 
         /// <summary>
@@ -248,26 +329,21 @@ namespace SimPe.Plugin
         }
 
         /// <summary>
-        /// Displays the Information about this Scanenr Item
+        /// Displays the Information about this Scanner Item
         /// </summary>
-        /// <param name="si"></param>
-        void ShowInfo(ScannerItem si, ListViewItem lvi)
+        void ShowInfo(ScannerItem si, SimPe.Scenegraph.Compat.ListViewItem lvi)
         {
             if (si == null) return;
 
-            this.cbenable.Tag = true;
+            _settingCbenable = true;
             try
             {
-                    this.thumb.Image = si.PackageCacheItem.Thumbnail;
-                this.cbenable.Checked = si.PackageCacheItem.Enabled;
+                this.thumb.Image = si.PackageCacheItem.Thumbnail;
+                this.cbenable.IsChecked = si.PackageCacheItem.Enabled;
                 this.lbname.Text = si.PackageCacheItem.Name;
                 this.lbtype.Text = si.PackageCacheItem.Type.ToString();
 
                 tbflname.Text = si.FileName;
-                if (tbflname.Text.Length > 0) tbflname.SelectionStart = tbflname.Text.Length - 1;
-
-                lbname.ForeColor = lvi.ForeColor;
-                lbtype.ForeColor = lvi.ForeColor;
 
                 lbprop.Items.Clear();
                 if (System.IO.File.Exists(si.FileName))
@@ -285,7 +361,7 @@ namespace SimPe.Plugin
             }
             finally
             {
-                this.cbenable.Tag = null;
+                _settingCbenable = false;
             }
         }
 
@@ -311,23 +387,17 @@ namespace SimPe.Plugin
                 string[] dirs = System.IO.Directory.GetDirectories(folder, "*");
                 foreach (string dir in dirs) { Scan(dir, true, usedscanners); if (stopClicked) break; }
             }
-
         }
 
         /// <summary>
         /// Scan for all Files and display the Result
         /// </summary>
-        /// <param name="files"></param>
-        /// <param name="enabled"></param>
-        /// <param name="pboffset"></param>
-        /// <param name="count"></param>
         void Scan(string[] files, bool enabled, int pboffset, int count, ScannerCollection usedscanners)
         {
             int ct = pboffset;
             foreach (string file in files)
             {
                 pb.Value = Math.Max(Math.Min(((ct++) * pb.Maximum) / count, pb.Maximum), pb.Minimum);
-                Application.DoEvents();
                 try
                 {
                     //Load the Item from the cache (if possible)
@@ -342,7 +412,6 @@ namespace SimPe.Plugin
                         if ((si.PackageCacheItem.Type != SimPe.Cache.PackageType.Unknown) && (si.PackageCacheItem.Type != SimPe.Cache.PackageType.Undefined))
                             break;
 
-
                         if ((si.PackageCacheItem.Type == SimPe.Cache.PackageType.Unknown) || (si.PackageCacheItem.Type == SimPe.Cache.PackageType.Undefined))
                             si.PackageCacheItem.Type = id.GetType(si.Package);
                     }
@@ -350,7 +419,7 @@ namespace SimPe.Plugin
                     if (pt != si.PackageCacheItem.Type) cachechg = true;
 
                     //setup the ListView Item
-                    ListViewItem lvi = new ListViewItem();
+                    SimPe.Scenegraph.Compat.ListViewItem lvi = new SimPe.Scenegraph.Compat.ListViewItem();
                     si.ListViewItem = lvi;
                     lvi.Text = System.IO.Path.GetFileNameWithoutExtension(si.FileName);
                     lvi.SubItems.Add(si.PackageCacheItem.Enabled.ToString());
@@ -373,516 +442,23 @@ namespace SimPe.Plugin
 
                     lv.Items.Add(lvi);
 
-
-
-                    Application.DoEvents();
                     if (stopClicked) break;
                 }
                 catch (Exception ex)
                 {
                     errorlog += file + ": " + ex.Message + Helper.lbr + "----------------------------------------" + Helper.lbr;
                 }
-            } //foreach			
+            } //foreach
         }
 
         void UpdateList(bool savecache, bool rescan)
         {
             if (Helper.XmlRegistry.UseCache && savecache) cachefile.Save();
-            if (rescan) Scan(null, (System.Windows.Forms.LinkLabelLinkClickedEventArgs)null);
+            if (rescan) Scan(null, EventArgs.Empty);
             else SelectItem(lv, null);
         }
 
-        #region Windows Form Designer generated code
-        /// <summary>
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScannerForm));
-            this.cbfolder = new System.Windows.Forms.ComboBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.pb = new ProgressBar();
-            this.lv = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ilist = new System.Windows.Forms.ImageList(this.components);
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tbscanners = new System.Windows.Forms.TabPage();
-            this.lbscanners = new CheckedListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tboperations = new System.Windows.Forms.TabPage();
-            this.pnop = new System.Windows.Forms.Panel();
-            this.tbcache = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btclear = new System.Windows.Forms.Button();
-            this.tbidentify = new System.Windows.Forms.TabPage();
-            this.lbscandebug = new System.Windows.Forms.ListBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbid = new System.Windows.Forms.ListBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.btscan = new System.Windows.Forms.Button();
-            this.cbrec = new System.Windows.Forms.CheckBox();
-            this.gbinfo = new System.Windows.Forms.GroupBox();
-            this.lbprop = new System.Windows.Forms.ComboBox();
-            this.llSave = new System.Windows.Forms.LinkLabel();
-            this.tbflname = new System.Windows.Forms.TextBox();
-            this.cbenable = new System.Windows.Forms.CheckBox();
-            this.lbtype = new System.Windows.Forms.Label();
-            this.lbname = new System.Windows.Forms.Label();
-            this.llopen = new System.Windows.Forms.LinkLabel();
-            this.thumb = new System.Windows.Forms.PictureBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tabControl1.SuspendLayout();
-            this.tbscanners.SuspendLayout();
-            this.tboperations.SuspendLayout();
-            this.tbcache.SuspendLayout();
-            this.tbidentify.SuspendLayout();
-            this.gbinfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thumb)).BeginInit();
-            this.panel1.SuspendLayout();
-            // 
-            // cbfolder
-            // 
-            this.cbfolder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbfolder.Items.AddRange(new object[] {
-            "Download Folder",
-            "Teleport Folder",
-            "Neighbourhoods Folder",
-            "Bodyshop Sim Templates Folder",
-            "Browse for Folder..."});
-            this.cbfolder.Location = new System.Drawing.Point(14, 16);
-            this.cbfolder.Name = "cbfolder";
-            this.cbfolder.Size = new System.Drawing.Size(653, 28);
-            this.cbfolder.TabIndex = 1;
-            this.cbfolder.SelectedIndexChanged += new System.EventHandler(this.SelectFolder);
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(677, 18);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(63, 29);
-            this.linkLabel1.TabIndex = 2;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "scan";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Scan);
-            // 
-            // fbd
-            // 
-            this.fbd.ShowNewFolderButton = false;
-            // 
-            // pb
-            // 
-            this.pb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pb.BackColor = System.Drawing.Color.Transparent;
-            
-            this.pb.Location = new System.Drawing.Point(14, 574);
-            this.pb.Maximum = 1000;
-            this.pb.Minimum = 0;
-            this.pb.Name = "pb";
-            
-            this.pb.Size = new System.Drawing.Size(931, 23);
-            
-            this.pb.TabIndex = 7;
-            
-            this.pb.Value = 0;
-            // 
-            // lv
-            // 
-            this.lv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lv.FullRowSelect = true;
-            this.lv.HideSelection = false;
-            this.lv.LargeImageList = this.ilist;
-            this.lv.Location = new System.Drawing.Point(14, 56);
-            this.lv.Name = "lv";
-            this.lv.Size = new System.Drawing.Size(939, 47);
-            this.lv.TabIndex = 3;
-            this.lv.UseCompatibleStateImageBehavior = false;
-            this.lv.View = System.Windows.Forms.View.Details;
-            this.lv.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.SortList);
-            this.lv.SelectedIndexChanged += new System.EventHandler(this.SelectItem);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Filename";
-            this.columnHeader1.Width = 281;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Enabled";
-            this.columnHeader2.Width = 57;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Type";
-            this.columnHeader3.Width = 104;
-            // 
-            // ilist
-            // 
-            this.ilist.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.ilist.ImageSize = new System.Drawing.Size(48, 48);
-            this.ilist.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tbscanners);
-            this.tabControl1.Controls.Add(this.tboperations);
-            this.tabControl1.Controls.Add(this.tbcache);
-            this.tabControl1.Controls.Add(this.tbidentify);
-            this.tabControl1.Location = new System.Drawing.Point(14, 112);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(192, 453);
-            this.tabControl1.TabIndex = 4;
-            // 
-            // tbscanners
-            // 
-            this.tbscanners.Controls.Add(this.lbscanners);
-            this.tbscanners.Controls.Add(this.label1);
-            this.tbscanners.Location = new System.Drawing.Point(4, 29);
-            this.tbscanners.Name = "tbscanners";
-            this.tbscanners.Size = new System.Drawing.Size(184, 420);
-            this.tbscanners.TabIndex = 0;
-            this.tbscanners.Text = "Scanner Settings";
-            // 
-            // lbscanners
-            // 
-            this.lbscanners.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbscanners.CheckOnClick = true;
-            this.lbscanners.HorizontalScrollbar = true;
-            this.lbscanners.Location = new System.Drawing.Point(19, 50);
-            this.lbscanners.Name = "lbscanners";
-            this.lbscanners.Size = new System.Drawing.Size(142, 254);
-            this.lbscanners.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 20);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "active Scanners:";
-            // 
-            // tboperations
-            // 
-            this.tboperations.Controls.Add(this.pnop);
-            this.tboperations.Location = new System.Drawing.Point(4, 29);
-            this.tboperations.Name = "tboperations";
-            this.tboperations.Size = new System.Drawing.Size(762, 420);
-            this.tboperations.TabIndex = 1;
-            this.tboperations.Text = "Operations";
-            // 
-            // pnop
-            // 
-            this.pnop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnop.AutoScroll = true;
-            this.pnop.BackColor = System.Drawing.SystemColors.Window;
-            this.pnop.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnop.Location = new System.Drawing.Point(-2, 13);
-            this.pnop.Name = "pnop";
-            this.pnop.Size = new System.Drawing.Size(759, 386);
-            this.pnop.TabIndex = 0;
-            // 
-            // tbcache
-            // 
-            this.tbcache.Controls.Add(this.button3);
-            this.tbcache.Controls.Add(this.button2);
-            this.tbcache.Controls.Add(this.btclear);
-            this.tbcache.Location = new System.Drawing.Point(4, 29);
-            this.tbcache.Name = "tbcache";
-            this.tbcache.Size = new System.Drawing.Size(762, 420);
-            this.tbcache.TabIndex = 2;
-            this.tbcache.Text = "Cache";
-            // 
-            // button3
-            // 
-            this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.button3.Location = new System.Drawing.Point(267, 234);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(213, 35);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Reload FileTable";
-            this.toolTip1.SetToolTip(this.button3, "Press this Button if you want to reload the FileTable.");
-            this.button3.Click += new System.EventHandler(this.ReloadFileTable);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.button2.Location = new System.Drawing.Point(267, 190);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(213, 35);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Reload Cache";
-            this.toolTip1.SetToolTip(this.button2, "Press this Button if you want to reload the Cache from your HD.");
-            this.button2.Click += new System.EventHandler(this.ReloadCache);
-            // 
-            // btclear
-            // 
-            this.btclear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btclear.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btclear.Location = new System.Drawing.Point(267, 148);
-            this.btclear.Name = "btclear";
-            this.btclear.Size = new System.Drawing.Size(213, 35);
-            this.btclear.TabIndex = 9;
-            this.btclear.Text = "Clear Cache";
-            this.toolTip1.SetToolTip(this.btclear, "Press this Button if you want to clear the Scanner Cache.");
-            this.btclear.Click += new System.EventHandler(this.ClearCache);
-            // 
-            // tbidentify
-            // 
-            this.tbidentify.Controls.Add(this.lbscandebug);
-            this.tbidentify.Controls.Add(this.label6);
-            this.tbidentify.Controls.Add(this.lbid);
-            this.tbidentify.Controls.Add(this.label5);
-            this.tbidentify.Location = new System.Drawing.Point(4, 29);
-            this.tbidentify.Name = "tbidentify";
-            this.tbidentify.Size = new System.Drawing.Size(762, 420);
-            this.tbidentify.TabIndex = 3;
-            this.tbidentify.Text = "Scanners";
-            // 
-            // lbscandebug
-            // 
-            this.lbscandebug.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbscandebug.HorizontalScrollbar = true;
-            this.lbscandebug.ItemHeight = 20;
-            this.lbscandebug.Location = new System.Drawing.Point(-2, 186);
-            this.lbscandebug.Name = "lbscandebug";
-            this.lbscandebug.Size = new System.Drawing.Size(752, 164);
-            this.lbscandebug.TabIndex = 5;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(-2, 161);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(159, 20);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "loaded Scanners:";
-            // 
-            // lbid
-            // 
-            this.lbid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbid.HorizontalScrollbar = true;
-            this.lbid.ItemHeight = 20;
-            this.lbid.Location = new System.Drawing.Point(3, 37);
-            this.lbid.Name = "lbid";
-            this.lbid.Size = new System.Drawing.Size(752, 84);
-            this.lbid.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 12);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(169, 20);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "loaded Identifiers:";
-            // 
-            // btscan
-            // 
-            this.btscan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btscan.BackColor = System.Drawing.Color.Transparent;
-            this.btscan.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btscan.Location = new System.Drawing.Point(232, 524);
-            this.btscan.Name = "btscan";
-            this.btscan.Size = new System.Drawing.Size(128, 35);
-            this.btscan.TabIndex = 6;
-            this.btscan.Text = "Scan";
-            this.btscan.UseVisualStyleBackColor = false;
-            this.btscan.Click += new System.EventHandler(this.Scan);
-            // 
-            // cbrec
-            // 
-            this.cbrec.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbrec.AutoSize = true;
-            this.cbrec.BackColor = System.Drawing.Color.Transparent;
-            this.cbrec.Location = new System.Drawing.Point(379, 534);
-            this.cbrec.Name = "cbrec";
-            this.cbrec.Size = new System.Drawing.Size(118, 24);
-            this.cbrec.TabIndex = 7;
-            this.cbrec.Text = "Recursive";
-            this.cbrec.UseVisualStyleBackColor = false;
-            // 
-            // gbinfo
-            // 
-            this.gbinfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbinfo.BackColor = System.Drawing.Color.Transparent;
-            this.gbinfo.Controls.Add(this.lbprop);
-            this.gbinfo.Controls.Add(this.llSave);
-            this.gbinfo.Controls.Add(this.tbflname);
-            this.gbinfo.Controls.Add(this.cbenable);
-            this.gbinfo.Controls.Add(this.lbtype);
-            this.gbinfo.Controls.Add(this.lbname);
-            this.gbinfo.Controls.Add(this.llopen);
-            this.gbinfo.Controls.Add(this.thumb);
-            this.gbinfo.Location = new System.Drawing.Point(232, 131);
-            this.gbinfo.Name = "gbinfo";
-            this.gbinfo.Size = new System.Drawing.Size(721, 355);
-            this.gbinfo.TabIndex = 2;
-            this.gbinfo.TabStop = false;
-            this.gbinfo.Text = "Information";
-            // 
-            // lbprop
-            // 
-            this.lbprop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.lbprop.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbprop.Location = new System.Drawing.Point(14, 278);
-            this.lbprop.MaxDropDownItems = 100;
-            this.lbprop.Name = "lbprop";
-            this.lbprop.Size = new System.Drawing.Size(608, 28);
-            this.lbprop.Sorted = true;
-            this.lbprop.TabIndex = 10;
-            // 
-            // llSave
-            // 
-            this.llSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.llSave.AutoSize = true;
-            this.llSave.Enabled = false;
-            this.llSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llSave.Location = new System.Drawing.Point(637, 278);
-            this.llSave.Name = "llSave";
-            this.llSave.Size = new System.Drawing.Size(81, 29);
-            this.llSave.TabIndex = 8;
-            this.llSave.TabStop = true;
-            this.llSave.Text = "save...";
-            this.llSave.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSave_LinkClicked);
-            // 
-            // tbflname
-            // 
-            this.tbflname.Location = new System.Drawing.Point(14, 317);
-            this.tbflname.Name = "tbflname";
-            this.tbflname.ReadOnly = true;
-            this.tbflname.Size = new System.Drawing.Size(620, 28);
-            this.tbflname.TabIndex = 9;
-            // 
-            // cbenable
-            // 
-            this.cbenable.AutoSize = true;
-            this.cbenable.Location = new System.Drawing.Point(234, 13);
-            this.cbenable.Name = "cbenable";
-            this.cbenable.Size = new System.Drawing.Size(104, 24);
-            this.cbenable.TabIndex = 7;
-            this.cbenable.Text = "Enabled";
-            this.cbenable.CheckedChanged += new System.EventHandler(this.SetEnabledState);
-            // 
-            // lbtype
-            // 
-            this.lbtype.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbtype.Location = new System.Drawing.Point(229, 66);
-            this.lbtype.Name = "lbtype";
-            this.lbtype.Size = new System.Drawing.Size(360, 29);
-            this.lbtype.TabIndex = 8;
-            this.lbtype.Text = "Type";
-            // 
-            // lbname
-            // 
-            this.lbname.Font = new System.Drawing.Font("Verdana", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbname.Location = new System.Drawing.Point(229, 95);
-            this.lbname.Name = "lbname";
-            this.lbname.Size = new System.Drawing.Size(360, 129);
-            this.lbname.TabIndex = 7;
-            this.lbname.Text = "Caption";
-            // 
-            // llopen
-            // 
-            this.llopen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.llopen.AutoSize = true;
-            this.llopen.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llopen.Location = new System.Drawing.Point(643, 323);
-            this.llopen.Name = "llopen";
-            this.llopen.Size = new System.Drawing.Size(68, 29);
-            this.llopen.TabIndex = 8;
-            this.llopen.TabStop = true;
-            this.llopen.Text = "open";
-            this.llopen.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OpenPackage);
-            // 
-            // thumb
-            // 
-            this.thumb.BackColor = System.Drawing.Color.Transparent;
-            this.thumb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.thumb.Location = new System.Drawing.Point(14, 37);
-            this.thumb.Name = "thumb";
-            this.thumb.Size = new System.Drawing.Size(205, 187);
-            this.thumb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.thumb.TabIndex = 0;
-            this.thumb.TabStop = false;
-            // 
-            // sfd
-            // 
-            this.sfd.Filter = "Comma Seperated Values (*.csv)|*.csv|All Files (*.*)|*.*";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.btscan);
-            this.panel1.Controls.Add(this.cbrec);
-            this.panel1.Controls.Add(this.tabControl1);
-            this.panel1.Controls.Add(this.lv);
-            this.panel1.Controls.Add(this.pb);
-            this.panel1.Controls.Add(this.cbfolder);
-            this.panel1.Controls.Add(this.linkLabel1);
-            this.panel1.Controls.Add(this.gbinfo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            
-            this.panel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(964, 602);
-            
-            this.panel1.TabIndex = 8;
-            // 
-            // ScannerForm
-            // 
-            this.Width = 964;
-            this.Height = 602;
-            this.Title = "Folder Scanner";
-            this.WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner;
-            this.tabControl1.ResumeLayout(false);
-            this.tbscanners.ResumeLayout(false);
-            this.tbscanners.PerformLayout();
-            this.tboperations.ResumeLayout(false);
-            this.tbcache.ResumeLayout(false);
-            this.tbidentify.ResumeLayout(false);
-            this.tbidentify.PerformLayout();
-            this.gbinfo.ResumeLayout(false);
-            this.gbinfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thumb)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-
-        }
-        #endregion
-
-        private void SelectFolder(object sender, System.EventArgs e)
+        private void SelectFolder(object sender, EventArgs e)
         {
             if (cbfolder.SelectedIndex == 0)
             {
@@ -895,13 +471,12 @@ namespace SimPe.Plugin
             else if (cbfolder.SelectedIndex == 2)
             {
                 folder = System.IO.Path.Combine(PathProvider.SimSavegameFolder, "Neighborhoods");
-                cbrec.Checked = true;
+                cbrec.IsChecked = true;
             }
             else if (cbfolder.SelectedIndex == 3)
             {
                 folder = System.IO.Path.Combine(PathProvider.SimSavegameFolder, "SavedSims");
             }
-
             else
             {
                 if (fbd.SelectedPath == "") fbd.SelectedPath = PathProvider.SimSavegameFolder;
@@ -910,7 +485,7 @@ namespace SimPe.Plugin
         }
 
         bool stopClicked = false;
-        private void Scan(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void Scan(object sender, EventArgs e)
         {
             errorlog = "";
             cachechg = false;
@@ -924,7 +499,7 @@ namespace SimPe.Plugin
             stopClicked = false;
             try
             {
-                btscan.Enabled = false;
+                btscan.IsEnabled = false;
                 if (Helper.XmlRegistry.UseCache) cachefile.LoadFiles();
 
                 //Setup ListView
@@ -933,8 +508,6 @@ namespace SimPe.Plugin
                 SimPe.Plugin.Scanner.AbstractScanner.AddColumn(lv, "Filename", 180);
                 SimPe.Plugin.Scanner.AbstractScanner.AddColumn(lv, "Enabled", 60);
                 SimPe.Plugin.Scanner.AbstractScanner.AddColumn(lv, "Type", 80);
-
-
 
                 //Select only checked Scanners
                 ScannerCollection scanners = new ScannerCollection();
@@ -953,12 +526,12 @@ namespace SimPe.Plugin
                 //setup Scanners
                 foreach (IScanner s in scanners) { WaitingScreen.Message = s.GetType().Name; s.InitScan(this.lv); }
 
-                btscan.Text = "Stop";
+                btscan.Content = "Stop";
                 scanClicked = StopScan;
-                btscan.Enabled = true;
+                btscan.IsEnabled = true;
                 WaitingScreen.Stop();
                 //scan all Files
-                Scan(folder, cbrec.Checked, scanners);
+                Scan(folder, cbrec.IsChecked.GetValueOrDefault(), scanners);
                 WaitingScreen.Wait();
                 WaitingScreen.Message = "Finishing scan";
 
@@ -981,10 +554,10 @@ namespace SimPe.Plugin
             }
             finally
             {
-                btscan.Text = "Scan";
+                btscan.Content = "Scan";
                 scanClicked = Scan;
-                btscan.Enabled = true;
-                llSave.Enabled = true;
+                btscan.IsEnabled = true;
+                llSave.IsEnabled = true;
                 WaitingScreen.UpdateImage(null);
                 WaitingScreen.Stop();
                 WaitingScreen.Message = "";
@@ -994,19 +567,26 @@ namespace SimPe.Plugin
             if (errorlog.Trim() != "") Helper.ExceptionMessage(new Warning("Unreadable Files were found", errorlog));
         }
 
-        private void StopScan(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void StopScan(object sender, EventArgs e)
         {
-            btscan.Enabled = false;
+            btscan.IsEnabled = false;
             stopClicked = true;
         }
 
-        private void SelectItem(object sender, System.EventArgs e)
+        private void ScanButtonClicked(object sender, EventArgs e)
+        {
+            scanClicked(null, null);
+        }
+
+        EventHandler scanClicked;
+
+        private void SelectItem(object sender, EventArgs e)
         {
             try
             {
                 lastitem = null;
-                gbinfo.Enabled = (lv.SelectedItems.Count != 0);
-                pnop.Enabled = (lv.SelectedItems.Count != 0);
+                gbinfo.IsEnabled = (lv.SelectedItems.Count != 0);
+                pnop.IsEnabled = (lv.SelectedItems.Count != 0);
 
                 if (lv.SelectedItems.Count == 0) return;
 
@@ -1019,24 +599,22 @@ namespace SimPe.Plugin
                 //do something for all selected Items
                 ScannerItem[] items = new ScannerItem[lv.SelectedItems.Count];
                 int ct = 0;
-                foreach (ListViewItem lvi in lv.SelectedItems)
+                foreach (SimPe.Scenegraph.Compat.ListViewItem lvi in lv.SelectedItems)
                 {
                     si = (ScannerItem)lvi.Tag;
                     items[ct++] = si;
                     if (si.PackageCacheItem.Enabled) encount++;
                 }
 
-                if (encount == lv.SelectedItems.Count) this.cbenable.CheckState = CheckState.Checked;
-                else if (encount == 0) this.cbenable.CheckState = CheckState.Unchecked;
-                else this.cbenable.CheckState = CheckState.Indeterminate;
-
+                if (encount == lv.SelectedItems.Count) this.cbenable.IsChecked = true;
+                else if (encount == 0) this.cbenable.IsChecked = false;
+                else this.cbenable.IsChecked = null;
 
                 //Enable the Scanner Controls
                 foreach (IScanner scanner in this.lbscanners.Items)
                 {
                     scanner.EnableControl(items, ScannerRegistry.Global.Scanners.Contains(scanner));
-
-                }//foreach
+                }
             }
             catch (Exception ex)
             {
@@ -1044,53 +622,35 @@ namespace SimPe.Plugin
             }
         }
 
-        private void SortList(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+        private void SortList(object sender, EventArgs e)
         {
-            if (sorter.CurrentColumn == e.Column)
-            {
-                if (lv.Sorting == SortOrder.Ascending) lv.Sorting = SortOrder.Descending;
-                else lv.Sorting = SortOrder.Ascending;
-            }
-            else
-            {
-                sorter.CurrentColumn = e.Column;
-                lv.ListViewItemSorter = sorter;
-            }
-            sorter.Sorting = lv.Sorting;
-            lv.Sort();
+            // Column click sorting not available without ColumnClickEventArgs in Avalonia port
         }
 
-        delegate void ScanClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e);
-        ScanClicked scanClicked;
-        private void Scan(object sender, System.EventArgs e)
-        {
-            scanClicked(null, null);
-        }
-
-        private void ReloadFileTable(object sender, System.EventArgs e)
+        private void ReloadFileTable(object sender, EventArgs e)
         {
             FileTable.FileIndex.ForceReload();
         }
 
-        private void ReloadCache(object sender, System.EventArgs e)
+        private void ReloadCache(object sender, EventArgs e)
         {
             if (Helper.XmlRegistry.UseCache) cachefile.Load(SimPe.Cache.PackageCacheFile.CacheFileName);
         }
 
-        private void SetEnabledState(object sender, System.EventArgs e)
+        private void SetEnabledState(object sender, EventArgs e)
         {
-            if (this.cbenable.Tag != null) return;
-            if (this.cbenable.CheckState == CheckState.Indeterminate) return;
+            if (_settingCbenable) return;
+            if (this.cbenable.IsChecked == null) return;
 
             WaitingScreen.Wait();
             try
             {
                 string ext = ".package";
-                if (!this.cbenable.Checked) ext = ".packagedisabled";
+                if (!this.cbenable.IsChecked.GetValueOrDefault()) ext = ".packagedisabled";
 
-                WaitingScreen.UpdateMessage("Disable/Enable Packges");
+                WaitingScreen.UpdateMessage("Disable/Enable Packages");
                 int ct = 0;
-                foreach (ListViewItem lvi in lv.SelectedItems)
+                foreach (SimPe.Scenegraph.Compat.ListViewItem lvi in lv.SelectedItems)
                 {
                     pb.Value = ((ct++) * pb.Maximum) / lv.SelectedItems.Count;
                     ScannerItem si = (ScannerItem)lvi.Tag;
@@ -1098,10 +658,6 @@ namespace SimPe.Plugin
                     string newname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(si.FileName), System.IO.Path.GetFileNameWithoutExtension(si.FileName) + ext);
                     string orgname = si.FileName;
 
-                    // string newname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(si.FileName), System.IO.Path.GetFileNameWithoutExtension(si.FileName) + ext).Trim().ToLower();
-                    // string orgname = si.FileName.Trim().ToLower();
-                    //si.Package.Save(newname);
-                    //remove the old file if the name was changed names
                     if (!System.IO.File.Exists(newname))
                     {
                         SimPe.Packages.StreamItem stri = SimPe.Packages.StreamFactory.UseStream(orgname, System.IO.FileAccess.Read);
@@ -1110,14 +666,11 @@ namespace SimPe.Plugin
                         strit.Close();
                         System.IO.File.Move(orgname, newname);
 
-
                         si.FileName = newname;
-                        si.PackageCacheItem.Enabled = cbenable.Checked;
+                        si.PackageCacheItem.Enabled = cbenable.IsChecked.GetValueOrDefault();
                         si.ParentContainer.FileName = newname;
                         si.ParentContainer.Added = DateTime.Now;
                     }
-
-                    Application.DoEvents();
                 }
 
                 try
@@ -1137,11 +690,11 @@ namespace SimPe.Plugin
             }
         }
 
-        private void ClearCache(object sender, System.EventArgs e)
+        private void ClearCache(object sender, EventArgs e)
         {
             DialogResult dr = DialogResult.Yes;
 
-            if (!Helper.XmlRegistry.Silent) dr = MessageBox.Show("Do you really want to clear the Cache?", "Confirm", MessageBoxButtons.YesNo);
+            if (!Helper.XmlRegistry.Silent) dr = MessageBoxStub.Show("Do you really want to clear the Cache?", "Confirm", null);
 
             if (dr == DialogResult.Yes)
             {
@@ -1157,7 +710,7 @@ namespace SimPe.Plugin
             }
         }
 
-        private void OpenPackage(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void OpenPackage(object sender, EventArgs e)
         {
             if (lastitem == null) return;
 
@@ -1165,7 +718,7 @@ namespace SimPe.Plugin
             Close();
         }
 
-        private void llSave_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void llSave_LinkClicked(object sender, EventArgs e)
         {
             if (sfd.ShowDialog() == DialogResult.OK)
             {
@@ -1174,14 +727,13 @@ namespace SimPe.Plugin
                     System.IO.StreamWriter sw = System.IO.File.CreateText(sfd.FileName);
                     try
                     {
-                        foreach (ColumnHeader ch in lv.Columns)
+                        foreach (SimPe.Scenegraph.Compat.ColumnHeader ch in lv.Columns)
                             sw.Write(ch.Text.Replace(",", ";") + ",");
                         sw.WriteLine();
 
-                        foreach (ListViewItem lvi in lv.Items)
+                        foreach (SimPe.Scenegraph.Compat.ListViewItem lvi in lv.Items)
                         {
-                            //sw.Write(lvi.Text.Replace(",", ";")+",");
-                            foreach (ListViewItem.ListViewSubItem lvsi in lvi.SubItems)
+                            foreach (SimPe.Scenegraph.Compat.ListViewItem.SubItem lvsi in lvi.SubItems)
                                 sw.Write(lvsi.Text.Replace(",", ";") + ",");
                             sw.WriteLine();
                         }

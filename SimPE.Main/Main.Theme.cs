@@ -38,8 +38,7 @@ namespace SimPe
             this.dcResourceList.Visible = true;
             this.dcResource.Visible = true;
 
-            // WeifenLuo DockPanelSuite requires a theme before content can be shown
-            this.dc.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
+            // TODO: WeifenLuo theme not ported: this.dc.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
 
             //setup the Theme Manager
 
@@ -136,11 +135,11 @@ namespace SimPe
             // Remove ghost DockPanels created by the deserializer for panel names that no
             // longer exist in the current session (e.g. stale ManagedDockPanel* entries).
             // These show up as blank tabs in the dock areas.
-            var dockContainers = new System.Windows.Forms.Control[] { dockBottom, dockLeft, dockRight };
+            var dockContainers = new Ambertation.Windows.Forms.DockContainer[] { dockBottom, dockLeft, dockRight };
             foreach (var container in dockContainers)
             {
                 var toRemove = new System.Collections.Generic.List<Ambertation.Windows.Forms.DockPanel>();
-                foreach (System.Windows.Forms.Control c in container.Controls)
+                foreach (var c in container.Controls)
                 {
                     var dp = c as Ambertation.Windows.Forms.DockPanel;
                     if (dp != null && dp.Name.StartsWith("ManagedDockPanel"))

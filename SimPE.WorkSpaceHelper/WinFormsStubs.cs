@@ -30,6 +30,31 @@ namespace System.Windows.Forms
 
     public enum DockStyle { None, Top, Bottom, Left, Right, Fill }
 
+    public enum ToolStripItemOverflow { Never, Always, AsNeeded }
+
+    /// <summary>Minimal stub for System.Windows.Forms.Control.</summary>
+    public class Control
+    {
+        public bool Visible { get; set; } = true;
+        public bool Enabled { get; set; } = true;
+        public string Name { get; set; } = "";
+        public object Tag { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public System.Drawing.Point Location { get; set; }
+        public System.Drawing.Size Size { get; set; }
+    }
+
+    public enum DialogResult { None = 0, OK = 1, Cancel = 2, Abort = 3, Retry = 4, Ignore = 5, Yes = 6, No = 7 }
+
+    public static class DataFormats { public const string FileDrop = "Files"; }
+
+    public struct LinkArea
+    {
+        public int Start, Length;
+        public LinkArea(int start, int length) { Start = start; Length = length; }
+    }
+
     // MessageBoxButtons, MessageBoxIcon, MessageBoxDefaultButton — defined in SimPe namespace (Message.cs).
 
     /// <summary>Minimal stub for System.Windows.Forms.Padding.</summary>
@@ -88,7 +113,7 @@ namespace System.Windows.Forms
         public bool Checked { get; set; }
         public System.Drawing.Font Font { get; set; }
         public object ImageScaling { get; set; }
-        public object Overflow { get; set; }
+        public ToolStripItemOverflow Overflow { get; set; }
         public bool Available { get; set; } = true;
         public System.Drawing.ContentAlignment ImageAlign { get; set; }
         public object Alignment { get; set; }
@@ -122,6 +147,14 @@ namespace System.Windows.Forms
         public bool TabStop { get; set; }
         public string Name { get; set; } = "";
         public object Tag { get; set; }
+        public LinkArea LinkArea { get; set; }
+        public System.Drawing.Font Font { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public bool AutoSize { get; set; }
+        public int Top { get; set; }
+        public int Left { get; set; }
+        public object Parent { get; set; }
         public event LinkLabelLinkClickedEventHandler LinkClicked;
         protected virtual void OnLinkClicked(LinkLabelLinkClickedEventArgs e) => LinkClicked?.Invoke(this, e);
     }
@@ -141,6 +174,7 @@ namespace System.Windows.Forms
         public int Count => _items.Count;
         public ToolStripItem this[int i] => _items[i];
         public void Add(ToolStripItem item) { _items.Add(item); }
+        public void Add(string text) { _items.Add(new ToolStripMenuItem(text)); }
         public void Insert(int index, ToolStripItem item) { _items.Insert(index, item); }
         public void Remove(ToolStripItem item) { _items.Remove(item); }
         public void Clear() { _items.Clear(); }
@@ -183,7 +217,8 @@ namespace System.Windows.Forms
         public string Title { get; set; } = string.Empty;
         public string InitialDirectory { get; set; } = string.Empty;
         public bool OverwritePrompt { get; set; } = true;
-        public SimPe.DialogResult ShowDialog() => SimPe.DialogResult.Cancel;
+        public DialogResult ShowDialog() => DialogResult.Cancel;
+        public DialogResult ShowDialog(object owner) => DialogResult.Cancel;
         public void Dispose() { }
     }
 
@@ -192,8 +227,10 @@ namespace System.Windows.Forms
     {
         public string SelectedPath { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool ShowNewFolderButton { get; set; } = true;
         public System.Environment.SpecialFolder RootFolder { get; set; }
-        public SimPe.DialogResult ShowDialog() => SimPe.DialogResult.Cancel;
+        public DialogResult ShowDialog() => DialogResult.Cancel;
+        public DialogResult ShowDialog(object owner) => DialogResult.Cancel;
         public void Dispose() { }
     }
 
@@ -201,9 +238,13 @@ namespace System.Windows.Forms
     public class OpenFileDialog : IDisposable
     {
         public string FileName { get; set; } = string.Empty;
+        public string[] FileNames => new string[] { FileName };
         public string Filter { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public SimPe.DialogResult ShowDialog() => SimPe.DialogResult.Cancel;
+        public bool Multiselect { get; set; }
+        public string InitialDirectory { get; set; } = string.Empty;
+        public DialogResult ShowDialog() => DialogResult.Cancel;
+        public DialogResult ShowDialog(object owner) => DialogResult.Cancel;
         public void Dispose() { }
     }
 
@@ -213,5 +254,59 @@ namespace System.Windows.Forms
         public static void Run(object form) { }
         public static void EnableVisualStyles() { }
         public static void DoEvents() { }
+        public static bool UseWaitCursor { get; set; }
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.ToolStripSeparator.</summary>
+    public class ToolStripSeparator : ToolStripItem { }
+
+    /// <summary>Minimal stub for System.Windows.Forms.Button.</summary>
+    public class Button
+    {
+        public string Text { get; set; } = "";
+        public bool Enabled { get; set; } = true;
+        public bool Visible { get; set; } = true;
+        public bool TabStop { get; set; } = true;
+        public string Name { get; set; } = "";
+        public object Tag { get; set; }
+        public void Focus() { }
+        public event EventHandler Click;
+    }
+
+    /// <summary>Minimal stub for System.Windows.Forms.MessageBox.</summary>
+    public static class MessageBox
+    {
+        public static DialogResult Show(string text, string caption = "", SimPe.MessageBoxButtons buttons = SimPe.MessageBoxButtons.OK, SimPe.MessageBoxIcon icon = SimPe.MessageBoxIcon.None) => DialogResult.Cancel;
+        public static DialogResult Show(object owner, string text, string caption = "", SimPe.MessageBoxButtons buttons = SimPe.MessageBoxButtons.OK, SimPe.MessageBoxIcon icon = SimPe.MessageBoxIcon.None) => DialogResult.Cancel;
+        public static DialogResult Show(string text, string caption, SimPe.MessageBoxButtons buttons) => DialogResult.Cancel;
+        public static DialogResult Show(object owner, string text, string caption, SimPe.MessageBoxButtons buttons) => DialogResult.Cancel;
+    }
+
+    public enum PictureBoxSizeMode { Normal, StretchImage, AutoSize, CenterImage, Zoom }
+
+    /// <summary>
+    /// Avalonia-native replacement for System.Windows.Forms.PictureBox.
+    /// Wraps an Avalonia Image with click support. Used in OptionForm and other plugin panels.
+    /// </summary>
+    public class PictureBox
+    {
+        public int Left   { get; set; }
+        public int Top    { get; set; }
+        public int Width  { get; set; }
+        public int Height { get; set; }
+        public object Parent { get; set; }
+        public object Tag    { get; set; }
+        public AnchorStyles Anchor { get; set; }
+        public System.Drawing.Color BackColor { get; set; }
+        public System.Drawing.Image Image    { get; set; }
+        public PictureBoxSizeMode SizeMode   { get; set; }
+        public event EventHandler Click;
+        protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
+    }
+
+    /// <summary>No-argument ShowDialog stub for Avalonia.Controls.Window — shows non-blocking.</summary>
+    public static class WindowExtensions
+    {
+        public static void ShowDialog(this Avalonia.Controls.Window w) => w.Show();
     }
 }

@@ -55,6 +55,10 @@ public class DockContainer : NCUserControl
 
     // ── Properties ────────────────────────────────────────────────────────
 
+    public bool Visible { get => IsVisible; set => IsVisible = value; }
+
+    public new Avalonia.Controls.Control? Parent => base.Parent as Avalonia.Controls.Control;
+
     public BaseDockManager Manager
     {
         get => manager;

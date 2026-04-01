@@ -233,13 +233,13 @@ namespace SimPe.Wizards
 		private void FldSims(object sender, EventArgs e)
 		{
             if (System.IO.Directory.Exists(PathProvider.Global[Expansions.BaseGame].RealInstallFolder)) fbd.SelectedPath = PathProvider.Global[Expansions.BaseGame].RealInstallFolder;
-			if (fbd.ShowDialog()==SimPe.DialogResult.OK) tbsims.Text = fbd.SelectedPath;
+			if (fbd.ShowDialog()==System.Windows.Forms.DialogResult.OK) tbsims.Text = fbd.SelectedPath;
 		}
 
 		private void FldSave(object sender, EventArgs e)
 		{
             if (System.IO.Directory.Exists(PathProvider.RealSavegamePath)) fbd.SelectedPath = PathProvider.RealSavegamePath;
-			if (fbd.ShowDialog()==SimPe.DialogResult.OK) tbsave.Text = fbd.SelectedPath;
+			if (fbd.ShowDialog()==System.Windows.Forms.DialogResult.OK) tbsave.Text = fbd.SelectedPath;
 		}
 
 		private void LinkDDS(object sender, EventArgs e)
@@ -250,7 +250,7 @@ namespace SimPe.Wizards
 
 		private void FldDds(object sender, EventArgs e)
 		{
-			if (ofd.ShowDialog()==SimPe.DialogResult.OK) tbdds.Text = System.IO.Path.GetDirectoryName(ofd.FileName);
+			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) tbdds.Text = System.IO.Path.GetDirectoryName(ofd.FileName);
 		}
 
 		private void linkLabel5_LinkClicked(object sender, EventArgs e)

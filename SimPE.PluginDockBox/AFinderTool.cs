@@ -27,11 +27,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
 
 namespace SimPe.Interfaces
 {
-    public partial class AFinderTool : UserControl
+    public partial class AFinderTool : Avalonia.Controls.UserControl
     {
         IFinderResultGui rgui;
         SimPe.ThemeManager tm;
@@ -44,7 +44,7 @@ namespace SimPe.Interfaces
             tm = ThemeManager.Global.CreateChild();
             tm.AddControl(this.grp);
             
-            btStart.Enabled = rgui!=null;
+            btStart.IsEnabled = rgui!=null;
         }
 
         protected SimPe.ThemeManager ThemeManager
@@ -75,14 +75,14 @@ namespace SimPe.Interfaces
         internal void SetResultGui(IFinderResultGui gui)
         {
             rgui = gui;
-            btStart.Enabled = rgui != null;
+            btStart.IsEnabled = rgui != null;
         }
 
         /// <summary>
         /// The control returned here should contain all parameters that control the search.
         /// </summary>
-        public System.Windows.Forms.Control SearchGui { 
-            get { return this; }            
+        public Avalonia.Controls.Control SearchGui {
+            get { return this; }
         }
 
 
@@ -144,7 +144,7 @@ namespace SimPe.Interfaces
             {
                 if (OnPrepareStart())
                 {
-                    btStart.Text = SimPe.Localization.GetString("Stop");
+                    btStart.Content = SimPe.Localization.GetString("Stop");
                     btStart.Tag = true;
                     ResultGui.StartSearch(this);
                 }
@@ -158,7 +158,7 @@ namespace SimPe.Interfaces
         }
 
         internal void NotifyFinishedSearch(){
-            btStart.Text = SimPe.Localization.GetString("Start");
+            btStart.Content = SimPe.Localization.GetString("Start");
             btStart.Tag = null;
 
             System.Diagnostics.Debug.WriteLine("Notified search finish");

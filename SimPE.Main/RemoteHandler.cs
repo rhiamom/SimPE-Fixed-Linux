@@ -104,7 +104,7 @@ namespace SimPe
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show("fii.Package is null");
+                    SimPe.Scenegraph.Compat.MessageBox.Show("fii.Package is null");
                 }
             }
             catch (Exception ex)

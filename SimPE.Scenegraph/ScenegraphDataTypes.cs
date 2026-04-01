@@ -36,11 +36,13 @@ namespace SimPe.Scenegraph.Compat
             public void Add(string text) => _items.Add(new SubItem(text));
             public int Count => _items.Count;
             public void Clear() => _items.Clear();
+            public IEnumerator GetEnumerator() => _items.GetEnumerator();
         }
 
         public class SubItem
         {
             public string Text { get; set; }
+            public System.Drawing.Color ForeColor { get; set; } = System.Drawing.Color.Empty;
             public SubItem(string text) { Text = text; }
         }
 
@@ -62,16 +64,36 @@ namespace SimPe.Scenegraph.Compat
         }
 
         public bool Checked { get; set; }
+        public System.Drawing.Color ForeColor { get; set; } = System.Drawing.Color.Empty;
         public void EnsureVisible() { }
         public ListViewItem Clone() { return (ListViewItem)MemberwiseClone(); }
         /// <summary>Back-reference to the owning ListView (set by ListViewItemCollection.Add).</summary>
         public ListView ListView { get; set; }
+        public int GroupIndex { get; set; } = -1;
         public bool UseItemStyleForSubItems { get; set; } = true;
     }
 
     // ── ListView ─────────────────────────────────────────────────────────────
 
     /// <summary>Minimal ListView — replaces System.Windows.Forms.ListView.</summary>
+    public class ListViewGroup
+    {
+        public string Header { get; set; }
+        public ListViewGroup(string header) { Header = header; }
+        public ListViewGroup() { Header = ""; }
+    }
+
+    public class ListViewGroupCollection : System.Collections.IEnumerable
+    {
+        private readonly List<ListViewGroup> _groups = new List<ListViewGroup>();
+        public int Count => _groups.Count;
+        public ListViewGroup this[int index] => _groups[index];
+        public void Add(ListViewGroup group) => _groups.Add(group);
+        public void Clear() => _groups.Clear();
+        public int IndexOf(ListViewGroup group) => _groups.IndexOf(group);
+        public System.Collections.IEnumerator GetEnumerator() => _groups.GetEnumerator();
+    }
+
     public class ListView : Avalonia.Controls.Control
     {
         public class ListViewItemCollection
@@ -132,6 +154,7 @@ namespace SimPe.Scenegraph.Compat
             public void Add(ColumnHeader col) => _columns.Add(col);
             public void AddRange(ColumnHeader[] cols) { foreach (var col in cols) Add(col); }
             public void Clear() => _columns.Clear();
+            public IEnumerator GetEnumerator() => _columns.GetEnumerator();
         }
 
         public class CheckedListViewItemCollection : System.Collections.IEnumerable
@@ -190,6 +213,7 @@ namespace SimPe.Scenegraph.Compat
 
         public string Name { get; set; } = "";
         public object ListViewItemSorter { get; set; }
+        public SimPe.SortOrder Sorting { get; set; } = SimPe.SortOrder.None;
         public void SelectAll() { foreach (object o in Items) ((ListViewItem)o).Selected = true; }
 
         // No-ops: update batching has no effect in this compat stub
@@ -197,6 +221,11 @@ namespace SimPe.Scenegraph.Compat
         public void EndUpdate() { }
         public void Refresh() { }
         public void Sort() { }
+
+        public bool DoubleBuffering { get; set; }
+        public bool ShowGroups { get; set; }
+        public int[] TileColumns { get; set; } = new int[0];
+        public ListViewGroupCollection Groups { get; } = new ListViewGroupCollection();
 
         public ListView()
         {
@@ -326,6 +355,7 @@ namespace SimPe.Scenegraph.Compat
         public bool Visible { get => IsVisible; set => IsVisible = value; }
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
+        public System.Drawing.Color ForeColor { get; set; } = System.Drawing.Color.Empty;
         public ControlCollection Controls { get; } = new ControlCollection();
         public ControlCollection Children => Controls;
     }
@@ -397,6 +427,29 @@ namespace SimPe.Scenegraph.Compat
                         _items[idx] = (_items[idx].Item, cb.IsChecked == true);
                 };
                 _panel.Children.Add(cb);
+            }
+
+            public void Insert(int index, object item)
+            {
+                _items.Insert(index, (item, false));
+                var cb = new Avalonia.Controls.CheckBox
+                {
+                    Content = item?.ToString() ?? "",
+                    IsChecked = false,
+                    Margin = new Avalonia.Thickness(2)
+                };
+                cb.IsCheckedChanged += (s, e) =>
+                {
+                    int idx = _panel.Children.IndexOf(cb);
+                    if (idx >= 0 && idx < _items.Count)
+                        _items[idx] = (_items[idx].Item, cb.IsChecked == true);
+                };
+                _panel.Children.Insert(index, cb);
+            }
+
+            public System.Collections.IEnumerator GetEnumerator()
+            {
+                foreach (var (item, _) in _items) yield return item;
             }
         }
     }
@@ -489,6 +542,10 @@ namespace SimPe.Scenegraph.Compat
         public new int Width { get; set; }
         public new int Height { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
+        public bool AutoSize { get; set; }
+        public System.Drawing.Font Font { get; set; }
+        public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public object Parent { get; set; }
 
         public event LinkLabelLinkClickedEventHandler LinkClicked;
 

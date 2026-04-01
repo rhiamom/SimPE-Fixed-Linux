@@ -22,11 +22,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using DialogResult = System.Windows.Forms.DialogResult;
 
 
 namespace SimPe
 {
-    public partial class GameRootDialog : Form
+    public partial class GameRootDialog : Avalonia.Controls.Window, IDisposable
     {
         private const string CepDownloadUrl = "https://modthesims.info/d/92541/color-enable-package.html";
 
@@ -56,7 +57,7 @@ namespace SimPe
             InitializeComponent();
 
             // Choose a sensible default so at least one is always selected.
-            rbLegacy.Checked = true;   // Change this if you prefer another default.
+            rbLegacy.IsChecked = true;   // Change this if you prefer another default.
             UpdateDefaultGameRootPath();
             UpdateDefaultDownloadsPath();
 
@@ -67,14 +68,14 @@ namespace SimPe
             using (var dlg = new FolderBrowserDialog())
             {
                 dlg.Description = "Select the root folder where The Sims 2 is installed.";
-                dlg.ShowNewFolderButton = false;
+                // dlg.ShowNewFolderButton = false; // not supported in Avalonia port
 
                 if (Directory.Exists(txtGameRoot.Text))
                 {
                     dlg.SelectedPath = txtGameRoot.Text;
                 }
 
-                if (dlg.ShowDialog(this) == DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     txtGameRoot.Text = dlg.SelectedPath;
                     UpdateCepStatus();
@@ -84,12 +85,12 @@ namespace SimPe
 
         private string GetSelectedEdition()
         {
-            if (rbLegacy.Checked) return "Legacy";
-            if (rbUC.Checked) return "Ultimate Collection";
-            if (rbSteam.Checked) return "Steam";
-            if (rbEpic.Checked) return "Epic";
-            if (rbDisc.Checked) return "Disc";
-            if (rbCustom.Checked) return "Custom";
+            if (rbLegacy.IsChecked == true) return "Legacy";
+            if (rbUC.IsChecked == true) return "Ultimate Collection";
+            if (rbSteam.IsChecked == true) return "Steam";
+            if (rbEpic.IsChecked == true) return "Epic";
+            if (rbDisc.IsChecked == true) return "Disc";
+            if (rbCustom.IsChecked == true) return "Custom";
 
             return string.Empty;
         }
@@ -97,7 +98,7 @@ namespace SimPe
         private void EditionRadio_CheckedChanged(object sender, EventArgs e)
         {
             // Only act when a radio button becomes checked
-            if (!(sender is RadioButton rb) || !rb.Checked)
+            if (!(sender is Avalonia.Controls.RadioButton rb) || rb.IsChecked != true)
                 return;
 
             UpdateDefaultGameRootPath();
@@ -265,7 +266,7 @@ namespace SimPe
                     MessageBoxIcon.Warning);
 
                 // Force manual correction
-                rbCustom.Checked = true;
+                rbCustom.IsChecked = true;
                 txtGameRoot.Text = string.Empty;
 
                 return;
@@ -288,7 +289,7 @@ namespace SimPe
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
-                rbCustom.Checked = true;
+                rbCustom.IsChecked = true;
                 return;
             }
 
@@ -329,14 +330,14 @@ namespace SimPe
             Helper.SaveGameRootToFile(GameRootPath, SelectedEdition, BaseGamePath, DownloadsPath);
 
             Helper.LocalMode = false;
-            this.DialogResult = DialogResult.OK;
+            // this.DialogResult = DialogResult.OK; // not applicable on Avalonia Window
             this.Close();
         }
         private void UpdateDefaultGameRootPath()
         {
             string suggested = null;
 
-            if (rbLegacy.Checked)
+            if (rbLegacy.IsChecked == true)
             {
                 // Legacy can end up in Program Files or Program Files (x86),
                 // with or without the "EA GAMES" folder.
@@ -359,7 +360,7 @@ namespace SimPe
                     suggested = string.Empty;   //act like custom was checked
             }
 
-            else if (rbUC.Checked)
+            else if (rbUC.IsChecked == true)
             {
                 // Classic EA App / Origin installs
                 string p1 = @"C:\Program Files (x86)\EA GAMES\The Sims 2 Ultimate Collection";
@@ -377,19 +378,19 @@ namespace SimPe
                     suggested = string.Empty;   //act like custom was checked
             }
 
-            else if (rbDisc.Checked)
+            else if (rbDisc.IsChecked == true)
             {
                 // Classic disc installs also usually live here
                 suggested = @"C:\Program Files (x86)\EA GAMES\The Sims 2";
             }
 
-            else if (rbSteam.Checked)
+            else if (rbSteam.IsChecked == true)
             {
                 // Hypothetical Steam default – user can edit if wrong
                 suggested = @"C:\Program Files (x86)\Steam\steamapps\common\The Sims 2";
             }
 
-            else if (rbEpic.Checked)
+            else if (rbEpic.IsChecked == true)
             {
                 // Epic hands off to EA App; it may install with or without "EA GAMES".
                 string p1 = @"C:\Program Files (x86)\EA GAMES\The Sims 2 Legacy";
@@ -410,7 +411,7 @@ namespace SimPe
                     suggested = string.Empty;   //act like custom was checked
             }
 
-            else if (rbCustom.Checked)
+            else if (rbCustom.IsChecked == true)
             {
                 // Custom: leave it blank so the user *must* choose
                 suggested = string.Empty;
@@ -435,20 +436,20 @@ namespace SimPe
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string eaGames = Path.Combine(documents, "EA Games");
 
-            if (rbLegacy.Checked || rbSteam.Checked || rbEpic.Checked)
+            if (rbLegacy.IsChecked == true || rbSteam.IsChecked == true || rbEpic.IsChecked == true)
             {
                 // Steam uses the same Documents folder name as Legacy
                 suggested = Path.Combine(eaGames, "The Sims 2 Legacy", "Downloads");
             }
-            else if (rbUC.Checked)
+            else if (rbUC.IsChecked == true)
             {
                 suggested = Path.Combine(eaGames, "The Sims™ 2 Ultimate Collection", "Downloads");
             }
-            else if (rbDisc.Checked)
+            else if (rbDisc.IsChecked == true)
             {
                 suggested = Path.Combine(eaGames, "The Sims 2", "Downloads");
             }
-            else if (rbCustom.Checked)
+            else if (rbCustom.IsChecked == true)
             {
                 // Custom: leave blank so user must choose if needed
                 suggested = string.Empty;
@@ -522,7 +523,7 @@ namespace SimPe
                         (cepHasGmnd && cepHasZcepFolder && cepHasMmat && cepHasZcepExtraFolder
         ? "  CEP is fully installed. Maxis object recolors will work."
         : "  CEP is incomplete or missing. Maxis object recolors will NOT work.");
-                btnDownloadCep.Enabled = !IsCepComplete();
+                btnDownloadCep.IsEnabled = !IsCepComplete();
             }
         }
 
@@ -538,7 +539,7 @@ namespace SimPe
                     dlg.SelectedPath = txtDownloads.Text;
                 }
 
-                if (dlg.ShowDialog(this) == DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     txtDownloads.Text = dlg.SelectedPath;
                     UpdateCepStatus();
@@ -568,12 +569,20 @@ namespace SimPe
             }
         }
 
-        protected override void OnActivated(EventArgs e)
+        protected void OnActivated(EventArgs e)
         {
-            base.OnActivated(e);
             UpdateCepStatus();
         }
 
+        public void Dispose() { }
+
+        // WinForms-compat stub: shows the window and always returns Cancel.
+        // TODO: wire Closed event to detect whether user confirmed.
+        public new System.Windows.Forms.DialogResult ShowDialog()
+        {
+            this.Show();
+            return System.Windows.Forms.DialogResult.Cancel;
+        }
     }
 }
 

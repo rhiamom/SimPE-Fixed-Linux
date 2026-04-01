@@ -28,6 +28,7 @@ using SelectionMode = Avalonia.Controls.SelectionMode;
 using System.Collections;
 using System.ComponentModel;
 using SimPe;
+using DialogResult = System.Windows.Forms.DialogResult;
 using SimPe.Data;
 using SimPe.Interfaces;
 
@@ -639,7 +640,7 @@ namespace SimPe.Plugin
 
                     if ((this.cbfix.IsChecked == true))
                     {
-                        if (sfd.ShowDialog() == DialogResult.OK)
+                        if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         {
                             WaitingScreen.Wait();
                             try
@@ -919,7 +920,7 @@ namespace SimPe.Plugin
                 if (SimPe.Message.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo) == SimPe.DialogResult.No) return;
             }
 
-            if ((this.cbColorExt.IsChecked == true)) if (sfd.ShowDialog() != DialogResult.OK) return;
+            if ((this.cbColorExt.IsChecked == true)) if (sfd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
             //create a Cloned Object to get all needed Files for the Process
             bool old = (cbgid.IsChecked == true);
@@ -1035,7 +1036,7 @@ namespace SimPe.Plugin
 
 		private void button1_Click(object sender, System.EventArgs e)
 		{
-			if (ofd.ShowDialog()==DialogResult.OK) 
+			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				package = SimPe.Packages.GeneratableFile.LoadFromFile(ofd.FileName);
 				tbflname.Text = ofd.FileName;

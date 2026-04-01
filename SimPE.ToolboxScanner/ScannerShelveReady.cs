@@ -59,7 +59,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{		
 			ps.Data = new uint[1];
 			ps.Data[0] = (uint)SimPe.PackedFiles.Wrapper.ShelveDimension.Indetermined;
@@ -88,7 +88,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			if (ps.State != TriState.Null) 
 			{
@@ -110,13 +110,13 @@ namespace SimPe.Plugin.Scanner
 			selection = items;
 			if (!active) 
 			{
-				OperationControl.Enabled = false;
+				OperationControl.IsEnabled = false;
 				return;
 			}
 
 			if (items.Length==0) 
 			{
-				OperationControl.Enabled = false;
+				OperationControl.IsEnabled = false;
 			} 
 			else if (items.Length == 1)
 			{
@@ -124,19 +124,19 @@ namespace SimPe.Plugin.Scanner
 				if (ps.Data.Length>0)
 				{
 					ScannerPanelForm.Form.cbshelve.SelectedValue = (SimPe.PackedFiles.Wrapper.ShelveDimension)ps.Data[0];
-					OperationControl.Enabled = true;
+					OperationControl.IsEnabled = true;
 				}
 			}
 			else 
 			{
 				ScannerPanelForm.Form.cbshelve.SelectedValue = SimPe.PackedFiles.Wrapper.ShelveDimension.Indetermined;
-				OperationControl.Enabled = true;
+				OperationControl.IsEnabled = true;
 			}
 			
 		}
 
 
-		protected override System.Windows.Forms.Control CreateOperationControl()
+		protected override Avalonia.Controls.Control CreateOperationControl()
 		{
 			ScannerPanelForm.Form.pnShelve.Tag = this;
 			return ScannerPanelForm.Form.pnShelve;

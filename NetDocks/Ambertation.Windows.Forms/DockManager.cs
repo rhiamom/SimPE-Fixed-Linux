@@ -66,6 +66,8 @@ public class DockManager : BaseDockManager
 
     protected override bool MeAsCenterDock => true;
 
+    public bool Visible { get; set; } = true;
+
     public new System.Drawing.Size DefaultSize
     {
         get => _defaultSize;

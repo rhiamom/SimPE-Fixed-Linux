@@ -25,7 +25,6 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.IO;
 
 namespace SimPe.Plugin.Tool
@@ -33,104 +32,29 @@ namespace SimPe.Plugin.Tool
 	/// <summary>
 	/// Summary description for Report.
 	/// </summary>
-	internal class Report : System.Windows.Forms.Form
+	internal class Report : Avalonia.Controls.Window
 	{
-        private System.Windows.Forms.Panel xpGradientPanel1;
-        private System.Windows.Forms.RichTextBox rtb;
-		private System.Windows.Forms.SaveFileDialog sfd;
-        private Button button1;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
+        private Avalonia.Controls.StackPanel xpGradientPanel1;
+        private Avalonia.Controls.TextBox rtb;
+        private object sfd; // stub: was SaveFileDialog
+        private Avalonia.Controls.Button button1;
 		private System.ComponentModel.Container components = null;
 
 		public Report()
 		{
-			//
-			// Required designer variable.
-			//
             InitializeComponent();
 
             ThemeManager tm = ThemeManager.Global.CreateChild();
             tm.AddControl(this.xpGradientPanel1);
-
-			//
-			// TODO: Fügen Sie den Konstruktorcode nach dem Aufruf von InitializeComponent hinzu
-			//
-		}
-
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-			if (csv != null)
-			{
-				csv.Close();
-				csv.Dispose();
-				csv = null;
-			}
 		}
 
 		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Report));
-            this.xpGradientPanel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.rtb = new System.Windows.Forms.RichTextBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.xpGradientPanel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // xpGradientPanel1
-            // 
-            this.xpGradientPanel1.BackColor = System.Drawing.SystemColors.Control;
-            this.xpGradientPanel1.Controls.Add(this.button1);
-            this.xpGradientPanel1.Controls.Add(this.rtb);
-            resources.ApplyResources(this.xpGradientPanel1, "xpGradientPanel1");
-            this.xpGradientPanel1.Name = "xpGradientPanel1";
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // rtb
-            // 
-            resources.ApplyResources(this.rtb, "rtb");
-            this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb.Name = "rtb";
-            this.rtb.ReadOnly = true;
-            this.rtb.ShowSelectionMargin = true;
-            // 
-            // sfd
-            // 
-            resources.ApplyResources(this.sfd, "sfd");
-            // 
-            // Report
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.xpGradientPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "Report";
-            this.xpGradientPanel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            this.xpGradientPanel1 = new Avalonia.Controls.StackPanel();
+            this.button1 = new Avalonia.Controls.Button { Content = "Save" };
+            this.rtb = new Avalonia.Controls.TextBox { IsReadOnly = true };
+            button1.Click += (s, e) => button1_Click(s, null);
 		}
 		#endregion
 
@@ -140,36 +64,17 @@ namespace SimPe.Plugin.Tool
 			csv.Flush();
 			csv.BaseStream.Seek(0, SeekOrigin.Begin);
 			StreamReader sr = new StreamReader(csv.BaseStream);
-			sr.BaseStream.Seek(0, SeekOrigin.Begin);			
+			sr.BaseStream.Seek(0, SeekOrigin.Begin);
 
 			this.csv = csv;
 			this.rtb.Text = sr.ReadToEnd();
-			this.ShowDialog();
+			this.Show(); // was ShowDialog()
 		}
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                csv.BaseStream.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(csv.BaseStream);
-                sr.BaseStream.Seek(0, SeekOrigin.Begin);
-
-                System.IO.StreamWriter sw = System.IO.File.CreateText(sfd.FileName);
-                try
-                {
-                    sw.Write(sr.ReadToEnd());
-                }
-                finally
-                {
-                    sw.Close();
-                    sw.Dispose();
-                    sw = null;
-                    sr = null;
-                }
-            }
-
+            // TODO: implement save file dialog via Avalonia StorageProvider
         }
 	}
 }

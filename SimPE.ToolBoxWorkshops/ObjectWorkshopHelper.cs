@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using DialogResult = System.Windows.Forms.DialogResult;
 
 namespace SimPe.Plugin.Tool.Dockable
 {
@@ -459,7 +460,7 @@ namespace SimPe.Plugin.Tool.Dockable
 											  SimPe.ExtensionType.AllFiles
 										  }
 				);
-			if (sfd.ShowDialog()!=DialogResult.OK) return package;			
+			if (sfd.ShowDialog()!=System.Windows.Forms.DialogResult.OK) return package;			
 
 			//create a Cloned Object to get all needed Files for the Process			
 			WaitingScreen.Wait();
@@ -494,7 +495,7 @@ namespace SimPe.Plugin.Tool.Dockable
 											  SimPe.ExtensionType.AllFiles
 										  }
 				);
-			if (sfd.ShowDialog()!=DialogResult.OK) return package;			
+			if (sfd.ShowDialog()!=System.Windows.Forms.DialogResult.OK) return package;			
 
 			//create a Cloned Object to get all needed Files for the Process			
 			WaitingScreen.Wait();
@@ -559,7 +560,7 @@ namespace SimPe.Plugin.Tool.Dockable
 													  SimPe.ExtensionType.AllFiles
 												  }
                         );
-                    if (sfd.ShowDialog() == DialogResult.OK)
+                    if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         WaitingScreen.Wait();
                         try

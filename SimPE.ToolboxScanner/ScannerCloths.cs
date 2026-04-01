@@ -25,7 +25,6 @@ using System;
 using SimPe.Cache;
 using SimPe.PackedFiles.Wrapper;
 using System.Collections;
-using System.Windows.Forms;
 using System.Drawing;
 using SimPe.Interfaces.Plugin.Scanner;
 
@@ -60,7 +59,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{
             if (si.PackageCacheItem.Type == SimPe.Cache.PackageType.Clothing || 
 				si.PackageCacheItem.Type == SimPe.Cache.PackageType.Skin ||
@@ -98,7 +97,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{				
 			AbstractScanner.SetSubItem(lvi, this.StartColum+2, "");
 
@@ -177,7 +176,7 @@ namespace SimPe.Plugin.Scanner
 			selection = items;
 			if (!active) 
 			{
-				this.OperationControl.Enabled = false;
+				this.OperationControl.IsEnabled = false;
 				return;
 			}
 
@@ -210,32 +209,32 @@ namespace SimPe.Plugin.Scanner
 			//Set the State of the Checkboxes
 			for (int i=0; i<agect.Length; i++) 
 			{
-				if (agect[i]==0) ScannerPanelForm.Form.cbages[i].CheckState = System.Windows.Forms.CheckState.Unchecked;
-				else if (agect[i]==maxagecount) ScannerPanelForm.Form.cbages[i].CheckState = System.Windows.Forms.CheckState.Checked;				
-				else ScannerPanelForm.Form.cbages[i].CheckState = System.Windows.Forms.CheckState.Indeterminate;
+				if (agect[i]==0) ScannerPanelForm.Form.cbages[i].IsChecked = false;
+				else if (agect[i]==maxagecount) ScannerPanelForm.Form.cbages[i].IsChecked = true;
+				else ScannerPanelForm.Form.cbages[i].IsChecked = null;
 			}			
 
 			//Set the State of the Checkboxes
 			for (int i=0; i<catct.Length; i++) 
 			{
-				if (catct[i]==0) ScannerPanelForm.Form.cbcategories[i].CheckState = System.Windows.Forms.CheckState.Unchecked;
-				else if (catct[i]==maxagecount) ScannerPanelForm.Form.cbcategories[i].CheckState = System.Windows.Forms.CheckState.Checked;
-				else ScannerPanelForm.Form.cbcategories[i].CheckState = System.Windows.Forms.CheckState.Indeterminate;
+				if (catct[i]==0) ScannerPanelForm.Form.cbcategories[i].IsChecked = false;
+				else if (catct[i]==maxagecount) ScannerPanelForm.Form.cbcategories[i].IsChecked = true;
+				else ScannerPanelForm.Form.cbcategories[i].IsChecked = null;
 			}
 
             //Set the State of the Checkboxes
             for (int i = 0; i < sexct.Length; i++)
             {
-                if (sexct[i] == 0) ScannerPanelForm.Form.cbsexes[i].CheckState = System.Windows.Forms.CheckState.Unchecked;
-                else if (sexct[i] == maxagecount) ScannerPanelForm.Form.cbsexes[i].CheckState = System.Windows.Forms.CheckState.Checked;
-                else ScannerPanelForm.Form.cbsexes[i].CheckState = System.Windows.Forms.CheckState.Indeterminate;
+                if (sexct[i] == 0) ScannerPanelForm.Form.cbsexes[i].IsChecked = false;
+                else if (sexct[i] == maxagecount) ScannerPanelForm.Form.cbsexes[i].IsChecked = true;
+                else ScannerPanelForm.Form.cbsexes[i].IsChecked = null;
             }			
 
-			this.OperationControl.Enabled = en;
+			this.OperationControl.IsEnabled = en;
 		}
 
 
-		protected override System.Windows.Forms.Control CreateOperationControl()
+		protected override Avalonia.Controls.Control CreateOperationControl()
 		{
 			ScannerPanelForm.Form.pncloth.Tag = this;
 			return ScannerPanelForm.Form.pncloth;
@@ -268,7 +267,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="name"></param>
 		/// <param name="cbs"></param>
 		/// <param name="yacheck">true, if you want to perform a check for YoungAdulst and add apropriate Filds to the cpf</param>
-		void SetProperty(string name, CheckBox[] cbs, bool yacheck)
+		void SetProperty(string name, Avalonia.Controls.CheckBox[] cbs, bool yacheck)
 		{
 			if (selection==null) return;
 
@@ -304,12 +303,12 @@ namespace SimPe.Plugin.Scanner
                             cpf.ProcessData(pfd, si.Package, false);
 
                             uint age = cpf.GetSaveItem(name).UIntegerValue;
-                            foreach (CheckBox cb in cbs)
+                            foreach (Avalonia.Controls.CheckBox cb in cbs)
                             {
-                                if (cb.CheckState == CheckState.Indeterminate) continue;
+                                if (cb.IsChecked == null) continue;
 
                                 age |= (uint)cb.Tag;
-                                if (cb.CheckState == CheckState.Unchecked) age ^= (uint)cb.Tag;
+                                if (cb.IsChecked == false) age ^= (uint)cb.Tag;
                             }
 
                             if (yacheck)

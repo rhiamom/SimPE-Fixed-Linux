@@ -66,6 +66,8 @@ namespace Ambertation.Windows.Forms
         // Dock stored as object so System.Windows.Forms.DockStyle assignment works
         public object Dock { get; set; }
 
+        public void Refresh() { }
+
         public event EventHandler CheckedChanged;
         protected virtual void OnCheckedChanged(EventArgs e) => CheckedChanged?.Invoke(this, e);
     }

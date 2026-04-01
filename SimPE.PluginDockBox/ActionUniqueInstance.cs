@@ -47,8 +47,7 @@ namespace SimPe.Plugin.Tool.Action
 		{
             if (!RealChangeEnabledStateEventHandler(null, e))
             {
-                System.Windows.Forms.MessageBox.Show(Localization.GetString("This is not an appropriate context in which to use this tool"),
-                    Localization.GetString(this.ToString()));
+                // TODO: show message to user
                 return;
             }
 					

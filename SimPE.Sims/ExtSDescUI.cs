@@ -32,6 +32,7 @@ using SimPe.Windows.Forms;
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using Button = Avalonia.Controls.Button;
 using System.ComponentModel;
 using System.Drawing;
 

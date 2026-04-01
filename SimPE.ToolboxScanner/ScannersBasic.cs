@@ -57,9 +57,9 @@ namespace SimPe.Plugin.Scanner
 		/// </summary>
 		/// <param name="lv"></param>
 		/// <param name="name"></param>
-		public static void AddColumn(System.Windows.Forms.ListView lv, string name, int width) 
+		public static void AddColumn(SimPe.Scenegraph.Compat.ListView lv, string name, int width) 
 		{
-			System.Windows.Forms.ColumnHeader ch = new System.Windows.Forms.ColumnHeader();
+			SimPe.Scenegraph.Compat.ColumnHeader ch = new SimPe.Scenegraph.Compat.ColumnHeader();
 			ch.Text = name;
 			lv.Columns.Add(ch);
 
@@ -73,7 +73,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="lvi">The ListViewItem where you want to add that column</param>
 		/// <param name="index">The Index of the Column</param>
 		/// <param name="name">The Name you want to display</param>
-		public static void SetSubItem(System.Windows.Forms.ListViewItem lvi, int index, string name) 
+		public static void SetSubItem(SimPe.Scenegraph.Compat.ListViewItem lvi, int index, string name) 
 		{
 			SetSubItem(lvi, index, name, lvi.ForeColor);
 		}
@@ -85,7 +85,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="index">The Index of the Column</param>
 		/// <param name="name">The Name you want to display</param>
 		/// <param name="ps">If state is null, the default color is used, false will be red, true will be green</param>
-		public static void SetSubItem(System.Windows.Forms.ListViewItem lvi, int index, string name, SimPe.Cache.PackageState ps) 
+		public static void SetSubItem(SimPe.Scenegraph.Compat.ListViewItem lvi, int index, string name, SimPe.Cache.PackageState ps) 
 		{
 			System.Drawing.Color cl = lvi.ForeColor;
 			if (ps!=null) 
@@ -104,7 +104,7 @@ namespace SimPe.Plugin.Scanner
 		/// <param name="index">The Index of the Column</param>
 		/// <param name="name">The Name you want to display</param>
 		/// <param name="cl">The Color for this Item</param>
-		public static void SetSubItem(System.Windows.Forms.ListViewItem lvi, int index, string name, System.Drawing.Color cl) 
+		public static void SetSubItem(SimPe.Scenegraph.Compat.ListViewItem lvi, int index, string name, System.Drawing.Color cl) 
 		{
 			if (cl==System.Drawing.Color.Red) lvi.ForeColor = cl;
 			while (lvi.SubItems.Count<=index) lvi.SubItems.Add("");
@@ -193,11 +193,11 @@ namespace SimPe.Plugin.Scanner
 			get { return startcolumn; }
 		}
 
-		System.Windows.Forms.ListView lv;
+		SimPe.Scenegraph.Compat.ListView lv;
 		/// <summary>
 		/// Returns the ListView that was assigned to this Scanner
 		/// </summary>
-		protected System.Windows.Forms.ListView ListView 
+		protected SimPe.Scenegraph.Compat.ListView ListView 
 		{
 			get { return lv; }
 		}
@@ -211,7 +211,7 @@ namespace SimPe.Plugin.Scanner
 			this.startcolumn = 0;			
 		}
 
-		public void InitScan(System.Windows.Forms.ListView lv)
+		public void InitScan(SimPe.Scenegraph.Compat.ListView lv)
 		{
 			this.lv = lv;
 			this.startcolumn = lv.Columns.Count;
@@ -223,8 +223,8 @@ namespace SimPe.Plugin.Scanner
 			get { return false; }
 		}
 
-		System.Windows.Forms.Control mycontrol;
-		public virtual System.Windows.Forms.Control OperationControl
+		Avalonia.Controls.Control mycontrol;
+		public virtual Avalonia.Controls.Control OperationControl
 		{
 			get 
 			{
@@ -251,7 +251,7 @@ namespace SimPe.Plugin.Scanner
 
 		public virtual void EnableControl(ScannerItem[] items, bool active)
 		{
-			if (OperationControl!=null) OperationControl.Enabled = active;
+			if (OperationControl!=null) OperationControl.IsEnabled = active;
 		}
 
 		SimPe.Plugin.Scanner.AbstractScanner.UpdateList finishcallback;
@@ -284,7 +284,7 @@ namespace SimPe.Plugin.Scanner
 		}
 			
 
-		protected virtual System.Windows.Forms.Control CreateOperationControl()
+		protected virtual Avalonia.Controls.Control CreateOperationControl()
 		{
 			return null;
 		}
@@ -323,7 +323,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{
 			ps.State = TriState.False;
 			si.PackageCacheItem.Name = Localization.Manager.GetString("unknown");
@@ -368,7 +368,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{			
 			AbstractScanner.SetSubItem(lvi, this.StartColum, si.PackageCacheItem.Name);
 		}
@@ -420,7 +420,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{
 			System.Drawing.Size sz = AbstractScanner.ThumbnailSize;
             if (si.PackageCacheItem.Type == PackageType.CustomObject || si.PackageCacheItem.Type == PackageType.Object || si.PackageCacheItem.Type == PackageType.Recolour)
@@ -509,7 +509,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{			
 			//Add the Thumbnail if available
 			if (si.PackageCacheItem.Thumbnail!=null) 
@@ -643,7 +643,7 @@ namespace SimPe.Plugin.Scanner
         }
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{			
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles(Data.MetaData.OBJD_FILE);
 			ArrayList mylist = new ArrayList();
@@ -664,7 +664,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			ps.State = TriState.True;
 			string guids = "";
@@ -764,7 +764,7 @@ namespace SimPe.Plugin.Scanner
 
 
 		
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{			
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles(Data.MetaData.MMAT);
 			//ArrayList list = new ArrayList();
@@ -797,7 +797,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			
 
@@ -854,7 +854,7 @@ namespace SimPe.Plugin.Scanner
 
 
 		
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{			
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles(Data.MetaData.GMDC);
 			//ArrayList list = new ArrayList();
@@ -880,7 +880,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			uint fct = ps.Data[1];
 			uint vct = ps.Data[0];

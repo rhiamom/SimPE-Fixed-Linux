@@ -54,19 +54,19 @@ namespace SimPe.Plugin.Tool.Dockable
 
 						if (wrp!=null) 
 						{
-                            rd.lbName.Visible = rd.lbDesc.Visible = rd.lbVersion.Visible = rd.lbAuthor.Visible = rd.label5.Visible = rd.label2.Visible = rd.label1.Visible = rd.label3.Visible = true;
+                            rd.lbName.IsVisible = rd.lbDesc.IsVisible = rd.lbVersion.IsVisible = rd.lbAuthor.IsVisible = rd.label5.IsVisible = rd.label2.IsVisible = rd.label1.IsVisible = rd.label3.IsVisible = true;
 							rd.lbName.Text = wrp.WrapperDescription.Name;
 							rd.lbAuthor.Text = wrp.WrapperDescription.Author;
 							rd.lbVersion.Text = wrp.WrapperDescription.Version.ToString();
 							rd.lbDesc.Text = wrp.WrapperDescription.Description;
 							rd.pb.Image = wrp.WrapperDescription.Icon;
-							if (rd.pb.Image!=null) rd.lbName.Left = rd.pb.Right+4;
-							else rd.lbName.Left = rd.pb.Left;
+							// if (rd.pb.Image!=null) rd.lbName.Left = rd.pb.Right+4; // layout n/a in Avalonia
+							// else rd.lbName.Left = rd.pb.Left; // layout n/a in Avalonia
 							return;
 						}
 					}
             rd.lbName.Text = rd.lbAuthor.Text = rd.lbVersion.Text = rd.lbDesc.Text = "";
-            rd.lbName.Visible = rd.lbDesc.Visible = rd.lbVersion.Visible = rd.lbAuthor.Visible = rd.label5.Visible = rd.label2.Visible = rd.label1.Visible = rd.label3.Visible = false;
+            rd.lbName.IsVisible = rd.lbDesc.IsVisible = rd.lbVersion.IsVisible = rd.lbAuthor.IsVisible = rd.label5.IsVisible = rd.label2.IsVisible = rd.label1.IsVisible = rd.label3.IsVisible = false;
             rd.pb.Image = null;
 			// rd.lbName.Left = rd.pb.Left;
 		}

@@ -5,7 +5,7 @@ namespace SimPe.Interfaces
     partial class AFinderTool
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Button btStart = new System.Windows.Forms.Button();
+        private Avalonia.Controls.Button btStart = new Avalonia.Controls.Button();
         private Ambertation.Windows.Forms.XPTaskBoxSimple grp = new Ambertation.Windows.Forms.XPTaskBoxSimple();
         private void InitializeComponent() { }
     }
@@ -16,52 +16,52 @@ namespace SimPe.Plugin.Tool.Dockable.Finder
     partial class FindInStr
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label2 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.TextBox tbMatch = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.ComboBox cbType = new System.Windows.Forms.ComboBox();
+        private Avalonia.Controls.TextBlock label1 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label2 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBox tbMatch = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.ComboBox cbType = new Avalonia.Controls.ComboBox();
         protected void InitializeComponent() { }
     }
 
     partial class FindInSG
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label3 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.ComboBox cbtypes = new System.Windows.Forms.ComboBox();
+        private Avalonia.Controls.TextBlock label3 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.ComboBox cbtypes = new Avalonia.Controls.ComboBox();
         private new void InitializeComponent() { }
     }
 
     partial class FindObj
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.TextBox tbGUID = new System.Windows.Forms.TextBox();
+        private Avalonia.Controls.TextBlock label1 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBox tbGUID = new Avalonia.Controls.TextBox();
         private new void InitializeComponent() { }
     }
 
     partial class FindInCpf
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label3 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label4 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.TextBox tbName = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbType = new System.Windows.Forms.TextBox();
+        private Avalonia.Controls.TextBlock label3 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label4 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBox tbName = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.TextBox tbType = new Avalonia.Controls.TextBox();
         private new void InitializeComponent() { }
     }
 
     partial class FindTGI
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label2 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label3 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label4 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label label5 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.TextBox tbName = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbInstHi = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbInstLo = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbGroup = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbType = new System.Windows.Forms.TextBox();
+        private Avalonia.Controls.TextBlock label1 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label2 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label3 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label4 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock label5 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBox tbName = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.TextBox tbInstHi = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.TextBox tbInstLo = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.TextBox tbGroup = new Avalonia.Controls.TextBox();
+        private Avalonia.Controls.TextBox tbType = new Avalonia.Controls.TextBox();
         private void InitializeComponent() { }
     }
 }
@@ -71,18 +71,18 @@ namespace SimPe.Plugin.Tool.Dockable
     partial class FinderDock
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Panel xpGradientPanel1 = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.Panel panel1 = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.Panel panel2 = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.ComboBox cbTask = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label pnErr = new System.Windows.Forms.Label();
+        private Avalonia.Controls.StackPanel xpGradientPanel1 = new Avalonia.Controls.StackPanel();
+        private Avalonia.Controls.StackPanel panel1 = new Avalonia.Controls.StackPanel();
+        private Avalonia.Controls.StackPanel panel2 = new Avalonia.Controls.StackPanel();
+        private Avalonia.Controls.ComboBox cbTask = new Avalonia.Controls.ComboBox();
+        private Avalonia.Controls.TextBlock label1 = new Avalonia.Controls.TextBlock();
+        private Avalonia.Controls.TextBlock pnErr = new Avalonia.Controls.TextBlock();
         private Ambertation.Windows.Forms.XPTaskBoxSimple tbResult = new Ambertation.Windows.Forms.XPTaskBoxSimple();
-        private System.Windows.Forms.ListView lv = new System.Windows.Forms.ListView();
-        private System.Windows.Forms.ToolStrip toolBar1 = new System.Windows.Forms.ToolStrip();
-        private System.Windows.Forms.ToolStripButton biList = new System.Windows.Forms.ToolStripButton();
-        private System.Windows.Forms.ToolStripButton biTile = new System.Windows.Forms.ToolStripButton();
-        private System.Windows.Forms.ToolStripButton biDetail = new System.Windows.Forms.ToolStripButton();
+        private SimPe.Scenegraph.Compat.ListView lv = new SimPe.Scenegraph.Compat.ListView();
+        private Avalonia.Controls.StackPanel toolBar1 = new Avalonia.Controls.StackPanel();
+        private Avalonia.Controls.CheckBox biList = new Avalonia.Controls.CheckBox();
+        private Avalonia.Controls.CheckBox biTile = new Avalonia.Controls.CheckBox();
+        private Avalonia.Controls.CheckBox biDetail = new Avalonia.Controls.CheckBox();
         private void InitializeComponent() { }
     }
 }

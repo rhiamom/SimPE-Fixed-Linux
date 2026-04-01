@@ -68,6 +68,12 @@ public class DockPanel : NCUserControl
 
     // ── Properties ────────────────────────────────────────────────────────
 
+    public new Avalonia.Controls.Control? Parent
+    {
+        get => base.Parent as Avalonia.Controls.Control;
+        set { /* no-op: parent managed by Avalonia layout */ }
+    }
+
     public new string Name
     {
         get => base.Name ?? "";
@@ -129,15 +135,12 @@ public class DockPanel : NCUserControl
         set { if (value != _dockContainer) DockControl(value); }
     }
 
-    /// <summary>The BaseDockManager that manages this panel (via its container).</summary>
     /// <summary>Dock position within the container.</summary>
     public DockStyle Dock
     {
         get => _dock;
         set { if (_dock != value) { _dock = value; OnDockChanged(EventArgs.Empty); NCRefresh(); } }
     }
-
-    public new object Parent { get; set; }
 
     public System.Drawing.Size AutoScrollMinSize { get; set; }
     public System.Drawing.Size FloatingSize      { get; set; }
@@ -166,6 +169,8 @@ public class DockPanel : NCUserControl
         get => IsVisible;
         set => IsVisible = value;
     }
+
+    public void Show() { IsVisible = true; EnsureVisible(); }
 
     // Manager: settable proxy so WinForms designer code can assign it
     public BaseDockManager Manager
@@ -232,9 +237,10 @@ public class DockPanel : NCUserControl
 
     public void Open()            { IsOpen    = true;  }
     public new void Close()       { IsOpen    = false; }
-    public void Expand()          { Collapsed = false; }
-    public void Expand(bool show) { Collapsed = !show; }
-    public void Collapse()        { Collapsed = true;  }
+    public void Expand()            { Collapsed = false; }
+    public void Expand(bool show)   { Collapsed = !show; }
+    public void Collapse()          { Collapsed = true; }
+    public void Collapse(bool hide) { Collapsed = hide; }
     public void EnsureVisible()   { IsOpen = true; }
     public void OpenFloating()    { }   // floating not yet implemented
 
@@ -277,6 +283,7 @@ public class DockPanel : NCUserControl
 
     public new event EventHandler VisibleChanged;
     public event ClosingHandler   Closing;
+    public event EventHandler     OpenedStateChanged;
 
     protected void RaiseClosing(DockPanelClosingEvent e) => Closing?.Invoke(this, e);
     protected void RaiseVisibleChanged()                  => VisibleChanged?.Invoke(this, EventArgs.Empty);

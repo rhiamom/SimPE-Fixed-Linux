@@ -70,7 +70,7 @@ namespace SimPe.Plugin.Scanner
 		}
 
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{		
 			ps.Data = new uint[1];
 			ps.State = TriState.True;
@@ -143,7 +143,7 @@ namespace SimPe.Plugin.Scanner
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{	
 			if (ps.State != TriState.Null) 
 			{
@@ -167,7 +167,7 @@ namespace SimPe.Plugin.Scanner
 			selection = items;
 			if (!active) 
 			{
-				OperationControl.Enabled = false;
+				OperationControl.IsEnabled = false;
 				return;
 			}
 
@@ -178,24 +178,20 @@ namespace SimPe.Plugin.Scanner
 				{
                     if ((HealthState)ps.Data[0] == HealthState.WrongCompressionSize) // if ((HealthState)ps.Data[0]!=HealthState.Ok)					 
 					{
-						OperationControl.Enabled = true;
+						OperationControl.IsEnabled = true;
 						return;
 					}
 				}
 			} //foreach 
-			OperationControl.Enabled = false;
+			OperationControl.IsEnabled = false;
 		}
 
 
-		protected override System.Windows.Forms.Control CreateOperationControl()
+		protected override Avalonia.Controls.Control CreateOperationControl()
 		{
-            System.Windows.Forms.LinkLabel ll = new System.Windows.Forms.LinkLabel();
-			ll.AutoSize = true;
-			ll.Text = "fix unhealthy Package";
-			ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
-
-			ll.LinkClicked +=new System.Windows.Forms.LinkLabelLinkClickedEventHandler(FixCompression);
-			return ll;
+			var btn = new Avalonia.Controls.Button { Content = "fix unhealthy Package" };
+			btn.Click += (s, e) => FixCompression(s, EventArgs.Empty);
+			return btn;
 		}
 
 		#endregion
@@ -210,7 +206,7 @@ namespace SimPe.Plugin.Scanner
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void FixCompression(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void FixCompression(object sender, EventArgs e)
 		{
 			if (selection==null) return;
 

@@ -65,27 +65,27 @@ namespace SimPe.Plugin.Tool.Dockable
                         {
                             for (uint i = 0; i < pkg.Header.HoleIndex.Count; i++)
                             {
-                                System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem();
+                                SimPe.Scenegraph.Compat.ListViewItem lvi = new SimPe.Scenegraph.Compat.ListViewItem();
                                 SimPe.Packages.HoleIndexItem hii = es.LoadedPackage.Package.GetHoleIndex(i);
                                 lvi.Text = "0x" + Helper.HexString(hii.Offset);
                                 lvi.SubItems.Add("0x" + Helper.HexString(hii.Size));
                                 rd.lv.Items.Add(lvi);
                             }
-                            rd.label4.Visible = rd.lv.Visible = true;
+                            rd.label4.IsVisible = rd.lv.Visible = true;
                         }
                         else
                         {
-                            rd.label4.Visible = rd.lv.Visible = false;
+                            rd.label4.IsVisible = rd.lv.Visible = false;
                         }
 
 						SimPe.Packages.PackageRepair pr = new SimPe.Packages.PackageRepair(es.LoadedPackage.Package);
-                        rd.pgHead.SelectedObject = pr.IndexDetailsAdvanced;
+                        ((SimPe.Scenegraph.Compat.PropertyGridStub)rd.pgHead).SelectedObject = pr.IndexDetailsAdvanced;
 					}
 					return;
 				}
 			
 			pkg = null;
-			rd.pgHead.SelectedObject = null;
+			((SimPe.Scenegraph.Compat.PropertyGridStub)rd.pgHead).SelectedObject = null;
 			rd.lv.Items.Clear();
 		}
 

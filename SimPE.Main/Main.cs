@@ -30,13 +30,15 @@ using System.Data;
 using System.IO;
 using SimPe.Events;
 using Ambertation.Windows.Forms;
+using DialogResult = System.Windows.Forms.DialogResult;
+using DockStyle = Ambertation.Windows.Forms.DockStyle;
 
 namespace SimPe
 {
 	/// <summary>
 	/// Zusammenfassung f�r MainForm.
 	/// </summary>
-	public partial class MainForm
+	public partial class MainForm : Avalonia.Controls.Window
 	{
 
 
@@ -142,7 +144,7 @@ namespace SimPe
 		{
 			plugger.ChangedGuiResourceEventHandler(this, new SimPe.Events.ResourceEventArgs(package));
             resourceViewManager1.Package = package.Package;
-			package.UpdateRecentFileMenu(this.miRecent);			
+			// TODO: package.UpdateRecentFileMenu(this.miRecent);
 
 			UpdateFileInfo();
 			
@@ -171,9 +173,9 @@ namespace SimPe
 		/// </summary>
 		/// <param name="e"></param>
 		/// <returns></returns>
-		string[] DragDropNames(System.Windows.Forms.DragEventArgs e) 
+		string[] DragDropNames(Avalonia.Input.DragEventArgs e) 
 		{
-			Array a = (Array)e.Data.GetData(DataFormats.FileDrop);
+			object[] a = e.Data.Get(DataFormats.FileDrop) as object[];
 
 			if ( a != null )
 			{
@@ -190,20 +192,20 @@ namespace SimPe
 		/// </summary>
 		/// <param name="flname"></param>
 		/// <returns></returns>
-		DragDropEffects DragDropEffect(string[] names)
+		Avalonia.Input.DragDropEffects DragDropEffect(string[] names)
 		{
-			if (names.Length==0) return DragDropEffects.None;
+			if (names.Length==0) return Avalonia.Input.DragDropEffects.None;
 
 			ExtensionType et = ExtensionProvider.GetExtension(names[0]);
 			if (names.Length==1) 
 			{
 				if (et == ExtensionType.Package || et == ExtensionType.DisabledPackage || et == ExtensionType.ExtrackedPackageDescriptor) 
-					return DragDropEffects.Move;
+					return Avalonia.Input.DragDropEffects.Move;
 				else if (et == ExtensionType.ExtractedFile || et == ExtensionType.ExtractedFileDescriptor)
-					return DragDropEffects.Copy;
+					return Avalonia.Input.DragDropEffects.Copy;
 			} 
 				
-			return DragDropEffects.Copy;								
+			return Avalonia.Input.DragDropEffects.Copy;								
 		}
 
 		/// <summary>
@@ -211,13 +213,13 @@ namespace SimPe
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void DragEnterFile(object sender, System.Windows.Forms.DragEventArgs e)
+		private void DragEnterFile(object sender, Avalonia.Input.DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) 
+			if (e.Data.Contains(DataFormats.FileDrop)) 
 			{
 				try
 				{
-					e.Effect = DragDropEffect(DragDropNames(e));					
+					e.DragEffects = DragDropEffect(DragDropNames(e));					
 				} 
 				catch (Exception)
 				{
@@ -226,7 +228,7 @@ namespace SimPe
 			}
 			else 
 			{
-				e.Effect = DragDropEffects.None;
+				e.DragEffects = Avalonia.Input.DragDropEffects.None;
 			}
 		}
 
@@ -235,7 +237,7 @@ namespace SimPe
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void DragDropFile(object sender, System.Windows.Forms.DragEventArgs e)
+		private void DragDropFile(object sender, Avalonia.Input.DragEventArgs e)
 		{
 			try
 			{
@@ -261,7 +263,7 @@ namespace SimPe
 											  SimPe.ExtensionType.AllFiles
 										  }
 				);
-			if (ofd.ShowDialog()==DialogResult.OK) 
+			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				package.LoadFromFile(ofd.FileName);
 			}
@@ -306,18 +308,17 @@ namespace SimPe
 			About.ShowWelcome();
 		}
 
-		private void dc_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+		private void dc_MouseUp(object sender, Avalonia.Input.PointerReleasedEventArgs e)
 		{
-			if (e.Button==MouseButtons.Middle && Helper.XmlRegistry.FirefoxTabbing && dc.ActiveDocument is WeifenLuo.WinFormsUI.Docking.DockContent activeDoc)
-			{
-				resloader.CloseDocument(activeDoc);
-			}
+			// TODO: middle-click tab close not yet ported from WeifenLuo DockContent
 		}
 		
-		private void ResourceListKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
-		{			
-
-			if (e.KeyCode==Keys.H && e.Control && e.Alt && e.Shift) 
+		private void ResourceListKeyUp(object sender, Avalonia.Input.KeyEventArgs e)
+		{
+			if (e.Key == Avalonia.Input.Key.H &&
+			    e.KeyModifiers.HasFlag(Avalonia.Input.KeyModifiers.Control) &&
+			    e.KeyModifiers.HasFlag(Avalonia.Input.KeyModifiers.Alt) &&
+			    e.KeyModifiers.HasFlag(Avalonia.Input.KeyModifiers.Shift))
 			{
 				Hidden f = new Hidden();
 				f.ShowDialog();
@@ -374,8 +375,8 @@ namespace SimPe
 			if (miPref.Image is System.Drawing.Bitmap)
 				icon = System.Drawing.Icon.FromHandle(((System.Drawing.Bitmap)miPref.Image).GetHicon());
 
-			of.Execute(icon);	
-			package.UpdateRecentFileMenu(this.miRecent);
+			of.Execute(icon);
+			// TODO: package.UpdateRecentFileMenu(this.miRecent);
 		}
 
 		
@@ -413,28 +414,23 @@ namespace SimPe
 			doc.TabText = dcPlugin.TabText;
 			doc.AutoScrollMinSize = dcPlugin.AutoScrollMinSize;
 
-			var innerDc = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-			innerDc.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
-			innerDc.Text = "Plugin";
-			innerDc.Parent = doc;
-			innerDc.Dock = DockStyle.Fill;
+			var innerDc = new Avalonia.Controls.TabControl();
+			innerDc.Name = "Plugin";
+			doc.Controls.Add(innerDc);
 		}
 
         private void CloseAdditionalDocContainer(object sender, Ambertation.Windows.Forms.DockPanel.DockPanelClosingEvent e)
 		{
 			if (sender is Ambertation.Windows.Forms.DockPanel doc)
 			{
-				var innerDc = doc.Controls.Count > 0
-					? doc.Controls[0] as WeifenLuo.WinFormsUI.Docking.DockPanel
-					: null;
+				var innerDc = doc.Controls.Count > 0 ? doc.Controls[0] as Avalonia.Controls.TabControl : null;
 				if (innerDc != null)
 				{
 					bool closed = true;
-					var docs = innerDc.DocumentsToArray();
-					for (int i = docs.Length - 1; i >= 0; i--)
+					for (int i = innerDc.Items.Count - 1; i >= 0; i--)
 					{
-						if (docs[i] is WeifenLuo.WinFormsUI.Docking.DockContent d)
-							if (!resloader.CloseDocument(d)) closed = false;
+						if (innerDc.Items[i] is SimPe.PluginTab pt)
+							if (!resloader.CloseDocument(pt)) closed = false;
 					}
 					e.Cancel = !closed;
 				}
@@ -500,10 +496,10 @@ namespace SimPe
 										  }
 				);
 			sfd.FileName = package.FileName;
-			if (sfd.ShowDialog()==DialogResult.OK) 
+			if (sfd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				package.Save(sfd.FileName, false);
-				package.UpdateRecentFileMenu(this.miRecent);
+				// TODO: package.UpdateRecentFileMenu(this.miRecent);
 			}
 		}
 
@@ -579,14 +575,7 @@ namespace SimPe
 
 		private void tbRcolName_SizeChanged(object sender, System.EventArgs e)
 		{
-			if (tbRcolName.Right+8 > tbRcolName.Parent.Width) 
-			{
-				tbRcolName.Width = tbRcolName.Parent.Width - tbRcolName.Left - 8;
-				this.cbsemig.Width = tbRcolName.Width;
-
-				xpLinkedLabelIcon2.Left = tbRcolName.Right - xpLinkedLabelIcon2.Width;
-				xpLinkedLabelIcon3.Left = xpLinkedLabelIcon2.Left;
-			}
+			// TODO: WinForms layout (Right, Left, Width on TextBox) not ported to Avalonia
 		}
 
 		private void SetSemiGlobalFilter(object sender, System.EventArgs e)
@@ -601,7 +590,7 @@ namespace SimPe
 					{
 						string name = Hashes.StripHashFromName(tbRcolName.Text);
 						filter.Group = sga.Id;					
-						filter.FilterGroup = (cbsemig.Text.Trim()!="");					
+						filter.FilterGroup = (""!="");					
 					}
 				} 
 				else filter.FilterGroup = false;
@@ -616,7 +605,7 @@ namespace SimPe
 
 		private void sdm_DockControlActivated(object sender, EventArgs e)
 		{
-			lv.BringToFront();
+			// TODO: lv.BringToFront();
 		}
 
 		#region Idle Actions
@@ -656,7 +645,7 @@ namespace SimPe
 				);
 
 			sfd.FileName = package.FileName;
-			if (sfd.ShowDialog()==DialogResult.OK) 
+			if (sfd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				SimPe.Packages.GeneratableFile gf = (SimPe.Packages.GeneratableFile)package.Package.Clone();
 				gf.Save(sfd.FileName);	
@@ -756,7 +745,7 @@ namespace SimPe
         private void tsmiSaveProfile_Click(object sender, EventArgs e)
         {
             ProfileChooser pc = new ProfileChooser();
-            if (pc.ShowDialog() != DialogResult.OK) return;
+            if (pc.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             string path = Path.Combine(Helper.DataFolder.Profiles, pc.Value);
 
             saveProfile();

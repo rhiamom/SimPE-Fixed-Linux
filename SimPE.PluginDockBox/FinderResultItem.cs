@@ -40,7 +40,7 @@ namespace SimPe.Plugin.Tool.Dockable
 	/// <summary>
 	/// Represents one found Resource, you need to override <see cref="Open"/> with a specific Implementation.
 	/// </summary>
-	internal class FinderResultItem : System.Windows.Forms.ListViewItem, IFinderResultItem
+	internal class FinderResultItem : SimPe.Scenegraph.Compat.ListViewItem, IFinderResultItem
 	{
 		public FinderResultItem() : this("") {}
 		public FinderResultItem(string text) : base()

@@ -17,7 +17,7 @@ namespace SimPe.Plugin
         public System.Drawing.Size  Size     { get; set; }
         public string Name    { get; set; }
         public int    TabIndex { get; set; }
-        public System.Windows.Forms.AnchorStyles Anchor { get; set; }
+        public object Anchor { get; set; }
 
         public bool GetItemChecked(int index) => Items.GetItemChecked(index);
         public void SetItemChecked(int index, bool isChecked) => Items.SetItemChecked(index, isChecked);

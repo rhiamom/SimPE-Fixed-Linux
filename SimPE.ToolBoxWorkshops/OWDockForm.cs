@@ -392,7 +392,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				);
 
 			package = null;
-			if (ofd.ShowDialog()==DialogResult.OK) 
+			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
 			{
 				package = SimPe.Packages.GeneratableFile.LoadFromFile(ofd.FileName);
 				wizard1.JumpToStep(2);
