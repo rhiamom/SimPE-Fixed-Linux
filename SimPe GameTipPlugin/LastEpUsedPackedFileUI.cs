@@ -25,7 +25,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SimPe.Interfaces.Plugin;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 
 namespace SimPe.Plugin
 {
@@ -65,7 +66,7 @@ namespace SimPe.Plugin
         Dictionary<uint, uint> Chap23 = new Dictionary<uint, uint>();
         Dictionary<uint, uint> Chap24 = new Dictionary<uint, uint>();
         PictureBox pbx;
-    Label lbl;
+        LabelCompat lbl;
 
         ushort lastep;
         ushort vergin;
@@ -300,7 +301,7 @@ namespace SimPe.Plugin
         #endregion
 
         #region IPackedFileUI Member
-        System.Windows.Forms.Control IPackedFileUI.GUIHandle
+        Avalonia.Controls.Control IPackedFileUI.GUIHandle
         {
             get { return this; }
         }
@@ -328,7 +329,7 @@ namespace SimPe.Plugin
                     pbx = new PictureBox();
                     pbx.Location = new System.Drawing.Point(ex, wy);
                     pbx.Size = new System.Drawing.Size(64, 64);
-                    lbl = new Label();
+                    lbl = new LabelCompat();
                     lbl.AutoSize = true;
                     lbl.Location = new System.Drawing.Point(ex + 64, wy + 20);
                     GoalInformation goll = GoalInformation.LoadGoal(dict[(uint)Wrapper.vdata.GetValue(chapter, i)]);

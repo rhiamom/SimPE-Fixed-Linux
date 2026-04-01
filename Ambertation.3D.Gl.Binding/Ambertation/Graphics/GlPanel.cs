@@ -49,7 +49,7 @@ internal class MatrixStack : IDisposable
     public void Dispose() { stack.Clear(); }
 }
 
-public class GlPanel : Control, IDisposable
+public class DirectXPanel : Control, IDisposable
 {
     // -----------------------------------------------------------------------
     // GLSL Shaders
@@ -188,9 +188,9 @@ void main() {
     // -----------------------------------------------------------------------
     // Construction
     // -----------------------------------------------------------------------
-    public GlPanel() : this(0.1) { }
+    public DirectXPanel() : this(0.1) { }
 
-    public GlPanel(double linewd)
+    public DirectXPanel(double linewd)
     {
         vp = new ViewportSetting(this);
         vp.ChangedState += vp_ChangedState;

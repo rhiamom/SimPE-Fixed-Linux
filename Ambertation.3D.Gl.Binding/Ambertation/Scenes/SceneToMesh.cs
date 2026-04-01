@@ -47,7 +47,7 @@ public class SceneToMesh : IConvertScene, IDisposable
 	private Hashtable colormap;
 	private Scene scn;
 	private float scale;
-	internal GlPanel dxp;
+	internal DirectXPanel dxp;
 
 	protected float Scale => dxp != null ? dxp.Settings.LineWidth * dxp.Settings.JointScale : scale;
 
@@ -57,7 +57,7 @@ public class SceneToMesh : IConvertScene, IDisposable
 		return Color.FromArgb(rnd.Next(190) + 30, rnd.Next(190) + 30, rnd.Next(190) + 30);
 	}
 
-	public SceneToMesh(Scene scn, GlPanel dp) : this(scn, dp.Settings.LineWidth)
+	public SceneToMesh(Scene scn, DirectXPanel dp) : this(scn, dp.Settings.LineWidth)
 	{
 		dxp = dp; colormap = new Hashtable();
 	}
@@ -81,14 +81,14 @@ public class SceneToMesh : IConvertScene, IDisposable
 		if (selected != null && selected.Contains(joint)) num *= 2f;
 		Matrix4 transform = Converter.ToDx(joint);
 		MeshBox meshBox = new MeshBox(GlMesh.CreateSphere(num, 24, 24), 1,
-			GlPanel.GetMaterial(GetJointColor(joint)), transform);
+			DirectXPanel.GetMaterial(GetJointColor(joint)), transform);
 		meshBox.Wire = false; meshBox.JointMesh = true;
 		ret.Add(meshBox);
 		if (dxp != null && !joint.Parent.Root)
 		{
 			TkVec3 stop = TkVec3.TransformPosition(TkVec3.Zero, Converter.ToDx(joint));
 			MeshBox[] arr = dxp.CreateLineMesh(TkVec3.Zero, stop,
-				GlPanel.GetMaterial(Color.LightYellow), wire: false, arrow: false);
+				DirectXPanel.GetMaterial(Color.LightYellow), wire: false, arrow: false);
 			foreach (MeshBox mb in arr) mb.JointMesh = true;
 			ret.AddRange(arr);
 		}
@@ -232,7 +232,7 @@ public class SceneToMesh : IConvertScene, IDisposable
 		if (isbb)
 		{
 			meshBox.CullMode = MeshBox.Cull.None;
-			meshBox.Material = GlPanel.GetMaterial(Color.Black);
+			meshBox.Material = DirectXPanel.GetMaterial(Color.Black);
 			meshBox.Wire = true; meshBox.IgnoreDuringCameraReset = true;
 		}
 		return meshBox;

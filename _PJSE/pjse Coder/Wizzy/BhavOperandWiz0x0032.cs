@@ -21,7 +21,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x0032
@@ -29,53 +30,52 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
 	{
 		#region Form variables
 
-        internal System.Windows.Forms.Panel pnWiz0x0032;
+        internal StackPanel pnWiz0x0032;
         private RadioButton rbModeIcon;
         private RadioButton rbModeAction;
         private Panel pnAction;
         private Panel pnIcon;
-        private ComboBox cbScope;
-        private Label label1;
-        private Label lbDisabled;
-        private ComboBox cbDisabled;
-        private Label label3;
-        private Label label4;
+        private ComboBoxCompat cbScope;
+        private LabelCompat label1;
+        private LabelCompat lbDisabled;
+        private ComboBoxCompat cbDisabled;
+        private LabelCompat label3;
+        private LabelCompat label4;
         private Panel pnStrIndex;
-        private Label label5;
-        private Button btnActionString;
-        private TextBox tbStrIndex;
-        private Label lbActionString;
-        private CheckBox tfActionTemp;
-        private CheckBox tfIconTemp;
+        private LabelCompat label5;
+        private ButtonCompat btnActionString;
+        private TextBoxCompat tbStrIndex;
+        private LabelCompat lbActionString;
+        private CheckBoxCompat2 tfActionTemp;
+        private CheckBoxCompat2 tfIconTemp;
         private Panel pnIconIndex;
-        private Label label6;
-        private TextBox tbIconIndex;
+        private LabelCompat label6;
+        private TextBoxCompat tbIconIndex;
         private Panel pnThumbnail;
-        private CheckBox tfGUIDTemp;
+        private CheckBoxCompat2 tfGUIDTemp;
         private Panel pnGUID;
-        private Label label8;
-        private TextBox tbGUID;
-        private Label label7;
+        private LabelCompat label8;
+        private TextBoxCompat tbGUID;
+        private LabelCompat label7;
         private RadioButton rbIconSourceObj;
         private RadioButton rbIconSourceTN;
-        private Label label10;
+        private LabelCompat label10;
         private Panel pnObject;
-        private Label label9;
-        private ComboBox cbPicker1;
-        private TextBox tbVal1;
-        private ComboBox cbDataOwner1;
-        private CheckBox cbAttrPicker;
-        private CheckBox cbDecimal;
-        private CheckBox tfSubQ;
+        private LabelCompat label9;
+        private ComboBoxCompat cbPicker1;
+        private TextBoxCompat tbVal1;
+        private ComboBoxCompat cbDataOwner1;
+        private CheckBoxCompat2 cbAttrPicker;
+        private CheckBoxCompat2 cbDecimal;
+        private CheckBoxCompat2 tfSubQ;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+				#endregion
 
 		public UI()
 		{
@@ -88,16 +88,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
 		{
 			if( disposing )
 			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
 			}
-			base.Dispose( disposing );
+			// base.Dispose(disposing) not available on Avalonia Window
 
 			inst = null;
         }
@@ -139,27 +135,27 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             if (i >= 0)
             {
                 this.tbStrIndex.Text = "0x" + SimPe.Helper.HexString((byte)(i+1));
-                this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)i, -1, pjse.Detail.ErrorNames);
+                this.lbActionString.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)i, -1, pjse.Detail.ErrorNames);
             }
         }
 
         private bool hex8_IsValid(object sender)
         {
-            try { Convert.ToByte(((TextBox)sender).Text, 16); }
+            try { Convert.ToByte(((TextBoxCompat)sender).Text, 16); }
             catch (Exception) { return false; }
             return true;
         }
 
         private bool hex16_IsValid(object sender)
         {
-            try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+            try { Convert.ToUInt16(((TextBoxCompat)sender).Text, 16); }
             catch (Exception) { return false; }
             return true;
         }
 
         private bool hex32_IsValid(object sender)
         {
-            try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+            try { Convert.ToUInt32(((TextBoxCompat)sender).Text, 16); }
             catch (Exception) { return false; }
             return true;
         }
@@ -167,7 +163,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWiz0x0032; } }
+        public StackPanel WizPanel { get { return this.pnWiz0x0032; } }
 
         public void Execute(Instruction inst)
         {
@@ -178,8 +174,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             internalchg = true;
 
-            this.lbDisabled.Enabled = this.cbDisabled.Enabled = inst.NodeVersion != 0;
-            this.tfSubQ.Enabled = inst.NodeVersion > 2;
+            this.lbDisabled.IsEnabled = this.cbDisabled.IsEnabled = inst.NodeVersion != 0;
+            this.tfSubQ.IsEnabled = inst.NodeVersion > 2;
 
             this.cbScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0x0c)
@@ -190,16 +186,18 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             }
 
             this.tfActionTemp.Checked = (ops1[0x02] & 0x10) != 0;
-            this.pnStrIndex.Enabled = !this.tfActionTemp.Checked;
+            this.pnStrIndex.IsEnabled = !this.tfActionTemp.Checked;
 
-            this.pnThumbnail.Enabled = this.rbIconSourceTN.Checked = ((ops1[0x02] & 0x20) != 0);
-            this.pnObject.Enabled = this.rbIconSourceObj.Checked = !this.rbIconSourceTN.Checked;
+            this.rbIconSourceTN.IsChecked = ((ops1[0x02] & 0x20) != 0);
+            this.pnThumbnail.IsEnabled = ((ops1[0x02] & 0x20) != 0);
+            this.rbIconSourceObj.IsChecked = !this.rbIconSourceTN.IsChecked == true;
+            this.pnObject.IsEnabled = this.rbIconSourceObj.IsChecked == true;
 
             this.tfGUIDTemp.Checked = ((ops1[0x02] & 0x40) != 0);
-            this.pnGUID.Enabled = !this.tfGUIDTemp.Checked;
+            this.pnGUID.IsEnabled = !this.tfGUIDTemp.Checked;
 
             this.tfIconTemp.Checked = (ops1[0x02] & 0x80) != 0;
-            this.pnIconIndex.Enabled = !this.tfIconTemp.Checked;
+            this.pnIconIndex.IsEnabled = !this.tfIconTemp.Checked;
 
             this.cbDisabled.SelectedIndex = -1;
             switch (ops1[0x03] & 0x03)
@@ -212,13 +210,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             int val = inst.NodeVersion < 2 ? ops1[0x04] : BhavWiz.ToShort(ops2[0x06], ops2[0x07]);
             this.tbStrIndex.Text = "0x" + SimPe.Helper.HexString((ushort)val);
-            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
+            this.lbActionString.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
 
             this.tbGUID.Text
                 = "0x" + SimPe.Helper.HexString(ops1[0x05] | (ops1[0x06] << 8) | (ops1[0x07] << 16) | (ops2[0x00] << 24));
 
-            this.pnAction.Enabled = this.rbModeAction.Checked = ops2[0x01] == 0;
-            this.pnIcon.Enabled = this.rbModeIcon.Checked = !this.rbModeAction.Checked;
+            this.rbModeAction.IsChecked = ops2[0x01] == 0;
+            this.pnAction.IsEnabled = ops2[0x01] == 0;
+            this.rbModeIcon.IsChecked = !this.rbModeAction.IsChecked == true;
+            this.pnIcon.IsEnabled = this.rbModeIcon.IsChecked == true;
 
             this.tbIconIndex.Text = "0x" + SimPe.Helper.HexString(ops2[0x03]);
 
@@ -235,11 +235,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                if (this.rbModeAction.Checked)
+                if (this.rbModeAction.IsChecked == true)
                 {
                     ops2[0x01] = 0;
 
-                    if (this.cbScope.SelectedIndex >= 0)
+                    if (this.cbScope.SelectedIndex != null)
                     {
                         ops1[0x02] &= 0xf3;
                         if (this.cbScope.SelectedIndex == 2) ops1[0x02] |= 0x04;
@@ -283,7 +283,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                         ops2[0x03] = Convert.ToByte(this.tbIconIndex.Text, 16);
 
                     ops1[0x02] &= 0xdf;
-                    if (this.pnThumbnail.Enabled)
+                    if (this.pnThumbnail.IsEnabled)
                     {
                         ops1[0x02] |= 0x20;
 
@@ -317,351 +317,169 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWiz0x0032 = new System.Windows.Forms.Panel();
-            this.rbModeIcon = new System.Windows.Forms.RadioButton();
-            this.rbModeAction = new System.Windows.Forms.RadioButton();
-            this.pnAction = new System.Windows.Forms.Panel();
-            this.tfSubQ = new System.Windows.Forms.CheckBox();
-            this.pnStrIndex = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.btnActionString = new System.Windows.Forms.Button();
-            this.tbStrIndex = new System.Windows.Forms.TextBox();
-            this.lbActionString = new System.Windows.Forms.Label();
-            this.tfActionTemp = new System.Windows.Forms.CheckBox();
-            this.cbDisabled = new System.Windows.Forms.ComboBox();
-            this.cbScope = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbDisabled = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnIcon = new System.Windows.Forms.Panel();
-            this.pnObject = new System.Windows.Forms.Panel();
-            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
-            this.cbDecimal = new System.Windows.Forms.CheckBox();
-            this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.tbVal1 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.pnThumbnail = new System.Windows.Forms.Panel();
-            this.tfGUIDTemp = new System.Windows.Forms.CheckBox();
-            this.pnGUID = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbGUID = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.rbIconSourceObj = new System.Windows.Forms.RadioButton();
-            this.rbIconSourceTN = new System.Windows.Forms.RadioButton();
-            this.tfIconTemp = new System.Windows.Forms.CheckBox();
-            this.pnIconIndex = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tbIconIndex = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pnWiz0x0032.SuspendLayout();
-            this.pnAction.SuspendLayout();
-            this.pnStrIndex.SuspendLayout();
-            this.pnIcon.SuspendLayout();
-            this.pnObject.SuspendLayout();
-            this.pnThumbnail.SuspendLayout();
-            this.pnGUID.SuspendLayout();
-            this.pnIconIndex.SuspendLayout();
-            this.SuspendLayout();
+		{            this.pnWiz0x0032 = new StackPanel();
+            this.rbModeIcon = new Avalonia.Controls.RadioButton();
+            this.rbModeAction = new Avalonia.Controls.RadioButton();
+            this.pnAction = new StackPanel();
+            this.tfSubQ = new CheckBoxCompat2();
+            this.pnStrIndex = new StackPanel();
+            this.label5 = new LabelCompat();
+            this.btnActionString = new ButtonCompat();
+            this.tbStrIndex = new TextBoxCompat();
+            this.lbActionString = new LabelCompat();
+            this.tfActionTemp = new CheckBoxCompat2();
+            this.cbDisabled = new ComboBoxCompat();
+            this.cbScope = new ComboBoxCompat();
+            this.label3 = new LabelCompat();
+            this.lbDisabled = new LabelCompat();
+            this.label1 = new LabelCompat();
+            this.pnIcon = new StackPanel();
+            this.pnObject = new StackPanel();
+            this.cbAttrPicker = new CheckBoxCompat2();
+            this.cbDecimal = new CheckBoxCompat2();
+            this.cbPicker1 = new ComboBoxCompat();
+            this.tbVal1 = new TextBoxCompat();
+            this.cbDataOwner1 = new ComboBoxCompat();
+            this.label9 = new LabelCompat();
+            this.pnThumbnail = new StackPanel();
+            this.tfGUIDTemp = new CheckBoxCompat2();
+            this.pnGUID = new StackPanel();
+            this.label8 = new LabelCompat();
+            this.tbGUID = new TextBoxCompat();
+            this.label7 = new LabelCompat();
+            this.rbIconSourceObj = new Avalonia.Controls.RadioButton();
+            this.rbIconSourceTN = new Avalonia.Controls.RadioButton();
+            this.tfIconTemp = new CheckBoxCompat2();
+            this.pnIconIndex = new StackPanel();
+            this.label6 = new LabelCompat();
+            this.tbIconIndex = new TextBoxCompat();
+            this.label10 = new LabelCompat();
+            this.label4 = new LabelCompat();            // pnWiz0x0032
             // 
-            // pnWiz0x0032
-            // 
-            this.pnWiz0x0032.Controls.Add(this.rbModeIcon);
-            this.pnWiz0x0032.Controls.Add(this.rbModeAction);
-            this.pnWiz0x0032.Controls.Add(this.pnAction);
-            this.pnWiz0x0032.Controls.Add(this.pnIcon);
-            resources.ApplyResources(this.pnWiz0x0032, "pnWiz0x0032");
-            this.pnWiz0x0032.Name = "pnWiz0x0032";
-            // 
+            this.pnWiz0x0032.Children.Add(this.rbModeIcon);
+            this.pnWiz0x0032.Children.Add(this.rbModeAction);
+            this.pnWiz0x0032.Children.Add(this.pnAction);
+            this.pnWiz0x0032.Children.Add(this.pnIcon);            this.pnWiz0x0032.Name = "pnWiz0x0032";
             // rbModeIcon
-            // 
-            resources.ApplyResources(this.rbModeIcon, "rbModeIcon");
-            this.rbModeIcon.Name = "rbModeIcon";
-            this.rbModeIcon.TabStop = true;
-            this.rbModeIcon.UseVisualStyleBackColor = true;
-            this.rbModeIcon.CheckedChanged += new System.EventHandler(this.rbModeIcon_CheckedChanged);
-            // 
+            //            this.rbModeIcon.Name = "rbModeIcon";
+            this.rbModeIcon.IsCheckedChanged += (s, e) => this.rbModeIcon_CheckedChanged(s, e);
             // rbModeAction
-            // 
-            resources.ApplyResources(this.rbModeAction, "rbModeAction");
-            this.rbModeAction.Name = "rbModeAction";
-            this.rbModeAction.TabStop = true;
-            this.rbModeAction.UseVisualStyleBackColor = true;
-            this.rbModeAction.CheckedChanged += new System.EventHandler(this.rbModeAction_CheckedChanged);
-            // 
+            //            this.rbModeAction.Name = "rbModeAction";
+            this.rbModeAction.IsCheckedChanged += (s, e) => this.rbModeAction_CheckedChanged(s, e);
             // pnAction
             // 
-            this.pnAction.Controls.Add(this.tfSubQ);
-            this.pnAction.Controls.Add(this.pnStrIndex);
-            this.pnAction.Controls.Add(this.tfActionTemp);
-            this.pnAction.Controls.Add(this.cbDisabled);
-            this.pnAction.Controls.Add(this.cbScope);
-            this.pnAction.Controls.Add(this.label3);
-            this.pnAction.Controls.Add(this.lbDisabled);
-            this.pnAction.Controls.Add(this.label1);
-            resources.ApplyResources(this.pnAction, "pnAction");
-            this.pnAction.Name = "pnAction";
-            // 
+            this.pnAction.Children.Add(this.tfSubQ);
+            this.pnAction.Children.Add(this.pnStrIndex);
+            this.pnAction.Children.Add(this.tfActionTemp);
+            this.pnAction.Children.Add(this.cbDisabled);
+            this.pnAction.Children.Add(this.cbScope);
+            this.pnAction.Children.Add(this.label3);
+            this.pnAction.Children.Add(this.lbDisabled);
+            this.pnAction.Children.Add(this.label1);            this.pnAction.Name = "pnAction";
             // tfSubQ
-            // 
-            resources.ApplyResources(this.tfSubQ, "tfSubQ");
-            this.tfSubQ.Name = "tfSubQ";
-            this.tfSubQ.UseVisualStyleBackColor = true;
-            // 
-            // pnStrIndex
-            // 
-            resources.ApplyResources(this.pnStrIndex, "pnStrIndex");
-            this.pnStrIndex.Controls.Add(this.label5);
-            this.pnStrIndex.Controls.Add(this.btnActionString);
-            this.pnStrIndex.Controls.Add(this.tbStrIndex);
-            this.pnStrIndex.Controls.Add(this.lbActionString);
+            //            this.tfSubQ.Name = "tfSubQ";
+            //            this.pnStrIndex.Children.Add(this.label5);
+            this.pnStrIndex.Children.Add(this.btnActionString);
+            this.pnStrIndex.Children.Add(this.tbStrIndex);
+            this.pnStrIndex.Children.Add(this.lbActionString);
             this.pnStrIndex.Name = "pnStrIndex";
-            // 
             // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
+            //            this.label5.Name = "label5";
             // btnActionString
-            // 
-            resources.ApplyResources(this.btnActionString, "btnActionString");
-            this.btnActionString.Name = "btnActionString";
-            this.btnActionString.Click += new System.EventHandler(this.btnActionString_Click);
-            // 
+            //            this.btnActionString.Name = "btnActionString";
+            this.btnActionString.Click += (s, e) => this.btnActionString_Click(s, e);
             // tbStrIndex
-            // 
-            resources.ApplyResources(this.tbStrIndex, "tbStrIndex");
-            this.tbStrIndex.Name = "tbStrIndex";
-            this.tbStrIndex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbStrIndex.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbStrIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // lbActionString
-            // 
-            resources.ApplyResources(this.lbActionString, "lbActionString");
-            this.lbActionString.Name = "lbActionString";
-            // 
+            //            this.tbStrIndex.Name = "tbStrIndex";
+            this.tbStrIndex.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbStrIndex.LostFocus += (s, e) => this.hex16_Validated(s, e);
+            //            this.lbActionString.Name = "lbActionString";
             // tfActionTemp
-            // 
-            resources.ApplyResources(this.tfActionTemp, "tfActionTemp");
-            this.tfActionTemp.Name = "tfActionTemp";
-            this.tfActionTemp.UseVisualStyleBackColor = true;
-            this.tfActionTemp.CheckedChanged += new System.EventHandler(this.tfActionTemp_CheckedChanged);
-            // 
+            //            this.tfActionTemp.Name = "tfActionTemp";
+            this.tfActionTemp.IsCheckedChanged += (s, e) => this.tfActionTemp_CheckedChanged(s, e);
             // cbDisabled
-            // 
-            this.cbDisabled.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDisabled.FormattingEnabled = true;
-            this.cbDisabled.Items.AddRange(new object[] {
-            resources.GetString("cbDisabled.Items"),
-            resources.GetString("cbDisabled.Items1"),
-            resources.GetString("cbDisabled.Items2")});
-            resources.ApplyResources(this.cbDisabled, "cbDisabled");
-            this.cbDisabled.Name = "cbDisabled";
             // 
             // cbScope
             // 
-            this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbScope.FormattingEnabled = true;
-            this.cbScope.Items.AddRange(new object[] {
-            resources.GetString("cbScope.Items"),
-            resources.GetString("cbScope.Items1"),
-            resources.GetString("cbScope.Items2")});
-            resources.ApplyResources(this.cbScope, "cbScope");
-            this.cbScope.Name = "cbScope";
-            this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
-            // 
+            this.cbScope.SelectionChanged += (s, e) => this.cbScope_SelectedIndexChanged(s, e);
             // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
+            //            this.label3.Name = "label3";
             // lbDisabled
-            // 
-            resources.ApplyResources(this.lbDisabled, "lbDisabled");
-            this.lbDisabled.Name = "lbDisabled";
-            // 
+            //            this.lbDisabled.Name = "lbDisabled";
             // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
+            //            this.label1.Name = "label1";
             // pnIcon
             // 
-            this.pnIcon.Controls.Add(this.pnObject);
-            this.pnIcon.Controls.Add(this.pnThumbnail);
-            this.pnIcon.Controls.Add(this.rbIconSourceObj);
-            this.pnIcon.Controls.Add(this.rbIconSourceTN);
-            this.pnIcon.Controls.Add(this.tfIconTemp);
-            this.pnIcon.Controls.Add(this.pnIconIndex);
-            this.pnIcon.Controls.Add(this.label10);
-            this.pnIcon.Controls.Add(this.label4);
-            resources.ApplyResources(this.pnIcon, "pnIcon");
-            this.pnIcon.Name = "pnIcon";
-            // 
+            this.pnIcon.Children.Add(this.pnObject);
+            this.pnIcon.Children.Add(this.pnThumbnail);
+            this.pnIcon.Children.Add(this.rbIconSourceObj);
+            this.pnIcon.Children.Add(this.rbIconSourceTN);
+            this.pnIcon.Children.Add(this.tfIconTemp);
+            this.pnIcon.Children.Add(this.pnIconIndex);
+            this.pnIcon.Children.Add(this.label10);
+            this.pnIcon.Children.Add(this.label4);            this.pnIcon.Name = "pnIcon";
             // pnObject
             // 
-            this.pnObject.Controls.Add(this.cbAttrPicker);
-            this.pnObject.Controls.Add(this.cbDecimal);
-            this.pnObject.Controls.Add(this.cbPicker1);
-            this.pnObject.Controls.Add(this.tbVal1);
-            this.pnObject.Controls.Add(this.cbDataOwner1);
-            this.pnObject.Controls.Add(this.label9);
-            resources.ApplyResources(this.pnObject, "pnObject");
-            this.pnObject.Name = "pnObject";
-            // 
+            this.pnObject.Children.Add(this.cbAttrPicker);
+            this.pnObject.Children.Add(this.cbDecimal);
+            this.pnObject.Children.Add(this.cbPicker1);
+            this.pnObject.Children.Add(this.tbVal1);
+            this.pnObject.Children.Add(this.cbDataOwner1);
+            this.pnObject.Children.Add(this.label9);            this.pnObject.Name = "pnObject";
             // cbAttrPicker
-            // 
-            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
-            this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //            this.cbAttrPicker.Name = "cbAttrPicker";
             // cbDecimal
-            // 
-            resources.ApplyResources(this.cbDecimal, "cbDecimal");
-            this.cbDecimal.Name = "cbDecimal";
-            // 
+            //            this.cbDecimal.Name = "cbDecimal";
             // cbPicker1
             // 
-            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
             // tbVal1
-            // 
-            resources.ApplyResources(this.tbVal1, "tbVal1");
-            this.tbVal1.Name = "tbVal1";
-            // 
+            //            this.tbVal1.Name = "tbVal1";
             // cbDataOwner1
             // 
-            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
             // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
+            //            this.label9.Name = "label9";
             // pnThumbnail
             // 
-            this.pnThumbnail.Controls.Add(this.tfGUIDTemp);
-            this.pnThumbnail.Controls.Add(this.pnGUID);
-            this.pnThumbnail.Controls.Add(this.label7);
-            resources.ApplyResources(this.pnThumbnail, "pnThumbnail");
-            this.pnThumbnail.Name = "pnThumbnail";
-            // 
+            this.pnThumbnail.Children.Add(this.tfGUIDTemp);
+            this.pnThumbnail.Children.Add(this.pnGUID);
+            this.pnThumbnail.Children.Add(this.label7);            this.pnThumbnail.Name = "pnThumbnail";
             // tfGUIDTemp
-            // 
-            resources.ApplyResources(this.tfGUIDTemp, "tfGUIDTemp");
-            this.tfGUIDTemp.Name = "tfGUIDTemp";
-            this.tfGUIDTemp.UseVisualStyleBackColor = true;
-            this.tfGUIDTemp.CheckedChanged += new System.EventHandler(this.tfGUIDTemp_CheckedChanged);
-            // 
+            //            this.tfGUIDTemp.Name = "tfGUIDTemp";
+            this.tfGUIDTemp.IsCheckedChanged += (s, e) => this.tfGUIDTemp_CheckedChanged(s, e);
             // pnGUID
             // 
-            this.pnGUID.Controls.Add(this.label8);
-            this.pnGUID.Controls.Add(this.tbGUID);
-            resources.ApplyResources(this.pnGUID, "pnGUID");
-            this.pnGUID.Name = "pnGUID";
-            // 
+            this.pnGUID.Children.Add(this.label8);
+            this.pnGUID.Children.Add(this.tbGUID);            this.pnGUID.Name = "pnGUID";
             // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
+            //            this.label8.Name = "label8";
             // tbGUID
-            // 
-            resources.ApplyResources(this.tbGUID, "tbGUID");
-            this.tbGUID.Name = "tbGUID";
-            this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
+            //            this.tbGUID.Name = "tbGUID";
+            this.tbGUID.LostFocus += (s, e) => this.hex32_Validated(s, e);
+            //            this.label7.Name = "label7";
             // rbIconSourceObj
-            // 
-            resources.ApplyResources(this.rbIconSourceObj, "rbIconSourceObj");
-            this.rbIconSourceObj.Name = "rbIconSourceObj";
-            this.rbIconSourceObj.TabStop = true;
-            this.rbIconSourceObj.UseVisualStyleBackColor = true;
-            this.rbIconSourceObj.CheckedChanged += new System.EventHandler(this.rbIconSourceObj_CheckedChanged);
-            // 
+            //            this.rbIconSourceObj.Name = "rbIconSourceObj";
+            this.rbIconSourceObj.IsCheckedChanged += (s, e) => this.rbIconSourceObj_CheckedChanged(s, e);
             // rbIconSourceTN
-            // 
-            resources.ApplyResources(this.rbIconSourceTN, "rbIconSourceTN");
-            this.rbIconSourceTN.Name = "rbIconSourceTN";
-            this.rbIconSourceTN.TabStop = true;
-            this.rbIconSourceTN.UseVisualStyleBackColor = true;
-            this.rbIconSourceTN.CheckedChanged += new System.EventHandler(this.rbIconSourceTN_CheckedChanged);
-            // 
+            //            this.rbIconSourceTN.Name = "rbIconSourceTN";
+            this.rbIconSourceTN.IsCheckedChanged += (s, e) => this.rbIconSourceTN_CheckedChanged(s, e);
             // tfIconTemp
-            // 
-            resources.ApplyResources(this.tfIconTemp, "tfIconTemp");
-            this.tfIconTemp.Name = "tfIconTemp";
-            this.tfIconTemp.UseVisualStyleBackColor = true;
-            this.tfIconTemp.CheckedChanged += new System.EventHandler(this.tfIconTemp_CheckedChanged);
-            // 
+            //            this.tfIconTemp.Name = "tfIconTemp";
+            this.tfIconTemp.IsCheckedChanged += (s, e) => this.tfIconTemp_CheckedChanged(s, e);
             // pnIconIndex
             // 
-            this.pnIconIndex.Controls.Add(this.label6);
-            this.pnIconIndex.Controls.Add(this.tbIconIndex);
-            resources.ApplyResources(this.pnIconIndex, "pnIconIndex");
-            this.pnIconIndex.Name = "pnIconIndex";
-            // 
+            this.pnIconIndex.Children.Add(this.label6);
+            this.pnIconIndex.Children.Add(this.tbIconIndex);            this.pnIconIndex.Name = "pnIconIndex";
             // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
+            //            this.label6.Name = "label6";
             // tbIconIndex
-            // 
-            resources.ApplyResources(this.tbIconIndex, "tbIconIndex");
-            this.tbIconIndex.Name = "tbIconIndex";
-            this.tbIconIndex.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbIconIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
-            // 
+            //            this.tbIconIndex.Name = "tbIconIndex";
+            this.tbIconIndex.LostFocus += (s, e) => this.hex8_Validated(s, e);
+            //            this.label10.Name = "label10";
             // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
+            //            this.label4.Name = "label4";
             // UI
-            // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.pnWiz0x0032);
-            this.Name = "UI";
-            this.pnWiz0x0032.ResumeLayout(false);
-            this.pnWiz0x0032.PerformLayout();
-            this.pnAction.ResumeLayout(false);
-            this.pnAction.PerformLayout();
-            this.pnStrIndex.ResumeLayout(false);
-            this.pnStrIndex.PerformLayout();
-            this.pnIcon.ResumeLayout(false);
-            this.pnIcon.PerformLayout();
-            this.pnObject.ResumeLayout(false);
-            this.pnObject.PerformLayout();
-            this.pnThumbnail.ResumeLayout(false);
-            this.pnThumbnail.PerformLayout();
-            this.pnGUID.ResumeLayout(false);
-            this.pnGUID.PerformLayout();
-            this.pnIconIndex.ResumeLayout(false);
-            this.pnIconIndex.PerformLayout();
-            this.ResumeLayout(false);
-
+            //            this.Controls.Add(this.pnWiz0x0032);
 		}
 		#endregion
 
@@ -673,8 +491,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(inst.Reserved1[0x03]);
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(inst.Reserved1[0x03]);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -682,8 +500,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         {
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBoxCompat)sender).Text, 16));
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -693,8 +511,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             if (inst.NodeVersion < 2 && !hex8_IsValid(sender)) return;
             else if (!hex16_IsValid(sender)) return;
 
-            ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
+            ushort val = Convert.ToUInt16(((TextBoxCompat)sender).Text, 16);
+            this.lbActionString.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
         }
 
         private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -707,9 +525,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             bool origstate = internalchg;
             internalchg = true;
             ushort val = inst.NodeVersion < 2 ? inst.Operands[0x04] : BhavWiz.ToShort(inst.Reserved1[0x06], inst.Reserved1[0x07]);
-            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
-            ((TextBox)sender).SelectAll();
+            this.lbActionString.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(val);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -717,8 +535,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         {
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt16(((TextBoxCompat)sender).Text, 16));
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -730,9 +548,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text
+            ((TextBoxCompat)sender).Text
                = "0x" + SimPe.Helper.HexString(inst.Operands[0x05] | (inst.Operands[0x06] << 8) | (inst.Operands[0x07] << 16) | (inst.Reserved1[0x00] << 24));
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -740,8 +558,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         {
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt32(((TextBoxCompat)sender).Text, 16));
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -753,37 +571,37 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
         private void tfActionTemp_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnStrIndex.Enabled = !((CheckBox)sender).Checked;
+            this.pnStrIndex.IsEnabled = !((CheckBoxCompat2)sender).Checked;
         }
 
         private void tfIconTemp_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnIconIndex.Enabled = !((CheckBox)sender).Checked;
+            this.pnIconIndex.IsEnabled = !((CheckBoxCompat2)sender).Checked;
         }
 
         private void rbModeAction_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnAction.Enabled = ((RadioButton)sender).Checked;
+            this.pnAction.IsEnabled = ((RadioButton)sender).IsChecked == true;
         }
 
         private void rbModeIcon_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnIcon.Enabled = ((RadioButton)sender).Checked;
+            this.pnIcon.IsEnabled = ((RadioButton)sender).IsChecked == true;
         }
 
         private void rbIconSourceTN_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnThumbnail.Enabled = ((RadioButton)sender).Checked;
+            this.pnThumbnail.IsEnabled = ((RadioButton)sender).IsChecked == true;
         }
 
         private void rbIconSourceObj_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnObject.Enabled = ((RadioButton)sender).Checked;
+            this.pnObject.IsEnabled = ((RadioButton)sender).IsChecked == true;
         }
 
         private void tfGUIDTemp_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnGUID.Enabled = !((CheckBox)sender).Checked;
+            this.pnGUID.IsEnabled = !((CheckBoxCompat2)sender).Checked;
         }
 
         private void btnActionString_Click(object sender, EventArgs e)

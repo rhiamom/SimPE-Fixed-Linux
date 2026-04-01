@@ -26,7 +26,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.PackedFiles.UserInterface
@@ -34,16 +35,12 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Summary description for TtabSingleMotive.
 	/// </summary>
-	public class TtabSingleMotiveUI : System.Windows.Forms.UserControl
+	public class TtabSingleMotiveUI : Avalonia.Controls.UserControl
 	{
         #region Form variables
-        private System.Windows.Forms.TextBox Min;
-		private System.Windows.Forms.TextBox Delta;
-		private System.Windows.Forms.TextBox Type;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private TextBoxCompat Min;
+		private TextBoxCompat Delta;
+		private TextBoxCompat Type;
         #endregion
 
         public TtabSingleMotiveUI()
@@ -51,25 +48,13 @@ namespace SimPe.PackedFiles.UserInterface
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
 
-			// TODO: Add any initialization after the InitializeComponent call
-			TextBox[] tb = { Min, Delta, Type };
+			TextBoxCompat[] tb = { Min, Delta, Type };
 			alHex16 = new ArrayList(tb);
-            this.Enabled = false;
+            this.IsEnabled = false;
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
 
@@ -91,7 +76,7 @@ namespace SimPe.PackedFiles.UserInterface
                     this.item = value;
                     setText();
                     if (item != null && item.Wrapper != null)
-                        item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                        item.Wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
                 }
             }
         }
@@ -110,7 +95,7 @@ namespace SimPe.PackedFiles.UserInterface
             Delta.Text = item == null ? "" : Helper.HexString(item.Delta);
             Type.Text = item == null ? "" : Helper.HexString(item.Type);
             internalchg = prev;
-            this.Enabled = (item != null);
+            this.IsEnabled = (item != null);
         }
 
 		public void Clear()
@@ -126,7 +111,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex16.IndexOf(sender) < 0)
 				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToInt16(((TextBox)sender).Text, 16); }
+			try { Convert.ToInt16(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -139,46 +124,18 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabSingleMotiveUI));
-            this.Min = new System.Windows.Forms.TextBox();
-            this.Delta = new System.Windows.Forms.TextBox();
-            this.Type = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
-            //
-            // Min
-            //
-            resources.ApplyResources(this.Min, "Min");
+            this.Min = new TextBoxCompat();
+            this.Delta = new TextBoxCompat();
+            this.Type = new TextBoxCompat();
             this.Min.Name = "Min";
-            this.Min.Validated += new System.EventHandler(this.hex16_Validated);
-            this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            //
-            // Delta
-            //
-            resources.ApplyResources(this.Delta, "Delta");
+            this.Min.LostFocus += (s, e) => hex16_Validated(s, e);
+            this.Min.TextChanged += (s, e) => hex16_TextChanged(s, e);
             this.Delta.Name = "Delta";
-            this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
-            this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            //
-            // Type
-            //
-            resources.ApplyResources(this.Type, "Type");
+            this.Delta.LostFocus += (s, e) => hex16_Validated(s, e);
+            this.Delta.TextChanged += (s, e) => hex16_TextChanged(s, e);
             this.Type.Name = "Type";
-            this.Type.Validated += new System.EventHandler(this.hex16_Validated);
-            this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            //
-            // TtabSingleMotiveUI
-            //
-            this.Controls.Add(this.Min);
-            this.Controls.Add(this.Delta);
-            this.Controls.Add(this.Type);
-            this.Name = "TtabSingleMotiveUI";
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            this.Type.LostFocus += (s, e) => hex16_Validated(s, e);
+            this.Type.TextChanged += (s, e) => hex16_TextChanged(s, e);
 		}
 		#endregion
 
@@ -188,7 +145,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (!hex16_IsValid(sender)) return;
 
 			internalchg = true;
-            short val = Convert.ToInt16(((TextBox)sender).Text, 16);
+            short val = Convert.ToInt16(((TextBoxCompat)sender).Text, 16);
             switch (alHex16.IndexOf(sender))
             {
                 case 0: item.Min = val; break;
@@ -198,11 +155,9 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
-		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void hex16_Validating(object sender, System.EventArgs e)
 		{
 			if (hex16_IsValid(sender)) return;
-
-			e.Cancel = true;
 
             short val = 0;
             switch (alHex16.IndexOf(sender))
@@ -212,17 +167,17 @@ namespace SimPe.PackedFiles.UserInterface
                 case 2: val = item.Type; break;
             }
             internalchg = true;
-            ((TextBox)sender).Text = Helper.HexString(val);
-			((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = Helper.HexString(val);
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = false;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs ev)
 		{
             internalchg = true;
-            short val = Convert.ToInt16(((TextBox)sender).Text, 16);
-            ((TextBox)sender).Text = Helper.HexString(val);
-            ((TextBox)sender).SelectAll();
+            short val = Convert.ToInt16(((TextBoxCompat)sender).Text, 16);
+            ((TextBoxCompat)sender).Text = Helper.HexString(val);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = false;
         }
 

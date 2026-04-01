@@ -917,7 +917,7 @@ namespace pjse
             tprp.ProcessData(items[0].PFD, items[0].Package);
             foreach (TPRPItem i in tprp)
                 if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
-                    TPRPnames.Add(i.Label);
+                    TPRPnames.Add(i.LabelCompat);
             int limit = local ? instruction.Parent.Header.LocalVarCount : instruction.Parent.Header.ArgumentCount;
             while (TPRPnames.Count < limit)
                 TPRPnames.Add("(" + (local ? dnLocal() : dnParam()) + TPRPnames.Count.ToString() + ")");

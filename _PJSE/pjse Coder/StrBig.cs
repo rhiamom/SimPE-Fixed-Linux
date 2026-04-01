@@ -25,142 +25,66 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 
 namespace pjse
 {
 	/// <summary>
 	/// Summary description for StrBig.
 	/// </summary>
-	public class StrBig : System.Windows.Forms.Form
+	public class StrBig : Window
 	{
 		#region Form variables
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Button OK;
-		private System.Windows.Forms.Button Cancel;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private StackPanel panel1;
+		private TextBoxCompat richTextBox1;
+		private ButtonCompat OK;
+		private ButtonCompat Cancel;
 		#endregion
+
+		private bool _dialogResult = false;
 
 		public StrBig()
 		{
-			//
-			// Required for Windows Form Designer support
-			//
 			InitializeComponent();
-
-            if (SimPe.Helper.XmlRegistry.UseBigIcons)
-            {
-                this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                this.ClientSize = new System.Drawing.Size(684, 482);
-            }
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
 
 		#region StrBig
 		public string doBig(string init)
 		{
-			this.DialogResult = DialogResult.Cancel;
 			richTextBox1.Text = init;
 
-			DialogResult dr = ShowDialog();
-			Close();
+			this.ShowDialog(null).GetAwaiter().GetResult();
 
-			switch (dr)
-			{
-				case DialogResult.Ignore:
-					return null;
-				default:
-					return richTextBox1.Text;
-			}
+			if (!_dialogResult)
+				return null;
+			return richTextBox1.Text;
 		}
 
 		#endregion
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrBig));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.OK = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.OK);
-            this.panel1.Controls.Add(this.Cancel);
-            this.panel1.Controls.Add(this.panel2);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            // 
-            // OK
-            // 
-            resources.ApplyResources(this.OK, "OK");
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Name = "OK";
-            // 
-            // Cancel
-            // 
-            resources.ApplyResources(this.Cancel, "Cancel");
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Ignore;
-            this.Cancel.Name = "Cancel";
-            // 
-            // panel2
-            // 
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Name = "panel2";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.AcceptsTab = true;
-            this.richTextBox1.DetectUrls = false;
-            resources.ApplyResources(this.richTextBox1, "richTextBox1");
-            this.richTextBox1.Name = "richTextBox1";
-            // 
-            // StrBig
-            // 
-            this.AcceptButton = this.OK;
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.Cancel;
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.panel1);
-            this.MinimizeBox = false;
-            this.Name = "StrBig";
-            this.ShowInTaskbar = false;
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
+			this.panel1 = new StackPanel();
+			this.OK = new ButtonCompat { Content = "OK" };
+			this.Cancel = new ButtonCompat { Content = "Cancel" };
+			this.richTextBox1 = new TextBoxCompat { AcceptsReturn = true };
 
+			this.OK.Click += (s, e) => { _dialogResult = true; Close(); };
+			this.Cancel.Click += (s, e) => { _dialogResult = false; Close(); };
+
+			this.panel1.Children.Add(this.OK);
+			this.panel1.Children.Add(this.Cancel);
+
+			var mainPanel = new StackPanel();
+			mainPanel.Children.Add(this.richTextBox1);
+			mainPanel.Children.Add(this.panel1);
+			this.Content = mainPanel;
 		}
-		#endregion
 	}
 }

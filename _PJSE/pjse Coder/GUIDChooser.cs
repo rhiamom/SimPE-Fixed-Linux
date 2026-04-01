@@ -27,26 +27,27 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.Plugin
 {
-    public partial class GUIDChooser : UserControl
+    public partial class GUIDChooser : Avalonia.Controls.UserControl
     {
         public GUIDChooser()
         {
             InitializeComponent();
             internalchg = true;
             cbKnownObjects.SelectedIndex = -1;
-            cbKnownObjects.Enabled = false;
+            cbKnownObjects.IsEnabled = false;
             tbGUID.Text = "0x00000000";
             internalchg = false;
         }
 
         private bool hex32_IsValid(object sender)
         {
-            try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+            try { Convert.ToUInt32(((TextBoxCompat)sender).Text, 16); }
             catch (Exception) { return false; }
             return true;
         }
@@ -58,19 +59,19 @@ namespace SimPe.Plugin
 
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public int DropDownHeight { get { return cbKnownObjects.DropDownHeight; } set { cbKnownObjects.DropDownHeight = value; } }
+        public int DropDownHeight { get; set; }
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public int DropDownWidth { get { return cbKnownObjects.DropDownWidth; } set { cbKnownObjects.DropDownWidth = value; } }
+        public int DropDownWidth { get; set; }
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public int ComboBoxWidth { get { return cbKnownObjects.Width; } set { cbKnownObjects.Width = value; } }
+        public int ComboBoxWidth { get; set; }
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public ComboBoxStyle DropDownStyle { get { return cbKnownObjects.DropDownStyle; } set { cbKnownObjects.DropDownStyle = value; } }
+        public SimPe.Scenegraph.Compat.ComboBoxStyle DropDownStyle { get; set; }
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public string Label { get { return lbLabel.Text; } set { lbLabel.Text = value; } }
+        public string LabelCompat { get { return lbLabel.Content?.ToString(); } set { lbLabel.Content = value; } }
         [Browsable(true)]
         [EditorBrowsable(0)]
         public UInt32 Value
@@ -128,8 +129,8 @@ namespace SimPe.Plugin
                 knownObjects = new List<String>((List<String>)value[0]);
                 knownObjects.Insert(0, " --None--");
                 knownObjects.Insert(1, "  *Other*");
-                cbKnownObjects.DataSource = knownObjects;
-                cbKnownObjects.Enabled = true;
+                cbKnownObjects.ItemsSource = knownObjects;
+                cbKnownObjects.IsEnabled = true;
                 knownGUIDs = new List<UInt32>((List<UInt32>)value[1]);
             }
         }
@@ -160,7 +161,7 @@ namespace SimPe.Plugin
         {
             if (internalchg || !hex32_IsValid(sender)) return;
 
-            setValue(Convert.ToUInt32(((TextBox)sender).Text, 16), true, false);
+            setValue(Convert.ToUInt32(((TextBoxCompat)sender).Text, 16), true, false);
         }
 
         private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -171,8 +172,8 @@ namespace SimPe.Plugin
 
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Value);
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Value);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
 
@@ -180,8 +181,8 @@ namespace SimPe.Plugin
         {
             bool origstate = internalchg;
             internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Value);
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Value);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
     }

@@ -28,13 +28,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 using SimPe.PackedFiles.UserInterface;
 
 namespace pjse
 {
-    public partial class TtabAnimalMotiveWiz : Form
+    public partial class TtabAnimalMotiveWiz : Window
     {
         public TtabAnimalMotiveWiz()
         {
@@ -97,9 +98,9 @@ namespace pjse
 
                 nrItems = value;
 
-                for (int i = 0; i < mUI.Length; i++) mUI[i].Enabled = i < nrItems;
-                btnMinus.Enabled = nrItems > 0;
-                btnPlus.Enabled = nrItems < 16;
+                for (int i = 0; i < mUI.Length; i++) mUI[i].IsEnabled = i < nrItems;
+                btnMinus.IsEnabled = nrItems > 0;
+                btnPlus.IsEnabled = nrItems < 16;
             }
         }
 

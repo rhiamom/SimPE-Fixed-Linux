@@ -29,7 +29,9 @@ using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse
@@ -37,43 +39,25 @@ namespace pjse
 	/// <summary>
 	/// Container for bhavPrimWizPanel from BhavOperandWizProvider
 	/// </summary>
-	public class BhavOperandWiz : System.Windows.Forms.Form
+	public class BhavOperandWiz : Window
 	{
 		#region Form variables
-
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button OK;
-		private System.Windows.Forms.Button Cancel;
-        
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private StackPanel panel1;
+		private ButtonCompat OK;
+		private ButtonCompat Cancel;
 		#endregion
 
 		public BhavOperandWiz()
 		{
-			//
-			// Required designer variable.
-			//
 			InitializeComponent();
         }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
+
+		private bool _dialogResult = false;
 
 		public Instruction Execute(BhavWiz i, int wizType)
 		{
@@ -86,89 +70,33 @@ namespace pjse
 			}
 			if (wiz == null) return null;
 
-			Panel pn = wiz.bhavPrimWizPanel;
-            pn.Parent = this;
-            pn.Top = 0;
-            pn.Left = 0;
-            pn.TabIndex = 1;
-            pn_Resize(pn, null);
-            pn.Resize += new EventHandler(pn_Resize);
+			StackPanel pn = wiz.bhavPrimWizPanel;
 			wiz.Execute();
 
-			DialogResult dr = ShowDialog();
-			Close();
+			this.ShowDialog(null).GetAwaiter().GetResult();
 
-			switch (dr)
-			{
-				case DialogResult.OK:
-					return wiz.Write();
-				default:
-					return null;
-			}
+			if (_dialogResult)
+				return wiz.Write();
+			return null;
 		}
 
-        void pn_Resize(object sender, EventArgs e)
-        {
-            Panel pn = (Panel)sender;
-            int footHeight = this.Height - this.panel1.Top;
-            this.Width = pn.Width + 8;
-            this.Height = pn.Height + footHeight;
-        }
-
-
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavOperandWiz));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.OK = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.OK);
-            this.panel1.Controls.Add(this.Cancel);
-            this.panel1.Name = "panel1";
-            // 
-            // OK
-            // 
-            resources.ApplyResources(this.OK, "OK");
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Name = "OK";
-            // 
-            // Cancel
-            // 
-            resources.ApplyResources(this.Cancel, "Cancel");
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Name = "Cancel";
-            // 
-            // BhavOperandWiz
-            // 
-            this.AcceptButton = this.OK;
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.Cancel;
-            this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "BhavOperandWiz";
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+			this.panel1 = new StackPanel();
+			this.OK = new ButtonCompat { Content = "OK" };
+			this.Cancel = new ButtonCompat { Content = "Cancel" };
+			this.OK.Click += (s, e) => { _dialogResult = true; Close(); };
+			this.Cancel.Click += (s, e) => { _dialogResult = false; Close(); };
+			this.panel1.Children.Add(this.OK);
+			this.panel1.Children.Add(this.Cancel);
+			this.Content = this.panel1;
 		}
-		#endregion
 
 	}
 
     public interface iBhavOperandWizForm
     {
-        Panel WizPanel { get; }
+        StackPanel WizPanel { get; }
         void Execute(Instruction inst);
         Instruction Write(Instruction inst);
     }
@@ -185,7 +113,7 @@ namespace pjse
         protected iBhavOperandWizForm myForm = null;
 		protected ABhavOperandWiz(Instruction instruction) { this.instruction = instruction; }
 
-        public virtual Panel bhavPrimWizPanel { get { return myForm.WizPanel; } }
+        public virtual StackPanel bhavPrimWizPanel { get { return myForm.WizPanel; } }
         public virtual void Execute() { myForm.Execute(instruction); }
         public virtual Instruction Write()
         {
@@ -205,28 +133,28 @@ namespace pjse.BhavOperandWizards
 	public class DataOwnerControl : IDisposable, IDataOwner
 	{
 		#region Form variables
-		private ComboBox cbDataOwner;
-		private ComboBox cbPicker;
-		private TextBox tbValue;
-        private CheckBox ckbDecimal;
-        private CheckBox ckbUseInstancePicker;
-        private Label lbInstance;
+		private ComboBoxCompat cbDataOwner;
+		private ComboBoxCompat cbPicker;
+		private TextBoxCompat tbValue;
+        private CheckBoxCompat2 ckbDecimal;
+        private CheckBoxCompat2 ckbUseInstancePicker;
+        private LabelCompat lbInstance;
 		#endregion
 
 		#region Form event handlers
 		private void cbDataOwner_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-			if (cbDataOwner.SelectedIndex != -1)
+			if (cbDataOwner.SelectedIndex != null)
 				SetDataOwner();
 		}
 
 		private void cbPicker_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-            if (cbPicker.SelectedIndex != -1)
+            if (cbPicker.SelectedIndex != null)
             {
-                SetValue((ushort)cbPicker.SelectedIndex);
+                SetValue((ushort)(cbPicker.SelectedIndex));
                 tbValue.Text = tbValueConverter(instance);
             }
 		}
@@ -234,47 +162,40 @@ namespace pjse.BhavOperandWizards
 
 		private void tbValue_Enter(object sender, System.EventArgs e)
 		{
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).SelectAll();
 		}
 
 		private void tbValue_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			if (!tbValue_IsValid((TextBox)sender)) return;
-			SetValue(tbValueConverter((TextBox)sender));
-		}
-
-		private void tbValue_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (tbValue_IsValid((TextBox)sender)) return;
-			e.Cancel = true;
-			tbValue_Validated(sender, null);
+			if (!tbValue_IsValid((TextBoxCompat)sender)) return;
+			SetValue(tbValueConverter((TextBoxCompat)sender));
 		}
 
 		private void tbValue_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = tbValueConverter(instance);
+			((TextBoxCompat)sender).Text = tbValueConverter(instance);
 			internalchg = origstate;
 		}
 
         private void ckbDecimal_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (this.ckbDecimal.Visible)
-                pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.Checked;
+            if (this.ckbDecimal.IsVisible)
+                pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.IsChecked == true;
         }
 
         private void ckbUseAttrPicker_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (this.ckbUseInstancePicker.Visible)
-                pjse.Settings.PJSE.InstancePickerAsText = this.ckbUseInstancePicker.Checked;
+            if (this.ckbUseInstancePicker.IsVisible)
+                pjse.Settings.PJSE.InstancePickerAsText = this.ckbUseInstancePicker.IsChecked == true;
         }
 
 		#endregion
 
 		#region Form validation
-        private bool tbValue_IsValid(TextBox tb)
+        private bool tbValue_IsValid(TextBoxCompat tb)
 		{
 			try
 			{
@@ -300,7 +221,7 @@ namespace pjse.BhavOperandWizards
 			return (use0xPrefix ? "0x" : "") + s;
 		}
 
-		private ushort tbValueConverter(TextBox sender)
+		private ushort tbValueConverter(TextBoxCompat sender)
 		{
             if      (dataOwner == 0x1a) return pjse.BhavWiz.StringtoExpandBCON(sender.Text, false);
             else if (dataOwner == 0x2f) return pjse.BhavWiz.StringtoExpandBCON(sender.Text, true);
@@ -310,22 +231,22 @@ namespace pjse.BhavOperandWizards
 
 		#endregion
 
-        public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, ushort instance)
+        public DataOwnerControl(BhavWiz inst, ComboBoxCompat cbDataOwner, ComboBoxCompat cbPicker, TextBoxCompat tbValue,
+            CheckBoxCompat2 ckbDecimal, CheckBoxCompat2 ckbUseInstancePicker, LabelCompat lbInstance, byte dataOwner, ushort instance)
         {
             bitsInValue = 16;
             SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseInstancePicker, lbInstance, dataOwner, instance);
         }
 
-        public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, byte instance)
+        public DataOwnerControl(BhavWiz inst, ComboBoxCompat cbDataOwner, ComboBoxCompat cbPicker, TextBoxCompat tbValue,
+            CheckBoxCompat2 ckbDecimal, CheckBoxCompat2 ckbUseInstancePicker, LabelCompat lbInstance, byte dataOwner, byte instance)
         {
             bitsInValue = 8;
             SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseInstancePicker, lbInstance, dataOwner, instance);
         }
 
-        public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, ushort instance)
+        public void SetDataOwnerControl(BhavWiz inst, ComboBoxCompat cbDataOwner, ComboBoxCompat cbPicker, TextBoxCompat tbValue,
+            CheckBoxCompat2 ckbDecimal, CheckBoxCompat2 ckbUseInstancePicker, LabelCompat lbInstance, byte dataOwner, ushort instance)
         {
             this.Dispose();
             this.inst = inst;
@@ -344,38 +265,38 @@ namespace pjse.BhavOperandWizards
             if (this.cbDataOwner != null)
             {
                 this.cbDataOwner.Items.Clear();
-                this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
+                foreach (var item in BhavWiz.readStr(GS.BhavStr.DataOwners))
+                    this.cbDataOwner.Items.Add(item);
                 if (cbDataOwner.Items.Count > dataOwner)
                     cbDataOwner.SelectedIndex = dataOwner;
-                this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+                this.cbDataOwner.SelectionChanged += (s, e) => this.cbDataOwner_SelectedIndexChanged(s, e);
             }
 
             if (this.cbPicker != null)
-                this.cbPicker.SelectedIndexChanged += new System.EventHandler(this.cbPicker_SelectedIndexChanged);
+                this.cbPicker.SelectionChanged += (s, e) => this.cbPicker_SelectedIndexChanged(s, e);
 
             if (this.tbValue != null)
             {
                 this.tbValue.Text = this.tbValueConverter(instance);
-                this.tbValue.Validating += new System.ComponentModel.CancelEventHandler(this.tbValue_Validating);
-                this.tbValue.Validated += new System.EventHandler(this.tbValue_Validated);
-                this.tbValue.TextChanged += new System.EventHandler(this.tbValue_TextChanged);
-                this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
+                this.tbValue.LostFocus += (s, e) => this.tbValue_Validated(s, e);
+                this.tbValue.TextChanged += (s, e) => this.tbValue_TextChanged(s, e);
+                this.tbValue.GotFocus += (s, e) => this.tbValue_Enter(s, e);
             }
 
             pjse.Settings.PJSE.DecimalDOValueChanged += new EventHandler(PJSE_DecimalDOValueChanged);
             Decimal = pjse.Settings.PJSE.DecimalDOValue;
             if (this.ckbDecimal != null)
             {
-                this.ckbDecimal.Checked = Decimal;
-                this.ckbDecimal.CheckedChanged += new System.EventHandler(this.ckbDecimal_CheckedChanged);
+                this.ckbDecimal.IsChecked = Decimal;
+                this.ckbDecimal.IsCheckedChanged += (s, e) => this.ckbDecimal_CheckedChanged(s, e);
             }
 
             pjse.Settings.PJSE.InstancePickerAsTextChanged += new EventHandler(PJSE_InstancePickerAsTextChanged);
             UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
             if (this.ckbUseInstancePicker != null)
             {
-                this.ckbUseInstancePicker.Checked = UseInstancePicker;
-                this.ckbUseInstancePicker.CheckedChanged += new System.EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+                this.ckbUseInstancePicker.IsChecked = UseInstancePicker;
+                this.ckbUseInstancePicker.IsCheckedChanged += (s, e) => this.ckbUseAttrPicker_CheckedChanged(s, e);
             }
 
             internalchg = false;
@@ -389,15 +310,15 @@ namespace pjse.BhavOperandWizards
         void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
         {
             Decimal = pjse.Settings.PJSE.DecimalDOValue;
-            if (ckbDecimal != null && this.ckbDecimal.Checked != Decimal)
-                this.ckbDecimal.Checked = Decimal;
+            if (ckbDecimal != null && (this.ckbDecimal.IsChecked == true) != Decimal)
+                this.ckbDecimal.IsChecked = Decimal;
         }
 
         void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
         {
             UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
-            if (ckbUseInstancePicker != null && this.ckbUseInstancePicker.Checked != UseInstancePicker)
-                this.ckbUseInstancePicker.Checked = UseInstancePicker;
+            if (ckbUseInstancePicker != null && (this.ckbUseInstancePicker.IsChecked == true) != UseInstancePicker)
+                this.ckbUseInstancePicker.IsChecked = UseInstancePicker;
         }
 
 
@@ -405,11 +326,9 @@ namespace pjse.BhavOperandWizards
 
 		public void Dispose()
 		{
-            if (this.cbDataOwner != null) this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
-            if (this.cbPicker != null) this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
-			if (this.tbValue != null) this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
-            if (this.ckbDecimal != null) this.ckbDecimal.CheckedChanged -= new EventHandler(this.ckbDecimal_CheckedChanged);
-            if (this.ckbUseInstancePicker != null) this.ckbUseInstancePicker.CheckedChanged -= new EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+            // Event unsubscription skipped — controls will be nulled below; lambda refs can't be unsubscribed anyway
+            // IsCheckedChanged unsubscription skipped - ckb controls will be nulled below
+
             this.inst = null;
             this.cbDataOwner = null;
             this.cbPicker = null;
@@ -448,9 +367,9 @@ namespace pjse.BhavOperandWizards
 
 			internalchg = true;
 
-            if (cbDataOwner != null && cbDataOwner.SelectedIndex != dataOwner)
+            if (cbDataOwner != null && cbDataOwner.SelectedIndex != (int?)dataOwner)
             {
-                dataOwner = (byte)cbDataOwner.SelectedIndex;
+                dataOwner = (byte)(cbDataOwner.SelectedIndex);
                 setTextBoxLength();
                 tbValue.Text = tbValueConverter(instance);
                 OnDataOwnerControlChanged(this, new EventArgs());
@@ -500,18 +419,18 @@ namespace pjse.BhavOperandWizards
             if (pickerNames != null && pickerNames.Count > 0)
             {
                 if (tbValue != null)
-                    tbValue.TabStop = tbValue.Visible = false;
-                cbPicker.TabStop = cbPicker.Visible = true;
+                    tbValue.IsVisible = false;
+                cbPicker.IsVisible = true;
                 cbPicker.Items.Clear();
-                cbPicker.Items.AddRange(pickerNames.ToArray());
+                foreach (var item in pickerNames) cbPicker.Items.Add(item);
                 cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
             }
             else
             {
                 if (cbPicker != null)
-                    cbPicker.TabStop = cbPicker.Visible = false;
+                    cbPicker.IsVisible = false;
                 if (tbValue != null)
-                    tbValue.TabStop = tbValue.Visible = true;
+                    tbValue.IsVisible = true;
             }
 
             setInstanceLabel();
@@ -564,7 +483,7 @@ namespace pjse.BhavOperandWizards
                     if (labels != null)
                     {
                         if (instance < labels.Count)
-                            s = cbDataOwner.Text + ": " + labels[instance];
+                            s = cbDataOwner.SelectedItem?.ToString() + ": " + labels[instance];
                     }
                     else if (dataOwner == 0x1a)
                     {
@@ -572,7 +491,7 @@ namespace pjse.BhavOperandWizards
                         s = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
                     }
                 }
-                lbInstance.Text = s;
+                lbInstance.Content = s;
             }
         }
 

@@ -22,7 +22,8 @@ using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x0024
@@ -30,79 +31,78 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 	/// <summary>
 	/// Summary description for BhavInstruction.
 	/// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
 	{
 		#region Form variables
 
-		internal System.Windows.Forms.Panel pnWiz0x0024;
-		private System.Windows.Forms.ComboBox cbType;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.Label lbMessage;
-		private System.Windows.Forms.Label lbTitle;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.ComboBox cbScope;
-		private System.Windows.Forms.Label lbIconType;
-		private System.Windows.Forms.CheckBox cbBlockBHAV;
-        private System.Windows.Forms.CheckBox cbBlockSim;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.CheckBox cbUTMessage;
-		private System.Windows.Forms.CheckBox cbUTButton1;
-		private System.Windows.Forms.CheckBox cbUTButton2;
-		private System.Windows.Forms.CheckBox cbUTButton3;
-		private System.Windows.Forms.CheckBox cbUTTitle;
-		private System.Windows.Forms.ComboBox cbIconType;
-		private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbIconID;
-		private System.Windows.Forms.Button btnStrIcon;
-		private System.Windows.Forms.Panel pnTNS;
-		private System.Windows.Forms.TextBox tbPriority;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.TextBox tbTimeout;
-		private System.Windows.Forms.Label lbTnsStyle;
-		private System.Windows.Forms.ComboBox cbTnsStyle;
-		private System.Windows.Forms.Panel pnTempVar;
-		private System.Windows.Forms.Label lbTempVar;
-		private System.Windows.Forms.Panel pnLocalVar;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.ComboBox cbTempVar;
-		private System.Windows.Forms.ComboBox cbTVMessage;
-		private System.Windows.Forms.ComboBox cbTVButton1;
-		private System.Windows.Forms.ComboBox cbTVButton2;
-		private System.Windows.Forms.ComboBox cbTVButton3;
-		private System.Windows.Forms.ComboBox cbTVTitle;
-		private System.Windows.Forms.TextBox tbLocalVar;
-		private System.Windows.Forms.TextBox tbMessage;
-		private System.Windows.Forms.TextBox tbButton1;
-		private System.Windows.Forms.TextBox tbButton2;
-		private System.Windows.Forms.TextBox tbButton3;
-		private System.Windows.Forms.TextBox tbTitle;
-		private System.Windows.Forms.TextBox tbStrMessage;
-		private System.Windows.Forms.TextBox tbStrButton1;
-		private System.Windows.Forms.TextBox tbStrButton2;
-		private System.Windows.Forms.TextBox tbStrButton3;
-		private System.Windows.Forms.TextBox tbStrTitle;
-		private System.Windows.Forms.Label lbButton3;
-		private System.Windows.Forms.Label lbButton2;
-		private System.Windows.Forms.Label lbButton1;
-        private Button btnDefTitle;
-        private Button btnDefButton3;
-        private Button btnDefButton2;
-        private Button btnDefButton1;
-        private Button btnDefMessage;
-        private Button btnStrTitle;
-        private Button btnStrButton3;
-        private Button btnStrButton2;
-        private Button btnStrButton1;
-        private Button btnStrMessage;
+		internal StackPanel pnWiz0x0024;
+		private ComboBoxCompat cbType;
+		private LabelCompat label1;
+		private LabelCompat label2;
+		private LabelCompat lbType;
+		private LabelCompat lbMessage;
+		private LabelCompat lbTitle;
+		private LabelCompat label3;
+		private ComboBoxCompat cbScope;
+		private LabelCompat lbIconType;
+		private CheckBoxCompat2 cbBlockBHAV;
+        private CheckBoxCompat2 cbBlockSim;
+		private ButtonCompat button1;
+		private LabelCompat label4;
+		private CheckBoxCompat2 cbUTMessage;
+		private CheckBoxCompat2 cbUTButton1;
+		private CheckBoxCompat2 cbUTButton2;
+		private CheckBoxCompat2 cbUTButton3;
+		private CheckBoxCompat2 cbUTTitle;
+		private ComboBoxCompat cbIconType;
+		private LabelCompat label5;
+        private TextBoxCompat tbIconID;
+		private ButtonCompat btnStrIcon;
+		private StackPanel pnTNS;
+		private TextBoxCompat tbPriority;
+		private LabelCompat label6;
+		private LabelCompat label7;
+		private TextBoxCompat tbTimeout;
+		private LabelCompat lbTnsStyle;
+		private ComboBoxCompat cbTnsStyle;
+		private StackPanel pnTempVar;
+		private LabelCompat lbTempVar;
+		private StackPanel pnLocalVar;
+		private LabelCompat label8;
+		private ComboBoxCompat cbTempVar;
+		private ComboBoxCompat cbTVMessage;
+		private ComboBoxCompat cbTVButton1;
+		private ComboBoxCompat cbTVButton2;
+		private ComboBoxCompat cbTVButton3;
+		private ComboBoxCompat cbTVTitle;
+		private TextBoxCompat tbLocalVar;
+		private TextBoxCompat tbMessage;
+		private TextBoxCompat tbButton1;
+		private TextBoxCompat tbButton2;
+		private TextBoxCompat tbButton3;
+		private TextBoxCompat tbTitle;
+		private TextBoxCompat tbStrMessage;
+		private TextBoxCompat tbStrButton1;
+		private TextBoxCompat tbStrButton2;
+		private TextBoxCompat tbStrButton3;
+		private TextBoxCompat tbStrTitle;
+		private LabelCompat lbButton3;
+		private LabelCompat lbButton2;
+		private LabelCompat lbButton1;
+        private ButtonCompat btnDefTitle;
+        private ButtonCompat btnDefButton3;
+        private ButtonCompat btnDefButton2;
+        private ButtonCompat btnDefButton1;
+        private ButtonCompat btnDefMessage;
+        private ButtonCompat btnStrTitle;
+        private ButtonCompat btnStrButton3;
+        private ButtonCompat btnStrButton2;
+        private ButtonCompat btnStrButton1;
+        private ButtonCompat btnStrMessage;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+				#endregion
 
 		public UI()
 		{
@@ -127,25 +127,25 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			cbIconType.Items.Clear();
 			cbIconType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DialogIcon).ToArray());
 
-			Button[] b = { btnStrMessage ,btnStrButton1 ,btnStrButton2 ,btnStrButton3 ,btnStrTitle ,btnStrIcon ,};
+			ButtonCompat[] b = { btnStrMessage ,btnStrButton1 ,btnStrButton2 ,btnStrButton3 ,btnStrTitle ,btnStrIcon ,};
 			alStrBtn = new ArrayList(b);
 
-			Button[] bd = { btnDefMessage ,btnDefButton1 ,btnDefButton2 ,btnDefButton3 ,btnDefTitle ,};
+			ButtonCompat[] bd = { btnDefMessage ,btnDefButton1 ,btnDefButton2 ,btnDefButton3 ,btnDefTitle ,};
 			alDefBtn = new ArrayList(bd);
 
-			TextBox[] t = { tbStrMessage ,tbStrButton1 ,tbStrButton2 ,tbStrButton3 ,tbStrTitle ,};
+			TextBoxCompat[] t = { tbStrMessage ,tbStrButton1 ,tbStrButton2 ,tbStrButton3 ,tbStrTitle ,};
 			alTextBox = new ArrayList(t);
 
-			CheckBox[] c = { cbUTMessage ,cbUTButton1 ,cbUTButton2 ,cbUTButton3 ,cbUTTitle ,};
+			CheckBoxCompat2[] c = { cbUTMessage ,cbUTButton1 ,cbUTButton2 ,cbUTButton3 ,cbUTTitle ,};
 			alCBUseTemp = new ArrayList(c);
 
-			ComboBox[] ct = { cbTVMessage ,cbTVButton1 ,cbTVButton2 ,cbTVButton3 ,cbTVTitle ,};
+			ComboBoxCompat[] ct = { cbTVMessage ,cbTVButton1 ,cbTVButton2 ,cbTVButton3 ,cbTVTitle ,};
 			alCBTempVar = new ArrayList(ct);
 
-			TextBox[] tb8 = { tbPriority ,tbTimeout ,tbLocalVar ,tbIconID ,};
+			TextBoxCompat[] tb8 = { tbPriority ,tbTimeout ,tbLocalVar ,tbIconID ,};
 			alHex8 = new ArrayList(tb8);
 
-			TextBox[] tb16 = { tbMessage ,tbButton1 ,tbButton2 ,tbButton3 ,tbTitle ,};
+			TextBoxCompat[] tb16 = { tbMessage ,tbButton1 ,tbButton2 ,tbButton3 ,tbTitle ,};
 			alHex16 = new ArrayList(tb16);
 		}
 
@@ -153,16 +153,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected void Dispose(bool disposing)
 		{
 			if( disposing )
 			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
 			}
-			base.Dispose( disposing );
+			// base.Dispose(disposing) not available on Avalonia Window
 
 			inst = null;
 		}
@@ -200,7 +196,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			if (alHex8.IndexOf(sender) < 0)
 				throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			try { Convert.ToByte(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -209,7 +205,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			if (alHex16.IndexOf(sender) < 0)
 				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			try { Convert.ToUInt16(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -224,7 +220,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (dialog != cbType.SelectedIndex)
 				cbType.SelectedIndex = (cbType.Items.Count > dialog) ? dialog : -1;
 
-            this.lbType.Text = typeDescriptions.Count > dialog ? typeDescriptions[dialog] : "";
+            this.lbType.Content = typeDescriptions.Count > dialog ? typeDescriptions[dialog] : "";
 
 			bool tvState = false;
 			bool tnsState = false;
@@ -276,19 +272,19 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 					break;
 			}
 
-			this.pnTempVar.Visible  = tvState;
-			this.pnTNS.Visible      = tnsState;
-            this.pnLocalVar.Visible = lvState;
-            this.tbStrMessage.Visible = !gtState;
-            this.label3.Visible = !gtState;
-            this.label4.Visible = !gtState;
-            this.lbIconType.Visible = !gtState;
-            this.cbUTMessage.Visible = !gtState;
-            this.cbScope.Visible = !gtState;
-            this.cbBlockSim.Visible = !gtState;
-            this.cbBlockBHAV.Visible = !gtState;
-            this.cbIconType.Visible = !gtState;
-            this.btnStrMessage.Visible = !gtState;
+			this.pnTempVar.IsVisible  = tvState;
+			this.pnTNS.IsVisible      = tnsState;
+            this.pnLocalVar.IsVisible = lvState;
+            this.tbStrMessage.IsVisible = !gtState;
+            this.label3.IsVisible = !gtState;
+            this.label4.IsVisible = !gtState;
+            this.lbIconType.IsVisible = !gtState;
+            this.cbUTMessage.IsVisible = !gtState;
+            this.cbScope.IsVisible = !gtState;
+            this.cbBlockSim.IsVisible = !gtState;
+            this.cbBlockBHAV.IsVisible = !gtState;
+            this.cbIconType.IsVisible = !gtState;
+            this.btnStrMessage.IsVisible = !gtState;
             
 			internalchg = false;
 
@@ -297,9 +293,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
                 setString(i, messages[i]);
 
             if (!gtState) 
-                this.lbMessage.Text = "Message";
+                this.lbMessage.Content = "Message";
             else
-                this.lbMessage.Text = "GameTip";
+                this.lbMessage.Content = "GameTip";
 		}
 
 		private void setTnsStyle(int newStyle)
@@ -337,8 +333,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			if (cbIconType.SelectedIndex != iconType)
                 cbIconType.SelectedIndex = (iconType >= 0  && iconType < cbIconType.Items.Count) ? iconType : -1;
-			tbIconID.Enabled = (iconType == 3);
-			btnStrIcon.Enabled = (iconType == 4);
+			tbIconID.IsEnabled = (iconType == 3);
+			btnStrIcon.IsEnabled = (iconType == 4);
 
 			internalchg = false;
 		}
@@ -393,41 +389,41 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (!states[which])
 			{
 				internalchg = true;
-				((ComboBox)alCBTempVar[which]).SelectedIndex = -1;
-				((TextBox)alHex16[which]).Text = "";
+				((ComboBoxCompat)alCBTempVar[which]).SelectedIndex = -1;
+				((TextBoxCompat)alHex16[which]).Text = "";
 				internalchg = false;
 
-				((TextBox)alTextBox[which]).Text = "";
+				((TextBoxCompat)alTextBox[which]).Text = "";
 
-				((ComboBox)this.alCBTempVar[which]).Enabled =
-					((CheckBox)this.alCBUseTemp[which]).Enabled =
-					((TextBox)alHex16[which]).Enabled =
-					((Button)alStrBtn[which]).Enabled =
-					((Button)alDefBtn[which]).Enabled =
-					((TextBox)alTextBox[which]).Enabled =
+				((ComboBoxCompat)this.alCBTempVar[which]).IsEnabled =
+					((CheckBoxCompat2)this.alCBUseTemp[which]).IsEnabled =
+					((TextBoxCompat)alHex16[which]).IsEnabled =
+					((ButtonCompat)alStrBtn[which]).IsEnabled =
+					((ButtonCompat)alDefBtn[which]).IsEnabled =
+					((TextBoxCompat)alTextBox[which]).IsEnabled =
 					false;
 
 				return;
 			}
 
-			((CheckBox)this.alCBUseTemp[which]).Enabled = true;
+			((CheckBoxCompat2)this.alCBUseTemp[which]).IsEnabled = true;
 
 			if (useTemp[which])
 			{
-				ComboBox c = (ComboBox)alCBTempVar[which];
+				ComboBoxCompat c = (ComboBoxCompat)alCBTempVar[which];
 				internalchg = true;
 				c.SelectedIndex = c.Items.Count > strnum ? strnum : -1;
-				((TextBox)alHex16[which]).Text = "";
+				((TextBoxCompat)alHex16[which]).Text = "";
 				internalchg = false;
 
-				((TextBox)alTextBox[which]).Text = "";
+				((TextBoxCompat)alTextBox[which]).Text = "";
 
-				((CheckBox)this.alCBUseTemp[which]).Checked =
-					((ComboBox)this.alCBTempVar[which]).Enabled = true;
-				((TextBox)alHex16[which]).Enabled =
-					((Button)alStrBtn[which]).Enabled =
-					((Button)alDefBtn[which]).Enabled =
-					((TextBox)alTextBox[which]).Enabled =
+				((CheckBoxCompat2)this.alCBUseTemp[which]).Checked =
+					((ComboBoxCompat)this.alCBTempVar[which]).IsEnabled = true;
+				((TextBoxCompat)alHex16[which]).IsEnabled =
+					((ButtonCompat)alStrBtn[which]).IsEnabled =
+					((ButtonCompat)alDefBtn[which]).IsEnabled =
+					((TextBoxCompat)alTextBox[which]).IsEnabled =
 					false;
 			}
 			else
@@ -435,23 +431,23 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				if (!internalchg)
 				{
 					internalchg = true;
-					((ComboBox)this.alCBTempVar[which]).SelectedIndex = -1;
-					((TextBox)alHex16[which]).Text = "0x" + SimPe.Helper.HexString((ushort)strnum);
+					((ComboBoxCompat)this.alCBTempVar[which]).SelectedIndex = -1;
+					((TextBoxCompat)alHex16[which]).Text = "0x" + SimPe.Helper.HexString((ushort)strnum);
 					internalchg = false;
 				}
 
-				((TextBox)alTextBox[which]).Text = (strnum <= 0)
+				((TextBoxCompat)alTextBox[which]).Text = (strnum <= 0)
                     ? "[" + pjse.Localization.GetString("none") + "]"
 					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, (ushort)(strnum - 1), -1, pjse.Detail.ErrorNames)
 					;
 
-				((CheckBox)this.alCBUseTemp[which]).Checked =
-					((ComboBox)this.alCBTempVar[which]).Enabled = false;
-				((TextBox)alHex16[which]).Enabled =
-					((Button)alStrBtn[which]).Enabled =
-					((TextBox)alTextBox[which]).Enabled =
+				((CheckBoxCompat2)this.alCBUseTemp[which]).Checked =
+					((ComboBoxCompat)this.alCBTempVar[which]).IsEnabled = false;
+				((TextBoxCompat)alHex16[which]).IsEnabled =
+					((ButtonCompat)alStrBtn[which]).IsEnabled =
+					((TextBoxCompat)alTextBox[which]).IsEnabled =
 					true;
-				((Button)alDefBtn[which]).Enabled = (strnum != 0);
+				((ButtonCompat)alDefBtn[which]).IsEnabled = (strnum != 0);
 			}
 		}
 
@@ -531,7 +527,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWiz0x0024; } }
+        public StackPanel WizPanel { get { return this.pnWiz0x0024; } }
 
         public void Execute(Instruction inst)
 		{
@@ -640,628 +636,301 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWiz0x0024 = new System.Windows.Forms.Panel();
-            this.btnDefTitle = new System.Windows.Forms.Button();
-            this.btnDefButton3 = new System.Windows.Forms.Button();
-            this.btnDefButton2 = new System.Windows.Forms.Button();
-            this.btnDefButton1 = new System.Windows.Forms.Button();
-            this.btnDefMessage = new System.Windows.Forms.Button();
-            this.btnStrTitle = new System.Windows.Forms.Button();
-            this.btnStrButton3 = new System.Windows.Forms.Button();
-            this.btnStrButton2 = new System.Windows.Forms.Button();
-            this.btnStrButton1 = new System.Windows.Forms.Button();
-            this.btnStrMessage = new System.Windows.Forms.Button();
-            this.tbStrTitle = new System.Windows.Forms.TextBox();
-            this.tbStrButton3 = new System.Windows.Forms.TextBox();
-            this.tbStrButton2 = new System.Windows.Forms.TextBox();
-            this.tbTitle = new System.Windows.Forms.TextBox();
-            this.tbMessage = new System.Windows.Forms.TextBox();
-            this.tbButton3 = new System.Windows.Forms.TextBox();
-            this.cbTVMessage = new System.Windows.Forms.ComboBox();
-            this.tbButton2 = new System.Windows.Forms.TextBox();
-            this.lbMessage = new System.Windows.Forms.Label();
-            this.tbButton1 = new System.Windows.Forms.TextBox();
-            this.cbBlockBHAV = new System.Windows.Forms.CheckBox();
-            this.cbBlockSim = new System.Windows.Forms.CheckBox();
-            this.cbUTTitle = new System.Windows.Forms.CheckBox();
-            this.cbUTButton3 = new System.Windows.Forms.CheckBox();
-            this.lbIconType = new System.Windows.Forms.Label();
-            this.cbUTButton2 = new System.Windows.Forms.CheckBox();
-            this.cbIconType = new System.Windows.Forms.ComboBox();
-            this.cbUTButton1 = new System.Windows.Forms.CheckBox();
-            this.tbStrButton1 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbStrMessage = new System.Windows.Forms.TextBox();
-            this.tbIconID = new System.Windows.Forms.TextBox();
-            this.btnStrIcon = new System.Windows.Forms.Button();
-            this.cbTVTitle = new System.Windows.Forms.ComboBox();
-            this.cbTVButton3 = new System.Windows.Forms.ComboBox();
-            this.cbTVButton2 = new System.Windows.Forms.ComboBox();
-            this.cbTVButton1 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cbUTMessage = new System.Windows.Forms.CheckBox();
-            this.cbScope = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbTitle = new System.Windows.Forms.Label();
-            this.lbButton3 = new System.Windows.Forms.Label();
-            this.lbButton2 = new System.Windows.Forms.Label();
-            this.lbButton1 = new System.Windows.Forms.Label();
-            this.lbType = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbType = new System.Windows.Forms.ComboBox();
-            this.pnLocalVar = new System.Windows.Forms.Panel();
-            this.tbLocalVar = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.pnTempVar = new System.Windows.Forms.Panel();
-            this.cbTempVar = new System.Windows.Forms.ComboBox();
-            this.lbTempVar = new System.Windows.Forms.Label();
-            this.pnTNS = new System.Windows.Forms.Panel();
-            this.tbPriority = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbTimeout = new System.Windows.Forms.TextBox();
-            this.lbTnsStyle = new System.Windows.Forms.Label();
-            this.cbTnsStyle = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.pnWiz0x0024.SuspendLayout();
-            this.pnLocalVar.SuspendLayout();
-            this.pnTempVar.SuspendLayout();
-            this.pnTNS.SuspendLayout();
-            this.SuspendLayout();
+		{            this.pnWiz0x0024 = new StackPanel();
+            this.btnDefTitle = new ButtonCompat();
+            this.btnDefButton3 = new ButtonCompat();
+            this.btnDefButton2 = new ButtonCompat();
+            this.btnDefButton1 = new ButtonCompat();
+            this.btnDefMessage = new ButtonCompat();
+            this.btnStrTitle = new ButtonCompat();
+            this.btnStrButton3 = new ButtonCompat();
+            this.btnStrButton2 = new ButtonCompat();
+            this.btnStrButton1 = new ButtonCompat();
+            this.btnStrMessage = new ButtonCompat();
+            this.tbStrTitle = new TextBoxCompat();
+            this.tbStrButton3 = new TextBoxCompat();
+            this.tbStrButton2 = new TextBoxCompat();
+            this.tbTitle = new TextBoxCompat();
+            this.tbMessage = new TextBoxCompat();
+            this.tbButton3 = new TextBoxCompat();
+            this.cbTVMessage = new ComboBoxCompat();
+            this.tbButton2 = new TextBoxCompat();
+            this.lbMessage = new LabelCompat();
+            this.tbButton1 = new TextBoxCompat();
+            this.cbBlockBHAV = new CheckBoxCompat2();
+            this.cbBlockSim = new CheckBoxCompat2();
+            this.cbUTTitle = new CheckBoxCompat2();
+            this.cbUTButton3 = new CheckBoxCompat2();
+            this.lbIconType = new LabelCompat();
+            this.cbUTButton2 = new CheckBoxCompat2();
+            this.cbIconType = new ComboBoxCompat();
+            this.cbUTButton1 = new CheckBoxCompat2();
+            this.tbStrButton1 = new TextBoxCompat();
+            this.label5 = new LabelCompat();
+            this.tbStrMessage = new TextBoxCompat();
+            this.tbIconID = new TextBoxCompat();
+            this.btnStrIcon = new ButtonCompat();
+            this.cbTVTitle = new ComboBoxCompat();
+            this.cbTVButton3 = new ComboBoxCompat();
+            this.cbTVButton2 = new ComboBoxCompat();
+            this.cbTVButton1 = new ComboBoxCompat();
+            this.label4 = new LabelCompat();
+            this.cbUTMessage = new CheckBoxCompat2();
+            this.cbScope = new ComboBoxCompat();
+            this.label3 = new LabelCompat();
+            this.lbTitle = new LabelCompat();
+            this.lbButton3 = new LabelCompat();
+            this.lbButton2 = new LabelCompat();
+            this.lbButton1 = new LabelCompat();
+            this.lbType = new LabelCompat();
+            this.label1 = new LabelCompat();
+            this.cbType = new ComboBoxCompat();
+            this.pnLocalVar = new StackPanel();
+            this.tbLocalVar = new TextBoxCompat();
+            this.label8 = new LabelCompat();
+            this.pnTempVar = new StackPanel();
+            this.cbTempVar = new ComboBoxCompat();
+            this.lbTempVar = new LabelCompat();
+            this.pnTNS = new StackPanel();
+            this.tbPriority = new TextBoxCompat();
+            this.label6 = new LabelCompat();
+            this.label7 = new LabelCompat();
+            this.tbTimeout = new TextBoxCompat();
+            this.lbTnsStyle = new LabelCompat();
+            this.cbTnsStyle = new ComboBoxCompat();
+            this.label2 = new LabelCompat();
+            this.button1 = new ButtonCompat();            // pnWiz0x0024
             // 
-            // pnWiz0x0024
-            // 
-            this.pnWiz0x0024.Controls.Add(this.btnDefTitle);
-            this.pnWiz0x0024.Controls.Add(this.btnDefButton3);
-            this.pnWiz0x0024.Controls.Add(this.btnDefButton2);
-            this.pnWiz0x0024.Controls.Add(this.btnDefButton1);
-            this.pnWiz0x0024.Controls.Add(this.btnDefMessage);
-            this.pnWiz0x0024.Controls.Add(this.btnStrTitle);
-            this.pnWiz0x0024.Controls.Add(this.btnStrButton3);
-            this.pnWiz0x0024.Controls.Add(this.btnStrButton2);
-            this.pnWiz0x0024.Controls.Add(this.btnStrButton1);
-            this.pnWiz0x0024.Controls.Add(this.btnStrMessage);
-            this.pnWiz0x0024.Controls.Add(this.tbStrTitle);
-            this.pnWiz0x0024.Controls.Add(this.tbStrButton3);
-            this.pnWiz0x0024.Controls.Add(this.tbStrButton2);
-            this.pnWiz0x0024.Controls.Add(this.tbTitle);
-            this.pnWiz0x0024.Controls.Add(this.tbMessage);
-            this.pnWiz0x0024.Controls.Add(this.tbButton3);
-            this.pnWiz0x0024.Controls.Add(this.cbTVMessage);
-            this.pnWiz0x0024.Controls.Add(this.tbButton2);
-            this.pnWiz0x0024.Controls.Add(this.lbMessage);
-            this.pnWiz0x0024.Controls.Add(this.tbButton1);
-            this.pnWiz0x0024.Controls.Add(this.cbBlockBHAV);
-            this.pnWiz0x0024.Controls.Add(this.cbBlockSim);
-            this.pnWiz0x0024.Controls.Add(this.cbUTTitle);
-            this.pnWiz0x0024.Controls.Add(this.cbUTButton3);
-            this.pnWiz0x0024.Controls.Add(this.lbIconType);
-            this.pnWiz0x0024.Controls.Add(this.cbUTButton2);
-            this.pnWiz0x0024.Controls.Add(this.cbIconType);
-            this.pnWiz0x0024.Controls.Add(this.cbUTButton1);
-            this.pnWiz0x0024.Controls.Add(this.tbStrButton1);
-            this.pnWiz0x0024.Controls.Add(this.label5);
-            this.pnWiz0x0024.Controls.Add(this.tbStrMessage);
-            this.pnWiz0x0024.Controls.Add(this.tbIconID);
-            this.pnWiz0x0024.Controls.Add(this.btnStrIcon);
-            this.pnWiz0x0024.Controls.Add(this.cbTVTitle);
-            this.pnWiz0x0024.Controls.Add(this.cbTVButton3);
-            this.pnWiz0x0024.Controls.Add(this.cbTVButton2);
-            this.pnWiz0x0024.Controls.Add(this.cbTVButton1);
-            this.pnWiz0x0024.Controls.Add(this.label4);
-            this.pnWiz0x0024.Controls.Add(this.cbUTMessage);
-            this.pnWiz0x0024.Controls.Add(this.cbScope);
-            this.pnWiz0x0024.Controls.Add(this.label3);
-            this.pnWiz0x0024.Controls.Add(this.lbTitle);
-            this.pnWiz0x0024.Controls.Add(this.lbButton3);
-            this.pnWiz0x0024.Controls.Add(this.lbButton2);
-            this.pnWiz0x0024.Controls.Add(this.lbButton1);
-            this.pnWiz0x0024.Controls.Add(this.lbType);
-            this.pnWiz0x0024.Controls.Add(this.label1);
-            this.pnWiz0x0024.Controls.Add(this.cbType);
-            this.pnWiz0x0024.Controls.Add(this.pnLocalVar);
-            this.pnWiz0x0024.Controls.Add(this.pnTempVar);
-            this.pnWiz0x0024.Controls.Add(this.pnTNS);
-            resources.ApplyResources(this.pnWiz0x0024, "pnWiz0x0024");
-            this.pnWiz0x0024.Name = "pnWiz0x0024";
-            // 
+            this.pnWiz0x0024.Children.Add(this.btnDefTitle);
+            this.pnWiz0x0024.Children.Add(this.btnDefButton3);
+            this.pnWiz0x0024.Children.Add(this.btnDefButton2);
+            this.pnWiz0x0024.Children.Add(this.btnDefButton1);
+            this.pnWiz0x0024.Children.Add(this.btnDefMessage);
+            this.pnWiz0x0024.Children.Add(this.btnStrTitle);
+            this.pnWiz0x0024.Children.Add(this.btnStrButton3);
+            this.pnWiz0x0024.Children.Add(this.btnStrButton2);
+            this.pnWiz0x0024.Children.Add(this.btnStrButton1);
+            this.pnWiz0x0024.Children.Add(this.btnStrMessage);
+            this.pnWiz0x0024.Children.Add(this.tbStrTitle);
+            this.pnWiz0x0024.Children.Add(this.tbStrButton3);
+            this.pnWiz0x0024.Children.Add(this.tbStrButton2);
+            this.pnWiz0x0024.Children.Add(this.tbTitle);
+            this.pnWiz0x0024.Children.Add(this.tbMessage);
+            this.pnWiz0x0024.Children.Add(this.tbButton3);
+            this.pnWiz0x0024.Children.Add(this.cbTVMessage);
+            this.pnWiz0x0024.Children.Add(this.tbButton2);
+            this.pnWiz0x0024.Children.Add(this.lbMessage);
+            this.pnWiz0x0024.Children.Add(this.tbButton1);
+            this.pnWiz0x0024.Children.Add(this.cbBlockBHAV);
+            this.pnWiz0x0024.Children.Add(this.cbBlockSim);
+            this.pnWiz0x0024.Children.Add(this.cbUTTitle);
+            this.pnWiz0x0024.Children.Add(this.cbUTButton3);
+            this.pnWiz0x0024.Children.Add(this.lbIconType);
+            this.pnWiz0x0024.Children.Add(this.cbUTButton2);
+            this.pnWiz0x0024.Children.Add(this.cbIconType);
+            this.pnWiz0x0024.Children.Add(this.cbUTButton1);
+            this.pnWiz0x0024.Children.Add(this.tbStrButton1);
+            this.pnWiz0x0024.Children.Add(this.label5);
+            this.pnWiz0x0024.Children.Add(this.tbStrMessage);
+            this.pnWiz0x0024.Children.Add(this.tbIconID);
+            this.pnWiz0x0024.Children.Add(this.btnStrIcon);
+            this.pnWiz0x0024.Children.Add(this.cbTVTitle);
+            this.pnWiz0x0024.Children.Add(this.cbTVButton3);
+            this.pnWiz0x0024.Children.Add(this.cbTVButton2);
+            this.pnWiz0x0024.Children.Add(this.cbTVButton1);
+            this.pnWiz0x0024.Children.Add(this.label4);
+            this.pnWiz0x0024.Children.Add(this.cbUTMessage);
+            this.pnWiz0x0024.Children.Add(this.cbScope);
+            this.pnWiz0x0024.Children.Add(this.label3);
+            this.pnWiz0x0024.Children.Add(this.lbTitle);
+            this.pnWiz0x0024.Children.Add(this.lbButton3);
+            this.pnWiz0x0024.Children.Add(this.lbButton2);
+            this.pnWiz0x0024.Children.Add(this.lbButton1);
+            this.pnWiz0x0024.Children.Add(this.lbType);
+            this.pnWiz0x0024.Children.Add(this.label1);
+            this.pnWiz0x0024.Children.Add(this.cbType);
+            this.pnWiz0x0024.Children.Add(this.pnLocalVar);
+            this.pnWiz0x0024.Children.Add(this.pnTempVar);
+            this.pnWiz0x0024.Children.Add(this.pnTNS);            this.pnWiz0x0024.Name = "pnWiz0x0024";
             // btnDefTitle
-            // 
-            resources.ApplyResources(this.btnDefTitle, "btnDefTitle");
-            this.btnDefTitle.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDefTitle.Name = "btnDefTitle";
-            this.btnDefTitle.Click += new System.EventHandler(this.btnDef_Click);
-            // 
+            this.btnDefTitle.Click += (s, e) => this.btnDef_Click(s, e);
             // btnDefButton3
-            // 
-            resources.ApplyResources(this.btnDefButton3, "btnDefButton3");
-            this.btnDefButton3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDefButton3.Name = "btnDefButton3";
-            this.btnDefButton3.Click += new System.EventHandler(this.btnDef_Click);
-            // 
+            this.btnDefButton3.Click += (s, e) => this.btnDef_Click(s, e);
             // btnDefButton2
-            // 
-            resources.ApplyResources(this.btnDefButton2, "btnDefButton2");
-            this.btnDefButton2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDefButton2.Name = "btnDefButton2";
-            this.btnDefButton2.Click += new System.EventHandler(this.btnDef_Click);
-            // 
+            this.btnDefButton2.Click += (s, e) => this.btnDef_Click(s, e);
             // btnDefButton1
-            // 
-            resources.ApplyResources(this.btnDefButton1, "btnDefButton1");
-            this.btnDefButton1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDefButton1.Name = "btnDefButton1";
-            this.btnDefButton1.Click += new System.EventHandler(this.btnDef_Click);
-            // 
+            this.btnDefButton1.Click += (s, e) => this.btnDef_Click(s, e);
             // btnDefMessage
-            // 
-            resources.ApplyResources(this.btnDefMessage, "btnDefMessage");
-            this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDefMessage.Name = "btnDefMessage";
-            this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
-            // 
+            this.btnDefMessage.Click += (s, e) => this.btnDef_Click(s, e);
             // btnStrTitle
-            // 
-            resources.ApplyResources(this.btnStrTitle, "btnStrTitle");
-            this.btnStrTitle.Name = "btnStrTitle";
-            this.btnStrTitle.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //            this.btnStrTitle.Name = "btnStrTitle";
+            this.btnStrTitle.Click += (s, e) => this.btnStr_Click(s, e);
             // btnStrButton3
-            // 
-            resources.ApplyResources(this.btnStrButton3, "btnStrButton3");
-            this.btnStrButton3.Name = "btnStrButton3";
-            this.btnStrButton3.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //            this.btnStrButton3.Name = "btnStrButton3";
+            this.btnStrButton3.Click += (s, e) => this.btnStr_Click(s, e);
             // btnStrButton2
-            // 
-            resources.ApplyResources(this.btnStrButton2, "btnStrButton2");
-            this.btnStrButton2.Name = "btnStrButton2";
-            this.btnStrButton2.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //            this.btnStrButton2.Name = "btnStrButton2";
+            this.btnStrButton2.Click += (s, e) => this.btnStr_Click(s, e);
             // btnStrButton1
-            // 
-            resources.ApplyResources(this.btnStrButton1, "btnStrButton1");
-            this.btnStrButton1.Name = "btnStrButton1";
-            this.btnStrButton1.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //            this.btnStrButton1.Name = "btnStrButton1";
+            this.btnStrButton1.Click += (s, e) => this.btnStr_Click(s, e);
             // btnStrMessage
-            // 
-            resources.ApplyResources(this.btnStrMessage, "btnStrMessage");
-            this.btnStrMessage.Name = "btnStrMessage";
-            this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //            this.btnStrMessage.Name = "btnStrMessage";
+            this.btnStrMessage.Click += (s, e) => this.btnStr_Click(s, e);
             // tbStrTitle
+            //this.tbStrTitle.Name = "tbStrTitle";
+            this.tbStrTitle.IsReadOnly = true;
+            //this.tbStrButton3.Name = "tbStrButton3";
+            this.tbStrButton3.IsReadOnly = true;
+            //this.tbStrButton2.Name = "tbStrButton2";
+            this.tbStrButton2.IsReadOnly = true;
+            //            this.tbTitle.Name = "tbTitle";
+            this.tbTitle.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbTitle.LostFocus += (s, e) => this.hex16_Validated(s, e);
+            //            this.tbMessage.Name = "tbMessage";
+            this.tbMessage.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbMessage.LostFocus += (s, e) => this.hex16_Validated(s, e);
+            //            this.tbButton3.Name = "tbButton3";
+            this.tbButton3.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbButton3.LostFocus += (s, e) => this.hex16_Validated(s, e);
             // 
-            this.tbStrTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbStrTitle, "tbStrTitle");
-            this.tbStrTitle.Name = "tbStrTitle";
-            this.tbStrTitle.ReadOnly = true;
-            this.tbStrTitle.TabStop = false;
-            // 
-            // tbStrButton3
-            // 
-            this.tbStrButton3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbStrButton3, "tbStrButton3");
-            this.tbStrButton3.Name = "tbStrButton3";
-            this.tbStrButton3.ReadOnly = true;
-            this.tbStrButton3.TabStop = false;
-            // 
-            // tbStrButton2
-            // 
-            this.tbStrButton2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbStrButton2, "tbStrButton2");
-            this.tbStrButton2.Name = "tbStrButton2";
-            this.tbStrButton2.ReadOnly = true;
-            this.tbStrButton2.TabStop = false;
-            // 
-            // tbTitle
-            // 
-            resources.ApplyResources(this.tbTitle, "tbTitle");
-            this.tbTitle.Name = "tbTitle";
-            this.tbTitle.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbTitle.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbTitle.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // tbMessage
-            // 
-            resources.ApplyResources(this.tbMessage, "tbMessage");
-            this.tbMessage.Name = "tbMessage";
-            this.tbMessage.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbMessage.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbMessage.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // tbButton3
-            // 
-            resources.ApplyResources(this.tbButton3, "tbButton3");
-            this.tbButton3.Name = "tbButton3";
-            this.tbButton3.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbButton3.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbButton3.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // cbTVMessage
-            // 
-            this.cbTVMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTVMessage.Items.AddRange(new object[] {
-            resources.GetString("cbTVMessage.Items"),
-            resources.GetString("cbTVMessage.Items1"),
-            resources.GetString("cbTVMessage.Items2"),
-            resources.GetString("cbTVMessage.Items3"),
-            resources.GetString("cbTVMessage.Items4"),
-            resources.GetString("cbTVMessage.Items5"),
-            resources.GetString("cbTVMessage.Items6"),
-            resources.GetString("cbTVMessage.Items7")});
-            resources.ApplyResources(this.cbTVMessage, "cbTVMessage");
-            this.cbTVMessage.Name = "cbTVMessage";
-            this.cbTVMessage.Sorted = true;
-            this.cbTVMessage.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTVMessage.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // tbButton2
-            // 
-            resources.ApplyResources(this.tbButton2, "tbButton2");
-            this.tbButton2.Name = "tbButton2";
-            this.tbButton2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbButton2.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbButton2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // lbMessage
-            // 
-            resources.ApplyResources(this.lbMessage, "lbMessage");
-            this.lbMessage.Name = "lbMessage";
-            // 
+            //            this.tbButton2.Name = "tbButton2";
+            this.tbButton2.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbButton2.LostFocus += (s, e) => this.hex16_Validated(s, e);
+            //            this.lbMessage.Name = "lbMessage";
             // tbButton1
-            // 
-            resources.ApplyResources(this.tbButton1, "tbButton1");
-            this.tbButton1.Name = "tbButton1";
-            this.tbButton1.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbButton1.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbButton1.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // cbBlockBHAV
-            // 
-            resources.ApplyResources(this.cbBlockBHAV, "cbBlockBHAV");
-            this.cbBlockBHAV.Name = "cbBlockBHAV";
-            this.cbBlockBHAV.CheckedChanged += new System.EventHandler(this.cbBlockBHAV_CheckedChanged);
-            // 
+            //            this.tbButton1.Name = "tbButton1";
+            this.tbButton1.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbButton1.LostFocus += (s, e) => this.hex16_Validated(s, e);
+            //            this.cbBlockBHAV.Name = "cbBlockBHAV";
+            this.cbBlockBHAV.IsCheckedChanged += (s, e) => this.cbBlockBHAV_CheckedChanged(s, e);
             // cbBlockSim
-            // 
-            resources.ApplyResources(this.cbBlockSim, "cbBlockSim");
-            this.cbBlockSim.Name = "cbBlockSim";
-            this.cbBlockSim.CheckedChanged += new System.EventHandler(this.cbBlockSim_CheckedChanged);
-            // 
+            //            this.cbBlockSim.Name = "cbBlockSim";
+            this.cbBlockSim.IsCheckedChanged += (s, e) => this.cbBlockSim_CheckedChanged(s, e);
             // cbUTTitle
-            // 
-            resources.ApplyResources(this.cbUTTitle, "cbUTTitle");
-            this.cbUTTitle.Name = "cbUTTitle";
-            this.cbUTTitle.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
+            //            this.cbUTTitle.Name = "cbUTTitle";
+            this.cbUTTitle.IsCheckedChanged += (s, e) => this.cbUT_CheckedChanged(s, e);
             // cbUTButton3
-            // 
-            resources.ApplyResources(this.cbUTButton3, "cbUTButton3");
-            this.cbUTButton3.Name = "cbUTButton3";
-            this.cbUTButton3.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
+            //            this.cbUTButton3.Name = "cbUTButton3";
+            this.cbUTButton3.IsCheckedChanged += (s, e) => this.cbUT_CheckedChanged(s, e);
             // lbIconType
-            // 
-            resources.ApplyResources(this.lbIconType, "lbIconType");
-            this.lbIconType.Name = "lbIconType";
-            // 
+            //            this.lbIconType.Name = "lbIconType";
             // cbUTButton2
-            // 
-            resources.ApplyResources(this.cbUTButton2, "cbUTButton2");
-            this.cbUTButton2.Name = "cbUTButton2";
-            this.cbUTButton2.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
+            //            this.cbUTButton2.Name = "cbUTButton2";
+            this.cbUTButton2.IsCheckedChanged += (s, e) => this.cbUT_CheckedChanged(s, e);
             // cbIconType
             // 
-            this.cbIconType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbIconType.DropDownWidth = 120;
-            resources.ApplyResources(this.cbIconType, "cbIconType");
             this.cbIconType.Name = "cbIconType";
-            this.cbIconType.SelectedIndexChanged += new System.EventHandler(this.cbIconType_SelectedIndexChanged);
-            // 
+            this.cbIconType.SelectionChanged += (s, e) => this.cbIconType_SelectedIndexChanged(s, e);
             // cbUTButton1
-            // 
-            resources.ApplyResources(this.cbUTButton1, "cbUTButton1");
-            this.cbUTButton1.Name = "cbUTButton1";
-            this.cbUTButton1.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
+            //            this.cbUTButton1.Name = "cbUTButton1";
+            this.cbUTButton1.IsCheckedChanged += (s, e) => this.cbUT_CheckedChanged(s, e);
             // tbStrButton1
-            // 
-            this.tbStrButton1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbStrButton1, "tbStrButton1");
-            this.tbStrButton1.Name = "tbStrButton1";
-            this.tbStrButton1.ReadOnly = true;
-            this.tbStrButton1.TabStop = false;
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
+            //this.tbStrButton1.Name = "tbStrButton1";
+            this.tbStrButton1.IsReadOnly = true;
+            //            this.label5.Name = "label5";
             // tbStrMessage
-            // 
-            this.tbStrMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbStrMessage, "tbStrMessage");
-            this.tbStrMessage.Name = "tbStrMessage";
-            this.tbStrMessage.ReadOnly = true;
-            this.tbStrMessage.TabStop = false;
-            // 
-            // tbIconID
-            // 
-            resources.ApplyResources(this.tbIconID, "tbIconID");
-            this.tbIconID.Name = "tbIconID";
-            this.tbIconID.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbIconID.Validated += new System.EventHandler(this.hex8_TextChanged);
-            this.tbIconID.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
-            // btnStrIcon
-            // 
-            resources.ApplyResources(this.btnStrIcon, "btnStrIcon");
-            this.btnStrIcon.Name = "btnStrIcon";
-            this.btnStrIcon.Click += new System.EventHandler(this.btnStr_Click);
-            // 
+            //this.tbStrMessage.Name = "tbStrMessage";
+            this.tbStrMessage.IsReadOnly = true;
+            //            this.tbIconID.Name = "tbIconID";
+            this.tbIconID.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbIconID.LostFocus += (s, e) => this.hex8_TextChanged(s, e);
+            //            this.btnStrIcon.Name = "btnStrIcon";
+            this.btnStrIcon.Click += (s, e) => this.btnStr_Click(s, e);
             // cbTVTitle
             // 
-            this.cbTVTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTVTitle.Items.AddRange(new object[] {
-            resources.GetString("cbTVTitle.Items"),
-            resources.GetString("cbTVTitle.Items1"),
-            resources.GetString("cbTVTitle.Items2"),
-            resources.GetString("cbTVTitle.Items3"),
-            resources.GetString("cbTVTitle.Items4"),
-            resources.GetString("cbTVTitle.Items5"),
-            resources.GetString("cbTVTitle.Items6"),
-            resources.GetString("cbTVTitle.Items7")});
-            resources.ApplyResources(this.cbTVTitle, "cbTVTitle");
-            this.cbTVTitle.Name = "cbTVTitle";
-            this.cbTVTitle.Sorted = true;
-            this.cbTVTitle.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTVTitle.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // cbTVButton3
             // 
-            this.cbTVButton3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTVButton3.Items.AddRange(new object[] {
-            resources.GetString("cbTVButton3.Items"),
-            resources.GetString("cbTVButton3.Items1"),
-            resources.GetString("cbTVButton3.Items2"),
-            resources.GetString("cbTVButton3.Items3"),
-            resources.GetString("cbTVButton3.Items4"),
-            resources.GetString("cbTVButton3.Items5"),
-            resources.GetString("cbTVButton3.Items6"),
-            resources.GetString("cbTVButton3.Items7")});
-            resources.ApplyResources(this.cbTVButton3, "cbTVButton3");
-            this.cbTVButton3.Name = "cbTVButton3";
-            this.cbTVButton3.Sorted = true;
-            this.cbTVButton3.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTVButton3.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // cbTVButton2
             // 
-            this.cbTVButton2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTVButton2.Items.AddRange(new object[] {
-            resources.GetString("cbTVButton2.Items"),
-            resources.GetString("cbTVButton2.Items1"),
-            resources.GetString("cbTVButton2.Items2"),
-            resources.GetString("cbTVButton2.Items3"),
-            resources.GetString("cbTVButton2.Items4"),
-            resources.GetString("cbTVButton2.Items5"),
-            resources.GetString("cbTVButton2.Items6"),
-            resources.GetString("cbTVButton2.Items7")});
-            resources.ApplyResources(this.cbTVButton2, "cbTVButton2");
-            this.cbTVButton2.Name = "cbTVButton2";
-            this.cbTVButton2.Sorted = true;
-            this.cbTVButton2.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTVButton2.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // cbTVButton1
             // 
-            this.cbTVButton1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTVButton1.Items.AddRange(new object[] {
-            resources.GetString("cbTVButton1.Items"),
-            resources.GetString("cbTVButton1.Items1"),
-            resources.GetString("cbTVButton1.Items2"),
-            resources.GetString("cbTVButton1.Items3"),
-            resources.GetString("cbTVButton1.Items4"),
-            resources.GetString("cbTVButton1.Items5"),
-            resources.GetString("cbTVButton1.Items6"),
-            resources.GetString("cbTVButton1.Items7")});
-            resources.ApplyResources(this.cbTVButton1, "cbTVButton1");
-            this.cbTVButton1.Name = "cbTVButton1";
-            this.cbTVButton1.Sorted = true;
-            this.cbTVButton1.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTVButton1.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
+            //            this.label4.Name = "label4";
             // cbUTMessage
-            // 
-            resources.ApplyResources(this.cbUTMessage, "cbUTMessage");
-            this.cbUTMessage.Name = "cbUTMessage";
-            this.cbUTMessage.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
+            //            this.cbUTMessage.Name = "cbUTMessage";
+            this.cbUTMessage.IsCheckedChanged += (s, e) => this.cbUT_CheckedChanged(s, e);
             // cbScope
             // 
-            this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbScope.Items.AddRange(new object[] {
-            resources.GetString("cbScope.Items"),
-            resources.GetString("cbScope.Items1"),
-            resources.GetString("cbScope.Items2")});
-            resources.ApplyResources(this.cbScope, "cbScope");
-            this.cbScope.Name = "cbScope";
-            this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
-            // 
+            this.cbScope.SelectionChanged += (s, e) => this.cbScope_SelectedIndexChanged(s, e);
             // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
+            //            this.label3.Name = "label3";
             // lbTitle
-            // 
-            resources.ApplyResources(this.lbTitle, "lbTitle");
-            this.lbTitle.Name = "lbTitle";
-            // 
+            //            this.lbTitle.Name = "lbTitle";
             // lbButton3
-            // 
-            resources.ApplyResources(this.lbButton3, "lbButton3");
-            this.lbButton3.Name = "lbButton3";
-            // 
+            //            this.lbButton3.Name = "lbButton3";
             // lbButton2
-            // 
-            resources.ApplyResources(this.lbButton2, "lbButton2");
-            this.lbButton2.Name = "lbButton2";
-            // 
+            //            this.lbButton2.Name = "lbButton2";
             // lbButton1
-            // 
-            resources.ApplyResources(this.lbButton1, "lbButton1");
-            this.lbButton1.Name = "lbButton1";
-            // 
+            //            this.lbButton1.Name = "lbButton1";
             // lbType
-            // 
-            resources.ApplyResources(this.lbType, "lbType");
-            this.lbType.Name = "lbType";
-            // 
+            //            this.lbType.Name = "lbType";
             // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
+            //            this.label1.Name = "label1";
             // cbType
             // 
-            this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbType.DropDownWidth = 160;
-            resources.ApplyResources(this.cbType, "cbType");
             this.cbType.Name = "cbType";
-            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
-            // 
+            this.cbType.SelectionChanged += (s, e) => this.cbType_SelectedIndexChanged(s, e);
             // pnLocalVar
-            // 
-            resources.ApplyResources(this.pnLocalVar, "pnLocalVar");
-            this.pnLocalVar.Controls.Add(this.tbLocalVar);
-            this.pnLocalVar.Controls.Add(this.label8);
+            //            this.pnLocalVar.Children.Add(this.tbLocalVar);
+            this.pnLocalVar.Children.Add(this.label8);
             this.pnLocalVar.Name = "pnLocalVar";
-            // 
             // tbLocalVar
-            // 
-            resources.ApplyResources(this.tbLocalVar, "tbLocalVar");
-            this.tbLocalVar.Name = "tbLocalVar";
-            this.tbLocalVar.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
+            //            this.tbLocalVar.Name = "tbLocalVar";
+            this.tbLocalVar.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbLocalVar.LostFocus += (s, e) => this.hex8_Validated(s, e);
+            //            this.label8.Name = "label8";
             // pnTempVar
-            // 
-            resources.ApplyResources(this.pnTempVar, "pnTempVar");
-            this.pnTempVar.Controls.Add(this.cbTempVar);
-            this.pnTempVar.Controls.Add(this.lbTempVar);
+            //            this.pnTempVar.Children.Add(this.cbTempVar);
+            this.pnTempVar.Children.Add(this.lbTempVar);
             this.pnTempVar.Name = "pnTempVar";
-            // 
             // cbTempVar
             // 
-            this.cbTempVar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTempVar.Items.AddRange(new object[] {
-            resources.GetString("cbTempVar.Items"),
-            resources.GetString("cbTempVar.Items1"),
-            resources.GetString("cbTempVar.Items2"),
-            resources.GetString("cbTempVar.Items3"),
-            resources.GetString("cbTempVar.Items4"),
-            resources.GetString("cbTempVar.Items5"),
-            resources.GetString("cbTempVar.Items6"),
-            resources.GetString("cbTempVar.Items7")});
-            resources.ApplyResources(this.cbTempVar, "cbTempVar");
-            this.cbTempVar.Name = "cbTempVar";
-            this.cbTempVar.Sorted = true;
-            this.cbTempVar.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
+            this.cbTempVar.SelectionChanged += (s, e) => this.cbTempVar_SelectedIndexChanged(s, e);
             // lbTempVar
-            // 
-            resources.ApplyResources(this.lbTempVar, "lbTempVar");
-            this.lbTempVar.Name = "lbTempVar";
-            // 
+            //            this.lbTempVar.Name = "lbTempVar";
             // pnTNS
-            // 
-            resources.ApplyResources(this.pnTNS, "pnTNS");
-            this.pnTNS.Controls.Add(this.tbPriority);
-            this.pnTNS.Controls.Add(this.label6);
-            this.pnTNS.Controls.Add(this.label7);
-            this.pnTNS.Controls.Add(this.tbTimeout);
-            this.pnTNS.Controls.Add(this.lbTnsStyle);
-            this.pnTNS.Controls.Add(this.cbTnsStyle);
+            //            this.pnTNS.Children.Add(this.tbPriority);
+            this.pnTNS.Children.Add(this.label6);
+            this.pnTNS.Children.Add(this.label7);
+            this.pnTNS.Children.Add(this.tbTimeout);
+            this.pnTNS.Children.Add(this.lbTnsStyle);
+            this.pnTNS.Children.Add(this.cbTnsStyle);
             this.pnTNS.Name = "pnTNS";
-            // 
             // tbPriority
-            // 
-            resources.ApplyResources(this.tbPriority, "tbPriority");
-            this.tbPriority.Name = "tbPriority";
-            this.tbPriority.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbPriority.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbPriority.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
+            //            this.tbPriority.Name = "tbPriority";
+            this.tbPriority.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbPriority.LostFocus += (s, e) => this.hex8_Validated(s, e);
+            //            this.label6.Name = "label6";
             // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
+            //            this.label7.Name = "label7";
             // tbTimeout
-            // 
-            resources.ApplyResources(this.tbTimeout, "tbTimeout");
-            this.tbTimeout.Name = "tbTimeout";
-            this.tbTimeout.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbTimeout.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbTimeout.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
-            // lbTnsStyle
-            // 
-            resources.ApplyResources(this.lbTnsStyle, "lbTnsStyle");
-            this.lbTnsStyle.Name = "lbTnsStyle";
-            // 
+            //            this.tbTimeout.Name = "tbTimeout";
+            this.tbTimeout.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbTimeout.LostFocus += (s, e) => this.hex8_Validated(s, e);
+            //            this.lbTnsStyle.Name = "lbTnsStyle";
             // cbTnsStyle
-            // 
-            resources.ApplyResources(this.cbTnsStyle, "cbTnsStyle");
-            this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTnsStyle.Name = "cbTnsStyle";
-            this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
-            // 
+            //            this.cbTnsStyle.Name = "cbTnsStyle";
+            this.cbTnsStyle.SelectionChanged += (s, e) => this.cbTnsStyle_SelectedIndexChanged(s, e);
             // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
+            //            this.label2.Name = "label2";
             // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            // 
+            //            this.button1.Name = "button1";
             // UI
-            // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.pnWiz0x0024);
-            this.Name = "UI";
-            this.pnWiz0x0024.ResumeLayout(false);
-            this.pnWiz0x0024.PerformLayout();
-            this.pnLocalVar.ResumeLayout(false);
-            this.pnLocalVar.PerformLayout();
-            this.pnTempVar.ResumeLayout(false);
-            this.pnTempVar.PerformLayout();
-            this.pnTNS.ResumeLayout(false);
-            this.pnTNS.PerformLayout();
-            this.ResumeLayout(false);
-
+            //            this.Controls.Add(this.button1);
+            
+            this.Content = this.pnWiz0x0024;
 		}
 		#endregion
 
@@ -1269,28 +938,28 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			if (internalchg) return;
 
-			setType(((ComboBox)sender).SelectedIndex);
+			setType(((ComboBoxCompat)sender).SelectedIndex);
 		}
 
 		private void cbTnsStyle_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			setTnsStyle(((ComboBox)sender).SelectedIndex);
+			setTnsStyle(((ComboBoxCompat)sender).SelectedIndex);
 		}
 
 		private void cbScope_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			setScope(((ComboBox)sender).SelectedIndex);
+			setScope(((ComboBoxCompat)sender).SelectedIndex);
 		}
 
 		private void cbIconType_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			setIconType(((ComboBox)sender).SelectedIndex);
+			setIconType(((ComboBoxCompat)sender).SelectedIndex);
 		}
 
 
@@ -1298,21 +967,21 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			if (internalchg) return;
 
-			setBlockBHAV(((CheckBox)sender).Checked);
+			setBlockBHAV(((CheckBoxCompat2)sender).Checked);
 		}
 
 		private void cbBlockSim_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			setBlockSim(((CheckBox)sender).Checked);
+			setBlockSim(((CheckBoxCompat2)sender).Checked);
 		}
 
 		private void cbUT_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			setUseTemp(alCBUseTemp.IndexOf(sender), ((CheckBox)sender).Checked);
+			setUseTemp(alCBUseTemp.IndexOf(sender), ((CheckBoxCompat2)sender).Checked);
 		}
 
 		private void cbTempVar_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -1321,9 +990,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			int i = this.alCBTempVar.IndexOf(sender);
 			if (i >= 0)
-				setString(i, ((ComboBox)sender).SelectedIndex);
+				setString(i, ((ComboBoxCompat)sender).SelectedIndex);
 			else
-				setTempVar(((ComboBox)sender).SelectedIndex);
+				setTempVar(((ComboBoxCompat)sender).SelectedIndex);
 		}
 
 
@@ -1343,7 +1012,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (internalchg) return;
 			if (!hex8_IsValid(sender)) return;
 
-			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+			byte val = Convert.ToByte(((TextBoxCompat)sender).Text, 16);
 			int i = alHex8.IndexOf(sender);
 
 			internalchg = true;
@@ -1378,8 +1047,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(val);
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -1387,8 +1056,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBoxCompat)sender).Text, 16));
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -1399,7 +1068,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (!hex16_IsValid(sender)) return;
 
 			internalchg = true;
-			setString(alHex16.IndexOf(sender), Convert.ToUInt16(((TextBox)sender).Text, 16));
+			setString(alHex16.IndexOf(sender), Convert.ToUInt16(((TextBoxCompat)sender).Text, 16));
 			internalchg = false;
 		}
 
@@ -1411,8 +1080,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(messages[alHex16.IndexOf(sender)]);
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(messages[alHex16.IndexOf(sender)]);
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -1420,8 +1089,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt16(((TextBoxCompat)sender).Text, 16));
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
 

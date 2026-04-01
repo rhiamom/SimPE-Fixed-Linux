@@ -12,12 +12,6 @@
     <PackageReference Include="OpenTK" Version="4.9.4" />
   </ItemGroup>
   <ItemGroup>
-    <!-- WinForms GL wrapper files excluded — will be rewritten for Avalonia OpenGL -->
-    <Compile Remove="Ambertation\Graphics\DirectXPanel.cs" />
-    <Compile Remove="Ambertation\Graphics\RenderSelection.cs" />
-    <Compile Remove="Ambertation\Graphics\ViewPortSetup.cs" />
-    <Compile Remove="ambertation.3D.gl.binding.cs" />
-    <!-- OpenTK.GLControl removed — WinForms-based, will be replaced with Avalonia OpenGL integration -->
     <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>

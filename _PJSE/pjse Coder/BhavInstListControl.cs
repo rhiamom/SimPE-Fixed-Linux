@@ -30,7 +30,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
 
@@ -39,14 +41,16 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Summary description for UserControl1.
 	/// </summary>
-	public class BhavInstListControl : System.Windows.Forms.UserControl
+	public class BhavInstListControl : Avalonia.Controls.UserControl
 	{
+        // WinForms compat shims
+        private Avalonia.Controls.Panel _panel = new StackPanel();
+        public Avalonia.Controls.Controls Controls => _panel.Children;
+        public System.Drawing.Point AutoScrollPosition { get; set; } = new System.Drawing.Point(0, 0);
+        public System.Drawing.Rectangle ClientRectangle => new System.Drawing.Rectangle(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+
 		#region Form variables
-		private System.Windows.Forms.PictureBox pnflow;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private PictureBox pnflow;
 		#endregion
 
 		public BhavInstListControl()
@@ -55,19 +59,8 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 			if (setHandler && wrapper != null)
 			{
 				wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
@@ -108,7 +101,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (!setHandler)
 			{
-				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
 				setHandler = true;
 			}
 		}
@@ -186,10 +179,10 @@ namespace SimPe.PackedFiles.UserInterface
             }
             catch
             {
-                MessageBox.Show(
+                SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                     pjse.Localization.GetString("toomanylines")
                     , "PJSE: Behaviour Editor"
-                    , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    , SimPe.Scenegraph.Compat.MessageBoxButtons.OK, SimPe.Scenegraph.Compat.MessageBoxIcon.Error).GetAwaiter().GetResult();
                 newLine = csel;
             }
 
@@ -254,9 +247,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			bool savedstate = internalchg;
 			internalchg = true;
-			this.Parent.Cursor = Cursors.WaitCursor;
 			wrapper.Sort();
-			this.Parent.Cursor = Cursors.Default;
 			internalchg = savedstate;
 
 			csel = -1;
@@ -272,7 +263,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			bool savedstate = internalchg;
 			internalchg = true;
-			this.Parent.Cursor = Cursors.WaitCursor;
 			for (ushort i = 0; i < wrapper.Count - 1; i++)
 			{
 				wrapper[i].Target1 = (ushort)(i+1);
@@ -280,7 +270,6 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			wrapper[wrapper.Count - 1].Target1 = 0xFFFD;
 			wrapper[wrapper.Count - 1].Target2 = 0xFFFC;
-			this.Parent.Cursor = Cursors.Default;
 			internalchg = savedstate;
 			myrepaint();
 			if (csel >= 0)
@@ -298,7 +287,6 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			this.Parent.Cursor = Cursors.WaitCursor;
 			try
 			{
 				ushort offset = (ushort)wrapper.Count;
@@ -318,7 +306,6 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			finally
 			{
-				this.Parent.Cursor = Cursors.Default;
 			}
 
 			internalchg = savedstate;
@@ -333,12 +320,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			bool savedstate = internalchg;
 			internalchg = true;
-			this.Parent.Cursor = Cursors.WaitCursor;
 
 			while(csel < wrapper.Count && wrapper.Count > 1)
 				wrapper.RemoveAt(wrapper.Count-1);
 
-			this.Parent.Cursor = Cursors.Default;
 			internalchg = savedstate;
 
 			csel = -1;
@@ -350,14 +335,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void myrepaint()
 		{
-            SimPe.RemoteControl.ApplicationForm.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
-            //this.Parent.Cursor = Cursors.WaitCursor;
 			//SimPe.Wait.Start(wrapper.Count);
 			try
 			{
-				this.SuspendLayout();
-				bool v = this.Visible;
-				this.Visible = false;
+				bool v = this.IsVisible;
+				this.IsVisible = false;
 
 				this.Controls.Clear();
 				if (flowitems != null)
@@ -375,13 +357,10 @@ namespace SimPe.PackedFiles.UserInterface
 				pnflow.Image = DrawConnectors();
 				this.Controls.Add(pnflow);
 
-				this.Visible = true;
-				this.ResumeLayout(true);
+				this.IsVisible = true;
 			}
 			finally
 			{
-                SimPe.RemoteControl.ApplicationForm.Cursor = null;
-                //this.Parent.Cursor = Cursors.Default;
                 //SimPe.Wait.Stop();
 			}
 		}
@@ -398,23 +377,21 @@ namespace SimPe.PackedFiles.UserInterface
 
 			BhavInstListItemUI i = new BhavInstListItemUI();
 
-			i.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+			// i.Anchor removed (AnchorStyles not used in Avalonia)
 			i.Left = this.AutoScrollPosition.X;
 			i.Top = ct*(i.Height+4) + this.AutoScrollPosition.Y;
 			i.Width = this.ClientRectangle.Width - pnflow.Width;
 			i.Index = ct;
-			i.TabIndex = ct;
-			i.TabStop = true;
 
 			i.MoveUp += new EventHandler(bhavInst_MoveUp);
 			i.MoveDown += new EventHandler(bhavInst_MoveDown);
 			i.Selected += new EventHandler(bhavInst_Selected);
 			i.Unselected += new EventHandler(bhavInst_Unselected);
 			i.TargetClick += new LinkLabelLinkClickedEventHandler(bhavInst_TargetClick);
-			i.KeyDown += new KeyEventHandler(bhavInst_KeyDown);
+			i.KeyDown += new EventHandler<Avalonia.Input.KeyEventArgs>(bhavInst_KeyDown);
 
 			this.Controls.Add(i);
-			this.Controls.SetChildIndex(i, ct);
+			// SetChildIndex not needed in Avalonia port
 
 			i.Wrapper = wrapper;
 
@@ -539,49 +516,9 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavInstListControl));
-			this.pnflow = new System.Windows.Forms.PictureBox();
-			this.SuspendLayout();
-			//
-			// pnflow
-			//
-			this.pnflow.AccessibleDescription = resources.GetString("pnflow.AccessibleDescription");
-			this.pnflow.AccessibleName = resources.GetString("pnflow.AccessibleName");
-			this.pnflow.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnflow.Anchor")));
-			this.pnflow.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflow.BackgroundImage")));
-			this.pnflow.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflow.Dock")));
-			this.pnflow.Enabled = ((bool)(resources.GetObject("pnflow.Enabled")));
-			this.pnflow.Font = ((System.Drawing.Font)(resources.GetObject("pnflow.Font")));
-			this.pnflow.Image = ((System.Drawing.Image)(resources.GetObject("pnflow.Image")));
-			this.pnflow.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnflow.ImeMode")));
-			this.pnflow.Location = ((System.Drawing.Point)(resources.GetObject("pnflow.Location")));
+			this.pnflow = new PictureBox();
 			this.pnflow.Name = "pnflow";
-			this.pnflow.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnflow.RightToLeft")));
-			this.pnflow.Size = ((System.Drawing.Size)(resources.GetObject("pnflow.Size")));
-			this.pnflow.SizeMode = ((System.Windows.Forms.PictureBoxSizeMode)(resources.GetObject("pnflow.SizeMode")));
-			this.pnflow.TabIndex = ((int)(resources.GetObject("pnflow.TabIndex")));
-			this.pnflow.TabStop = false;
-			this.pnflow.Text = resources.GetString("pnflow.Text");
-			this.pnflow.Visible = ((bool)(resources.GetObject("pnflow.Visible")));
-			//
-			// BhavInstListControl
-			//
-			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
-			this.AccessibleName = resources.GetString("$this.AccessibleName");
-			this.AutoScroll = ((bool)(resources.GetObject("$this.AutoScroll")));
-			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
-			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
-			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-			this.Controls.Add(this.pnflow);
-			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
-			this.Font = ((System.Drawing.Font)(resources.GetObject("$this.Font")));
-			this.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("$this.ImeMode")));
-			this.Location = ((System.Drawing.Point)(resources.GetObject("$this.Location")));
-			this.Name = "BhavInstListControl";
-			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
-			this.Size = ((System.Drawing.Size)(resources.GetObject("$this.Size")));
-			this.ResumeLayout(false);
-
+			this.pnflow.IsVisible = true;
 		}
 
 		#endregion
@@ -594,28 +531,28 @@ namespace SimPe.PackedFiles.UserInterface
 			SelectedIndex = (new ArrayList(flowitems)).IndexOf(sender);
 		}
 		private void bhavInst_Unselected(object sender, System.EventArgs e) {/* SelectedIndex = -1; */}
-		private void bhavInst_TargetClick(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void bhavInst_TargetClick(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			int index = (UInt16)e.Link.LinkData;
+			int index = (UInt16)e.Link.Data;
 			if (index >= 0) flowitems[index].Focus();
 		}
-		private void bhavInst_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+		private void bhavInst_KeyDown(object sender, Avalonia.Input.KeyEventArgs e)
 		{
-			switch (e.KeyCode)
+			switch (e.Key)
 			{
-				case System.Windows.Forms.Keys.Up:
+				case Avalonia.Input.Key.Up:
 					if (csel > 0) flowitems[csel - 1].Focus();
 					break;
-				case System.Windows.Forms.Keys.Down:
+				case Avalonia.Input.Key.Down:
 					if (csel < flowitems.Length - 1) flowitems[csel + 1].Focus();
 					break;
-				case System.Windows.Forms.Keys.Delete:
+				case Avalonia.Input.Key.Delete:
 					if (csel > -1 && flowitems.Length > 1) Delete(BhavUIDeleteType.Default);
 					break;
-				case System.Windows.Forms.Keys.Home:
+				case Avalonia.Input.Key.Home:
 					flowitems[0].Focus();
 					break;
-				case System.Windows.Forms.Keys.End:
+				case Avalonia.Input.Key.End:
 					flowitems[flowitems.Length - 1].Focus();
 					break;
 			}

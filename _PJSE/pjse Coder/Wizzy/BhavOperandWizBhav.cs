@@ -23,19 +23,20 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 using pjse.BhavNameWizards;
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
-    internal partial class UI : Form, iBhavOperandWizForm
+    internal partial class UI : Window, iBhavOperandWizForm
     {
         public UI()
         {
             InitializeComponent();
 
-            albArg = new Label[] { lbArg1, lbArg2, lbArg3, lbArg4, lbArg5, lbArg6, lbArg7, lbArg8, };
+            albArg = new LabelCompat[] { lbArg1, lbArg2, lbArg3, lbArg4, lbArg5, lbArg6, lbArg7, lbArg8, };
             aldoc = new LabelledDataOwner[] { ldocArg1, ldocArg2, ldocArg3, ldocArg4, ldocArg5, ldocArg6, ldocArg7, ldocArg8, };
             arbFormat = new List<RadioButton>(new RadioButton[] { rbTemps, rbOld, rbNew, rbCallers });
 
@@ -58,13 +59,13 @@ namespace pjse.BhavOperandWizards.WizBhav
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
+
             pjse.Settings.PJSE.DecimalDOValueChanged -= new EventHandler(PJSE_DecimalDOValueChanged);
             pjse.Settings.PJSE.InstancePickerAsTextChanged -= new EventHandler(PJSE_InstancePickerAsTextChanged);
         }
@@ -72,11 +73,11 @@ namespace pjse.BhavOperandWizards.WizBhav
         void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            if (ckbDecimal.Checked == pjse.Settings.PJSE.DecimalDOValue) return;
+            if (ckbDecimal.IsChecked == pjse.Settings.PJSE.DecimalDOValue) return;
             internalchg = true;
             try
             {
-                ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+                ckbDecimal.IsChecked = pjse.Settings.PJSE.DecimalDOValue;
             }
             finally { internalchg = false; }
         }
@@ -84,11 +85,11 @@ namespace pjse.BhavOperandWizards.WizBhav
         void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            if (ckbUseInstancePicker.Checked == pjse.Settings.PJSE.InstancePickerAsText) return;
+            if (ckbUseInstancePicker.IsChecked == pjse.Settings.PJSE.InstancePickerAsText) return;
             internalchg = true;
             try
             {
-                ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
+                ckbUseInstancePicker.IsChecked = pjse.Settings.PJSE.InstancePickerAsText;
             }
             finally { internalchg = false; }
         }
@@ -99,20 +100,19 @@ namespace pjse.BhavOperandWizards.WizBhav
         private byte nodeVersion = 0;
         private byte nrArgs = 0;
         private BhavWizBhav.dataFormat format = BhavWizBhav.dataFormat.useTemps;
-        private Label[] albArg = null;
+        private LabelCompat[] albArg = null;
         private LabelledDataOwner[] aldoc = null;
         private List<RadioButton> arbFormat = null;
 
         private void doFormat()
         {
             byte[] o = operands; // lazy...
-            pnWizBhav.SuspendLayout();
-            ckbDecimal.Enabled = format != BhavWizBhav.dataFormat.useTemps && format != BhavWizBhav.dataFormat.useParams;
-            ckbUseInstancePicker.Enabled = format == BhavWizBhav.dataFormat.newFormat;
+            ckbDecimal.IsEnabled = format != BhavWizBhav.dataFormat.useTemps && format != BhavWizBhav.dataFormat.useParams;
+            ckbUseInstancePicker.IsEnabled = format == BhavWizBhav.dataFormat.newFormat;
 
             for (int i = 0; i < aldoc.Length; i++)
             {
-                aldoc[i].Enabled = (format != BhavWizBhav.dataFormat.useTemps && format != BhavWizBhav.dataFormat.useParams)
+                aldoc[i].IsEnabled = (format != BhavWizBhav.dataFormat.useTemps && format != BhavWizBhav.dataFormat.useParams)
                     && !(format == BhavWizBhav.dataFormat.newFormat && i >= 4);
                 aldoc[i].DataOwnerEnabled = format == BhavWizBhav.dataFormat.newFormat;
                 switch (format)
@@ -143,7 +143,6 @@ namespace pjse.BhavOperandWizards.WizBhav
                         break;
                 }
             }
-            pnWizBhav.ResumeLayout();
         }
 
         private void setFormat(BhavWizBhav.dataFormat newformat)
@@ -182,14 +181,14 @@ namespace pjse.BhavOperandWizards.WizBhav
         private bool useTemps { get { for (int i = 0; i < 8; i++) if (operands[i] != 0xFF) return false; return oldFormat; } }
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWizBhav; } }
+        public StackPanel WizPanel { get { return this.pnWizBhav; } }
 
         public void Execute(Instruction inst)
         {
             internalchg = true;
 
-            ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
+            ckbDecimal.IsChecked = pjse.Settings.PJSE.DecimalDOValue;
+            ckbUseInstancePicker.IsChecked = pjse.Settings.PJSE.InstancePickerAsText;
 
             this.inst = inst;
             foreach (LabelledDataOwner ldoc in aldoc) ldoc.Instruction = inst;
@@ -204,13 +203,13 @@ namespace pjse.BhavOperandWizards.WizBhav
                 tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
                 nrArgs = wrapper.Header.ArgumentCount;
 
-                this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
-                this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
+                this.lbBhavName.Content = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
+                this.lbArgC.Content = "0x" + SimPe.Helper.HexString(nrArgs);
             }
             else
             {
-                this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": [" + pjse.Localization.GetString("bhavnotfound") + "]";
-                this.lbArgC.Text = "(???)";
+                this.lbBhavName.Content = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": [" + pjse.Localization.GetString("bhavnotfound") + "]";
+                this.lbArgC.Content = "(???)";
             }
 
             operands = new byte[16];
@@ -218,7 +217,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             ((byte[])inst.Reserved1).CopyTo(operands, 8);
 
             for (int i = 0; i < nrArgs; i++)
-                if (tprp != null && !tprp.TextOnly && i < tprp.ParamCount) albArg[i].Text = tprp[false, i].Label;
+                if (tprp != null && !tprp.TextOnly && i < tprp.ParamCount) albArg[i].Text = tprp[false, i].LabelCompat;
                 else albArg[i].Text = pjse.Localization.GetString("unk");
             for (int i = nrArgs; i < albArg.Length; i++)
                 albArg[i].Text = pjse.Localization.GetString("bwb_unused");
@@ -226,11 +225,11 @@ namespace pjse.BhavOperandWizards.WizBhav
 
             format = pjse.BhavNameWizards.BhavWizBhav.opFormat(inst.NodeVersion, operands);
 
-            rbTemps.Checked = format == BhavWizBhav.dataFormat.useTemps;
-            rbOld.Checked = format == BhavWizBhav.dataFormat.oldFormat;
-            rbNew.Checked = format == BhavWizBhav.dataFormat.newFormat;
-            rbCallers.Enabled = nodeVersion > 0;
-            rbCallers.Checked = format == BhavWizBhav.dataFormat.useParams;
+            rbTemps.IsChecked = format == BhavWizBhav.dataFormat.useTemps;
+            rbOld.IsChecked = format == BhavWizBhav.dataFormat.oldFormat;
+            rbNew.IsChecked = format == BhavWizBhav.dataFormat.newFormat;
+            rbCallers.IsEnabled = nodeVersion > 0;
+            rbCallers.IsChecked = format == BhavWizBhav.dataFormat.useParams;
 
             doFormat();
 
@@ -257,7 +256,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             if (internalchg) return;
 
             int i = arbFormat.IndexOf((RadioButton)sender);
-            if (i < 0 || !arbFormat[i].Checked) return;
+            if (i < 0 || arbFormat[i].IsChecked != true) return;
 
             setFormat((BhavWizBhav.dataFormat)Enum.Parse(format.GetType(), i.ToString()));
         }
@@ -268,7 +267,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             internalchg = true;
             try
             {
-                pjse.Settings.PJSE.DecimalDOValue = ckbDecimal.Checked;
+                pjse.Settings.PJSE.DecimalDOValue = ckbDecimal.IsChecked == true;
             }
             finally { internalchg = false; }
         }
@@ -279,7 +278,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             internalchg = true;
             try
             {
-                pjse.Settings.PJSE.InstancePickerAsText = ckbUseInstancePicker.Checked;
+                pjse.Settings.PJSE.InstancePickerAsText = ckbUseInstancePicker.IsChecked == true;
             }
             finally { internalchg = false; }
         }

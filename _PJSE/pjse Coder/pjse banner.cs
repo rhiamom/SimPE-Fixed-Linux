@@ -28,11 +28,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 
 namespace pjse
 {
-    public partial class pjse_banner : UserControl
+    public partial class pjse_banner : Avalonia.Controls.UserControl
     {
         private string title = "file type";
         private string format = "PJSE: {label} Editor";
@@ -52,7 +53,7 @@ namespace pjse
             set
             {
                 format = value;
-                lbLabel.Text = format.Replace("{label}", title);
+                lbLabel.Content = format.Replace("{label}", title);
             }
         }
 
@@ -66,7 +67,7 @@ namespace pjse
             set
             {
                 title = value;
-                lbLabel.Text = format.Replace("{label}", title);
+                lbLabel.Content = format.Replace("{label}", title);
             }
         }
 
@@ -74,17 +75,17 @@ namespace pjse
         [DefaultValue("TREE")]
         [Description("The label on the View Comment Tree button.")]
         [Localizable(true)]
-        public string TreeText { get { return btnTree.Text; } set { btnTree.Text = value; } }
+        public string TreeText { get { return btnTree.Content?.ToString(); } set { btnTree.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]
         [Description("True if the View Comment Tree button should be enabled.")]
-        public bool TreeEnabled { get { return btnTree.Enabled; } set { btnTree.Enabled = value; } }
+        public bool TreeEnabled { get { return btnTree.IsEnabled; } set { btnTree.IsEnabled = value; } }
 
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("True if the View Comment Tree button should be visible.")]
-        public bool TreeVisible { get { return btnTree.Visible; } set { btnTree.Visible = value; } }
+        public bool TreeVisible { get { return btnTree.IsVisible; } set { btnTree.IsVisible = value; } }
 
         [Category("Action")]
         [Description("Raised when the View Comment Tree button is clicked.")]
@@ -96,17 +97,17 @@ namespace pjse
         [DefaultValue("{Type}")]
         [Description("The label on the View Sibling button.")]
         [Localizable(true)]
-        public string SiblingText { get { return btnSibling.Text; } set { btnSibling.Text = value; } }
+        public string SiblingText { get { return btnSibling.Content?.ToString(); } set { btnSibling.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]
         [Description("True if the View Sibling button should be enabled.")]
-        public bool SiblingEnabled { get { return btnSibling.Enabled; } set { btnSibling.Enabled = value; } }
+        public bool SiblingEnabled { get { return btnSibling.IsEnabled; } set { btnSibling.IsEnabled = value; } }
 
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("True if the View Sibling button should be visible.")]
-        public bool SiblingVisible { get { return btnSibling.Visible; } set { btnSibling.Visible = value; } }
+        public bool SiblingVisible { get { return btnSibling.IsVisible; } set { btnSibling.IsVisible = value; } }
 
         [Category("Action")]
         [Description("Raised when the View Sibling button is clicked.")]
@@ -118,12 +119,12 @@ namespace pjse
         [DefaultValue("View")]
         [Description("The label on the View button.")]
         [Localizable(true)]
-        public string ViewText { get { return btnView.Text; } set { btnView.Text = value; } }
+        public string ViewText { get { return btnView.Content?.ToString(); } set { btnView.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("True if the View button should be visible.")]
-        public bool ViewVisible { get { return btnView.Visible; } set { btnView.Visible = value; } }
+        public bool ViewVisible { get { return btnView.IsVisible; } set { btnView.IsVisible = value; } }
 
         [Category("Action")]
         [Description("Raised when the View button is clicked.")]
@@ -135,12 +136,12 @@ namespace pjse
         [DefaultValue("Float")]
         [Description("The label on the Float button.")]
         [Localizable(true)]
-        public string FloatText { get { return btnFloat.Text; } set { btnFloat.Text = value; } }
+        public string FloatText { get { return btnFloat.Content?.ToString(); } set { btnFloat.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("True if the Float button should be visible.")]
-        public bool FloatVisible { get { return btnFloat.Visible; } set { btnFloat.Visible = value; } }
+        public bool FloatVisible { get { return btnFloat.IsVisible; } set { btnFloat.IsVisible = value; } }
 
         [Category("Action")]
         [Description("Raised when the Float button is clicked.")]
@@ -151,13 +152,13 @@ namespace pjse
         /// Sets the CancelButton attribute of Form <paramref name="f"/> to the Float Button
         /// </summary>
         /// <param name="f">Form on which to set CancelButton attribute</param>
-        public void SetFormCancelButton(Form form) { form.CancelButton = btnFloat; }
+        public void SetFormCancelButton(Window form) { /* CancelButton not applicable in Avalonia */ }
 
 
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("True if the Extract button should be visible.")]
-        public bool ExtractVisible { get { return btnExtract.Visible; } set { btnExtract.Visible = value; } }
+        public bool ExtractVisible { get { return btnExtract.IsVisible; } set { btnExtract.IsVisible = value; } }
 
         [Category("Action")]
         [Description("Raised when the Extract button is clicked.")]
@@ -169,14 +170,14 @@ namespace pjse
         [DefaultValue("RFT")]
         [Description("The label on the Refresh Filetable button.")]
         [Localizable(true)]
-        public string RFTText { get { return btnRefreshFT.Text; } set { btnRefreshFT.Text = value; } }
+        public string RFTText { get { return btnRefreshFT.Content?.ToString(); } set { btnRefreshFT.Content = value; } }
 
 
         [Category("Appearance")]
         [DefaultValue("Help")]
         [Description("The label on the Help button.")]
         [Localizable(true)]
-        public string HelpText { get { return btnHelp.Text; } set { btnHelp.Text = value; } }
+        public string HelpText { get { return btnHelp.Content?.ToString(); } set { btnHelp.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue("Contents")]
@@ -203,27 +204,7 @@ namespace pjse
 
         #region Painting
 
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            if (this.Width <= 0 || this.Height <= 0) return;
-
-            Rectangle recty = new Rectangle(0, 0, this.Width, this.Height);
-
-            // Clean replacement for Chris.ThemeManager: mild gradient using BackColor.
-            Color mild = ControlPaint.Light(this.BackColor);
-
-            using (LinearGradientBrush l = new LinearGradientBrush(recty, this.BackColor, mild, System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
-            {
-                ColorBlend cb = new ColorBlend(2);
-                cb.Colors = new Color[] { this.BackColor, mild };
-                cb.Positions = new float[] { 0F, 1F };
-                l.InterpolationColors = cb;
-
-                e.Graphics.FillRectangle(l, recty);
-            }
-        }
+        // OnPaint removed: Avalonia uses Render override, not WinForms OnPaint.
 
         #endregion
     }

@@ -21,7 +21,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x001c
@@ -29,26 +30,26 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
 	{
 		#region Form variables
 
-        internal System.Windows.Forms.Panel pnWiz0x001c;
-        private Label label1;
-        private ComboBox cbScope;
-        private Label label2;
-        private CheckBox tfPrivate;
-        private CheckBox tfGlobal;
-        private CheckBox tfSemiGlobal;
-        private Label label3;
-        private ComboBox cbRTBNType;
-        private Label label4;
-        private CheckBox tfParams;
-        private CheckBox tfArgs;
-        private Label label8;
-        private TextBox tbTree;
-        private Label lbTreeName;
-        private Button btnTreeName;
+        internal StackPanel pnWiz0x001c;
+        private LabelCompat label1;
+        private ComboBoxCompat cbScope;
+        private LabelCompat label2;
+        private CheckBoxCompat2 tfPrivate;
+        private CheckBoxCompat2 tfGlobal;
+        private CheckBoxCompat2 tfSemiGlobal;
+        private LabelCompat label3;
+        private ComboBoxCompat cbRTBNType;
+        private LabelCompat label4;
+        private CheckBoxCompat2 tfParams;
+        private CheckBoxCompat2 tfArgs;
+        private LabelCompat label8;
+        private TextBoxCompat tbTree;
+        private LabelCompat lbTreeName;
+        private ButtonCompat btnTreeName;
         private LabelledDataOwner ldocArg1;
         private LabelledDataOwner ldocArg2;
         private LabelledDataOwner ldocArg3;
@@ -61,8 +62,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+				#endregion
 
 		public UI()
 		{
@@ -82,16 +82,12 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
 		{
 			if( disposing )
 			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
 			}
-			base.Dispose( disposing );
+			// base.Dispose(disposing) not available on Avalonia Window
 
 			inst = null;
         }
@@ -103,7 +99,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
         void doidTree_DataOwnerControlChanged(object sender, EventArgs e)
         {
-            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(doidTree.Value - 1), -1, pjse.Detail.ErrorNames);
+            this.lbTreeName.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(doidTree.Value - 1), -1, pjse.Detail.ErrorNames);
         }
 
         private Scope Scope
@@ -138,13 +134,13 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             if (i >= 0)
             {
                 this.tbTree.Text = "0x" + SimPe.Helper.HexString((ushort)(i+1));
-                this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)i, -1, pjse.Detail.ErrorNames);
+                this.lbTreeName.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)i, -1, pjse.Detail.ErrorNames);
             }
         }
 
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWiz0x001c; } }
+        public StackPanel WizPanel { get { return this.pnWiz0x001c; } }
 
 		public void Execute(Instruction inst)
 		{
@@ -166,7 +162,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.SelectedIndex = ops1[0x05] < this.cbRTBNType.Items.Count ? ops1[0x05] : -1;
 
-            this.flpArgs.Enabled = this.tfArgs.Checked = options[4];
+            this.flpArgs.IsEnabled = this.tfArgs.Checked = options[4];
             this.tfParams.Checked = options[5];
 
             doidTree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 0x07, BhavWiz.ToShort(ops1[0x04], (byte)((ops1[0x02] >> 6) & 0x01)));
@@ -200,7 +196,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
                 ops1[0x04] = (byte)(doidTree.Value & 0xff);
 
-                if (this.cbRTBNType.SelectedIndex >= 0)
+                if (this.cbRTBNType.SelectedIndex != null)
                     ops1[0x05] = (byte)this.cbRTBNType.SelectedIndex;
 
                 byte[] lohi = { 0, 0 };
@@ -219,61 +215,41 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWiz0x001c = new System.Windows.Forms.Panel();
-            this.flpArgs = new System.Windows.Forms.FlowLayoutPanel();
+		{            this.pnWiz0x001c = new StackPanel();
+            this.flpArgs = new FlowLayoutPanel();
             this.ldocArg1 = new pjse.LabelledDataOwner();
             this.ldocArg2 = new pjse.LabelledDataOwner();
             this.ldocArg3 = new pjse.LabelledDataOwner();
-            this.btnTreeName = new System.Windows.Forms.Button();
-            this.tbTree = new System.Windows.Forms.TextBox();
-            this.tfGlobal = new System.Windows.Forms.CheckBox();
-            this.tfParams = new System.Windows.Forms.CheckBox();
-            this.tfArgs = new System.Windows.Forms.CheckBox();
-            this.tfSemiGlobal = new System.Windows.Forms.CheckBox();
-            this.tfPrivate = new System.Windows.Forms.CheckBox();
-            this.cbRTBNType = new System.Windows.Forms.ComboBox();
-            this.cbScope = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbTreeName = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnWiz0x001c.SuspendLayout();
-            this.flpArgs.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
-            this.flowLayoutPanel6.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // pnWiz0x001c
-            // 
-            resources.ApplyResources(this.pnWiz0x001c, "pnWiz0x001c");
-            this.pnWiz0x001c.Controls.Add(this.tableLayoutPanel1);
+            this.btnTreeName = new ButtonCompat();
+            this.tbTree = new TextBoxCompat();
+            this.tfGlobal = new CheckBoxCompat2();
+            this.tfParams = new CheckBoxCompat2();
+            this.tfArgs = new CheckBoxCompat2();
+            this.tfSemiGlobal = new CheckBoxCompat2();
+            this.tfPrivate = new CheckBoxCompat2();
+            this.cbRTBNType = new ComboBoxCompat();
+            this.cbScope = new ComboBoxCompat();
+            this.label3 = new LabelCompat();
+            this.lbTreeName = new LabelCompat();
+            this.label2 = new LabelCompat();
+            this.label4 = new LabelCompat();
+            this.label8 = new LabelCompat();
+            this.label1 = new LabelCompat();
+            this.tableLayoutPanel1 = new TableLayoutPanel();
+            this.flowLayoutPanel2 = new FlowLayoutPanel();
+            this.flowLayoutPanel3 = new FlowLayoutPanel();
+            this.flowLayoutPanel4 = new FlowLayoutPanel();
+            this.flowLayoutPanel6 = new FlowLayoutPanel();            // pnWiz0x001c
+            //            this.pnWiz0x001c.Children.Add(this.tableLayoutPanel1);
             this.pnWiz0x001c.Name = "pnWiz0x001c";
-            // 
             // flpArgs
-            // 
-            resources.ApplyResources(this.flpArgs, "flpArgs");
-            this.tableLayoutPanel1.SetColumnSpan(this.flpArgs, 2);
-            this.flpArgs.Controls.Add(this.ldocArg1);
-            this.flpArgs.Controls.Add(this.ldocArg2);
-            this.flpArgs.Controls.Add(this.ldocArg3);
+            //            this.tableLayoutPanel1.SetColumnSpan(this.flpArgs, 2);
+            this.flpArgs.Children.Add(this.ldocArg1);
+            this.flpArgs.Children.Add(this.ldocArg2);
+            this.flpArgs.Children.Add(this.ldocArg3);
             this.flpArgs.Name = "flpArgs";
-            // 
             // ldocArg1
-            // 
-            resources.ApplyResources(this.ldocArg1, "ldocArg1");
-            this.ldocArg1.DataOwner = ((byte)(255));
+            //            this.ldocArg1.DataOwner = ((byte)(255));
             this.ldocArg1.DataOwnerEnabled = true;
             this.ldocArg1.DecimalVisible = false;
             this.ldocArg1.Instruction = null;
@@ -282,11 +258,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.ldocArg1.UseFlagNames = false;
             this.ldocArg1.UseInstancePickerVisible = false;
             this.ldocArg1.Value = ((ushort)(0));
-            // 
             // ldocArg2
-            // 
-            resources.ApplyResources(this.ldocArg2, "ldocArg2");
-            this.ldocArg2.DataOwner = ((byte)(255));
+            //            this.ldocArg2.DataOwner = ((byte)(255));
             this.ldocArg2.DataOwnerEnabled = true;
             this.ldocArg2.DecimalVisible = false;
             this.ldocArg2.Instruction = null;
@@ -295,184 +268,78 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.ldocArg2.UseFlagNames = false;
             this.ldocArg2.UseInstancePickerVisible = false;
             this.ldocArg2.Value = ((ushort)(0));
-            // 
             // ldocArg3
-            // 
-            resources.ApplyResources(this.ldocArg3, "ldocArg3");
-            this.ldocArg3.DataOwner = ((byte)(255));
+            //            this.ldocArg3.DataOwner = ((byte)(255));
             this.ldocArg3.DataOwnerEnabled = true;
             this.ldocArg3.Instruction = null;
             this.ldocArg3.LabelSize = new System.Drawing.Size(61, 13);
             this.ldocArg3.Name = "ldocArg3";
             this.ldocArg3.UseFlagNames = false;
             this.ldocArg3.Value = ((ushort)(0));
-            // 
             // btnTreeName
-            // 
-            resources.ApplyResources(this.btnTreeName, "btnTreeName");
-            this.btnTreeName.Name = "btnTreeName";
-            this.btnTreeName.Click += new System.EventHandler(this.btnTreeName_Click);
-            // 
+            //            this.btnTreeName.Name = "btnTreeName";
+            this.btnTreeName.Click += (s, e) => this.btnTreeName_Click(s, e);
             // tbTree
-            // 
-            resources.ApplyResources(this.tbTree, "tbTree");
-            this.tbTree.Name = "tbTree";
-            // 
+            //            this.tbTree.Name = "tbTree";
             // tfGlobal
-            // 
-            resources.ApplyResources(this.tfGlobal, "tfGlobal");
-            this.tfGlobal.Name = "tfGlobal";
-            this.tfGlobal.UseVisualStyleBackColor = true;
-            // 
-            // tfParams
-            // 
-            resources.ApplyResources(this.tfParams, "tfParams");
-            this.tfParams.Name = "tfParams";
-            this.tfParams.UseVisualStyleBackColor = true;
-            // 
-            // tfArgs
-            // 
-            resources.ApplyResources(this.tfArgs, "tfArgs");
-            this.tfArgs.Name = "tfArgs";
-            this.tfArgs.UseVisualStyleBackColor = true;
-            this.tfArgs.CheckedChanged += new System.EventHandler(this.tfArgs_CheckedChanged);
-            // 
+            //            this.tfGlobal.Name = "tfGlobal";
+            //            this.tfParams.Name = "tfParams";
+            //            this.tfArgs.Name = "tfArgs";
+            this.tfArgs.IsCheckedChanged += (s, e) => this.tfArgs_CheckedChanged(s, e);
             // tfSemiGlobal
-            // 
-            resources.ApplyResources(this.tfSemiGlobal, "tfSemiGlobal");
-            this.tfSemiGlobal.Name = "tfSemiGlobal";
-            this.tfSemiGlobal.UseVisualStyleBackColor = true;
-            // 
-            // tfPrivate
-            // 
-            resources.ApplyResources(this.tfPrivate, "tfPrivate");
-            this.tfPrivate.Checked = true;
-            this.tfPrivate.CheckState = System.Windows.Forms.CheckState.Checked;
+            //            this.tfSemiGlobal.Name = "tfSemiGlobal";
+            //            this.tfPrivate.Checked = true;
             this.tfPrivate.Name = "tfPrivate";
-            this.tfPrivate.UseVisualStyleBackColor = true;
-            // 
-            // cbRTBNType
-            // 
-            this.cbRTBNType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRTBNType.FormattingEnabled = true;
-            this.cbRTBNType.Items.AddRange(new object[] {
-            resources.GetString("cbRTBNType.Items"),
-            resources.GetString("cbRTBNType.Items1"),
-            resources.GetString("cbRTBNType.Items2")});
-            resources.ApplyResources(this.cbRTBNType, "cbRTBNType");
-            this.cbRTBNType.Name = "cbRTBNType";
             // 
             // cbScope
-            // 
-            resources.ApplyResources(this.cbScope, "cbScope");
-            this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbScope.FormattingEnabled = true;
-            this.cbScope.Items.AddRange(new object[] {
-            resources.GetString("cbScope.Items"),
-            resources.GetString("cbScope.Items1"),
-            resources.GetString("cbScope.Items2")});
             this.cbScope.Name = "cbScope";
-            this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
-            // 
+            this.cbScope.SelectionChanged += (s, e) => this.cbScope_SelectedIndexChanged(s, e);
             // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
+            //            this.label3.Name = "label3";
             // lbTreeName
-            // 
-            resources.ApplyResources(this.lbTreeName, "lbTreeName");
-            this.lbTreeName.Name = "lbTreeName";
-            // 
+            //            this.lbTreeName.Name = "lbTreeName";
             // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
+            //            this.label2.Name = "label2";
             // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
+            //            this.label4.Name = "label4";
             // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
+            //            this.label8.Name = "label8";
             // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
+            //            this.label1.Name = "label1";
             // tableLayoutPanel1
-            // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.flpArgs, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cbRTBNType, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel6, 0, 4);
+            //            this.tableLayoutPanel1.Children.Add(this.flpArgs);
+            this.tableLayoutPanel1.Children.Add(this.label1);
+            this.tableLayoutPanel1.Children.Add(this.flowLayoutPanel2);
+            this.tableLayoutPanel1.Children.Add(this.label2);
+            this.tableLayoutPanel1.Children.Add(this.cbRTBNType);
+            this.tableLayoutPanel1.Children.Add(this.flowLayoutPanel4);
+            this.tableLayoutPanel1.Children.Add(this.label4);
+            this.tableLayoutPanel1.Children.Add(this.flowLayoutPanel3);
+            this.tableLayoutPanel1.Children.Add(this.flowLayoutPanel6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
             // flowLayoutPanel2
-            // 
-            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
-            this.flowLayoutPanel2.Controls.Add(this.cbScope);
-            this.flowLayoutPanel2.Controls.Add(this.label8);
+            //            this.flowLayoutPanel2.Children.Add(this.cbScope);
+            this.flowLayoutPanel2.Children.Add(this.label8);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            // 
             // flowLayoutPanel3
-            // 
-            resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
-            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel3, 2);
-            this.flowLayoutPanel3.Controls.Add(this.label3);
-            this.flowLayoutPanel3.Controls.Add(this.tfPrivate);
-            this.flowLayoutPanel3.Controls.Add(this.tfSemiGlobal);
-            this.flowLayoutPanel3.Controls.Add(this.tfGlobal);
+            //            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel3, 2);
+            this.flowLayoutPanel3.Children.Add(this.label3);
+            this.flowLayoutPanel3.Children.Add(this.tfPrivate);
+            this.flowLayoutPanel3.Children.Add(this.tfSemiGlobal);
+            this.flowLayoutPanel3.Children.Add(this.tfGlobal);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            // 
             // flowLayoutPanel4
-            // 
-            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
-            this.flowLayoutPanel4.Controls.Add(this.tbTree);
-            this.flowLayoutPanel4.Controls.Add(this.btnTreeName);
-            this.flowLayoutPanel4.Controls.Add(this.lbTreeName);
+            //            this.flowLayoutPanel4.Children.Add(this.tbTree);
+            this.flowLayoutPanel4.Children.Add(this.btnTreeName);
+            this.flowLayoutPanel4.Children.Add(this.lbTreeName);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            // 
             // flowLayoutPanel6
-            // 
-            resources.ApplyResources(this.flowLayoutPanel6, "flowLayoutPanel6");
-            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel6, 2);
-            this.flowLayoutPanel6.Controls.Add(this.tfArgs);
-            this.flowLayoutPanel6.Controls.Add(this.tfParams);
+            //            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel6, 2);
+            this.flowLayoutPanel6.Children.Add(this.tfArgs);
+            this.flowLayoutPanel6.Children.Add(this.tfParams);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            // 
             // UI
-            // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.pnWiz0x001c);
-            this.Name = "UI";
-            this.pnWiz0x001c.ResumeLayout(false);
-            this.pnWiz0x001c.PerformLayout();
-            this.flpArgs.ResumeLayout(false);
-            this.flpArgs.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
-            this.flowLayoutPanel6.ResumeLayout(false);
-            this.flowLayoutPanel6.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            //            this.Controls.Add(this.pnWiz0x001c);
 
 		}
 		#endregion
@@ -484,13 +351,13 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
         private void tfArgs_CheckedChanged(object sender, EventArgs e)
         {
-            this.flpArgs.Enabled = this.tfArgs.Checked;
+            this.flpArgs.IsEnabled = this.tfArgs.Checked;
         }
 
         private void cbScope_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(doidTree.Value - 1), -1, pjse.Detail.ErrorNames);
+            this.lbTreeName.Content = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(doidTree.Value - 1), -1, pjse.Detail.ErrorNames);
         }
 
 	}

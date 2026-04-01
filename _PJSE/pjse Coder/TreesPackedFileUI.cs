@@ -22,7 +22,8 @@
  ***************************************************************************/
 
 using System;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.Plugin
@@ -50,10 +51,8 @@ namespace SimPe.Plugin
             tm.AddControl(this.taskBox1);
             tm.AddControl(this.taskBox2);
 
-            if (SimPe.Helper.XmlRegistry.UseBigIcons && Screen.PrimaryScreen.WorkingArea.Width > 1600)
+            if (SimPe.Helper.XmlRegistry.UseBigIcons && 1920 > 1600)
             {
-                listLast.Font = new System.Drawing.Font("Verdana", 12F);
-                listList.Font = new System.Drawing.Font("Verdana", 12F);
             }
 		}
 
@@ -68,16 +67,16 @@ namespace SimPe.Plugin
             tbversion.Text = Convert.ToString(Wrapper.Vershin);
             if (Wrapper.Vershin == 69)
             {            
-                listList.Visible = taskBox1.Visible = pnhidim.Visible = false;
-                listLast.Visible = taskBox2.Visible = btDown.Visible = btMove.Visible = true;
-                btBhave.Visible = Wrapper.SiblingResource(0x42484156) != null;
+                listList.IsVisible = taskBox1.IsVisible = pnhidim.IsVisible = false;
+                listLast.IsVisible = taskBox2.IsVisible = btDown.IsVisible = btMove.IsVisible = true;
+                btBhave.IsVisible = Wrapper.SiblingResource(0x42484156) != null;
                 Comment2.Width = listLast.Width - 105;
                 this.CanCommit = true;
             }
             else
             {
-                listList.Visible = taskBox1.Visible = pnhidim.Visible = true;
-                btBhave.Visible = listLast.Visible = taskBox2.Visible = btDown.Visible = btMove.Visible = false;
+                listList.IsVisible = taskBox1.IsVisible = pnhidim.IsVisible = true;
+                btBhave.IsVisible = listLast.IsVisible = taskBox2.IsVisible = btDown.IsVisible = btMove.IsVisible = false;
                 if (listList.Width > 900) Comment.Width = listList.Width - 680;
                 this.CanCommit = Wrapper.Count < 64;
                 tbheader.Text = "0x" + Helper.HexString(Wrapper.Header);
@@ -100,7 +99,7 @@ namespace SimPe.Plugin
         #endregion
 
         #region IPackedFileUI Member
-        System.Windows.Forms.Control IPackedFileUI.GUIHandle
+        Avalonia.Controls.Control IPackedFileUI.GUIHandle
         {
             get { return this; }
         }
@@ -191,11 +190,11 @@ namespace SimPe.Plugin
             holde = true;
             if (listLast.SelectedItems.Count == 0) { ClearEditer(); holde = false; return; }
             ListViewItem lvi = listLast.SelectedItems[0];
-            tbComment2.ReadOnly = false;
+            tbComment2.IsReadOnly = false;
             tbComment2.Text = lvi.SubItems[1].Text;
             taskBox2.HeaderText = "Editer - Line " + Convert.ToString((int)lvi.Tag);
-            btDown.Enabled = (int)lvi.Tag < listLast.Items.Count -1;
-            btMove.Enabled = (int)lvi.Tag > 0;
+            btDown.IsEnabled = (int)lvi.Tag < listLast.Items.Count -1;
+            btMove.IsEnabled = (int)lvi.Tag > 0;
             holde = false;
         }
 
@@ -332,11 +331,11 @@ namespace SimPe.Plugin
 
         private void ClearEditer()
         {
-            btDown.Enabled = btMove.Enabled = false;
+            btDown.IsEnabled = btMove.IsEnabled = false;
             tbComment2.Text = tbComment.Text = textBox2.Text = textBox3.Text = textBox4.Text = textBox5.Text = "";
             textBox6.Text = textBox7.Text = textBox8.Text = textBox9.Text = textBox10.Text = textBox11.Text = "";
             taskBox2.HeaderText = taskBox1.HeaderText = "Editer";
-            tbComment2.ReadOnly = true;
+            tbComment2.IsReadOnly = true;
         }
     }
 }

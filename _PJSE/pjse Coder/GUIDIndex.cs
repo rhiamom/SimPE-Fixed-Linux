@@ -61,7 +61,7 @@ namespace pjse
             {
                 foreach (pjse.FileTable.Entry item in items)
                 {
-                    System.Windows.Forms.Application.DoEvents();
+                    
                     try
                     {
                         SimPe.Interfaces.Plugin.AbstractWrapper wrapper = item.Wrapper;

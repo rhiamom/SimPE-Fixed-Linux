@@ -48,26 +48,18 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.flpOptions = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
             this.ckbUseInstancePicker = new System.Windows.Forms.CheckBox();
-            this.pnWizBhav.SuspendLayout();
-            this.tlpHeader.SuspendLayout();
-            this.flpFormat.SuspendLayout();
-            this.flpOptions.SuspendLayout();
-            this.SuspendLayout();
             // 
             // label1
             // 
-            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
             // pnWizBhav
             // 
-            resources.ApplyResources(this.pnWizBhav, "pnWizBhav");
             this.pnWizBhav.Controls.Add(this.tlpHeader);
             this.pnWizBhav.Name = "pnWizBhav";
             // 
             // tlpHeader
             // 
-            resources.ApplyResources(this.tlpHeader, "tlpHeader");
             this.tlpHeader.Controls.Add(this.ldocArg8, 1, 10);
             this.tlpHeader.Controls.Add(this.ldocArg7, 1, 9);
             this.tlpHeader.Controls.Add(this.ldocArg6, 1, 8);
@@ -95,7 +87,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg8
             // 
-            resources.ApplyResources(this.ldocArg8, "ldocArg8");
             this.ldocArg8.DataOwner = ((byte)(255));
             this.ldocArg8.DataOwnerEnabled = true;
             this.ldocArg8.DecimalVisible = false;
@@ -109,7 +100,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg7
             // 
-            resources.ApplyResources(this.ldocArg7, "ldocArg7");
             this.ldocArg7.DataOwner = ((byte)(255));
             this.ldocArg7.DataOwnerEnabled = true;
             this.ldocArg7.DecimalVisible = false;
@@ -123,7 +113,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg6
             // 
-            resources.ApplyResources(this.ldocArg6, "ldocArg6");
             this.ldocArg6.DataOwner = ((byte)(255));
             this.ldocArg6.DataOwnerEnabled = true;
             this.ldocArg6.DecimalVisible = false;
@@ -137,7 +126,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg5
             // 
-            resources.ApplyResources(this.ldocArg5, "ldocArg5");
             this.ldocArg5.DataOwner = ((byte)(255));
             this.ldocArg5.DataOwnerEnabled = true;
             this.ldocArg5.DecimalVisible = false;
@@ -151,7 +139,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg4
             // 
-            resources.ApplyResources(this.ldocArg4, "ldocArg4");
             this.ldocArg4.DataOwner = ((byte)(255));
             this.ldocArg4.DataOwnerEnabled = true;
             this.ldocArg4.DecimalVisible = false;
@@ -165,7 +152,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg3
             // 
-            resources.ApplyResources(this.ldocArg3, "ldocArg3");
             this.ldocArg3.DataOwner = ((byte)(255));
             this.ldocArg3.DataOwnerEnabled = true;
             this.ldocArg3.DecimalVisible = false;
@@ -179,7 +165,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg2
             // 
-            resources.ApplyResources(this.ldocArg2, "ldocArg2");
             this.ldocArg2.DataOwner = ((byte)(255));
             this.ldocArg2.DataOwnerEnabled = true;
             this.ldocArg2.DecimalVisible = false;
@@ -193,7 +178,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // ldocArg1
             // 
-            resources.ApplyResources(this.ldocArg1, "ldocArg1");
             this.ldocArg1.DataOwner = ((byte)(255));
             this.ldocArg1.DataOwnerEnabled = true;
             this.ldocArg1.DecimalVisible = false;
@@ -207,12 +191,10 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // lbArg1
             // 
-            resources.ApplyResources(this.lbArg1, "lbArg1");
             this.lbArg1.Name = "lbArg1";
             // 
             // flpFormat
             // 
-            resources.ApplyResources(this.flpFormat, "flpFormat");
             this.flpFormat.Controls.Add(this.rbTemps);
             this.flpFormat.Controls.Add(this.rbOld);
             this.flpFormat.Controls.Add(this.rbNew);
@@ -221,134 +203,99 @@ namespace pjse.BhavOperandWizards.WizBhav
             // 
             // rbTemps
             // 
-            resources.ApplyResources(this.rbTemps, "rbTemps");
             this.rbTemps.Name = "rbTemps";
-            this.rbTemps.TabStop = true;
             this.rbTemps.UseVisualStyleBackColor = true;
-            this.rbTemps.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            this.rbTemps.IsCheckedChanged += (s, e) => this.rb_CheckedChanged(s, e);
             // 
             // rbCallers
             // 
-            resources.ApplyResources(this.rbCallers, "rbCallers");
             this.rbCallers.Name = "rbCallers";
-            this.rbCallers.TabStop = true;
             this.rbCallers.UseVisualStyleBackColor = true;
-            this.rbCallers.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            this.rbCallers.IsCheckedChanged += (s, e) => this.rb_CheckedChanged(s, e);
             // 
             // rbOld
             // 
-            resources.ApplyResources(this.rbOld, "rbOld");
             this.rbOld.Name = "rbOld";
-            this.rbOld.TabStop = true;
             this.rbOld.UseVisualStyleBackColor = true;
-            this.rbOld.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            this.rbOld.IsCheckedChanged += (s, e) => this.rb_CheckedChanged(s, e);
             // 
             // rbNew
             // 
-            resources.ApplyResources(this.rbNew, "rbNew");
             this.rbNew.Name = "rbNew";
-            this.rbNew.TabStop = true;
             this.rbNew.UseVisualStyleBackColor = true;
-            this.rbNew.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            this.rbNew.IsCheckedChanged += (s, e) => this.rb_CheckedChanged(s, e);
             // 
             // label2
             // 
-            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
             // label3
             // 
-            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
             // label4
             // 
-            resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
             // 
             // lbArgC
             // 
-            resources.ApplyResources(this.lbArgC, "lbArgC");
             this.lbArgC.Name = "lbArgC";
             // 
             // lbBhavName
             // 
-            resources.ApplyResources(this.lbBhavName, "lbBhavName");
             this.lbBhavName.Name = "lbBhavName";
             // 
             // lbArg2
             // 
-            resources.ApplyResources(this.lbArg2, "lbArg2");
             this.lbArg2.Name = "lbArg2";
             // 
             // lbArg3
             // 
-            resources.ApplyResources(this.lbArg3, "lbArg3");
             this.lbArg3.Name = "lbArg3";
             // 
             // lbArg4
             // 
-            resources.ApplyResources(this.lbArg4, "lbArg4");
             this.lbArg4.Name = "lbArg4";
             // 
             // lbArg5
             // 
-            resources.ApplyResources(this.lbArg5, "lbArg5");
             this.lbArg5.Name = "lbArg5";
             // 
             // lbArg6
             // 
-            resources.ApplyResources(this.lbArg6, "lbArg6");
             this.lbArg6.Name = "lbArg6";
             // 
             // lbArg7
             // 
-            resources.ApplyResources(this.lbArg7, "lbArg7");
             this.lbArg7.Name = "lbArg7";
             // 
             // lbArg8
             // 
-            resources.ApplyResources(this.lbArg8, "lbArg8");
             this.lbArg8.Name = "lbArg8";
             // 
             // flpOptions
             // 
-            resources.ApplyResources(this.flpOptions, "flpOptions");
             this.flpOptions.Controls.Add(this.ckbDecimal);
             this.flpOptions.Controls.Add(this.ckbUseInstancePicker);
             this.flpOptions.Name = "flpOptions";
             // 
             // ckbDecimal
             // 
-            resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
             this.ckbDecimal.UseVisualStyleBackColor = true;
-            this.ckbDecimal.CheckedChanged += new System.EventHandler(this.ckbDecimal_CheckedChanged);
+            this.ckbDecimal.IsCheckedChanged += (s, e) => this.ckbDecimal_CheckedChanged(s, e);
             // 
             // ckbUseInstancePicker
             // 
-            resources.ApplyResources(this.ckbUseInstancePicker, "ckbUseInstancePicker");
             this.ckbUseInstancePicker.Name = "ckbUseInstancePicker";
             this.ckbUseInstancePicker.UseVisualStyleBackColor = true;
-            this.ckbUseInstancePicker.CheckedChanged += new System.EventHandler(this.ckbUseInstancePicker_CheckedChanged);
+            this.ckbUseInstancePicker.IsCheckedChanged += (s, e) => this.ckbUseInstancePicker_CheckedChanged(s, e);
             // 
             // UI
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWizBhav);
             this.Controls.Add(this.label1);
             this.Name = "UI";
-            this.pnWizBhav.ResumeLayout(false);
-            this.pnWizBhav.PerformLayout();
-            this.tlpHeader.ResumeLayout(false);
-            this.tlpHeader.PerformLayout();
-            this.flpFormat.ResumeLayout(false);
-            this.flpFormat.PerformLayout();
-            this.flpOptions.ResumeLayout(false);
-            this.flpOptions.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

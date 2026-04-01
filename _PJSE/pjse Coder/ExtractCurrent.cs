@@ -27,7 +27,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Files;
 using SimPe.Packages;
 
@@ -37,7 +38,7 @@ namespace pjse
     {
         public static DialogResult Execute(SimPe.Interfaces.Plugin.AbstractWrapper wrapper, string title)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            SaveFileDialogCompat sfd = new SaveFileDialogCompat();
             sfd.FileName = wrapper.FileDescriptor.ExportFileName.Replace(" ", "").Replace(":", "_").Replace(@"\", "_");
             sfd.Filter = SimPe.ExtensionProvider.BuildFilterString(
                 new SimPe.ExtensionType[] { SimPe.ExtensionType.ExtractedFile, SimPe.ExtensionType.AllFiles }

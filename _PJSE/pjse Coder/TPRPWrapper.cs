@@ -135,8 +135,8 @@ namespace SimPe.PackedFiles.Wrapper
         public void CleanUp()
         {
             internalchg = true;
-            while (paramCount > 0 && this[false, paramCount - 1].Label.Trim().Length == 0) Remove(this[false, paramCount - 1]);
-            while (localCount > 0 && this[true, localCount - 1].Label.Trim().Length == 0) Remove(this[true, localCount - 1]);
+            while (paramCount > 0 && this[false, paramCount - 1].LabelCompat.Trim().Length == 0) Remove(this[false, paramCount - 1]);
+            while (localCount > 0 && this[true, localCount - 1].LabelCompat.Trim().Length == 0) Remove(this[true, localCount - 1]);
             internalchg = false;
         }
 
@@ -238,7 +238,7 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE TPRP Wrapper",
 				"Peter L Jones",
-				"TREE Label Editor",
+				"TREE LabelCompat Editor",
 				1
 				);
 		}
@@ -368,7 +368,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region Accessor methods
-		public string Label
+		public string LabelCompat
 		{
 			get { return label; }
 			set

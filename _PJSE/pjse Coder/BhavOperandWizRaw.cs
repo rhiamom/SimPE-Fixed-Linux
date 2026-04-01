@@ -28,7 +28,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizRaw
@@ -36,43 +37,20 @@ namespace pjse.BhavOperandWizards.WizRaw
 	/// <summary>
 	/// Summary description for BhavInstruction.
 	/// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
 	{
 		#region Form variables
-		internal System.Windows.Forms.Panel pnWizRaw;
-		private System.Windows.Forms.TextBox tbRaw;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		internal StackPanel pnWizRaw;
+		private TextBoxCompat tbRaw;
 		#endregion
 
 		public UI()
 		{
-			//
-			// Required designer variable.
-			//
 			InitializeComponent();
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
-
-
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWizRaw; } }
+        public StackPanel WizPanel { get { return this.pnWizRaw; } }
 
 		public void Execute(Instruction inst)
 		{
@@ -105,42 +83,15 @@ namespace pjse.BhavOperandWizards.WizRaw
 
         #endregion
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWizRaw = new System.Windows.Forms.Panel();
-            this.tbRaw = new System.Windows.Forms.TextBox();
-            this.pnWizRaw.SuspendLayout();
-            this.SuspendLayout();
-            //
-            // pnWizRaw
-            //
-            this.pnWizRaw.Controls.Add(this.tbRaw);
-            resources.ApplyResources(this.pnWizRaw, "pnWizRaw");
+            this.pnWizRaw = new StackPanel();
+            this.tbRaw = new TextBoxCompat();
             this.pnWizRaw.Name = "pnWizRaw";
-            //
-            // tbRaw
-            //
-            resources.ApplyResources(this.tbRaw, "tbRaw");
             this.tbRaw.Name = "tbRaw";
-            //
-            // UI
-            //
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.pnWizRaw);
-            this.Name = "UI";
-            this.pnWizRaw.ResumeLayout(false);
-            this.pnWizRaw.PerformLayout();
-            this.ResumeLayout(false);
-
+            this.pnWizRaw.Children.Add(this.tbRaw);
+            this.Content = this.pnWizRaw;
 		}
-		#endregion
 
 	}
 

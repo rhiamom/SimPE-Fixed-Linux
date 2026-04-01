@@ -28,7 +28,11 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
+using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
+using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
+using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;
@@ -41,81 +45,81 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Summary description for BhavForm.
 	/// </summary>
-	public class BhavForm : System.Windows.Forms.Form, IPackedFileUI
+	public class BhavForm : Window, IPackedFileUI
 	{
 		#region Form variables
 
-        private System.Windows.Forms.Label lbFilename;
-		private System.Windows.Forms.Label lbFormat;
-		private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.Label lbLocalC;
-		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.TextBox tbType;
-		private System.Windows.Forms.TextBox tbArgC;
-		private System.Windows.Forms.TextBox tbLocalC;
-		private System.Windows.Forms.ComboBox tba1;
-		private System.Windows.Forms.ComboBox tba2;
-		private System.Windows.Forms.LinkLabel llopenbhav;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.TextBox tbInst_OpCode;
-		private System.Windows.Forms.TextBox tbInst_Op7;
-		private System.Windows.Forms.TextBox tbInst_Op6;
-		private System.Windows.Forms.TextBox tbInst_Op5;
-		private System.Windows.Forms.TextBox tbInst_Op4;
-		private System.Windows.Forms.TextBox tbInst_Op3;
-		private System.Windows.Forms.TextBox tbInst_Op2;
-		private System.Windows.Forms.TextBox tbInst_Op1;
-		private System.Windows.Forms.TextBox tbInst_Op0;
-		private System.Windows.Forms.TextBox tbInst_Unk7;
-		private System.Windows.Forms.TextBox tbInst_Unk6;
-		private System.Windows.Forms.TextBox tbInst_Unk5;
-		private System.Windows.Forms.TextBox tbInst_Unk4;
-		private System.Windows.Forms.TextBox tbInst_Unk3;
-		private System.Windows.Forms.TextBox tbInst_Unk2;
-		private System.Windows.Forms.TextBox tbInst_Unk1;
-		private System.Windows.Forms.TextBox tbInst_Unk0;
-		private System.Windows.Forms.GroupBox gbInstruction;
-		private System.Windows.Forms.Panel bhavPanel;
-		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.Button btnOpCode;
-		private System.Windows.Forms.Button btnOperandWiz;
-		private System.Windows.Forms.Button btnSort;
-		private System.Windows.Forms.Label lbUpDown;
-		private System.Windows.Forms.TextBox tbLines;
-		private System.Windows.Forms.Button btnUp;
-		private System.Windows.Forms.Button btnDown;
-		private System.Windows.Forms.Button btnDel;
-		private System.Windows.Forms.Button btnAdd;
-		private System.Windows.Forms.Button btnCancel;
+        private LabelCompat lbFilename;
+		private LabelCompat lbFormat;
+		private LabelCompat lbType;
+		private LabelCompat lbLocalC;
+		private TextBoxCompat tbFilename;
+		private TextBoxCompat tbType;
+		private TextBoxCompat tbArgC;
+		private TextBoxCompat tbLocalC;
+		private ComboBoxCompat tba1;
+		private ComboBoxCompat tba2;
+		private LinkLabel llopenbhav;
+		private LabelCompat label9;
+		private LabelCompat label10;
+		private LabelCompat label11;
+		private LabelCompat label12;
+		private LabelCompat label13;
+		private TextBoxCompat tbInst_OpCode;
+		private TextBoxCompat tbInst_Op7;
+		private TextBoxCompat tbInst_Op6;
+		private TextBoxCompat tbInst_Op5;
+		private TextBoxCompat tbInst_Op4;
+		private TextBoxCompat tbInst_Op3;
+		private TextBoxCompat tbInst_Op2;
+		private TextBoxCompat tbInst_Op1;
+		private TextBoxCompat tbInst_Op0;
+		private TextBoxCompat tbInst_Unk7;
+		private TextBoxCompat tbInst_Unk6;
+		private TextBoxCompat tbInst_Unk5;
+		private TextBoxCompat tbInst_Unk4;
+		private TextBoxCompat tbInst_Unk3;
+		private TextBoxCompat tbInst_Unk2;
+		private TextBoxCompat tbInst_Unk1;
+		private TextBoxCompat tbInst_Unk0;
+		private GroupBox gbInstruction;
+		private StackPanel bhavPanel;
+		private ButtonCompat btnCommit;
+		private ButtonCompat btnOpCode;
+		private ButtonCompat btnOperandWiz;
+		private ButtonCompat btnSort;
+		private LabelCompat lbUpDown;
+		private TextBoxCompat tbLines;
+		private ButtonCompat btnUp;
+		private ButtonCompat btnDown;
+		private ButtonCompat btnDel;
+		private ButtonCompat btnAdd;
+		private ButtonCompat btnCancel;
         private SimPe.PackedFiles.UserInterface.BhavInstListControl pnflowcontainer;
-		private System.Windows.Forms.GroupBox gbMove;
-		private System.Windows.Forms.Label lbArgC;
-		private System.Windows.Forms.GroupBox gbSpecial;
-		private System.Windows.Forms.Button btnInsTrue;
-		private System.Windows.Forms.Button btnInsFalse;
-		private System.Windows.Forms.Button btnLinkInge;
-		private System.Windows.Forms.Button btnDelPescado;
-		private System.Windows.Forms.Button btnAppend;
-		private System.Windows.Forms.ComboBox cbFormat;
-		private System.Windows.Forms.Button btnDelMerola;
-		private System.Windows.Forms.Label lbCacheFlags;
-		private System.Windows.Forms.TextBox tbCacheFlags;
-		private System.Windows.Forms.Label lbTreeVersion;
-		private System.Windows.Forms.TextBox tbTreeVersion;
-		private System.Windows.Forms.TextBox tbHeaderFlag;
-		private System.Windows.Forms.Label lbHeaderFlag;
-		private System.Windows.Forms.Button btnOperandRaw;
-		private System.Windows.Forms.TextBox tbInst_NodeVersion;
-		private System.Windows.Forms.Button btnClose;
-		private System.Windows.Forms.CheckBox cbSpecial;
-		private System.Windows.Forms.TextBox tbInst_Longname;
-        private System.Windows.Forms.Button btnCopyListing;
-        private System.Windows.Forms.Button btnTPRPMaker;
-        private Button btnGUIDIndex;
+		private GroupBox gbMove;
+		private LabelCompat lbArgC;
+		private GroupBox gbSpecial;
+		private ButtonCompat btnInsTrue;
+		private ButtonCompat btnInsFalse;
+		private ButtonCompat btnLinkInge;
+		private ButtonCompat btnDelPescado;
+		private ButtonCompat btnAppend;
+		private ComboBoxCompat cbFormat;
+		private ButtonCompat btnDelMerola;
+		private LabelCompat lbCacheFlags;
+		private TextBoxCompat tbCacheFlags;
+		private LabelCompat lbTreeVersion;
+		private TextBoxCompat tbTreeVersion;
+		private TextBoxCompat tbHeaderFlag;
+		private LabelCompat lbHeaderFlag;
+		private ButtonCompat btnOperandRaw;
+		private TextBoxCompat tbInst_NodeVersion;
+		private ButtonCompat btnClose;
+		private CheckBoxCompat2 cbSpecial;
+		private TextBoxCompat tbInst_Longname;
+        private ButtonCompat btnCopyListing;
+        private ButtonCompat btnTPRPMaker;
+        private ButtonCompat btnGUIDIndex;
         private ContextMenuStrip cmenuGUIDIndex;
         private ToolStripMenuItem createAllPackagesToolStripMenuItem;
         private ToolStripMenuItem createCurrentPackageToolStripMenuItem;
@@ -125,18 +129,18 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolStripMenuItem saveIndexToolStripMenuItem;
         private ToolStripMenuItem defaultFileToolStripMenuItem1;
         private ToolStripMenuItem toFileToolStripMenuItem;
-        private Button btnCopyBHAV;
-        private TextBox tbHidesOP;
+        private ButtonCompat btnCopyBHAV;
+        private TextBoxCompat tbHidesOP;
         private LinkLabel llHidesOP;
-        private Label lbHidesOP;
-        private Button btnPasteListing;
-        private Button btnZero;
-        private ToolTip ttBhavForm;
+        private LabelCompat lbHidesOP;
+        private ButtonCompat btnPasteListing;
+        private ButtonCompat btnZero;
+        private SimPe.Scenegraph.Compat.ToolTip ttBhavForm;
         private pjse_banner pjse_banner1;
         private CompareButton cmpBHAV;
-        private Button btnInsUnlinked;
-        private Button btnImportBHAV;
-        private Button button1;
+        private ButtonCompat btnInsUnlinked;
+        private ButtonCompat btnImportBHAV;
+        private ButtonCompat button1;
         private IContainer components;
         #endregion
        
@@ -148,9 +152,7 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
             hidesFmt = llHidesOP.Text;
 			this.Tag = "Normal"; // Used by SetReadOnly
-            this.tbHidesOP.BackColor = System.Drawing.SystemColors.Control;
-
-            TextBox[] iob = {
+            TextBoxCompat[] iob = {
 								 tbInst_Op0  ,tbInst_Op1  ,tbInst_Op2  ,tbInst_Op3
 								,tbInst_Op4  ,tbInst_Op5  ,tbInst_Op6  ,tbInst_Op7
 								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
@@ -164,36 +166,28 @@ namespace SimPe.PackedFiles.UserInterface
 							};
 			alHex8 = new ArrayList(iob);
 
-            TextBox[] w = { tbInst_OpCode ,tbLines ,};
+            TextBoxCompat[] w = { tbInst_OpCode ,tbLines ,};
 			alHex16 = new ArrayList(w);
 
-			TextBox[] dw = { tbTreeVersion ,};
+			TextBoxCompat[] dw = { tbTreeVersion ,};
 			alHex32 = new ArrayList(dw);
 
-			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
+			ComboBoxCompat[] cb = { tba1 ,tba2 ,cbFormat ,};
 			alHex16cb = new ArrayList(cb);
 
-            this.button1.Visible = (UserVerification.HaveValidUserId && !Helper.XmlRegistry.HiddenMode);
+            this.button1.IsVisible = (UserVerification.HaveValidUserId && !Helper.XmlRegistry.HiddenMode);
 
-			this.gbSpecial.Visible =
-				this.cbSpecial.Checked = pjse.Settings.PJSE.ShowSpecialButtons;
+			this.cbSpecial.IsChecked = pjse.Settings.PJSE.ShowSpecialButtons;
+			this.gbSpecial.IsVisible = pjse.Settings.PJSE.ShowSpecialButtons;
 
-			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
+			pjse.FileTable.GFT.FiletableRefresh += (s, e) => this.FiletableRefresh(s, e);
 		}
 
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 			if (setHandler && wrapper != null)
 			{
                 wrapper.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
@@ -263,7 +257,7 @@ namespace SimPe.PackedFiles.UserInterface
             foreach (pjse.FileTable.Entry i in entries)
             {
                 ResourceLoader.Refresh(i); // make sure it's been saved before we search it
-                Application.DoEvents();
+                // Application.DoEvents() not needed in Avalonia
 
                 AbstractWrapper wrapper = i.Wrapper;
                 if (wrapper as IEnumerable == null) break;
@@ -360,11 +354,10 @@ namespace SimPe.PackedFiles.UserInterface
 
             WaitingScreen.Message = "";
             WaitingScreen.Stop();
-            MessageBox.Show(
+            SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                 pjse.Localization.GetString("ml_done")
-                , btnImportBHAV.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                , btnImportBHAV.Content?.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information).GetAwaiter().GetResult();
         }
-
 
         private void cmpBHAV_CompareWith(object sender, CompareButton.CompareWithEventArgs e) { common_LinkClicked(e.Item, e.ExpansionItem, true); }
         private void common_LinkClicked(pjse.FileTable.Entry item) { common_LinkClicked(item, null, false); }
@@ -436,7 +429,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void handleOverride()
         {
-            lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
+            lbHidesOP.IsVisible = tbHidesOP.IsVisible = llHidesOP.IsVisible = false;
             llHidesOP.Tag = null;
             if (this.isNoOverride) return;
 
@@ -448,9 +441,9 @@ namespace SimPe.PackedFiles.UserInterface
                 if (item.PFD == wrapper.FileDescriptor) return;
                 if (!item.IsMaxis && !item.IsFixed) return;
 
-                this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = true;
+                this.lbHidesOP.IsVisible = this.tbHidesOP.IsVisible = this.llHidesOP.IsVisible = true;
                 llHidesOP.Links[0].Start -= llHidesOP.Text.Length;
-                llHidesOP.Text = hidesFmt.Replace("{0}", System.IO.Path.GetFileName(item.Package.SaveFileName));
+                llHidesOP.Content = hidesFmt.Replace("{0}", System.IO.Path.GetFileName(item.Package.SaveFileName));
                 llHidesOP.Links[0].Start += llHidesOP.Text.Length;
                 this.tbHidesOP.Text = wrapper.Package.FileName;
                 llHidesOP.Tag = item.IsMaxis ? pjse.FileTable.Source.Maxis : pjse.FileTable.Source.Fixed;
@@ -461,42 +454,42 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             //if (this.isPopup) state = true;
 
-            this.tbInst_OpCode.ReadOnly = state;
-			this.btnOpCode.Enabled = !state;
-			this.tbInst_NodeVersion.ReadOnly = state || wrapper.Header.Format < 0x8005;
-			this.tba1.Enabled = !state;
-			this.tba2.Enabled = !state;
+            this.tbInst_OpCode.IsReadOnly = state;
+			this.btnOpCode.IsEnabled = !state;
+			this.tbInst_NodeVersion.IsReadOnly = state || wrapper.Header.Format < 0x8005;
+			this.tba1.IsEnabled = !state;
+			this.tba2.IsEnabled = !state;
 
-			/*this.tbInst_Op01_dec.ReadOnly = state;
-			this.tbInst_Op23_dec.ReadOnly = state;*/
+			/*this.tbInst_Op01_dec.IsReadOnly = state;
+			this.tbInst_Op23_dec.IsReadOnly = state;*/
 
-			this.tbInst_Op0.ReadOnly = state;
-			this.tbInst_Op1.ReadOnly = state;
-			this.tbInst_Op2.ReadOnly = state;
-			this.tbInst_Op3.ReadOnly = state;
-			this.tbInst_Op4.ReadOnly = state;
-			this.tbInst_Op5.ReadOnly = state;
-			this.tbInst_Op6.ReadOnly = state;
-			this.tbInst_Op7.ReadOnly = state;
+			this.tbInst_Op0.IsReadOnly = state;
+			this.tbInst_Op1.IsReadOnly = state;
+			this.tbInst_Op2.IsReadOnly = state;
+			this.tbInst_Op3.IsReadOnly = state;
+			this.tbInst_Op4.IsReadOnly = state;
+			this.tbInst_Op5.IsReadOnly = state;
+			this.tbInst_Op6.IsReadOnly = state;
+			this.tbInst_Op7.IsReadOnly = state;
 
-			this.btnOperandWiz.Enabled = !state;
-			/*this.btnOperandRaw.Enabled = !state;*/
-            this.btnZero.Enabled = !state;
+			this.btnOperandWiz.IsEnabled = !state;
+			/*this.btnOperandRaw.IsEnabled = !state;*/
+            this.btnZero.IsEnabled = !state;
 			
-			this.tbInst_Unk0.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk1.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk2.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk3.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk4.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk5.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk6.ReadOnly = state || wrapper.Header.Format < 0x8003;
-			this.tbInst_Unk7.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk0.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk1.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk2.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk3.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk4.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk5.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk6.IsReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk7.IsReadOnly = state || wrapper.Header.Format < 0x8003;
 
-			this.btnUp.Enabled = !state;
-			this.btnDown.Enabled = !state;
-			this.tbLines.ReadOnly = state;
-			this.btnDelPescado.Enabled = this.btnDel.Enabled = !state;
-			this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = !state;
+			this.btnUp.IsEnabled = !state;
+			this.btnDown.IsEnabled = !state;
+			this.tbLines.IsReadOnly = state;
+			this.btnDelPescado.IsEnabled = this.btnDel.IsEnabled = !state;
+			this.btnInsTrue.IsEnabled = this.btnInsFalse.IsEnabled = this.btnAdd.IsEnabled = !state;
 		}
 
         private bool instIsBhav()
@@ -512,15 +505,15 @@ namespace SimPe.PackedFiles.UserInterface
             currentInst = null;
             try
             {
-                changed = ((new BhavOperandWiz()).Execute(btnCommit.Visible ? inst : inst.Clone(), type) != null);
+                changed = ((new BhavOperandWiz()).Execute(btnCommit.IsVisible ? inst : inst.Clone(), type) != null);
             }
             finally
             {
                 currentInst = inst;
-                if (btnCommit.Visible)
+                if (btnCommit.IsVisible)
                 {
                     if (changed) UpdateInstPanel();
-                    this.btnCancel.Enabled = true;
+                    this.btnCancel.IsEnabled = true;
                 }
                 internalchg = false;
             }
@@ -529,12 +522,11 @@ namespace SimPe.PackedFiles.UserInterface
         private void UpdateInstPanel()
 		{
 			internalchg = true;
-            Application.UseWaitCursor = true;
 			if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
 			{
 				SetReadOnly(true);
-				this.llopenbhav.Enabled = false;
-				this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = true;
+				this.llopenbhav.IsEnabled = false;
+				this.btnInsTrue.IsEnabled = this.btnInsFalse.IsEnabled = this.btnAdd.IsEnabled = true;
 
 				this.tbInst_OpCode.Text = "";
 				this.tbInst_NodeVersion.Text = "";
@@ -565,7 +557,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 				this.tbInst_NodeVersion.Text = "0x"+Helper.HexString(inst.NodeVersion);
-
 				if (inst.Target1 >= 0xFFFC && inst.Target1 < 0xFFFF)
 				{
 					this.tba1.SelectedIndex = inst.Target1 - 0xFFFC;
@@ -593,7 +584,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op5.Text = Helper.HexString(inst.Operands[5]);
 				this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
 				this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
-
 				this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
 				this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
 				this.tbInst_Unk2.Text = Helper.HexString(inst.Reserved1[2]);
@@ -602,17 +592,15 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
+				this.btnUp.IsEnabled = pnflowcontainer.SelectedIndex > 0;
+				this.btnDown.IsEnabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 
-				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
-				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
+				this.btnDelPescado.IsEnabled = this.btnDel.IsEnabled = wrapper.Count > 1;
 
-				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
-
-                this.llopenbhav.Enabled = instIsBhav();
-				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
+                this.llopenbhav.IsEnabled = instIsBhav();
+				this.btnOperandWiz.IsEnabled = currentInst.Wizard() != null;
 			}
             setLongname();
-            Application.UseWaitCursor = false;
             internalchg = false;
 		}
 
@@ -620,8 +608,8 @@ namespace SimPe.PackedFiles.UserInterface
         {
             currentInst.Instruction.OpCode = value; 
             this.currentInst = currentInst.Instruction;
-            this.llopenbhav.Enabled = instIsBhav();
-            this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
+            this.llopenbhav.IsEnabled = instIsBhav();
+            this.btnOperandWiz.IsEnabled = currentInst.Wizard() != null;
             setLongname();
         }
 
@@ -635,8 +623,6 @@ namespace SimPe.PackedFiles.UserInterface
                 this.tbInst_Longname.Text = "";
             else
             {
-                bool state = Application.UseWaitCursor;
-                Application.UseWaitCursor = true;
                 try
                 {
                     this.tbInst_Longname.Text = currentInst.LongName.Replace(", ", ",\r\n  ")
@@ -644,10 +630,9 @@ namespace SimPe.PackedFiles.UserInterface
                     .Replace(manyargs + ": ", manyargs + ":\r\n  ")
                     ;
                 }
-                finally { Application.UseWaitCursor = state; }
+                finally { }
             }
         }
-
 
 		private void CopyListing()
 		{
@@ -673,7 +658,7 @@ namespace SimPe.PackedFiles.UserInterface
 					+ "\r\n" + w.LongName + "\r\n\r\n");
 			}
 
-			Clipboard.SetDataObject(listing, true);
+			_ = Clipboard?.SetTextAsync(listing);
 		}
 
         private void PasteListing()
@@ -681,7 +666,7 @@ namespace SimPe.PackedFiles.UserInterface
             int i = 0;
             int origlen = wrapper.Count;
 
-            string listing = Clipboard.GetText(TextDataFormat.Text);
+            string listing = Clipboard?.GetTextAsync().GetAwaiter().GetResult() ?? "";
             foreach (string line in listing.Split('\r', '\n'))
             {
                 if (line.Length == 0) continue;
@@ -718,8 +703,6 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void TPRPMaker()
         {
-            bhavPanel.Cursor = Cursors.WaitCursor;
-            Application.UseWaitCursor = true;
             try
             {
                 int minArgc = 0;
@@ -731,12 +714,12 @@ namespace SimPe.PackedFiles.UserInterface
                 if (tprp != null && tprp.TextOnly)
                 {
                     // if it exists but is unreadable, as if user wants to overwrite
-                    DialogResult dr = MessageBox.Show(
+                    SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_overwriteduff")
-                        , btnTPRPMaker.Text
+                        , btnTPRPMaker.Content?.ToString()
                         , MessageBoxButtons.OKCancel
-                        , MessageBoxIcon.Warning);
-                    if (dr != DialogResult.OK)
+                        , MessageBoxIcon.Warning).GetAwaiter().GetResult();
+                    if (dr != SimPe.Scenegraph.Compat.DialogResult.OK)
                         return;
                     wrapper.Package.Remove(tprp.FileDescriptor);
                     tprp = null;
@@ -744,29 +727,29 @@ namespace SimPe.PackedFiles.UserInterface
                 if (tprp != null)
                 {
                     // if it exists ask if user wants to preserve content
-                    DialogResult dr = MessageBox.Show(
+                    SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_keeplabels")
-                        , btnTPRPMaker.Text
+                        , btnTPRPMaker.Content?.ToString()
                         , MessageBoxButtons.YesNoCancel
-                        , MessageBoxIcon.Warning);
-                    if (dr == DialogResult.Cancel)
+                        , MessageBoxIcon.Warning).GetAwaiter().GetResult();
+                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Cancel)
                         return;
 
                     if (!tprp.Package.Equals(wrapper.Package))
                     {
                         // Clone the original into this package
-                        if (dr == DialogResult.Yes) Wait.MaxProgress = tprp.Count;
+                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) Wait.MaxProgress = tprp.Count;
                         SimPe.Interfaces.Files.IPackedFileDescriptor npfd = newPFD(tprp.FileDescriptor);
                         TPRP ntprp = new TPRP();
                         ntprp.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
-                        if (dr == DialogResult.Yes) foreach (TPRPItem item in tprp) { ntprp.Add(item.Clone()); Wait.Progress++; }
+                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) foreach (TPRPItem item in tprp) { ntprp.Add(item.Clone()); Wait.Progress++; }
                         tprp = ntprp;
                         tprp.SynchronizeUserData();
                         Wait.MaxProgress = 0;
                     }
 
-                    if (dr == DialogResult.Yes)
+                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes)
                     {
                         minArgc = tprp.ParamCount;
                         minLocalC = tprp.LocalCount;
@@ -790,13 +773,13 @@ namespace SimPe.PackedFiles.UserInterface
                 for (int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
                 {
                     tprp.Add(new TPRPParamLabel(tprp));
-                    tprp[false, tprp.ParamCount - 1].Label = BhavWiz.dnParam() + " " + arg.ToString();
+                    tprp[false, tprp.ParamCount - 1].LabelCompat = BhavWiz.dnParam() + " " + arg.ToString();
                     Wait.Progress++;
                 }
                 for (int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
                 {
                     tprp.Add(new TPRPLocalLabel(tprp));
-                    tprp[true, tprp.LocalCount - 1].Label = BhavWiz.dnLocal() + " " + local.ToString();
+                    tprp[true, tprp.LocalCount - 1].LabelCompat = BhavWiz.dnLocal() + " " + local.ToString();
                     Wait.Progress++;
                 }
                 tprp.SynchronizeUserData();
@@ -805,10 +788,8 @@ namespace SimPe.PackedFiles.UserInterface
             finally
             {
                 Wait.SubStop();
-                bhavPanel.Cursor = Cursors.Default;
-                Application.UseWaitCursor = false;
             }
-            MessageBox.Show( pjse.Localization.GetString("ml_done"), btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SimPe.Scenegraph.Compat.MessageBox.ShowAsync( pjse.Localization.GetString("ml_done"), btnTPRPMaker.Content?.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information).GetAwaiter().GetResult();
         }
 
         private void TPFWMaker() // Fuck
@@ -828,8 +809,8 @@ namespace SimPe.PackedFiles.UserInterface
                 wrapper.Package.Add(tpfw.FileDescriptor, true);
                 tpfw.SynchronizeUserData();
                 pjse_banner1.TreeVisible = true;
-                button1.Enabled = false;
-                MessageBox.Show(pjse.Localization.GetString("ml_done"), "comments", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                button1.IsEnabled = false;
+                SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ml_done"), "comments", MessageBoxButtons.OK, MessageBoxIcon.Information).GetAwaiter().GetResult();
             }
             catch { }
         }
@@ -851,7 +832,6 @@ namespace SimPe.PackedFiles.UserInterface
                 }
             }
         }
-
 
 		private short OpsToShort(byte lo, byte hi)
 		{
@@ -877,9 +857,9 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex16cb.IndexOf(sender) < 0)
 				throw new Exception("cbHex16_IsValid not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
+			if (((ComboBoxCompat)sender).Items.IndexOf(((ComboBoxCompat)sender).Text) != -1) return true;
 
-			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
+			try { Convert.ToUInt16(((ComboBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -888,7 +868,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alDec8.IndexOf(sender) < 0)
 				throw new Exception("dec8_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToByte(((TextBox)sender).Text); }
+			try { Convert.ToByte(((TextBoxCompat)sender).Text); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -897,7 +877,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex8.IndexOf(sender) < 0)
 				throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			try { Convert.ToByte(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -906,7 +886,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex16.IndexOf(sender) < 0)
 				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			try { Convert.ToUInt16(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -915,11 +895,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex32.IndexOf(sender) < 0)
 				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+			try { Convert.ToUInt32(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
-
 
 		private void FiletableRefresh(object sender, System.EventArgs e)
 		{
@@ -933,7 +912,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Returns the Control that will be displayed within SimPe
 		/// </summary>
-		public Control GUIHandle
+		public Avalonia.Controls.Control GUIHandle
 		{
 			get
 			{
@@ -963,7 +942,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// pnflowcontainer to install its handler before us.
 			if (!setHandler)
 			{
-				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
                 wrapper.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
 				setHandler = true;
 			}
@@ -972,35 +951,35 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 currentPackage = pjse.FileTable.GFT.CurrentPackage;
                 pjse_banner1.TreeVisible = pjse_banner1.ViewVisible = pjse_banner1.FloatVisible = false;
-                btnClose.Visible = gbSpecial.Visible = true;
-                button1.Enabled = cbSpecial.Enabled = false;
-                btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
-                btnImportBHAV.Visible = (currentPackage != wrapper.Package)
+                btnClose.IsVisible = gbSpecial.IsVisible = true;
+                button1.IsEnabled = cbSpecial.IsEnabled = false;
+                btnCopyBHAV.IsVisible = (currentPackage != wrapper.Package);
+                btnImportBHAV.IsVisible = (currentPackage != wrapper.Package)
                     && (callerID != null && callerID.IndexOf("-FFFFFFFF-") == 17); //42484156-00000000-FFFFFFFF-00001003
-                btnCopyBHAV.Enabled = currentPackage != null;
-                btnImportBHAV.Enabled = (currentPackage != null) &&
+                btnCopyBHAV.IsEnabled = currentPackage != null;
+                btnImportBHAV.IsEnabled = (currentPackage != null) &&
                     ((wrapper.FileDescriptor.Instance >= 0x100 && wrapper.FileDescriptor.Instance < 0x1000)
                     || (wrapper.FileDescriptor.Instance >= 0x2000 && wrapper.FileDescriptor.Instance < 0x3000));
 
                 handleOverride();
 
-                this.Text = formTitle;
+                this.Content = formTitle;
                 ttBhavForm.SetToolTip(tbFilename, null);
             }
             else
             {
-                this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = false;
+                this.lbHidesOP.IsVisible = this.tbHidesOP.IsVisible = this.llHidesOP.IsVisible = false;
                 this.llHidesOP.Tag = null;
                 if (wrapper.SiblingResource(0x54524545) != null && UserVerification.HaveValidUserId && !Helper.XmlRegistry.HiddenMode)
                 {
                     pjse_banner1.TreeVisible = true;
                     pjse_banner1.TreeEnabled = wrapper.SiblingResource(0x54524545).Package == wrapper.Package;
-                    button1.Enabled = false;
+                    button1.IsEnabled = false;
                 }
                 else
                 {
                     pjse_banner1.TreeVisible = false;
-                    button1.Enabled = true;
+                    button1.IsEnabled = true;
                 }
                 currentPackage = wrapper.Package;
                 ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
@@ -1012,7 +991,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             pjse_banner1.SiblingEnabled = wrapper.SiblingResource(TPRP.TPRPtype) != null;
             if (isPopup)
-                this.Text = formTitle;
+                this.Content = formTitle;
             else
             {
                 ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
@@ -1025,7 +1004,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             if (isPopup) wrapper.Changed = false;
 
-            this.btnCommit.Enabled = wrapper.Changed;
+            this.btnCommit.IsEnabled = wrapper.Changed;
 
             // Handler for header
             if (sender == wrapper && !internalchg)
@@ -1033,14 +1012,14 @@ namespace SimPe.PackedFiles.UserInterface
                 internalchg = true;
                 /*this.Text = */
                 tbFilename.Text = wrapper.FileName;
-                cbFormat.Text = "0x" + Helper.HexString(wrapper.Header.Format);
+                // cbFormat.Content = "0x" + Helper.HexString(wrapper.Header.Format); // TODO: set selected item
                 tbType.Text = "0x" + Helper.HexString(wrapper.Header.Type);
                 tbArgC.Text = "0x" + Helper.HexString(wrapper.Header.ArgumentCount);
                 tbLocalC.Text = "0x" + Helper.HexString(wrapper.Header.LocalVarCount);
                 tbHeaderFlag.Text = "0x" + Helper.HexString(wrapper.Header.HeaderFlag);
                 tbTreeVersion.Text = "0x" + Helper.HexString(wrapper.Header.TreeVersion);
                 tbCacheFlags.Text = "0x" + Helper.HexString(wrapper.Header.CacheFlags);
-                tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
+                tbCacheFlags.IsEnabled = (wrapper.Header.Format > 0x8008);
                 cmpBHAV.Wrapper = wrapper;
                 cmpBHAV.WrapperName = wrapper.FileName;
                 internalchg = false;
@@ -1050,7 +1029,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (currentInst != null && sender == currentInst.Instruction)
             {
                 if (internalchg)
-                    this.btnCancel.Enabled = true;
+                    this.btnCancel.IsEnabled = true;
                 else
                     pnflowcontainer_SelectedInstChanged(null, null);
             }
@@ -1068,859 +1047,560 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
-            this.gbInstruction = new System.Windows.Forms.GroupBox();
-            this.btnZero = new System.Windows.Forms.Button();
-            this.tbInst_Longname = new System.Windows.Forms.TextBox();
-            this.btnOperandRaw = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOperandWiz = new System.Windows.Forms.Button();
-            this.llopenbhav = new System.Windows.Forms.LinkLabel();
-            this.tba2 = new System.Windows.Forms.ComboBox();
-            this.tba1 = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.tbInst_Unk7 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk6 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk5 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk4 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk3 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk2 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk1 = new System.Windows.Forms.TextBox();
-            this.tbInst_Unk0 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op7 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op6 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op5 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op4 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op3 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op2 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op1 = new System.Windows.Forms.TextBox();
-            this.tbInst_Op0 = new System.Windows.Forms.TextBox();
-            this.tbInst_NodeVersion = new System.Windows.Forms.TextBox();
-            this.tbInst_OpCode = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.btnOpCode = new System.Windows.Forms.Button();
-            this.tbFilename = new System.Windows.Forms.TextBox();
-            this.lbFilename = new System.Windows.Forms.Label();
-            this.tbLocalC = new System.Windows.Forms.TextBox();
-            this.tbArgC = new System.Windows.Forms.TextBox();
-            this.tbType = new System.Windows.Forms.TextBox();
-            this.lbTreeVersion = new System.Windows.Forms.Label();
-            this.lbType = new System.Windows.Forms.Label();
-            this.lbLocalC = new System.Windows.Forms.Label();
-            this.lbArgC = new System.Windows.Forms.Label();
-            this.lbFormat = new System.Windows.Forms.Label();
-            this.bhavPanel = new System.Windows.Forms.Panel();
+            this.gbInstruction = new GroupBox();
+            this.btnZero = new ButtonCompat();
+            this.tbInst_Longname = new TextBoxCompat();
+            this.btnOperandRaw = new ButtonCompat();
+            this.btnCancel = new ButtonCompat();
+            this.btnOperandWiz = new ButtonCompat();
+            this.llopenbhav = new LinkLabel();
+            this.tba2 = new ComboBoxCompat();
+            this.tba1 = new ComboBoxCompat();
+            this.label13 = new LabelCompat();
+            this.tbInst_Unk7 = new TextBoxCompat();
+            this.tbInst_Unk6 = new TextBoxCompat();
+            this.tbInst_Unk5 = new TextBoxCompat();
+            this.tbInst_Unk4 = new TextBoxCompat();
+            this.tbInst_Unk3 = new TextBoxCompat();
+            this.tbInst_Unk2 = new TextBoxCompat();
+            this.tbInst_Unk1 = new TextBoxCompat();
+            this.tbInst_Unk0 = new TextBoxCompat();
+            this.tbInst_Op7 = new TextBoxCompat();
+            this.tbInst_Op6 = new TextBoxCompat();
+            this.tbInst_Op5 = new TextBoxCompat();
+            this.tbInst_Op4 = new TextBoxCompat();
+            this.tbInst_Op3 = new TextBoxCompat();
+            this.tbInst_Op2 = new TextBoxCompat();
+            this.tbInst_Op1 = new TextBoxCompat();
+            this.tbInst_Op0 = new TextBoxCompat();
+            this.tbInst_NodeVersion = new TextBoxCompat();
+            this.tbInst_OpCode = new TextBoxCompat();
+            this.label10 = new LabelCompat();
+            this.label9 = new LabelCompat();
+            this.label12 = new LabelCompat();
+            this.label11 = new LabelCompat();
+            this.btnOpCode = new ButtonCompat();
+            this.tbFilename = new TextBoxCompat();
+            this.lbFilename = new LabelCompat();
+            this.tbLocalC = new TextBoxCompat();
+            this.tbArgC = new TextBoxCompat();
+            this.tbType = new TextBoxCompat();
+            this.lbTreeVersion = new LabelCompat();
+            this.lbType = new LabelCompat();
+            this.lbLocalC = new LabelCompat();
+            this.lbArgC = new LabelCompat();
+            this.lbFormat = new LabelCompat();
+            this.bhavPanel = new StackPanel();
             this.pjse_banner1 = new pjse.pjse_banner();
-            this.lbHidesOP = new System.Windows.Forms.Label();
-            this.gbSpecial = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.lbHidesOP = new LabelCompat();
+            this.gbSpecial = new GroupBox();
+            this.button1 = new ButtonCompat();
             this.cmpBHAV = new pjse.CompareButton();
-            this.btnPasteListing = new System.Windows.Forms.Button();
-            this.btnAppend = new System.Windows.Forms.Button();
-            this.btnInsTrue = new System.Windows.Forms.Button();
-            this.btnInsFalse = new System.Windows.Forms.Button();
-            this.btnDelPescado = new System.Windows.Forms.Button();
-            this.btnLinkInge = new System.Windows.Forms.Button();
-            this.btnGUIDIndex = new System.Windows.Forms.Button();
-            this.btnInsUnlinked = new System.Windows.Forms.Button();
-            this.btnDelMerola = new System.Windows.Forms.Button();
-            this.btnCopyListing = new System.Windows.Forms.Button();
-            this.btnTPRPMaker = new System.Windows.Forms.Button();
-            this.llHidesOP = new System.Windows.Forms.LinkLabel();
-            this.tbHidesOP = new System.Windows.Forms.TextBox();
-            this.cbSpecial = new System.Windows.Forms.CheckBox();
-            this.btnImportBHAV = new System.Windows.Forms.Button();
-            this.btnCopyBHAV = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.tbHeaderFlag = new System.Windows.Forms.TextBox();
-            this.lbHeaderFlag = new System.Windows.Forms.Label();
-            this.tbCacheFlags = new System.Windows.Forms.TextBox();
-            this.cbFormat = new System.Windows.Forms.ComboBox();
+            this.btnPasteListing = new ButtonCompat();
+            this.btnAppend = new ButtonCompat();
+            this.btnInsTrue = new ButtonCompat();
+            this.btnInsFalse = new ButtonCompat();
+            this.btnDelPescado = new ButtonCompat();
+            this.btnLinkInge = new ButtonCompat();
+            this.btnGUIDIndex = new ButtonCompat();
+            this.btnInsUnlinked = new ButtonCompat();
+            this.btnDelMerola = new ButtonCompat();
+            this.btnCopyListing = new ButtonCompat();
+            this.btnTPRPMaker = new ButtonCompat();
+            this.llHidesOP = new LinkLabel();
+            this.tbHidesOP = new TextBoxCompat();
+            this.cbSpecial = new CheckBoxCompat2();
+            this.btnImportBHAV = new ButtonCompat();
+            this.btnCopyBHAV = new ButtonCompat();
+            this.btnClose = new ButtonCompat();
+            this.tbHeaderFlag = new TextBoxCompat();
+            this.lbHeaderFlag = new LabelCompat();
+            this.tbCacheFlags = new TextBoxCompat();
+            this.cbFormat = new ComboBoxCompat();
             this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
-            this.btnDel = new System.Windows.Forms.Button();
-            this.gbMove = new System.Windows.Forms.GroupBox();
-            this.btnUp = new System.Windows.Forms.Button();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.lbUpDown = new System.Windows.Forms.Label();
-            this.tbLines = new System.Windows.Forms.TextBox();
-            this.btnSort = new System.Windows.Forms.Button();
-            this.btnCommit = new System.Windows.Forms.Button();
-            this.tbTreeVersion = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.lbCacheFlags = new System.Windows.Forms.Label();
-            this.cmenuGUIDIndex = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.createAllPackagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createCurrentPackageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defaultFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
-            this.gbInstruction.SuspendLayout();
-            this.bhavPanel.SuspendLayout();
-            this.gbSpecial.SuspendLayout();
-            this.gbMove.SuspendLayout();
-            this.cmenuGUIDIndex.SuspendLayout();
-            this.SuspendLayout();
-            // 
+            this.btnDel = new ButtonCompat();
+            this.gbMove = new GroupBox();
+            this.btnUp = new ButtonCompat();
+            this.btnDown = new ButtonCompat();
+            this.lbUpDown = new LabelCompat();
+            this.tbLines = new TextBoxCompat();
+            this.btnSort = new ButtonCompat();
+            this.btnCommit = new ButtonCompat();
+            this.tbTreeVersion = new TextBoxCompat();
+            this.btnAdd = new ButtonCompat();
+            this.lbCacheFlags = new LabelCompat();
+            this.cmenuGUIDIndex = new ContextMenuStrip();
+            this.createAllPackagesToolStripMenuItem = new ToolStripMenuItem();
+            this.createCurrentPackageToolStripMenuItem = new ToolStripMenuItem();
+            this.loadIndexToolStripMenuItem = new ToolStripMenuItem();
+            this.defaultFileToolStripMenuItem = new ToolStripMenuItem();
+            this.fromFileToolStripMenuItem = new ToolStripMenuItem();
+            this.saveIndexToolStripMenuItem = new ToolStripMenuItem();
+            this.defaultFileToolStripMenuItem1 = new ToolStripMenuItem();
+            this.toFileToolStripMenuItem = new ToolStripMenuItem();
+            this.ttBhavForm = new SimPe.Scenegraph.Compat.ToolTip();
+            //
             // gbInstruction
-            // 
-            resources.ApplyResources(this.gbInstruction, "gbInstruction");
-            this.gbInstruction.BackColor = System.Drawing.Color.Transparent;
-            this.gbInstruction.Controls.Add(this.btnZero);
-            this.gbInstruction.Controls.Add(this.tbInst_Longname);
-            this.gbInstruction.Controls.Add(this.btnOperandRaw);
-            this.gbInstruction.Controls.Add(this.btnCancel);
-            this.gbInstruction.Controls.Add(this.btnOperandWiz);
-            this.gbInstruction.Controls.Add(this.llopenbhav);
-            this.gbInstruction.Controls.Add(this.tba2);
-            this.gbInstruction.Controls.Add(this.tba1);
-            this.gbInstruction.Controls.Add(this.label13);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk7);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk6);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk5);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk4);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk3);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk2);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk1);
-            this.gbInstruction.Controls.Add(this.tbInst_Unk0);
-            this.gbInstruction.Controls.Add(this.tbInst_Op7);
-            this.gbInstruction.Controls.Add(this.tbInst_Op6);
-            this.gbInstruction.Controls.Add(this.tbInst_Op5);
-            this.gbInstruction.Controls.Add(this.tbInst_Op4);
-            this.gbInstruction.Controls.Add(this.tbInst_Op3);
-            this.gbInstruction.Controls.Add(this.tbInst_Op2);
-            this.gbInstruction.Controls.Add(this.tbInst_Op1);
-            this.gbInstruction.Controls.Add(this.tbInst_Op0);
-            this.gbInstruction.Controls.Add(this.tbInst_NodeVersion);
-            this.gbInstruction.Controls.Add(this.tbInst_OpCode);
-            this.gbInstruction.Controls.Add(this.label10);
-            this.gbInstruction.Controls.Add(this.label9);
-            this.gbInstruction.Controls.Add(this.label12);
-            this.gbInstruction.Controls.Add(this.label11);
-            this.gbInstruction.Controls.Add(this.btnOpCode);
+            //            this.gbInstruction.Children.Add(this.btnZero);
+            this.gbInstruction.Children.Add(this.tbInst_Longname);
+            this.gbInstruction.Children.Add(this.btnOperandRaw);
+            this.gbInstruction.Children.Add(this.btnCancel);
+            this.gbInstruction.Children.Add(this.btnOperandWiz);
+            this.gbInstruction.Children.Add(this.llopenbhav);
+            this.gbInstruction.Children.Add(this.tba2);
+            this.gbInstruction.Children.Add(this.tba1);
+            this.gbInstruction.Children.Add(this.label13);
+            this.gbInstruction.Children.Add(this.tbInst_Unk7);
+            this.gbInstruction.Children.Add(this.tbInst_Unk6);
+            this.gbInstruction.Children.Add(this.tbInst_Unk5);
+            this.gbInstruction.Children.Add(this.tbInst_Unk4);
+            this.gbInstruction.Children.Add(this.tbInst_Unk3);
+            this.gbInstruction.Children.Add(this.tbInst_Unk2);
+            this.gbInstruction.Children.Add(this.tbInst_Unk1);
+            this.gbInstruction.Children.Add(this.tbInst_Unk0);
+            this.gbInstruction.Children.Add(this.tbInst_Op7);
+            this.gbInstruction.Children.Add(this.tbInst_Op6);
+            this.gbInstruction.Children.Add(this.tbInst_Op5);
+            this.gbInstruction.Children.Add(this.tbInst_Op4);
+            this.gbInstruction.Children.Add(this.tbInst_Op3);
+            this.gbInstruction.Children.Add(this.tbInst_Op2);
+            this.gbInstruction.Children.Add(this.tbInst_Op1);
+            this.gbInstruction.Children.Add(this.tbInst_Op0);
+            this.gbInstruction.Children.Add(this.tbInst_NodeVersion);
+            this.gbInstruction.Children.Add(this.tbInst_OpCode);
+            this.gbInstruction.Children.Add(this.label10);
+            this.gbInstruction.Children.Add(this.label9);
+            this.gbInstruction.Children.Add(this.label12);
+            this.gbInstruction.Children.Add(this.label11);
+            this.gbInstruction.Children.Add(this.btnOpCode);
             this.gbInstruction.Name = "gbInstruction";
-            this.gbInstruction.TabStop = false;
-            // 
             // btnZero
             // 
-            this.btnZero.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnZero, "btnZero");
-            this.btnZero.Name = "btnZero";
-            this.ttBhavForm.SetToolTip(this.btnZero, resources.GetString("btnZero.ToolTip"));
-            this.btnZero.UseVisualStyleBackColor = false;
-            this.btnZero.Click += new System.EventHandler(this.btnZero_Click);
+            this.btnZero.Click += (s, e) => this.btnZero_Click(s, e);
             // 
             // tbInst_Longname
-            // 
-            resources.ApplyResources(this.tbInst_Longname, "tbInst_Longname");
-            this.tbInst_Longname.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            //            this.tbInst_Longname.BorderStyle = 
             this.tbInst_Longname.Name = "tbInst_Longname";
-            this.tbInst_Longname.ReadOnly = true;
-            this.ttBhavForm.SetToolTip(this.tbInst_Longname, resources.GetString("tbInst_Longname.ToolTip"));
+            this.tbInst_Longname.IsReadOnly = true;
             // 
             // btnOperandRaw
             // 
-            this.btnOperandRaw.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnOperandRaw, "btnOperandRaw");
-            this.btnOperandRaw.Name = "btnOperandRaw";
-            this.ttBhavForm.SetToolTip(this.btnOperandRaw, resources.GetString("btnOperandRaw.ToolTip"));
-            this.btnOperandRaw.UseVisualStyleBackColor = false;
-            this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
+            this.btnOperandRaw.Click += (s, e) => this.btnOperandRaw_Click(s, e);
             // 
             // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Clicked);
+            //            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Click += (s, e) => this.btnCancel_Clicked(s, e);
             // 
             // btnOperandWiz
             // 
-            this.btnOperandWiz.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnOperandWiz, "btnOperandWiz");
-            this.btnOperandWiz.Name = "btnOperandWiz";
-            this.ttBhavForm.SetToolTip(this.btnOperandWiz, resources.GetString("btnOperandWiz.ToolTip"));
-            this.btnOperandWiz.UseVisualStyleBackColor = false;
-            this.btnOperandWiz.Click += new System.EventHandler(this.btnOperandWiz_Clicked);
+            this.btnOperandWiz.Click += (s, e) => this.btnOperandWiz_Clicked(s, e);
             // 
             // llopenbhav
-            // 
-            resources.ApplyResources(this.llopenbhav, "llopenbhav");
-            this.llopenbhav.BackColor = System.Drawing.Color.Transparent;
-            this.llopenbhav.Name = "llopenbhav";
-            this.llopenbhav.TabStop = true;
-            this.llopenbhav.UseCompatibleTextRendering = true;
-            this.llopenbhav.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llopenbhav_LinkClicked);
+            //            this.llopenbhav.Name = "llopenbhav";
+            this.llopenbhav.LinkClicked += new LinkLabelLinkClickedEventHandler(this.llopenbhav_LinkClicked);
             // 
             // tba2
-            // 
-            resources.ApplyResources(this.tba2, "tba2");
-            this.tba2.Items.AddRange(new object[] {
-            resources.GetString("tba2.Items"),
-            resources.GetString("tba2.Items1"),
-            resources.GetString("tba2.Items2")});
+
             this.tba2.Name = "tba2";
-            this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
-            this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba2.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
-            this.tba2.Enter += new System.EventHandler(this.cbHex16_Enter);
-            this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-            this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba2.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.tba2.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+            this.tba2.QueryContinueDrag += (s, e) => this.ItemQueryContinueDragTarget(s, e as SimPe.Scenegraph.Compat.QueryContinueDragEventArgs ?? new SimPe.Scenegraph.Compat.QueryContinueDragEventArgs());
+            this.tba2.DragOver += (s, e) => this.ItemDragEnter(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba2.SelectionChanged += (s, e) => this.cbHex16_SelectedIndexChanged(s, e);
+            this.tba2.GotFocus += (s, e) => this.cbHex16_Enter(s, e);
+            this.tba2.DragDrop += (s, e) => this.ItemDrop(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba2.DragEnter += (s, e) => this.ItemDragEnter(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba2.LostFocus += (s, e) => this.cbHex16_Validated(s, e);
+            this.tba2.TextChanged += (s, e) => this.cbHex16_TextChanged(s, e);
             // 
             // tba1
-            // 
-            resources.ApplyResources(this.tba1, "tba1");
-            this.tba1.Items.AddRange(new object[] {
-            resources.GetString("tba1.Items"),
-            resources.GetString("tba1.Items1"),
-            resources.GetString("tba1.Items2")});
+
             this.tba1.Name = "tba1";
-            this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
-            this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba1.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
-            this.tba1.Enter += new System.EventHandler(this.cbHex16_Enter);
-            this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-            this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba1.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.tba1.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+            this.tba1.QueryContinueDrag += (s, e) => this.ItemQueryContinueDragTarget(s, e as SimPe.Scenegraph.Compat.QueryContinueDragEventArgs ?? new SimPe.Scenegraph.Compat.QueryContinueDragEventArgs());
+            this.tba1.DragOver += (s, e) => this.ItemDragEnter(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba1.SelectionChanged += (s, e) => this.cbHex16_SelectedIndexChanged(s, e);
+            this.tba1.GotFocus += (s, e) => this.cbHex16_Enter(s, e);
+            this.tba1.DragDrop += (s, e) => this.ItemDrop(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba1.DragEnter += (s, e) => this.ItemDragEnter(s, e as SimPe.Scenegraph.Compat.DragEventArgs ?? new SimPe.Scenegraph.Compat.DragEventArgs());
+            this.tba1.LostFocus += (s, e) => this.cbHex16_Validated(s, e);
+            this.tba1.TextChanged += (s, e) => this.cbHex16_TextChanged(s, e);
             // 
             // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
+            //            this.label13.Name = "label13";
             // 
             // tbInst_Unk7
-            // 
-            resources.ApplyResources(this.tbInst_Unk7, "tbInst_Unk7");
-            this.tbInst_Unk7.Name = "tbInst_Unk7";
-            this.tbInst_Unk7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk7.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk7.Name = "tbInst_Unk7";
+            this.tbInst_Unk7.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk7.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk6
-            // 
-            resources.ApplyResources(this.tbInst_Unk6, "tbInst_Unk6");
-            this.tbInst_Unk6.Name = "tbInst_Unk6";
-            this.tbInst_Unk6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk6.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk6.Name = "tbInst_Unk6";
+            this.tbInst_Unk6.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk6.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk5
-            // 
-            resources.ApplyResources(this.tbInst_Unk5, "tbInst_Unk5");
-            this.tbInst_Unk5.Name = "tbInst_Unk5";
-            this.tbInst_Unk5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk5.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk5.Name = "tbInst_Unk5";
+            this.tbInst_Unk5.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk5.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk4
-            // 
-            resources.ApplyResources(this.tbInst_Unk4, "tbInst_Unk4");
-            this.tbInst_Unk4.Name = "tbInst_Unk4";
-            this.tbInst_Unk4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk4.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk4.Name = "tbInst_Unk4";
+            this.tbInst_Unk4.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk4.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk3
-            // 
-            resources.ApplyResources(this.tbInst_Unk3, "tbInst_Unk3");
-            this.tbInst_Unk3.Name = "tbInst_Unk3";
-            this.tbInst_Unk3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk3.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk3.Name = "tbInst_Unk3";
+            this.tbInst_Unk3.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk3.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk2
-            // 
-            resources.ApplyResources(this.tbInst_Unk2, "tbInst_Unk2");
-            this.tbInst_Unk2.Name = "tbInst_Unk2";
-            this.tbInst_Unk2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk2.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk2.Name = "tbInst_Unk2";
+            this.tbInst_Unk2.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk2.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk1
-            // 
-            resources.ApplyResources(this.tbInst_Unk1, "tbInst_Unk1");
-            this.tbInst_Unk1.Name = "tbInst_Unk1";
-            this.tbInst_Unk1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk1.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk1.Name = "tbInst_Unk1";
+            this.tbInst_Unk1.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk1.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Unk0
-            // 
-            resources.ApplyResources(this.tbInst_Unk0, "tbInst_Unk0");
-            this.tbInst_Unk0.Name = "tbInst_Unk0";
-            this.tbInst_Unk0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Unk0.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Unk0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Unk0.Name = "tbInst_Unk0";
+            this.tbInst_Unk0.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Unk0.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op7
-            // 
-            resources.ApplyResources(this.tbInst_Op7, "tbInst_Op7");
-            this.tbInst_Op7.Name = "tbInst_Op7";
-            this.tbInst_Op7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op7.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op7.Name = "tbInst_Op7";
+            this.tbInst_Op7.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op7.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op6
-            // 
-            resources.ApplyResources(this.tbInst_Op6, "tbInst_Op6");
-            this.tbInst_Op6.Name = "tbInst_Op6";
-            this.tbInst_Op6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op6.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op6.Name = "tbInst_Op6";
+            this.tbInst_Op6.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op6.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op5
-            // 
-            resources.ApplyResources(this.tbInst_Op5, "tbInst_Op5");
-            this.tbInst_Op5.Name = "tbInst_Op5";
-            this.tbInst_Op5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op5.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op5.Name = "tbInst_Op5";
+            this.tbInst_Op5.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op5.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op4
-            // 
-            resources.ApplyResources(this.tbInst_Op4, "tbInst_Op4");
-            this.tbInst_Op4.Name = "tbInst_Op4";
-            this.tbInst_Op4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op4.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op4.Name = "tbInst_Op4";
+            this.tbInst_Op4.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op4.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op3
-            // 
-            resources.ApplyResources(this.tbInst_Op3, "tbInst_Op3");
-            this.tbInst_Op3.Name = "tbInst_Op3";
-            this.tbInst_Op3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op3.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op3.Name = "tbInst_Op3";
+            this.tbInst_Op3.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op3.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op2
-            // 
-            resources.ApplyResources(this.tbInst_Op2, "tbInst_Op2");
-            this.tbInst_Op2.Name = "tbInst_Op2";
-            this.tbInst_Op2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op2.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op2.Name = "tbInst_Op2";
+            this.tbInst_Op2.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op2.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op1
-            // 
-            resources.ApplyResources(this.tbInst_Op1, "tbInst_Op1");
-            this.tbInst_Op1.Name = "tbInst_Op1";
-            this.tbInst_Op1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op1.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op1.Name = "tbInst_Op1";
+            this.tbInst_Op1.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op1.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_Op0
-            // 
-            resources.ApplyResources(this.tbInst_Op0, "tbInst_Op0");
-            this.tbInst_Op0.Name = "tbInst_Op0";
-            this.tbInst_Op0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_Op0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_Op0.Name = "tbInst_Op0";
+            this.tbInst_Op0.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_Op0.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_NodeVersion
-            // 
-            resources.ApplyResources(this.tbInst_NodeVersion, "tbInst_NodeVersion");
-            this.tbInst_NodeVersion.Name = "tbInst_NodeVersion";
-            this.tbInst_NodeVersion.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbInst_NodeVersion.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbInst_NodeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbInst_NodeVersion.Name = "tbInst_NodeVersion";
+            this.tbInst_NodeVersion.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbInst_NodeVersion.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbInst_OpCode
-            // 
-            resources.ApplyResources(this.tbInst_OpCode, "tbInst_OpCode");
-            this.tbInst_OpCode.Name = "tbInst_OpCode";
-            this.tbInst_OpCode.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbInst_OpCode.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbInst_OpCode.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //            this.tbInst_OpCode.Name = "tbInst_OpCode";
+            this.tbInst_OpCode.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbInst_OpCode.LostFocus += (s, e) => this.hex16_Validated(s, e);
             // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
+            //            this.label10.Name = "label10";
             // 
             // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
+            //            this.label9.Name = "label9";
             // 
             // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
+            //            this.label12.Name = "label12";
             // 
             // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
+            //            this.label11.Name = "label11";
             // 
             // btnOpCode
-            // 
-            resources.ApplyResources(this.btnOpCode, "btnOpCode");
-            this.btnOpCode.Name = "btnOpCode";
-            this.btnOpCode.Click += new System.EventHandler(this.btnOpCode_Clicked);
+            //            this.btnOpCode.Name = "btnOpCode";
+            this.btnOpCode.Click += (s, e) => this.btnOpCode_Clicked(s, e);
             // 
             // tbFilename
-            // 
-            resources.ApplyResources(this.tbFilename, "tbFilename");
-            this.tbFilename.Name = "tbFilename";
-            this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
-            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
+            //            this.tbFilename.Name = "tbFilename";
+            this.tbFilename.TextChanged += (s, e) => this.tbFilename_TextChanged(s, e);
+            this.tbFilename.LostFocus += (s, e) => this.tbFilename_Validated(s, e);
             // 
             // lbFilename
-            // 
-            resources.ApplyResources(this.lbFilename, "lbFilename");
-            this.lbFilename.Name = "lbFilename";
+            //            this.lbFilename.Name = "lbFilename";
             // 
             // tbLocalC
-            // 
-            resources.ApplyResources(this.tbLocalC, "tbLocalC");
-            this.tbLocalC.Name = "tbLocalC";
-            this.ttBhavForm.SetToolTip(this.tbLocalC, resources.GetString("tbLocalC.ToolTip"));
-            this.tbLocalC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbLocalC.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbLocalC.Name = "tbLocalC";
+            this.tbLocalC.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbLocalC.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbArgC
-            // 
-            resources.ApplyResources(this.tbArgC, "tbArgC");
-            this.tbArgC.Name = "tbArgC";
-            this.ttBhavForm.SetToolTip(this.tbArgC, resources.GetString("tbArgC.ToolTip"));
-            this.tbArgC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbArgC.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbArgC.Name = "tbArgC";
+            this.tbArgC.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbArgC.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // tbType
-            // 
-            resources.ApplyResources(this.tbType, "tbType");
-            this.tbType.Name = "tbType";
-            this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbType.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbType.Name = "tbType";
+            this.tbType.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbType.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // lbTreeVersion
-            // 
-            resources.ApplyResources(this.lbTreeVersion, "lbTreeVersion");
-            this.lbTreeVersion.Name = "lbTreeVersion";
+            //            this.lbTreeVersion.Name = "lbTreeVersion";
             // 
             // lbType
-            // 
-            resources.ApplyResources(this.lbType, "lbType");
-            this.lbType.Name = "lbType";
+            //            this.lbType.Name = "lbType";
             // 
             // lbLocalC
-            // 
-            resources.ApplyResources(this.lbLocalC, "lbLocalC");
-            this.lbLocalC.Name = "lbLocalC";
+            //            this.lbLocalC.Name = "lbLocalC";
             // 
             // lbArgC
-            // 
-            resources.ApplyResources(this.lbArgC, "lbArgC");
-            this.lbArgC.Name = "lbArgC";
+            //            this.lbArgC.Name = "lbArgC";
             // 
             // lbFormat
-            // 
-            resources.ApplyResources(this.lbFormat, "lbFormat");
-            this.lbFormat.Name = "lbFormat";
+            //            this.lbFormat.Name = "lbFormat";
             // 
             // bhavPanel
-            // 
-            resources.ApplyResources(this.bhavPanel, "bhavPanel");
-            this.bhavPanel.Controls.Add(this.pjse_banner1);
-            this.bhavPanel.Controls.Add(this.lbHidesOP);
-            this.bhavPanel.Controls.Add(this.gbSpecial);
-            this.bhavPanel.Controls.Add(this.llHidesOP);
-            this.bhavPanel.Controls.Add(this.tbHidesOP);
-            this.bhavPanel.Controls.Add(this.cbSpecial);
-            this.bhavPanel.Controls.Add(this.btnImportBHAV);
-            this.bhavPanel.Controls.Add(this.btnCopyBHAV);
-            this.bhavPanel.Controls.Add(this.btnClose);
-            this.bhavPanel.Controls.Add(this.tbHeaderFlag);
-            this.bhavPanel.Controls.Add(this.lbHeaderFlag);
-            this.bhavPanel.Controls.Add(this.tbCacheFlags);
-            this.bhavPanel.Controls.Add(this.cbFormat);
-            this.bhavPanel.Controls.Add(this.pnflowcontainer);
-            this.bhavPanel.Controls.Add(this.btnDel);
-            this.bhavPanel.Controls.Add(this.gbMove);
-            this.bhavPanel.Controls.Add(this.btnSort);
-            this.bhavPanel.Controls.Add(this.btnCommit);
-            this.bhavPanel.Controls.Add(this.lbFilename);
-            this.bhavPanel.Controls.Add(this.tbFilename);
-            this.bhavPanel.Controls.Add(this.gbInstruction);
-            this.bhavPanel.Controls.Add(this.tbLocalC);
-            this.bhavPanel.Controls.Add(this.tbTreeVersion);
-            this.bhavPanel.Controls.Add(this.tbArgC);
-            this.bhavPanel.Controls.Add(this.tbType);
-            this.bhavPanel.Controls.Add(this.lbTreeVersion);
-            this.bhavPanel.Controls.Add(this.lbType);
-            this.bhavPanel.Controls.Add(this.lbLocalC);
-            this.bhavPanel.Controls.Add(this.lbArgC);
-            this.bhavPanel.Controls.Add(this.lbFormat);
-            this.bhavPanel.Controls.Add(this.btnAdd);
-            this.bhavPanel.Controls.Add(this.lbCacheFlags);
+            //            this.bhavPanel.Children.Add(this.pjse_banner1);
+            this.bhavPanel.Children.Add(this.lbHidesOP);
+            this.bhavPanel.Children.Add(this.gbSpecial);
+            this.bhavPanel.Children.Add(this.llHidesOP);
+            this.bhavPanel.Children.Add(this.tbHidesOP);
+            this.bhavPanel.Children.Add(this.cbSpecial);
+            this.bhavPanel.Children.Add(this.btnImportBHAV);
+            this.bhavPanel.Children.Add(this.btnCopyBHAV);
+            this.bhavPanel.Children.Add(this.btnClose);
+            this.bhavPanel.Children.Add(this.tbHeaderFlag);
+            this.bhavPanel.Children.Add(this.lbHeaderFlag);
+            this.bhavPanel.Children.Add(this.tbCacheFlags);
+            this.bhavPanel.Children.Add(this.cbFormat);
+            this.bhavPanel.Children.Add(this.pnflowcontainer);
+            this.bhavPanel.Children.Add(this.btnDel);
+            this.bhavPanel.Children.Add(this.gbMove);
+            this.bhavPanel.Children.Add(this.btnSort);
+            this.bhavPanel.Children.Add(this.btnCommit);
+            this.bhavPanel.Children.Add(this.lbFilename);
+            this.bhavPanel.Children.Add(this.tbFilename);
+            this.bhavPanel.Children.Add(this.gbInstruction);
+            this.bhavPanel.Children.Add(this.tbLocalC);
+            this.bhavPanel.Children.Add(this.tbTreeVersion);
+            this.bhavPanel.Children.Add(this.tbArgC);
+            this.bhavPanel.Children.Add(this.tbType);
+            this.bhavPanel.Children.Add(this.lbTreeVersion);
+            this.bhavPanel.Children.Add(this.lbType);
+            this.bhavPanel.Children.Add(this.lbLocalC);
+            this.bhavPanel.Children.Add(this.lbArgC);
+            this.bhavPanel.Children.Add(this.lbFormat);
+            this.bhavPanel.Children.Add(this.btnAdd);
+            this.bhavPanel.Children.Add(this.lbCacheFlags);
             this.bhavPanel.Name = "bhavPanel";
             // 
             // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.ExtractVisible = true;
+            //            this.pjse_banner1.ExtractVisible = true;
             this.pjse_banner1.FloatVisible = true;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.SiblingVisible = true;
             this.pjse_banner1.ViewVisible = true;
-            this.pjse_banner1.ExtractClick += new System.EventHandler(this.pjse_banner1_ExtractClick);
-            this.pjse_banner1.TreeClick += new System.EventHandler(this.pjse_banner1_TreeClick);
-            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
-            this.pjse_banner1.ViewClick += new System.EventHandler(this.pjse_banner1_ViewClick);
-            this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
+            this.pjse_banner1.ExtractClick += (s, e) => this.pjse_banner1_ExtractClick(s, e);
+            this.pjse_banner1.TreeClick += (s, e) => this.pjse_banner1_TreeClick(s, e);
+            this.pjse_banner1.SiblingClick += (s, e) => this.pjse_banner1_SiblingClick(s, e);
+            this.pjse_banner1.ViewClick += (s, e) => this.pjse_banner1_ViewClick(s, e);
+            this.pjse_banner1.FloatClick += (s, e) => this.btnFloat_Click(s, e);
             // 
             // lbHidesOP
-            // 
-            resources.ApplyResources(this.lbHidesOP, "lbHidesOP");
-            this.lbHidesOP.BackColor = System.Drawing.Color.Transparent;
-            this.lbHidesOP.Name = "lbHidesOP";
+            //            this.lbHidesOP.Name = "lbHidesOP";
             // 
             // gbSpecial
-            // 
-            resources.ApplyResources(this.gbSpecial, "gbSpecial");
-            this.gbSpecial.BackColor = System.Drawing.Color.Transparent;
-            this.gbSpecial.Controls.Add(this.button1);
-            this.gbSpecial.Controls.Add(this.cmpBHAV);
-            this.gbSpecial.Controls.Add(this.btnPasteListing);
-            this.gbSpecial.Controls.Add(this.btnAppend);
-            this.gbSpecial.Controls.Add(this.btnInsTrue);
-            this.gbSpecial.Controls.Add(this.btnInsFalse);
-            this.gbSpecial.Controls.Add(this.btnDelPescado);
-            this.gbSpecial.Controls.Add(this.btnLinkInge);
-            this.gbSpecial.Controls.Add(this.btnGUIDIndex);
-            this.gbSpecial.Controls.Add(this.btnInsUnlinked);
-            this.gbSpecial.Controls.Add(this.btnDelMerola);
-            this.gbSpecial.Controls.Add(this.btnCopyListing);
-            this.gbSpecial.Controls.Add(this.btnTPRPMaker);
+            //            this.gbSpecial.Children.Add(this.button1);
+            this.gbSpecial.Children.Add(this.cmpBHAV);
+            this.gbSpecial.Children.Add(this.btnPasteListing);
+            this.gbSpecial.Children.Add(this.btnAppend);
+            this.gbSpecial.Children.Add(this.btnInsTrue);
+            this.gbSpecial.Children.Add(this.btnInsFalse);
+            this.gbSpecial.Children.Add(this.btnDelPescado);
+            this.gbSpecial.Children.Add(this.btnLinkInge);
+            this.gbSpecial.Children.Add(this.btnGUIDIndex);
+            this.gbSpecial.Children.Add(this.btnInsUnlinked);
+            this.gbSpecial.Children.Add(this.btnDelMerola);
+            this.gbSpecial.Children.Add(this.btnCopyListing);
+            this.gbSpecial.Children.Add(this.btnTPRPMaker);
             this.gbSpecial.Name = "gbSpecial";
-            this.gbSpecial.TabStop = false;
-            // 
             // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            //            this.button1.Name = "button1";
+            this.button1.Click += (s, e) => this.button1_Click(s, e);
             // 
             // cmpBHAV
-            // 
-            resources.ApplyResources(this.cmpBHAV, "cmpBHAV");
-            this.cmpBHAV.Name = "cmpBHAV";
-            this.cmpBHAV.UseVisualStyleBackColor = true;
+            //            this.cmpBHAV.Name = "cmpBHAV";
             this.cmpBHAV.Wrapper = null;
             this.cmpBHAV.WrapperName = null;
             this.cmpBHAV.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBHAV_CompareWith);
             // 
             // btnPasteListing
-            // 
-            resources.ApplyResources(this.btnPasteListing, "btnPasteListing");
-            this.btnPasteListing.Name = "btnPasteListing";
-            this.btnPasteListing.Click += new System.EventHandler(this.btnPasteListing_Click);
+            //            this.btnPasteListing.Name = "btnPasteListing";
+            this.btnPasteListing.Click += (s, e) => this.btnPasteListing_Click(s, e);
             // 
             // btnAppend
-            // 
-            resources.ApplyResources(this.btnAppend, "btnAppend");
-            this.btnAppend.Name = "btnAppend";
-            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
+            //            this.btnAppend.Name = "btnAppend";
+            this.btnAppend.Click += (s, e) => this.btnAppend_Click(s, e);
             // 
             // btnInsTrue
-            // 
-            resources.ApplyResources(this.btnInsTrue, "btnInsTrue");
-            this.btnInsTrue.Name = "btnInsTrue";
-            this.btnInsTrue.Click += new System.EventHandler(this.btnInsVia_Click);
+            //            this.btnInsTrue.Name = "btnInsTrue";
+            this.btnInsTrue.Click += (s, e) => this.btnInsVia_Click(s, e);
             // 
             // btnInsFalse
-            // 
-            resources.ApplyResources(this.btnInsFalse, "btnInsFalse");
-            this.btnInsFalse.Name = "btnInsFalse";
-            this.btnInsFalse.Click += new System.EventHandler(this.btnInsVia_Click);
+            //            this.btnInsFalse.Name = "btnInsFalse";
+            this.btnInsFalse.Click += (s, e) => this.btnInsVia_Click(s, e);
             // 
             // btnDelPescado
-            // 
-            resources.ApplyResources(this.btnDelPescado, "btnDelPescado");
-            this.btnDelPescado.Name = "btnDelPescado";
-            this.btnDelPescado.Click += new System.EventHandler(this.btnDelPescado_Click);
+            //            this.btnDelPescado.Name = "btnDelPescado";
+            this.btnDelPescado.Click += (s, e) => this.btnDelPescado_Click(s, e);
             // 
             // btnLinkInge
-            // 
-            resources.ApplyResources(this.btnLinkInge, "btnLinkInge");
-            this.btnLinkInge.Name = "btnLinkInge";
-            this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
+            //            this.btnLinkInge.Name = "btnLinkInge";
+            this.btnLinkInge.Click += (s, e) => this.btnLinkInge_Click(s, e);
             // 
             // btnGUIDIndex
-            // 
-            resources.ApplyResources(this.btnGUIDIndex, "btnGUIDIndex");
-            this.btnGUIDIndex.Name = "btnGUIDIndex";
-            this.btnGUIDIndex.Click += new System.EventHandler(this.btnGUIDIndex_Click);
+            //            this.btnGUIDIndex.Name = "btnGUIDIndex";
+            this.btnGUIDIndex.Click += (s, e) => this.btnGUIDIndex_Click(s, e);
             // 
             // btnInsUnlinked
-            // 
-            resources.ApplyResources(this.btnInsUnlinked, "btnInsUnlinked");
-            this.btnInsUnlinked.Name = "btnInsUnlinked";
-            this.btnInsUnlinked.Click += new System.EventHandler(this.btnInsUnlinked_Click);
+            //            this.btnInsUnlinked.Name = "btnInsUnlinked";
+            this.btnInsUnlinked.Click += (s, e) => this.btnInsUnlinked_Click(s, e);
             // 
             // btnDelMerola
-            // 
-            resources.ApplyResources(this.btnDelMerola, "btnDelMerola");
-            this.btnDelMerola.Name = "btnDelMerola";
-            this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
+            //            this.btnDelMerola.Name = "btnDelMerola";
+            this.btnDelMerola.Click += (s, e) => this.btnDelMerola_Click(s, e);
             // 
             // btnCopyListing
-            // 
-            resources.ApplyResources(this.btnCopyListing, "btnCopyListing");
-            this.btnCopyListing.Name = "btnCopyListing";
-            this.btnCopyListing.Click += new System.EventHandler(this.btnCopyListing_Click);
+            //            this.btnCopyListing.Name = "btnCopyListing";
+            this.btnCopyListing.Click += (s, e) => this.btnCopyListing_Click(s, e);
             // 
             // btnTPRPMaker
-            // 
-            resources.ApplyResources(this.btnTPRPMaker, "btnTPRPMaker");
-            this.btnTPRPMaker.Name = "btnTPRPMaker";
-            this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
+            //            this.btnTPRPMaker.Name = "btnTPRPMaker";
+            this.btnTPRPMaker.Click += (s, e) => this.btnTPRPMaker_Click(s, e);
             // 
             // llHidesOP
-            // 
-            resources.ApplyResources(this.llHidesOP, "llHidesOP");
-            this.llHidesOP.BackColor = System.Drawing.Color.Transparent;
-            this.llHidesOP.Name = "llHidesOP";
-            this.llHidesOP.TabStop = true;
-            this.llHidesOP.UseCompatibleTextRendering = true;
-            this.llHidesOP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llHidesOP_LinkClicked);
+            //            this.llHidesOP.Name = "llHidesOP";
+            this.llHidesOP.LinkClicked += new LinkLabelLinkClickedEventHandler(this.llHidesOP_LinkClicked);
             // 
             // tbHidesOP
-            // 
-            resources.ApplyResources(this.tbHidesOP, "tbHidesOP");
-            this.tbHidesOP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            //            this.tbHidesOP.BorderStyle = 
             this.tbHidesOP.Name = "tbHidesOP";
-            this.tbHidesOP.ReadOnly = true;
+            this.tbHidesOP.IsReadOnly = true;
             // 
             // cbSpecial
-            // 
-            resources.ApplyResources(this.cbSpecial, "cbSpecial");
-            this.cbSpecial.BackColor = System.Drawing.Color.Transparent;
-            this.cbSpecial.Name = "cbSpecial";
-            this.cbSpecial.UseVisualStyleBackColor = false;
-            this.cbSpecial.CheckStateChanged += new System.EventHandler(this.cbSpecial_CheckStateChanged);
+            //            this.cbSpecial.Name = "cbSpecial";
+            this.cbSpecial.CheckedChanged += (s, e) => this.cbSpecial_CheckStateChanged(s, e);
             // 
             // btnImportBHAV
-            // 
-            resources.ApplyResources(this.btnImportBHAV, "btnImportBHAV");
-            this.btnImportBHAV.Name = "btnImportBHAV";
-            this.btnImportBHAV.Click += new System.EventHandler(this.btnImportBHAV_Click);
+            //            this.btnImportBHAV.Name = "btnImportBHAV";
+            this.btnImportBHAV.Click += (s, e) => this.btnImportBHAV_Click(s, e);
             // 
             // btnCopyBHAV
-            // 
-            resources.ApplyResources(this.btnCopyBHAV, "btnCopyBHAV");
-            this.btnCopyBHAV.Name = "btnCopyBHAV";
-            this.btnCopyBHAV.Click += new System.EventHandler(this.btnCopyBHAV_Click);
+            //            this.btnCopyBHAV.Name = "btnCopyBHAV";
+            this.btnCopyBHAV.Click += (s, e) => this.btnCopyBHAV_Click(s, e);
             // 
             // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            //            this.btnClose
             this.btnClose.Name = "btnClose";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.Click += (s, e) => this.btnClose_Click(s, e);
             // 
             // tbHeaderFlag
-            // 
-            resources.ApplyResources(this.tbHeaderFlag, "tbHeaderFlag");
-            this.tbHeaderFlag.Name = "tbHeaderFlag";
-            this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbHeaderFlag.Name = "tbHeaderFlag";
+            this.tbHeaderFlag.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbHeaderFlag.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // lbHeaderFlag
-            // 
-            resources.ApplyResources(this.lbHeaderFlag, "lbHeaderFlag");
-            this.lbHeaderFlag.Name = "lbHeaderFlag";
+            //            this.lbHeaderFlag.Name = "lbHeaderFlag";
             // 
             // tbCacheFlags
-            // 
-            resources.ApplyResources(this.tbCacheFlags, "tbCacheFlags");
-            this.tbCacheFlags.Name = "tbCacheFlags";
-            this.tbCacheFlags.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            this.tbCacheFlags.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbCacheFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //            this.tbCacheFlags.Name = "tbCacheFlags";
+            this.tbCacheFlags.TextChanged += (s, e) => this.hex8_TextChanged(s, e);
+            this.tbCacheFlags.LostFocus += (s, e) => this.hex8_Validated(s, e);
             // cbFormat
-            // 
-            resources.ApplyResources(this.cbFormat, "cbFormat");
-            this.cbFormat.Items.AddRange(new object[] {
-            resources.GetString("cbFormat.Items"),
-            resources.GetString("cbFormat.Items1"),
-            resources.GetString("cbFormat.Items2"),
-            resources.GetString("cbFormat.Items3"),
-            resources.GetString("cbFormat.Items4"),
-            resources.GetString("cbFormat.Items5"),
-            resources.GetString("cbFormat.Items6"),
-            resources.GetString("cbFormat.Items7"),
-            resources.GetString("cbFormat.Items8"),
-            resources.GetString("cbFormat.Items9")});
+
             this.cbFormat.Name = "cbFormat";
-            this.cbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.cbFormat.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
-            this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
-            this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.cbFormat.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+            this.cbFormat.SelectionChanged += (s, e) => this.cbHex16_SelectedIndexChanged(s, e);
+            this.cbFormat.GotFocus += (s, e) => this.cbHex16_Enter(s, e);
+            this.cbFormat.LostFocus += (s, e) => this.cbHex16_Validated(s, e);
+            this.cbFormat.TextChanged += (s, e) => this.cbHex16_TextChanged(s, e);
             // 
             // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
+            //            this.pnflowcontainer.Name = "pnflowcontainer";
             this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
+            this.pnflowcontainer.SelectedInstChanged += (s, e) => this.pnflowcontainer_SelectedInstChanged(s, e);
             // 
             // btnDel
-            // 
-            resources.ApplyResources(this.btnDel, "btnDel");
-            this.btnDel.Name = "btnDel";
-            this.btnDel.Click += new System.EventHandler(this.btnDel_Clicked);
+            //            this.btnDel.Name = "btnDel";
+            this.btnDel.Click += (s, e) => this.btnDel_Clicked(s, e);
             // 
             // gbMove
-            // 
-            resources.ApplyResources(this.gbMove, "gbMove");
-            this.gbMove.BackColor = System.Drawing.Color.Transparent;
-            this.gbMove.Controls.Add(this.btnUp);
-            this.gbMove.Controls.Add(this.btnDown);
-            this.gbMove.Controls.Add(this.lbUpDown);
-            this.gbMove.Controls.Add(this.tbLines);
+            //            this.gbMove.Children.Add(this.btnUp);
+            this.gbMove.Children.Add(this.btnDown);
+            this.gbMove.Children.Add(this.lbUpDown);
+            this.gbMove.Children.Add(this.tbLines);
             this.gbMove.Name = "gbMove";
-            this.gbMove.TabStop = false;
-            // 
             // btnUp
             // 
-            this.btnUp.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnUp, "btnUp");
-            this.btnUp.Name = "btnUp";
-            this.btnUp.UseVisualStyleBackColor = false;
-            this.btnUp.Click += new System.EventHandler(this.btnMove_Clicked);
+            this.btnUp.Click += (s, e) => this.btnMove_Clicked(s, e);
             // 
             // btnDown
             // 
-            this.btnDown.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnDown, "btnDown");
-            this.btnDown.Name = "btnDown";
-            this.btnDown.UseVisualStyleBackColor = false;
-            this.btnDown.Click += new System.EventHandler(this.btnMove_Clicked);
+            this.btnDown.Click += (s, e) => this.btnMove_Clicked(s, e);
             // 
             // lbUpDown
-            // 
-            resources.ApplyResources(this.lbUpDown, "lbUpDown");
-            this.lbUpDown.Name = "lbUpDown";
+            //            this.lbUpDown.Name = "lbUpDown";
             // 
             // tbLines
-            // 
-            resources.ApplyResources(this.tbLines, "tbLines");
-            this.tbLines.Name = "tbLines";
-            this.tbLines.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbLines.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbLines.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //            this.tbLines.Name = "tbLines";
+            this.tbLines.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbLines.LostFocus += (s, e) => this.hex16_Validated(s, e);
             // btnSort
-            // 
-            resources.ApplyResources(this.btnSort, "btnSort");
-            this.btnSort.BackColor = System.Drawing.Color.Transparent;
-            this.btnSort.Name = "btnSort";
-            this.btnSort.UseVisualStyleBackColor = false;
-            this.btnSort.Click += new System.EventHandler(this.btnSort_Clicked);
+            //            this.btnSort.Name = "btnSort";
+            this.btnSort.Click += (s, e) => this.btnSort_Clicked(s, e);
             // 
             // btnCommit
-            // 
-            resources.ApplyResources(this.btnCommit, "btnCommit");
-            this.btnCommit.Name = "btnCommit";
-            this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
+            //            this.btnCommit.Name = "btnCommit";
+            this.btnCommit.Click += (s, e) => this.btnCommit_Clicked(s, e);
             // 
             // tbTreeVersion
-            // 
-            resources.ApplyResources(this.tbTreeVersion, "tbTreeVersion");
-            this.tbTreeVersion.Name = "tbTreeVersion";
-            this.tbTreeVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
-            this.tbTreeVersion.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbTreeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //            this.tbTreeVersion.Name = "tbTreeVersion";
+            this.tbTreeVersion.TextChanged += (s, e) => this.hex32_TextChanged(s, e);
+            this.tbTreeVersion.LostFocus += (s, e) => this.hex32_Validated(s, e);
             // btnAdd
-            // 
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Clicked);
+            //            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Click += (s, e) => this.btnAdd_Clicked(s, e);
             // 
             // lbCacheFlags
-            // 
-            resources.ApplyResources(this.lbCacheFlags, "lbCacheFlags");
-            this.lbCacheFlags.Name = "lbCacheFlags";
+            //            this.lbCacheFlags.Name = "lbCacheFlags";
             // 
             // cmenuGUIDIndex
             // 
-            this.cmenuGUIDIndex.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createAllPackagesToolStripMenuItem,
-            this.createCurrentPackageToolStripMenuItem,
-            this.loadIndexToolStripMenuItem,
-            this.saveIndexToolStripMenuItem});
-            this.cmenuGUIDIndex.Name = "cmenuGUIDIndex";
-            resources.ApplyResources(this.cmenuGUIDIndex, "cmenuGUIDIndex");
-            this.cmenuGUIDIndex.Opening += new System.ComponentModel.CancelEventHandler(this.cmenuGUIDIndex_Opening);
+            this.cmenuGUIDIndex.Name = "cmenuGUIDIndex";            this.cmenuGUIDIndex.Opening += new System.EventHandler(this.cmenuGUIDIndex_Opening);
             // 
             // createAllPackagesToolStripMenuItem
             // 
-            this.createAllPackagesToolStripMenuItem.Name = "createAllPackagesToolStripMenuItem";
-            resources.ApplyResources(this.createAllPackagesToolStripMenuItem, "createAllPackagesToolStripMenuItem");
-            this.createAllPackagesToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            this.createAllPackagesToolStripMenuItem.Name = "createAllPackagesToolStripMenuItem";            this.createAllPackagesToolStripMenuItem.Click += (s, e) => this.createToolStripMenuItem_Click(s, e);
             // 
             // createCurrentPackageToolStripMenuItem
             // 
-            this.createCurrentPackageToolStripMenuItem.Name = "createCurrentPackageToolStripMenuItem";
-            resources.ApplyResources(this.createCurrentPackageToolStripMenuItem, "createCurrentPackageToolStripMenuItem");
-            this.createCurrentPackageToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            this.createCurrentPackageToolStripMenuItem.Name = "createCurrentPackageToolStripMenuItem";            this.createCurrentPackageToolStripMenuItem.Click += (s, e) => this.createToolStripMenuItem_Click(s, e);
             // 
             // loadIndexToolStripMenuItem
             // 
-            this.loadIndexToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadIndexToolStripMenuItem.DropDownItems.AddRange(new object[] {
             this.defaultFileToolStripMenuItem,
             this.fromFileToolStripMenuItem});
-            this.loadIndexToolStripMenuItem.Name = "loadIndexToolStripMenuItem";
-            resources.ApplyResources(this.loadIndexToolStripMenuItem, "loadIndexToolStripMenuItem");
-            // 
+            this.loadIndexToolStripMenuItem.Name = "loadIndexToolStripMenuItem";            // 
             // defaultFileToolStripMenuItem
             // 
-            this.defaultFileToolStripMenuItem.Name = "defaultFileToolStripMenuItem";
-            resources.ApplyResources(this.defaultFileToolStripMenuItem, "defaultFileToolStripMenuItem");
-            this.defaultFileToolStripMenuItem.Click += new System.EventHandler(this.defaultFileToolStripMenuItem_Click);
+            this.defaultFileToolStripMenuItem.Name = "defaultFileToolStripMenuItem";            this.defaultFileToolStripMenuItem.Click += (s, e) => this.defaultFileToolStripMenuItem_Click(s, e);
             // 
             // fromFileToolStripMenuItem
             // 
-            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            resources.ApplyResources(this.fromFileToolStripMenuItem, "fromFileToolStripMenuItem");
-            this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";            this.fromFileToolStripMenuItem.Click += (s, e) => this.fileToolStripMenuItem_Click(s, e);
             // 
             // saveIndexToolStripMenuItem
             // 
-            this.saveIndexToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveIndexToolStripMenuItem.DropDownItems.AddRange(new object[] {
             this.defaultFileToolStripMenuItem1,
             this.toFileToolStripMenuItem});
-            this.saveIndexToolStripMenuItem.Name = "saveIndexToolStripMenuItem";
-            resources.ApplyResources(this.saveIndexToolStripMenuItem, "saveIndexToolStripMenuItem");
-            // 
+            this.saveIndexToolStripMenuItem.Name = "saveIndexToolStripMenuItem";            // 
             // defaultFileToolStripMenuItem1
             // 
-            this.defaultFileToolStripMenuItem1.Name = "defaultFileToolStripMenuItem1";
-            resources.ApplyResources(this.defaultFileToolStripMenuItem1, "defaultFileToolStripMenuItem1");
-            this.defaultFileToolStripMenuItem1.Click += new System.EventHandler(this.defaultFileToolStripMenuItem_Click);
+            this.defaultFileToolStripMenuItem1.Name = "defaultFileToolStripMenuItem1";            this.defaultFileToolStripMenuItem1.Click += (s, e) => this.defaultFileToolStripMenuItem_Click(s, e);
             // 
             // toFileToolStripMenuItem
             // 
-            this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";
-            resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
-            this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";            this.toFileToolStripMenuItem.Click += (s, e) => this.fileToolStripMenuItem_Click(s, e);
             // 
             // ttBhavForm
             // 
@@ -1928,24 +1608,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // BhavForm
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.btnClose;
-            this.Controls.Add(this.bhavPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "BhavForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.gbInstruction.ResumeLayout(false);
-            this.gbInstruction.PerformLayout();
-            this.bhavPanel.ResumeLayout(false);
-            this.bhavPanel.PerformLayout();
-            this.gbSpecial.ResumeLayout(false);
-            this.gbMove.ResumeLayout(false);
-            this.gbMove.PerformLayout();
-            this.cmenuGUIDIndex.ResumeLayout(false);
-            this.ResumeLayout(false);
-
-		}
+        }
 
 		#endregion
 
@@ -1963,9 +1627,8 @@ namespace SimPe.PackedFiles.UserInterface
 				origInst = wrapper[index].Clone();
 			}
 			UpdateInstPanel();
-			this.btnCancel.Enabled = false;
+			this.btnCancel.IsEnabled = false;
 		}
-
 
 		private void ItemQueryContinueDragTarget(object sender, QueryContinueDragEventArgs e)
 		{
@@ -1975,32 +1638,26 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void ItemDragEnter(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(int))) 
-			{
-				e.Effect = DragDropEffects.Link;		
-			}
-			else 
-			{
-				e.Effect = DragDropEffects.None;
-			}					
+			// Drag-and-drop: Avalonia IDataObject has different API
+			// if (e.Data.Contains(DataFormats.Text)) e.Effect = DragDropEffects.Link;
 		}
 
-		private void ItemDrop(object sender, System.Windows.Forms.DragEventArgs e)
+		private void ItemDrop(object sender, System.EventArgs e)
 		{
 			int sel = 0;
-			sel = (int)e.Data.GetData(sel.GetType());
-			ComboBox cb = ((ComboBox)sender);
+			// Drag-and-drop data retrieval not available in this Avalonia port
+			// sel = (int)e.Data.GetData(sel.GetType());
+			ComboBoxCompat cb = ((ComboBoxCompat)sender);
 			cb.SelectedIndex = -1;
-			cb.Text = "0x"+Helper.HexString((ushort)sel);
+			cb.Content = "0x"+Helper.HexString((ushort)sel);
 		}
-
 
 		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
 			try 
 			{
 				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
+				btnCommit.IsEnabled = wrapper.Changed;
 				pnflowcontainer_SelectedInstChanged(null, null);
 			} 
 			catch (Exception ex) 
@@ -2009,13 +1666,11 @@ namespace SimPe.PackedFiles.UserInterface
 			}			
 		}
 
-
 		private void btnCancel_Clicked(object sender, System.EventArgs e)
 		{
 			wrapper[pnflowcontainer.SelectedIndex] = origInst.Clone();
 			pnflowcontainer_SelectedInstChanged(null, null);
 		}
-
 
         private void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
@@ -2023,12 +1678,10 @@ namespace SimPe.PackedFiles.UserInterface
             if (tprp == null) return;
             if (tprp.Package != wrapper.Package)
             {
-                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
-                if (dr != DialogResult.Yes) return;
+                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
         }
-
 
         private void pjse_banner1_TreeClick(object sender, EventArgs e) // Fuck
         {
@@ -2037,45 +1690,44 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (tpfw.Package != wrapper.Package)
             {
-                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
-                if (dr != DialogResult.Yes) return;
+                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(tpfw.FileDescriptor, tpfw.Package);
         }
 
         private void btnFloat_Click(object sender, EventArgs e)
         {
-            Control old = this.bhavPanel.Parent;
+            Avalonia.Controls.Control old = this.bhavPanel.Parent as Avalonia.Controls.Control;
             string oldFloatText = this.pjse_banner1.FloatText;
 
-            Form f = new Form();
-            f.Text = formTitle;
-            f.WindowState = FormWindowState.Maximized;
+            Window f = new Window();
+            f.Title = formTitle;
+            
 
-            f.Controls.Add(this.bhavPanel);
+            f.Content = this.bhavPanel;
             this.pjse_banner1.FloatText = pjse.Localization.GetString("bhavForm.Unfloat");
             this.pjse_banner1.FloatClick -= new System.EventHandler(this.btnFloat_Click);
             this.pjse_banner1.SetFormCancelButton(f);
 
-            this.gbSpecial.Visible = true;
-            this.cbSpecial.Enabled = false;
-            this.btnCopyBHAV.Visible = false;
+            this.gbSpecial.IsVisible = true;
+            this.cbSpecial.IsEnabled = false;
+            this.btnCopyBHAV.IsVisible = false;
 
             handleOverride();
 
-            f.ShowDialog();
+            f.ShowDialog(null).GetAwaiter().GetResult();
 
-            old.Controls.Add(this.bhavPanel);
+            // restore bhavPanel to old parent - not directly supported in Avalonia;
             this.pjse_banner1.FloatText = oldFloatText;
-            this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
+            this.pjse_banner1.FloatClick += (s, e) => this.btnFloat_Click(s, e);
 
-            this.gbSpecial.Visible = this.cbSpecial.Checked;
-            this.cbSpecial.Enabled = true;
+            this.gbSpecial.IsVisible = this.cbSpecial.IsChecked == true;
+            this.cbSpecial.IsEnabled = true;
 
-            this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = false;
+            this.lbHidesOP.IsVisible = this.tbHidesOP.IsVisible = this.llHidesOP.IsVisible = false;
             this.llHidesOP.Tag = null;
 
-            f.Dispose();
+            // f.Dispose() - no-op in Avalonia
 
             wrapper.RefreshUI();
         }
@@ -2085,7 +1737,7 @@ namespace SimPe.PackedFiles.UserInterface
             common_LinkClicked(pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor][0]);
         }
 
-		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void llopenbhav_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
             common_LinkClicked(wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode));
 		}
@@ -2103,25 +1755,23 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnCopyBHAV_Click(object sender, EventArgs e)
         {
-            btnCopyBHAV.Enabled = false;
+            btnCopyBHAV.IsEnabled = false;
             TakeACopy();
-            btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
+            btnCopyBHAV.Content = pjse.Localization.GetString("ml_done");
         }
 
         private void btnImportBHAV_Click(object sender, EventArgs e)
         {
-            btnImportBHAV.Enabled = false;
+            btnImportBHAV.IsEnabled = false;
             ImportBHAV();
-            btnImportBHAV.Text = pjse.Localization.GetString("ml_done");
+            btnImportBHAV.Content = pjse.Localization.GetString("ml_done");
         }
-
 
         private void pjse_banner1_ExtractClick(object sender, EventArgs e) { pjse.ExtractCurrent.Execute(wrapper, pjse_banner1.TitleText); }
 
-
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-            pjse.FileTable.Entry item = new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent, false);
+            pjse.FileTable.Entry item = new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent as Avalonia.Controls.Control, false);
 
 			if (item != null && item.Instance != currentInst.Instruction.OpCode)
 				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
@@ -2145,11 +1795,10 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 currentInst = inst;
                 UpdateInstPanel();
-                this.btnCancel.Enabled = true;
+                this.btnCancel.IsEnabled = true;
                 internalchg = false;
             }
         }
-
 
         private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
@@ -2161,19 +1810,18 @@ namespace SimPe.PackedFiles.UserInterface
 			tbFilename.SelectAll();
 		}
 
-
 		private void cbHex16_Enter(object sender, System.EventArgs e)
 		{
-			((ComboBox)sender).SelectAll();
+			((ComboBoxCompat)sender).SelectAll();
 		}
 
 		private void cbHex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
 			if (!cbHex16_IsValid(sender)) return;
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+			if (((ComboBoxCompat)sender).Items.IndexOf(((ComboBoxCompat)sender).Text) != -1) return;
 
-			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
+			ushort val = Convert.ToUInt16(((ComboBoxCompat)sender).Text, 16);
 			internalchg = true;
 			switch (alHex16cb.IndexOf(sender))
 			{
@@ -2204,18 +1852,18 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+				((ComboBoxCompat)sender).SelectedIndex = val - 0xfffc;
 			}
 			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0x8000;
+				((ComboBoxCompat)sender).SelectedIndex = val - 0x8000;
 			}
 			else
 			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+				((ComboBoxCompat)sender).SelectedIndex = -1;
+				((ComboBoxCompat)sender).Content = "0x" + Helper.HexString(val);
 			}
-			((ComboBox)sender).SelectAll();
+			((ComboBoxCompat)sender).SelectAll();
 		}
 
 		private void cbHex16_Validated(object sender, System.EventArgs e)
@@ -2223,27 +1871,27 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alHex16cb.IndexOf(sender);
 			if (i < 0)
 				throw new Exception("cbHex16_Validated not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+			if (((ComboBoxCompat)sender).Items.IndexOf(((ComboBoxCompat)sender).Text) != -1) return;
 
-			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
+			ushort val = Convert.ToUInt16(((ComboBoxCompat)sender).Text, 16);
 
 			bool origstate = internalchg;
 			internalchg = true;
 			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+				((ComboBoxCompat)sender).SelectedIndex = val - 0xfffc;
 			}
 			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0x8000;
+				((ComboBoxCompat)sender).SelectedIndex = val - 0x8000;
 			}
 			else
 			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+				((ComboBoxCompat)sender).SelectedIndex = -1;
+				((ComboBoxCompat)sender).Content = "0x" + Helper.HexString(val);
 			}
 			internalchg = origstate;
-			((ComboBox)sender).Select(0, 0);
+			((ComboBoxCompat)sender).Select(0, 0);
 		}
 
 		private void cbHex16_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -2253,10 +1901,10 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alHex16cb.IndexOf(sender);
 			if (i < 0)
 				throw new Exception("cbHex16_SelectedIndexChanged not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).SelectedIndex == -1) return;
+			if (((ComboBoxCompat)sender).SelectedIndex == -1) return;
 
-			ushort val = (ushort)((ComboBox)alHex16cb[i]).SelectedIndex;
-			((ComboBox)sender).SelectAll();
+			ushort val = (ushort)((ComboBoxCompat)alHex16cb[i]).SelectedIndex;
+			((ComboBoxCompat)sender).SelectAll();
 
 			internalchg = true;
 			if (i < 2)
@@ -2278,7 +1926,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 			if (!dec8_IsValid(sender)) return;
 
-			byte val = Convert.ToByte(((TextBox)sender).Text);
+			byte val = Convert.ToByte(((TextBoxCompat)sender).Text);
 			internalchg = true;
 			switch (alDec8.IndexOf(sender))
 			{
@@ -2299,8 +1947,8 @@ namespace SimPe.PackedFiles.UserInterface
 				default: break;
 			}
 
-			((TextBox)sender).Text = val.ToString();
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = val.ToString();
+			((TextBoxCompat)sender).SelectAll();
         }
 
         private void hex8_TextChanged(object sender, System.EventArgs ev)
@@ -2308,7 +1956,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 			if (!hex8_IsValid(sender)) return;
 
-			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+			byte val = Convert.ToByte(((TextBoxCompat)sender).Text, 16);
 			int i = alHex8.IndexOf(sender);
 
 			internalchg = true;
@@ -2351,26 +1999,25 @@ namespace SimPe.PackedFiles.UserInterface
 					 case 21: val = wrapper.Header.LocalVarCount; break;
 				 }
 
-			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
+			((TextBoxCompat)sender).SelectAll();
 		}
 
 		private void hex8_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBoxCompat)sender).Text, 16));
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
-
 
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
 			if (!hex16_IsValid(sender)) return;
 
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+			ushort val = Convert.ToUInt16(((TextBoxCompat)sender).Text, 16);
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
@@ -2392,26 +2039,25 @@ namespace SimPe.PackedFiles.UserInterface
                 case 1: val = 1; break;
 			}
 
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + Helper.HexString(val);
+			((TextBoxCompat)sender).SelectAll();
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBoxCompat)sender).Text, 16));
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
-
 
 		private void hex32_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
 			if (!hex32_IsValid(sender)) return;
 
-			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
+			uint val = Convert.ToUInt32(((TextBoxCompat)sender).Text, 16);
 			internalchg = true;
 			switch (alHex32.IndexOf(sender))
 			{
@@ -2432,19 +2078,18 @@ namespace SimPe.PackedFiles.UserInterface
 				case 0: val = wrapper.Header.TreeVersion; break;
 			}
 
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + Helper.HexString(val);
+			((TextBoxCompat)sender).SelectAll();
 		}
 
 		private void hex32_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBoxCompat)sender).Text, 16));
+			((TextBoxCompat)sender).SelectAll();
 			internalchg = origstate;
 		}
-
 
 		private void btnSort_Clicked(object sender, System.EventArgs e)
 		{
@@ -2459,7 +2104,7 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception) { return; }
             try
             {
-                this.gbMove.Enabled = false;
+                this.gbMove.IsEnabled = false;
                 if (sender == this.btnUp)
                     this.pnflowcontainer.MoveInst(mv * -1);
                 else
@@ -2468,7 +2113,7 @@ namespace SimPe.PackedFiles.UserInterface
             }
             finally
             {
-                this.gbMove.Enabled = true;
+                this.gbMove.IsEnabled = true;
             }
         }
 
@@ -2484,13 +2129,11 @@ namespace SimPe.PackedFiles.UserInterface
             SetComments();
 		}
 
-
 		private void cbSpecial_CheckStateChanged(object sender, EventArgs e)
 		{
-			gbSpecial.Visible =
-                pjse.Settings.PJSE.ShowSpecialButtons = ((CheckBox)sender).Checked;
+			gbSpecial.IsVisible =
+                pjse.Settings.PJSE.ShowSpecialButtons = ((CheckBoxCompat2)sender).IsChecked == true;
 		}
-
 
 		private void btnInsVia_Click(object sender, EventArgs e)
 		{
@@ -2509,7 +2152,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, EventArgs e)
 		{
-            this.pnflowcontainer.Append(new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent, true, 0x10));
+            this.pnflowcontainer.Append(new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent as Avalonia.Controls.Control, true, 0x10));
 		}
 
 		private void btnDelMerola_Click(object sender, EventArgs e)
@@ -2542,15 +2185,14 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnflowcontainer.Add(BhavUIAddType.Unlinked);
         }
 
-
         private void btnGUIDIndex_Click(object sender, EventArgs e)
         {
             this.cmenuGUIDIndex.Show((Control)sender, new Point(3 ,3));
         }
 
-        private void cmenuGUIDIndex_Opening(object sender, CancelEventArgs e)
+        private void cmenuGUIDIndex_Opening(object sender, EventArgs e)
         {
-            createCurrentPackageToolStripMenuItem.Enabled =
+            createCurrentPackageToolStripMenuItem.IsEnabled =
                 (pjse.FileTable.GFT.CurrentPackage != null
                 && pjse.FileTable.GFT.CurrentPackage.FileName != null
                 && !pjse.FileTable.GFT.CurrentPackage.FileName.ToLower().EndsWith("objects.package"));
@@ -2558,24 +2200,22 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.UseWaitCursor = true;
-            Application.DoEvents();
+            // Application.DoEvents() not needed in Avalonia
             pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
-            Application.UseWaitCursor = false;
-            Application.DoEvents();
+            // Application.DoEvents() not needed in Avalonia
             
             // DialogResult dr = pjseMsgBox.Show(RemoteControl.ApplicationForm, pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
-            DialogResult dr = pjseMsgBox.Show(RemoteControl.ApplicationForm, "Do you want to save the GUID Index now? \r\n [Default] - save in the default location \r\n [Specify...] - let me specify where to save \r\n [No] - don't save, just let me get back to SimPe", pjse.Localization.GetString("guidAskTitle"),
+            SimPe.DialogResult dr = pjseMsgBox.ShowAsync(RemoteControl.ApplicationForm, "Do you want to save the GUID Index now? \r\n [Default] - save in the default location \r\n [Specify...] - let me specify where to save \r\n [No] - don't save, just let me get back to SimPe", pjse.Localization.GetString("guidAskTitle"),
                 new Boolset("111"), new Boolset("111"), new string[] {
                     pjse.Localization.GetString("guidAskDefault"),
                     pjse.Localization.GetString("guidAskSpecify"),
                     pjse.Localization.GetString("guidAskNoSave"),
                 },
-                new DialogResult[] { DialogResult.OK, DialogResult.Retry, DialogResult.Cancel, });
-            //DialogResult dr = MessageBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"), "\r\n" + 
+                new SimPe.DialogResult[] { SimPe.DialogResult.OK, SimPe.DialogResult.Retry, SimPe.DialogResult.Cancel, }).GetAwaiter().GetResult();
+            //SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"), "\r\n" + 
             //    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (dr == DialogResult.OK) defaultFileToolStripMenuItem_Click(this.defaultFileToolStripMenuItem1, null);
-            else if (dr == DialogResult.Retry) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
+            if (dr == SimPe.DialogResult.OK) defaultFileToolStripMenuItem_Click(this.defaultFileToolStripMenuItem1, null);
+            else if (dr == SimPe.DialogResult.Retry) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
         }
 
         private void defaultFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2589,11 +2229,11 @@ namespace SimPe.PackedFiles.UserInterface
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool load = sender.Equals(this.fromFileToolStripMenuItem);
-            FileDialog fd;
+            FileDialogCompat fd;
             if (load)
-                fd = new OpenFileDialog();
+                fd = new OpenFileDialogCompat();
             else
-                fd = new SaveFileDialog();
+                fd = new SaveFileDialogCompat();
             fd.AddExtension = true;
             fd.CheckFileExists = load;
             fd.CheckPathExists = true;
@@ -2610,8 +2250,8 @@ namespace SimPe.PackedFiles.UserInterface
                 ? pjse.Localization.GetString("guidLoadIndex")
                 : pjse.Localization.GetString("guidSaveIndex");
             fd.ValidateNames = true;
-            DialogResult dr = fd.ShowDialog();
-            if (dr == DialogResult.OK)
+            SimPe.Scenegraph.Compat.DialogResult dr = fd.ShowDialog();
+            if (dr == SimPe.Scenegraph.Compat.DialogResult.OK)
             {
                 if (load)
                     pjse.GUIDIndex.TheGUIDIndex.Load(fd.FileName);

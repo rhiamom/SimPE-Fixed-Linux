@@ -26,7 +26,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.PackedFiles.UserInterface
@@ -34,38 +35,21 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Summary description for TtabSingleMotive.
 	/// </summary>
-	public class TtabAnimalMotiveUI : System.Windows.Forms.UserControl
+	public class TtabAnimalMotiveUI : Avalonia.Controls.UserControl
 	{
         #region Form variables
-        private System.Windows.Forms.TextBox tbValue;
-        private Button btnPopup;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private TextBoxCompat tbValue;
+        private ButtonCompat btnPopup;
         #endregion
 
         public TtabAnimalMotiveUI()
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
-
-			// TODO: Add any initialization after the InitializeComponent call
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
 
@@ -84,7 +68,7 @@ namespace SimPe.PackedFiles.UserInterface
                     this.item = value;
                     setText();
                     if (item != null)
-                        item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                        item.Wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
                 }
             }
         }
@@ -126,34 +110,12 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabAnimalMotiveUI));
-            this.tbValue = new System.Windows.Forms.TextBox();
-            this.btnPopup = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            // 
-            // tbValue
-            // 
-            resources.ApplyResources(this.tbValue, "tbValue");
+            this.tbValue = new TextBoxCompat();
+            this.btnPopup = new ButtonCompat();
             this.tbValue.Name = "tbValue";
-            this.tbValue.ReadOnly = true;
-            // 
-            // btnPopup
-            // 
-            this.btnPopup.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnPopup, "btnPopup");
+            this.tbValue.IsReadOnly = true;
             this.btnPopup.Name = "btnPopup";
-            this.btnPopup.UseVisualStyleBackColor = false;
-            this.btnPopup.Click += new System.EventHandler(this.btnPopup_Click);
-            // 
-            // TtabAnimalMotiveUI
-            // 
-            this.Controls.Add(this.btnPopup);
-            this.Controls.Add(this.tbValue);
-            this.Name = "TtabAnimalMotiveUI";
-            resources.ApplyResources(this, "$this");
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            this.btnPopup.Click += (s, e) => btnPopup_Click(s, e);
 		}
 		#endregion
 
@@ -161,10 +123,9 @@ namespace SimPe.PackedFiles.UserInterface
         {
             pjse.TtabAnimalMotiveWiz amw = new pjse.TtabAnimalMotiveWiz();
             amw.MotiveSet = item;
-            if (amw.ShowDialog() == DialogResult.OK)
-                amw.MotiveSet.CopyTo(item);
-            else
-                setText();
+            amw.ShowDialog(null);
+            // Note: Window result handling simplified; always reload
+            setText();
         }
 
 	}

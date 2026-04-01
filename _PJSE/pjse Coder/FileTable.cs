@@ -55,7 +55,7 @@ namespace pjse
         public FileTable()
 		{
             if (SimPe.FileTable.FileIndex != null)
-                SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
+                SimPe.FileTable.FileIndex.FILoad += (s, e) => this.FileIndex_FILoad(s, e);
         }
 
         private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }
@@ -66,7 +66,7 @@ namespace pjse
             SimPe.Wait.Progress++;
             if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
             if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = message;
-            System.Windows.Forms.Application.DoEvents();
+            
         }
 
         public void UIRefresh()

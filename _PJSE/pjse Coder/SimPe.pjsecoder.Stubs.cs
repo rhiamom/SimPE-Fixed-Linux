@@ -1,53 +1,57 @@
 // SimPe.pjsecoder.Stubs.cs — Designer stubs replacing excluded Designer.cs files.
+// WinForms types replaced with Avalonia equivalents.
+
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 
 namespace pjse
 {
     partial class CompareButton
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.ContextMenuStrip cmenuCompare = new System.Windows.Forms.ContextMenuStrip();
-        private System.Windows.Forms.ToolStripMenuItem currentObjectspackageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        private ContextMenu cmenuCompare = new ContextMenu();
+        private MenuItem currentObjectspackageToolStripMenuItem = new MenuItem();
         private void InitializeComponent() { }
     }
 
     partial class PickANumber
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-        private System.Windows.Forms.TextBox textBox1 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.RadioButton radioButton1 = new System.Windows.Forms.RadioButton();
-        private System.Windows.Forms.Button btnCancel = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnOK = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
+        private Grid tableLayoutPanel1 = new Grid();
+        private TextBoxCompat textBox1 = new TextBoxCompat();
+        private RadioButton radioButton1 = new RadioButton();
+        private ButtonCompat btnCancel = new ButtonCompat();
+        private ButtonCompat btnOK = new ButtonCompat();
+        private LabelCompat label1 = new LabelCompat();
         private void InitializeComponent() { }
     }
 
     partial class LabelledDataOwner
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-        private System.Windows.Forms.Label lbLabel = new System.Windows.Forms.Label();
-        private System.Windows.Forms.FlowLayoutPanel flpValue = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.ComboBox cbPicker = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.TextBox tbVal = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.Label lbInstance = new System.Windows.Forms.Label();
-        private System.Windows.Forms.ComboBox cbDataOwner = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.FlowLayoutPanel flpCheckBoxes = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.CheckBox ckbDecimal = new System.Windows.Forms.CheckBox();
-        private System.Windows.Forms.CheckBox ckbUseInstancePicker = new System.Windows.Forms.CheckBox();
+        private Grid tableLayoutPanel1 = new Grid();
+        private LabelCompat lbLabel = new LabelCompat();
+        private StackPanel flpValue = new StackPanel();
+        private ComboBoxCompat cbPicker = new ComboBoxCompat();
+        private TextBoxCompat tbVal = new TextBoxCompat();
+        private LabelCompat lbInstance = new LabelCompat();
+        private ComboBoxCompat cbDataOwner = new ComboBoxCompat();
+        private StackPanel flpCheckBoxes = new StackPanel();
+        private CheckBoxCompat2 ckbDecimal = new CheckBoxCompat2();
+        private CheckBoxCompat2 ckbUseInstancePicker = new CheckBoxCompat2();
         private void InitializeComponent() { }
     }
 
     partial class TtabAnimalMotiveWiz
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Button btnOkay = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnCancel = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Panel panel1 = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
+        private ButtonCompat btnOkay = new ButtonCompat();
+        private ButtonCompat btnCancel = new ButtonCompat();
+        private StackPanel panel1 = new StackPanel();
+        private LabelCompat label1 = new LabelCompat();
         private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI1 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
-        private System.Windows.Forms.Button btnPlus = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnMinus = new System.Windows.Forms.Button();
+        private ButtonCompat btnPlus = new ButtonCompat();
+        private ButtonCompat btnMinus = new ButtonCompat();
         private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI2 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
         private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI3 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
         private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI4 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
@@ -69,95 +73,108 @@ namespace pjse
     partial class pjse_banner
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Button btnHelp = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnFloat = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnView = new System.Windows.Forms.Button();
-        private System.Windows.Forms.FlowLayoutPanel flpButtons = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.Button btnTree = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnSibling = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnExtract = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btnRefreshFT = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Label lbLabel = new System.Windows.Forms.Label();
+        private ButtonCompat btnHelp = new ButtonCompat();
+        private ButtonCompat btnFloat = new ButtonCompat();
+        private ButtonCompat btnView = new ButtonCompat();
+        private StackPanel flpButtons = new StackPanel();
+        private ButtonCompat btnTree = new ButtonCompat();
+        private ButtonCompat btnSibling = new ButtonCompat();
+        private ButtonCompat btnExtract = new ButtonCompat();
+        private ButtonCompat btnRefreshFT = new ButtonCompat();
+        private LabelCompat lbLabel = new LabelCompat();
         private void InitializeComponent() { }
     }
 }
 
 namespace SimPe.Plugin
 {
+    using Avalonia.Controls;
+    using SimPe.Scenegraph.Compat;
+    using Ambertation.Windows.Forms;
+
     partial class GUIDChooser
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.FlowLayoutPanel flpMain = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.Label lbLabel = new System.Windows.Forms.Label();
-        private System.Windows.Forms.ComboBox cbKnownObjects = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.TextBox tbGUID = new System.Windows.Forms.TextBox();
-        private void InitializeComponent() { }
+        private FlowLayoutPanel flpMain = new FlowLayoutPanel();
+        private LabelCompat lbLabel = new LabelCompat();
+        private ComboBoxCompat cbKnownObjects = new ComboBoxCompat();
+        private TextBoxCompat tbGUID = new TextBoxCompat();
+        private void InitializeComponent()
+        {
+            this.lbLabel.Content = "LabelCompat";
+            this.cbKnownObjects.SelectionChanged += (s, e) => this.cbKnownObjects_SelectedIndexChanged(s, e);
+            this.tbGUID.Text = "0xDDDDDDDD";
+            this.tbGUID.TextChanged += (s, e) => this.tbGUID_TextChanged(s, e);
+            this.tbGUID.LostFocus += (s, e) => this.hex32_Validated(s, e);
+        }
     }
 
     partial class TreesPackedFileUI
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Panel panel1 = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.Button btMove = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btRemove = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Panel pnhidim = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.TextBox tbheader = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk0 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk1 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk2 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk3 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk4 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbunk5 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbversion = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbcount = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbfilename = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.Label lbfilename = new System.Windows.Forms.Label();
-        private System.Windows.Forms.ListView listList = new System.Windows.Forms.ListView();
-        private System.Windows.Forms.ColumnHeader Comment = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Zero2 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block1 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block2 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block3 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block4 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block5 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block6 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block7 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block8 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Block9 = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ListView listLast = new System.Windows.Forms.ListView();
-        private System.Windows.Forms.ColumnHeader Indecks = new System.Windows.Forms.ColumnHeader();
-        private System.Windows.Forms.ColumnHeader Comment2 = new System.Windows.Forms.ColumnHeader();
-        private Ambertation.Windows.Forms.XPTaskBoxSimple taskBox1 = new Ambertation.Windows.Forms.XPTaskBoxSimple();
-        private Ambertation.Windows.Forms.XPTaskBoxSimple taskBox2 = new Ambertation.Windows.Forms.XPTaskBoxSimple();
-        private System.Windows.Forms.TextBox textBox2 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox3 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox4 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox5 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox6 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox7 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox8 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox9 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox10 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox textBox11 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbComment = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.TextBox tbComment2 = new System.Windows.Forms.TextBox();
-        private System.Windows.Forms.Label lbComment = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbComment2 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Button btDown = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btBhave = new System.Windows.Forms.Button();
-        private System.Windows.Forms.Button btAdder = new System.Windows.Forms.Button();
+        private StackPanel panel1 = new StackPanel();
+        private ButtonCompat btMove = new ButtonCompat();
+        private ButtonCompat btRemove = new ButtonCompat();
+        private StackPanel pnhidim = new StackPanel();
+        private TextBoxCompat tbheader = new TextBoxCompat();
+        private TextBoxCompat tbunk0 = new TextBoxCompat();
+        private TextBoxCompat tbunk1 = new TextBoxCompat();
+        private TextBoxCompat tbunk2 = new TextBoxCompat();
+        private TextBoxCompat tbunk3 = new TextBoxCompat();
+        private TextBoxCompat tbunk4 = new TextBoxCompat();
+        private TextBoxCompat tbunk5 = new TextBoxCompat();
+        private TextBoxCompat tbversion = new TextBoxCompat();
+        private TextBoxCompat tbcount = new TextBoxCompat();
+        private TextBoxCompat tbfilename = new TextBoxCompat();
+        private LabelCompat lbfilename = new LabelCompat();
+        private ListView listList = new ListView();
+        private ColumnHeader Comment = new ColumnHeader();
+        private ColumnHeader Zero2 = new ColumnHeader();
+        private ColumnHeader Block1 = new ColumnHeader();
+        private ColumnHeader Block2 = new ColumnHeader();
+        private ColumnHeader Block3 = new ColumnHeader();
+        private ColumnHeader Block4 = new ColumnHeader();
+        private ColumnHeader Block5 = new ColumnHeader();
+        private ColumnHeader Block6 = new ColumnHeader();
+        private ColumnHeader Block7 = new ColumnHeader();
+        private ColumnHeader Block8 = new ColumnHeader();
+        private ColumnHeader Block9 = new ColumnHeader();
+        private ListView listLast = new ListView();
+        private ColumnHeader Indecks = new ColumnHeader();
+        private ColumnHeader Comment2 = new ColumnHeader();
+        private XPTaskBoxSimple taskBox1 = new XPTaskBoxSimple();
+        private XPTaskBoxSimple taskBox2 = new XPTaskBoxSimple();
+        private TextBoxCompat textBox2 = new TextBoxCompat();
+        private TextBoxCompat textBox3 = new TextBoxCompat();
+        private TextBoxCompat textBox4 = new TextBoxCompat();
+        private TextBoxCompat textBox5 = new TextBoxCompat();
+        private TextBoxCompat textBox6 = new TextBoxCompat();
+        private TextBoxCompat textBox7 = new TextBoxCompat();
+        private TextBoxCompat textBox8 = new TextBoxCompat();
+        private TextBoxCompat textBox9 = new TextBoxCompat();
+        private TextBoxCompat textBox10 = new TextBoxCompat();
+        private TextBoxCompat textBox11 = new TextBoxCompat();
+        private TextBoxCompat tbComment = new TextBoxCompat();
+        private TextBoxCompat tbComment2 = new TextBoxCompat();
+        private LabelCompat lbComment = new LabelCompat();
+        private LabelCompat lbComment2 = new LabelCompat();
+        private ButtonCompat btDown = new ButtonCompat();
+        private ButtonCompat btBhave = new ButtonCompat();
+        private ButtonCompat btAdder = new ButtonCompat();
         private void InitializeComponent() { }
     }
 }
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
+    using Avalonia.Controls;
+
     partial class UI
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label label1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Panel pnWizBhav = new System.Windows.Forms.Panel();
-        private System.Windows.Forms.TableLayoutPanel tlpHeader = new System.Windows.Forms.TableLayoutPanel();
+        private LabelCompat label1 = new LabelCompat();
+        private StackPanel pnWizBhav = new StackPanel();
+        private Grid tlpHeader = new Grid();
         private pjse.LabelledDataOwner ldocArg1 = new pjse.LabelledDataOwner();
         private pjse.LabelledDataOwner ldocArg2 = new pjse.LabelledDataOwner();
         private pjse.LabelledDataOwner ldocArg3 = new pjse.LabelledDataOwner();
@@ -166,24 +183,24 @@ namespace pjse.BhavOperandWizards.WizBhav
         private pjse.LabelledDataOwner ldocArg6 = new pjse.LabelledDataOwner();
         private pjse.LabelledDataOwner ldocArg7 = new pjse.LabelledDataOwner();
         private pjse.LabelledDataOwner ldocArg8 = new pjse.LabelledDataOwner();
-        private System.Windows.Forms.Label lbArg1 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg2 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg3 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg4 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg5 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg6 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg7 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArg8 = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbArgC = new System.Windows.Forms.Label();
-        private System.Windows.Forms.Label lbBhavName = new System.Windows.Forms.Label();
-        private System.Windows.Forms.FlowLayoutPanel flpFormat = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.RadioButton rbTemps = new System.Windows.Forms.RadioButton();
-        private System.Windows.Forms.RadioButton rbCallers = new System.Windows.Forms.RadioButton();
-        private System.Windows.Forms.RadioButton rbOld = new System.Windows.Forms.RadioButton();
-        private System.Windows.Forms.RadioButton rbNew = new System.Windows.Forms.RadioButton();
-        private System.Windows.Forms.FlowLayoutPanel flpOptions = new System.Windows.Forms.FlowLayoutPanel();
-        private System.Windows.Forms.CheckBox ckbDecimal = new System.Windows.Forms.CheckBox();
-        private System.Windows.Forms.CheckBox ckbUseInstancePicker = new System.Windows.Forms.CheckBox();
+        private LabelCompat lbArg1 = new LabelCompat();
+        private LabelCompat lbArg2 = new LabelCompat();
+        private LabelCompat lbArg3 = new LabelCompat();
+        private LabelCompat lbArg4 = new LabelCompat();
+        private LabelCompat lbArg5 = new LabelCompat();
+        private LabelCompat lbArg6 = new LabelCompat();
+        private LabelCompat lbArg7 = new LabelCompat();
+        private LabelCompat lbArg8 = new LabelCompat();
+        private LabelCompat lbArgC = new LabelCompat();
+        private LabelCompat lbBhavName = new LabelCompat();
+        private StackPanel flpFormat = new StackPanel();
+        private RadioButton rbTemps = new RadioButton();
+        private RadioButton rbCallers = new RadioButton();
+        private RadioButton rbOld = new RadioButton();
+        private RadioButton rbNew = new RadioButton();
+        private StackPanel flpOptions = new StackPanel();
+        private CheckBoxCompat2 ckbDecimal = new CheckBoxCompat2();
+        private CheckBoxCompat2 ckbUseInstancePicker = new CheckBoxCompat2();
         private void InitializeComponent() { }
     }
 }

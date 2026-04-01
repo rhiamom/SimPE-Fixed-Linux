@@ -25,7 +25,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 using SimPe.Interfaces.Plugin;
 
@@ -34,49 +35,26 @@ namespace pjse
 	/// <summary>
 	/// Summary description for StrBig.
 	/// </summary>
-	public class StrChooser : System.Windows.Forms.Form
+	public class StrChooser : Window
 	{
 		#region Form variables
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Button OK;
-		private System.Windows.Forms.Button Cancel;
-		private System.Windows.Forms.ListBox lbItemList;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private StackPanel panel1;
+		private ButtonCompat OK;
+		private ButtonCompat Cancel;
+		private Avalonia.Controls.ListBox lbItemList;
 		#endregion
+
+		private bool _dialogResult = false;
 
 		public StrChooser()
 		{
-			//
-			// Required for Windows Form Designer support
-			//
             InitializeComponent();
-
-            if (SimPe.Helper.XmlRegistry.UseBigIcons)
-            {
-                this.lbItemList.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-                this.Size = new System.Drawing.Size(600, 373);
-            }
 		}
 
         public StrChooser(bool sortflag) : this() { this.sortflag = sortflag; }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
 
@@ -87,17 +65,14 @@ namespace pjse
 		{
 			fill(wrapper);
 
-			DialogResult dr = ShowDialog();
-			Close();
+			this.ShowDialog(null).GetAwaiter().GetResult();
 
-			switch (dr)
+			if (_dialogResult)
 			{
-				case DialogResult.OK:
-					if (lbItemList.SelectedIndex >= 0) return (int)((SimPe.Data.Alias)lbItemList.SelectedItem).Id;
-					return -1;
-				default:
-					return -1;
+				if (lbItemList.SelectedIndex >= 0) return (int)((SimPe.Data.Alias)lbItemList.SelectedItem).Id;
+				return -1;
 			}
+			return -1;
 		}
 
 		private void fill(StrWrapper wrapper)
@@ -106,82 +81,35 @@ namespace pjse
 
 			for (int i = 0; wrapper[1, i] != null; i++)
 				lbItemList.Items.Add(new SimPe.Data.Alias((uint)i, wrapper[1, i].Title));
-
-            lbItemList.Sorted = sortflag;
 		}
 
 		#endregion
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrChooser));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.OK = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lbItemList = new System.Windows.Forms.ListBox();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.OK);
-            this.panel1.Controls.Add(this.Cancel);
-            this.panel1.Controls.Add(this.panel2);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            // 
-            // OK
-            // 
-            resources.ApplyResources(this.OK, "OK");
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Name = "OK";
-            // 
-            // Cancel
-            // 
-            resources.ApplyResources(this.Cancel, "Cancel");
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Name = "Cancel";
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
-            // 
-            // lbItemList
-            // 
-            resources.ApplyResources(this.lbItemList, "lbItemList");
-            this.lbItemList.Name = "lbItemList";
-            this.lbItemList.DoubleClick += new System.EventHandler(this.lbItemList_DoubleClick);
-            // 
-            // StrChooser
-            // 
-            this.AcceptButton = this.OK;
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.Cancel;
-            this.Controls.Add(this.lbItemList);
-            this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "StrChooser";
-            this.ShowInTaskbar = false;
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
+			this.panel1 = new StackPanel();
+			this.OK = new ButtonCompat { Content = "OK" };
+			this.Cancel = new ButtonCompat { Content = "Cancel" };
+			this.lbItemList = new Avalonia.Controls.ListBox();
 
+			this.OK.Click += (s, e) => { _dialogResult = true; Close(); };
+			this.Cancel.Click += (s, e) => { _dialogResult = false; Close(); };
+			this.lbItemList.DoubleTapped += (s, e) => lbItemList_DoubleClick(s, e);
+
+			this.panel1.Children.Add(this.OK);
+			this.panel1.Children.Add(this.Cancel);
+
+			var mainPanel = new StackPanel();
+			mainPanel.Children.Add(this.lbItemList);
+			mainPanel.Children.Add(this.panel1);
+			this.Content = mainPanel;
 		}
-		#endregion
 
 		private void lbItemList_DoubleClick(object sender, System.EventArgs e)
 		{
 			if (lbItemList.SelectedIndex >= 0)
 			{
-				this.DialogResult = DialogResult.OK;
+				_dialogResult = true;
 				this.Close();
 			}
 		}

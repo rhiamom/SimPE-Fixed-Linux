@@ -84,7 +84,7 @@ namespace pjse
 		{
 			public myHT()
 			{
-				pjse.FileTable.GFT.FiletableRefresh += new EventHandler(this.GFT_FiletableRefresh);
+				pjse.FileTable.GFT.FiletableRefresh += (s, e) => this.GFT_FiletableRefresh(s, e);
 			}
 
 

@@ -27,7 +27,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
 
 namespace pjse
 {
@@ -43,7 +45,7 @@ namespace pjse
         public LabelledDataOwnerXX(BhavWiz inst, byte downer, byte value) : base(inst, downer, value) { ValueIsByte = true; Use0xPrefix = false; }
     }
 
-    public partial class LabelledDataOwner : UserControl, pjse.IDataOwner
+    public partial class LabelledDataOwner : Avalonia.Controls.UserControl, pjse.IDataOwner
     {
 
         protected pjse.BhavOperandWizards.DataOwnerControl doc;
@@ -68,15 +70,10 @@ namespace pjse
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing && (components != null))
-            {
-                if (doc != null)
-                    doc = null;
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+            if (doc != null)
+                doc = null;
         }
 
         [Category("Appearance")]
@@ -84,29 +81,29 @@ namespace pjse
         [Localizable(true)]
         [Browsable(true)]
         [EditorBrowsable(0)]
-        public string Label { get { return lbLabel.Text; } set { lbLabel.Text = value; } }
+        public string LabelCompat { get { return lbLabel.Content?.ToString(); } set { lbLabel.Content = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]
-        [Description("True if the Label text should be visible.")]
-        public bool LabelVisible { get { return lbLabel.Visible; } set { lbLabel.Visible = value; } }
+        [Description("True if the LabelCompat text should be visible.")]
+        public bool LabelVisible { get { return lbLabel.IsVisible; } set { lbLabel.IsVisible = value; } }
 
         [Category("Layout")]
         [DefaultValue(true)]
-        [Description("True if the Label should resize automatically.")]
-        public bool LabelAutoSize { get { return lbLabel.AutoSize; } set { lbLabel.AutoSize = value; } }
+        [Description("True if the LabelCompat should resize automatically.")]
+        public bool LabelAutoSize { get { return true; } set {  } }
 
         [Category("Layout")]
         //[DefaultValue(true)]
         [Description("Size of the label in pixels.")]
-        public Size LabelSize { get { return lbLabel.Size; } set { lbLabel.Size = value; } }
+        public Size LabelSize { get { return new Size(0, 0); } set {  } }
 
 
 
         [Category("Behavior")]
         [DefaultValue(true)]
-        [Description("True if the Instance Label text should be visible.")]
-        public bool InstanceLabelVisible { get { return lbInstance.Visible; } set { lbInstance.Visible = value; } }
+        [Description("True if the Instance LabelCompat text should be visible.")]
+        public bool InstanceLabelVisible { get { return lbInstance.IsVisible; } set { lbInstance.IsVisible = value; } }
 
 
         /// <summary>
@@ -120,7 +117,7 @@ namespace pjse
         [Category("Behavior")]
         [DefaultValue(true)]
         [Description("True if the Decimal Checkbox should be visible.")]
-        public bool DecimalVisible { get { return ckbDecimal.Visible; } set { ckbDecimal.Visible = value; } }
+        public bool DecimalVisible { get { return ckbDecimal.IsVisible; } set { ckbDecimal.IsVisible = value; } }
 
 
         /// <summary>
@@ -134,7 +131,7 @@ namespace pjse
         [Category("Behavior")]
         [DefaultValue(true)]
         [Description("True if the Instance Picker Checkbox should be visible.")]
-        public bool UseInstancePickerVisible { get { return ckbUseInstancePicker.Visible; } set { ckbUseInstancePicker.Visible = value; } }
+        public bool UseInstancePickerVisible { get { return ckbUseInstancePicker.IsVisible; } set { ckbUseInstancePicker.IsVisible = value; } }
 
 
         [Category("Behavior")]
@@ -170,7 +167,7 @@ namespace pjse
         [Category("Behavior")]
         [DefaultValue(false)]
         [Description("Indicates whether the Data Owner combo box can be changed.")]
-        public bool DataOwnerEnabled { get { return cbDataOwner.Enabled; } set { cbDataOwner.Enabled = value; } }
+        public bool DataOwnerEnabled { get { return cbDataOwner.IsEnabled; } set { cbDataOwner.IsEnabled = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]

@@ -26,7 +26,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
 
@@ -35,55 +36,54 @@ namespace SimPe.PackedFiles.UserInterface
     /// <summary>
     /// Summary description for StrForm.
     /// </summary>
-    public class StrForm : System.Windows.Forms.Form, IPackedFileUI
+    public class StrForm : Window, IPackedFileUI
     {
         #region Form variables
-        private System.Windows.Forms.Panel strPanel;
-        private System.Windows.Forms.Button btnCommit;
-        private System.Windows.Forms.Label lbFilename;
-        private System.Windows.Forms.TextBox tbFilename;
-        private System.Windows.Forms.Label lbFormat;
-        private System.Windows.Forms.TextBox tbFormat;
-        private System.Windows.Forms.Label lbStringNum;
-        private System.Windows.Forms.Button btnStrDelete;
-        private System.Windows.Forms.Button btnStrAdd;
-        private System.Windows.Forms.Button btnClearAll;
-        private System.Windows.Forms.Label lbLngSelect;
-        private System.Windows.Forms.ComboBox cbLngSelect;
-        private System.Windows.Forms.Button btnLngNext;
-        private System.Windows.Forms.Button btnLngPrev;
-        private System.Windows.Forms.Button btnLngClear;
-        private System.Windows.Forms.RichTextBox rtbTitle;
-        private System.Windows.Forms.RichTextBox rtbDescription;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnBigString;
-        private System.Windows.Forms.Button btnBigDesc;
-        private System.Windows.Forms.Button btnAppend;
-        private System.Windows.Forms.ColumnHeader chString;
-        private System.Windows.Forms.ColumnHeader chDefault;
-        private System.Windows.Forms.ColumnHeader chLang;
-        private System.Windows.Forms.ListView lvStrItems;
-        private System.Windows.Forms.Button btnStrClear;
-        private System.Windows.Forms.Label lbDesc;
-        private System.Windows.Forms.CheckBox ckbDefault;
-        private System.Windows.Forms.Button btnStrPrev;
-        private System.Windows.Forms.Button btnStrNext;
-        private System.Windows.Forms.Button btnReplace;
-        private System.Windows.Forms.Button btnLngFirst;
-        private System.Windows.Forms.Button btnStrDefault;
+        private StackPanelCompat strPanel;
+        private ButtonCompat btnCommit;
+        private LabelCompat lbFilename;
+        private TextBoxCompat tbFilename;
+        private LabelCompat lbFormat;
+        private TextBoxCompat tbFormat;
+        private LabelCompat lbStringNum;
+        private ButtonCompat btnStrDelete;
+        private ButtonCompat btnStrAdd;
+        private ButtonCompat btnClearAll;
+        private LabelCompat lbLngSelect;
+        private ComboBoxCompat cbLngSelect;
+        private ButtonCompat btnLngNext;
+        private ButtonCompat btnLngPrev;
+        private ButtonCompat btnLngClear;
+        private TextBoxCompat rtbTitle;
+        private TextBoxCompat rtbDescription;
+        private LabelCompat label1;
+        private ButtonCompat btnBigString;
+        private ButtonCompat btnBigDesc;
+        private ButtonCompat btnAppend;
+        private ColumnHeader chString;
+        private ColumnHeader chDefault;
+        private ColumnHeader chLang;
+        private ListView lvStrItems;
+        private ButtonCompat btnStrClear;
+        private LabelCompat lbDesc;
+        private CheckBoxCompat2 ckbDefault;
+        private ButtonCompat btnStrPrev;
+        private ButtonCompat btnStrNext;
+        private ButtonCompat btnReplace;
+        private ButtonCompat btnLngFirst;
+        private ButtonCompat btnStrDefault;
         private ColumnHeader chLangDesc;
         private ColumnHeader chDefaultDesc;
-        private CheckBox ckbDescription;
-        private Button btnImport;
-        private Button btnExport;
-        private Button btnStrCopy;
+        private CheckBoxCompat2 ckbDescription;
+        private ButtonCompat btnImport;
+        private ButtonCompat btnExport;
+        private ButtonCompat btnStrCopy;
         private pjse.pjse_banner pjse_banner1;
-        private Button BtnClean;
+        private ButtonCompat BtnClean;
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
-        #endregion
+                #endregion
 
         public StrForm()
         {
@@ -101,7 +101,6 @@ namespace SimPe.PackedFiles.UserInterface
             alBigBtn = new ArrayList(ab);
 
             pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
-            if (Helper.XmlRegistry.UseBigIcons) this.lvStrItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
         }
 
         void GFT_FiletableRefresh(object sender, EventArgs e)
@@ -124,18 +123,7 @@ namespace SimPe.PackedFiles.UserInterface
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
-            base.Dispose(disposing);
-        }
-
+        public void Dispose() { }
 
         #region Controller
         private StrWrapper wrapper = null;
@@ -156,7 +144,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             if (alHex16.IndexOf(sender) < 0)
                 throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-            try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+            try { Convert.ToUInt16(((TextBoxCompat)sender).Text, 16); }
             catch (Exception) { return false; }
             return true;
         }
@@ -170,7 +158,6 @@ namespace SimPe.PackedFiles.UserInterface
             }
             this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
             this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Description;
-
             isEmpty[lid] = true;
             List<StrItem> sa = wrapper[lid];
             for (int j = count - 1; j >= 0 && isEmpty[lid]; j--)
@@ -192,19 +179,19 @@ namespace SimPe.PackedFiles.UserInterface
                 if ((s.LanguageID != 1) && (s.Title.Trim().Length + s.Description.Trim().Length > 0))
                     empty = false;
 
-            this.btnStrPrev.Enabled = (index > 0);
-            this.btnStrNext.Enabled = (index < count - 1);
+            this.btnStrPrev.IsEnabled = (index > 0);
+            this.btnStrNext.IsEnabled = (index < count - 1);
 
-            this.btnClearAll.Enabled = !empty; // "Default lang only"
-            this.btnLngClear.Enabled = (lid != 1) && !isEmpty[lid]; // "Clear this lang"
+            this.btnClearAll.IsEnabled = !empty; // "Default lang only"
+            this.btnLngClear.IsEnabled = (lid != 1) && !isEmpty[lid]; // "Clear this lang"
 
-            this.btnStrAdd.Enabled = (lid == 1);
-            this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
-            this.btnStrDefault.Enabled = (lid != 1) && !isEmpty[lid] && (index >= 0); // "Make default"
-            this.btnStrClear.Enabled = (wrapper.Format != 0x0000) && !empty && (index >= 0); // "Default string only"
-            this.btnStrCopy.Enabled = (wrapper.Format != 0x0000) && !isEmpty[lid] && (index >= 0);
-            this.btnReplace.Enabled = (lid == 1);
-            this.BtnClean.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
+            this.btnStrAdd.IsEnabled = (lid == 1);
+            this.btnStrDelete.IsEnabled = (lid == 1) && (index >= 0);
+            this.btnStrDefault.IsEnabled = (lid != 1) && !isEmpty[lid] && (index >= 0); // "Make default"
+            this.btnStrClear.IsEnabled = (wrapper.Format != 0x0000) && !empty && (index >= 0); // "Default string only"
+            this.btnStrCopy.IsEnabled = (wrapper.Format != 0x0000) && !isEmpty[lid] && (index >= 0);
+            this.btnReplace.IsEnabled = (lid == 1);
+            this.BtnClean.IsEnabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
         }
 
         private void updateLists()
@@ -233,12 +220,12 @@ namespace SimPe.PackedFiles.UserInterface
                 if (i > 0) count = Math.Max(count, wrapper.CountOf(i));
             }
 
-            this.btnClearAll.Enabled = !onlyDefault;
+            this.btnClearAll.IsEnabled = !onlyDefault;
             this.cbLngSelect.Items.RemoveAt(0);
             while (wrapper.CountOf(1) < count) wrapper.Add(1, "", "");
 
             this.lvStrItems.Columns.Clear();
-            this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.chString, this.chLang, this.chLangDesc, this.chDefault, this.chDefaultDesc});
+            this.lvStrItems.Columns.AddRange(new ColumnHeader[] { this.chString, this.chLang, this.chLangDesc, this.chDefault, this.chDefaultDesc});
             this.lvStrItems.Columns[1].Text = "";
             this.lvStrItems.Items.Clear();
             for (int i = 0; i < count; i++)
@@ -253,12 +240,8 @@ namespace SimPe.PackedFiles.UserInterface
                         ((si == null) ? "" : si.Description)
                     }));
                 this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
-                this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
-                this.lvStrItems.Items[i].SubItems[3].ForeColor = System.Drawing.SystemColors.ControlDark;
-                this.lvStrItems.Items[i].SubItems[4].ForeColor = System.Drawing.SystemColors.ControlDark;
             }
         }
-
 
         private void setLid(byte l)
         {
@@ -269,11 +252,10 @@ namespace SimPe.PackedFiles.UserInterface
             internalchg = true;
             if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
             internalchg = false;
-            this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
-            this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
+            this.btnLngFirst.IsEnabled = this.btnLngPrev.IsEnabled = (this.cbLngSelect.SelectedIndex != null && cbLngSelect.SelectedIndex > 0);
+            this.btnLngNext.IsEnabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
             this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
-
             while (wrapper.CountOf(lid) < count) wrapper.Add(lid, "", "");
             this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
             for (int i = 0; i < count; i++)
@@ -303,7 +285,6 @@ namespace SimPe.PackedFiles.UserInterface
             displayStrItem();
         }
 
-
         private void displayStrItem()
         {
             StrItem s = (index < 0) ? null : wrapper[lid, index];
@@ -315,22 +296,21 @@ namespace SimPe.PackedFiles.UserInterface
                     + Helper.HexString((ushort)index) + " (" + langName + ")";
                 this.rtbTitle.Text = s.Title;
                 this.rtbTitle.SelectAll();
-                this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
+                this.btnBigString.IsEnabled = this.rtbTitle.IsEnabled = true;
                 this.rtbDescription.Text = s.Description;
                 this.rtbDescription.SelectAll();
-                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
+                this.btnBigDesc.IsEnabled = this.rtbDescription.IsEnabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
             }
             else
             {
                 this.lbStringNum.Text = "";
                 this.rtbDescription.Text = this.rtbTitle.Text = "";
-                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.btnBigString.Enabled = this.rtbTitle.Enabled = false;
+                this.btnBigDesc.IsEnabled = this.rtbDescription.IsEnabled = this.btnBigString.IsEnabled = this.rtbTitle.IsEnabled = false;
             }
             internalchg = false;
 
             doButtons();
         }
-
 
         private void LngClear()
         {
@@ -366,7 +346,6 @@ namespace SimPe.PackedFiles.UserInterface
             setIndex((i >= count) ? count - 1 : i);
         }
 
-
         private void CleanAll()
         {
             bool savedstate = internalchg;
@@ -383,7 +362,6 @@ namespace SimPe.PackedFiles.UserInterface
             setLid(l);
             setIndex((i >= count) ? count - 1 : i);
         }
-
 
         private void StrAdd()
         {
@@ -404,7 +382,6 @@ namespace SimPe.PackedFiles.UserInterface
             }
             else
                 title = desc = "";
-
 
             try
             {
@@ -543,7 +520,6 @@ namespace SimPe.PackedFiles.UserInterface
             setIndex((i >= count) ? count - 1 : i);
         }
 
-
         private void StrDefault()
         {
             StrItem di = wrapper[1, index];
@@ -554,7 +530,6 @@ namespace SimPe.PackedFiles.UserInterface
 
             this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
             this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
-
             isEmpty[1] = true;
             List<StrItem> sa = wrapper[(byte)1];
             for (int j = count - 1; j >= 0 && isEmpty[1]; j--)
@@ -564,8 +539,6 @@ namespace SimPe.PackedFiles.UserInterface
                 + (isEmpty[1] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
         }
 
-
-
         private void Append(pjse.FileTable.Entry e)
         {
             if (e == null) return;
@@ -573,7 +546,6 @@ namespace SimPe.PackedFiles.UserInterface
             bool savedstate = internalchg;
             internalchg = true;
 
-            strPanel.Parent.Cursor = Cursors.WaitCursor;
 
             using (StrWrapper b = (StrWrapper)e.Wrapper)
             {
@@ -588,7 +560,6 @@ namespace SimPe.PackedFiles.UserInterface
                 }
             }
 
-            strPanel.Parent.Cursor = Cursors.Default;
 
             byte l = lid;
             int i = index;
@@ -614,7 +585,7 @@ namespace SimPe.PackedFiles.UserInterface
                 Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
             }
 
-            btnCommit.Enabled = wrapper.Changed;
+            btnCommit.IsEnabled = wrapper.Changed;
 
             byte l = lid;
             int i = index;
@@ -628,7 +599,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void StringFile(bool load)
         {
-            FileDialog fd = load ? (FileDialog)new OpenFileDialog() : (FileDialog)new SaveFileDialog();
+            FileDialogCompat fd = load ? (FileDialogCompat)new OpenFileDialogCompat() : (FileDialogCompat)new SaveFileDialogCompat();
             fd.AddExtension = true;
             fd.CheckFileExists = load;
             fd.CheckPathExists = true;
@@ -644,9 +615,9 @@ namespace SimPe.PackedFiles.UserInterface
                 ? pjse.Localization.GetString("strLangLoad")
                 : pjse.Localization.GetString("strLangSave");
             fd.ValidateNames = true;
-            DialogResult dr = fd.ShowDialog();
+            SimPe.Scenegraph.Compat.DialogResult dr = fd.ShowDialog();
 
-            if (dr == DialogResult.OK)
+            if (dr == SimPe.Scenegraph.Compat.DialogResult.OK)
             {
                 if (load)
                 {
@@ -669,14 +640,13 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-
         #endregion
 
         #region IPackedFileUI Member
         /// <summary>
         /// Returns the Control that will be displayed within SimPe
         /// </summary>
-        public Control GUIHandle
+        public Avalonia.Controls.Control GUIHandle
         {
             get
             {
@@ -695,8 +665,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             internalchg = true;
             updateLists();
-            this.ckbDefault.Checked = pjse.Settings.PJSE.StrShowDefault;
-            this.ckbDescription.Checked = pjse.Settings.PJSE.StrShowDesc;
+            this.ckbDefault.IsChecked = pjse.Settings.PJSE.StrShowDefault;
+            this.ckbDescription.IsChecked = pjse.Settings.PJSE.StrShowDesc;
             internalchg = false;
 
             setLid(1);
@@ -705,35 +675,35 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (!setHandler)
             {
-                wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
                 setHandler = true;
             }
         }
 
         private void WrapperChanged(object sender, System.EventArgs e)
         {
-            this.btnCommit.Enabled = wrapper.Changed;
+            this.btnCommit.IsEnabled = wrapper.Changed;
 
             if (internalchg) return;
             internalchg = true;
-            this.Text = this.tbFilename.Text = wrapper.FileName;
+            this.Title = this.tbFilename.Text = wrapper.FileName;
             this.tbFormat.Text = "0x" + Helper.HexString(wrapper.Format);
             if (wrapper.Format == 0x0000)
             {
-                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = false;
+                this.btnBigDesc.IsEnabled = this.rtbDescription.IsEnabled = this.ckbDefault.IsEnabled = this.cbLngSelect.IsEnabled = false;
             }
             else if (wrapper.Format == 0xFFFE)
             {
-                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = false;
-                this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+                this.btnBigDesc.IsEnabled = this.rtbDescription.IsEnabled = false;
+                this.ckbDefault.IsEnabled = this.cbLngSelect.IsEnabled = true;
             }
             else
             {
-                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+                this.btnBigDesc.IsEnabled = this.rtbDescription.IsEnabled = this.ckbDefault.IsEnabled = this.cbLngSelect.IsEnabled = true;
             }
             internalchg = false;
 
-            this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
+            this.ckbDefault.IsEnabled = this.cbLngSelect.IsEnabled = (wrapper.Format != 0x0000);
         }
 
         #endregion
@@ -746,350 +716,245 @@ namespace SimPe.PackedFiles.UserInterface
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrForm));
-            this.strPanel = new System.Windows.Forms.Panel();
-            this.BtnClean = new System.Windows.Forms.Button();
+            this.strPanel = new StackPanelCompat();
+            this.BtnClean = new ButtonCompat();
             this.pjse_banner1 = new pjse.pjse_banner();
-            this.ckbDescription = new System.Windows.Forms.CheckBox();
-            this.btnLngFirst = new System.Windows.Forms.Button();
-            this.btnStrPrev = new System.Windows.Forms.Button();
-            this.btnStrNext = new System.Windows.Forms.Button();
-            this.ckbDefault = new System.Windows.Forms.CheckBox();
-            this.btnStrClear = new System.Windows.Forms.Button();
-            this.lvStrItems = new System.Windows.Forms.ListView();
-            this.chString = new System.Windows.Forms.ColumnHeader();
-            this.chLang = new System.Windows.Forms.ColumnHeader();
-            this.chLangDesc = new System.Windows.Forms.ColumnHeader();
-            this.chDefault = new System.Windows.Forms.ColumnHeader();
-            this.chDefaultDesc = new System.Windows.Forms.ColumnHeader();
-            this.btnBigDesc = new System.Windows.Forms.Button();
-            this.btnBigString = new System.Windows.Forms.Button();
-            this.lbDesc = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.rtbDescription = new System.Windows.Forms.RichTextBox();
-            this.rtbTitle = new System.Windows.Forms.RichTextBox();
-            this.btnLngNext = new System.Windows.Forms.Button();
-            this.btnLngPrev = new System.Windows.Forms.Button();
-            this.btnLngClear = new System.Windows.Forms.Button();
-            this.cbLngSelect = new System.Windows.Forms.ComboBox();
-            this.lbLngSelect = new System.Windows.Forms.Label();
-            this.btnClearAll = new System.Windows.Forms.Button();
-            this.lbStringNum = new System.Windows.Forms.Label();
-            this.tbFilename = new System.Windows.Forms.TextBox();
-            this.lbFilename = new System.Windows.Forms.Label();
-            this.btnCommit = new System.Windows.Forms.Button();
-            this.lbFormat = new System.Windows.Forms.Label();
-            this.tbFormat = new System.Windows.Forms.TextBox();
-            this.btnImport = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
-            this.btnAppend = new System.Windows.Forms.Button();
-            this.btnStrDelete = new System.Windows.Forms.Button();
-            this.btnStrAdd = new System.Windows.Forms.Button();
-            this.btnReplace = new System.Windows.Forms.Button();
-            this.btnStrCopy = new System.Windows.Forms.Button();
-            this.btnStrDefault = new System.Windows.Forms.Button();
-            this.strPanel.SuspendLayout();
-            this.SuspendLayout();
-            // 
+            this.ckbDescription = new CheckBoxCompat2();
+            this.btnLngFirst = new ButtonCompat();
+            this.btnStrPrev = new ButtonCompat();
+            this.btnStrNext = new ButtonCompat();
+            this.ckbDefault = new CheckBoxCompat2();
+            this.btnStrClear = new ButtonCompat();
+            this.lvStrItems = new ListView();
+            this.chString = new ColumnHeader();
+            this.chLang = new ColumnHeader();
+            this.chLangDesc = new ColumnHeader();
+            this.chDefault = new ColumnHeader();
+            this.chDefaultDesc = new ColumnHeader();
+            this.btnBigDesc = new ButtonCompat();
+            this.btnBigString = new ButtonCompat();
+            this.lbDesc = new LabelCompat();
+            this.label1 = new LabelCompat();
+            this.rtbDescription = new TextBoxCompat();
+            this.rtbTitle = new TextBoxCompat();
+            this.btnLngNext = new ButtonCompat();
+            this.btnLngPrev = new ButtonCompat();
+            this.btnLngClear = new ButtonCompat();
+            this.cbLngSelect = new ComboBoxCompat();
+            this.lbLngSelect = new LabelCompat();
+            this.btnClearAll = new ButtonCompat();
+            this.lbStringNum = new LabelCompat();
+            this.tbFilename = new TextBoxCompat();
+            this.lbFilename = new LabelCompat();
+            this.btnCommit = new ButtonCompat();
+            this.lbFormat = new LabelCompat();
+            this.tbFormat = new TextBoxCompat();
+            this.btnImport = new ButtonCompat();
+            this.btnExport = new ButtonCompat();
+            this.btnAppend = new ButtonCompat();
+            this.btnStrDelete = new ButtonCompat();
+            this.btnStrAdd = new ButtonCompat();
+            this.btnReplace = new ButtonCompat();
+            this.btnStrCopy = new ButtonCompat();
+            this.btnStrDefault = new ButtonCompat();
             // strPanel
-            // 
-            resources.ApplyResources(this.strPanel, "strPanel");
-            this.strPanel.Controls.Add(this.BtnClean);
-            this.strPanel.Controls.Add(this.pjse_banner1);
-            this.strPanel.Controls.Add(this.ckbDescription);
-            this.strPanel.Controls.Add(this.btnLngFirst);
-            this.strPanel.Controls.Add(this.btnStrPrev);
-            this.strPanel.Controls.Add(this.btnStrNext);
-            this.strPanel.Controls.Add(this.ckbDefault);
-            this.strPanel.Controls.Add(this.btnStrClear);
-            this.strPanel.Controls.Add(this.lvStrItems);
-            this.strPanel.Controls.Add(this.btnBigDesc);
-            this.strPanel.Controls.Add(this.btnBigString);
-            this.strPanel.Controls.Add(this.lbDesc);
-            this.strPanel.Controls.Add(this.label1);
-            this.strPanel.Controls.Add(this.rtbDescription);
-            this.strPanel.Controls.Add(this.rtbTitle);
-            this.strPanel.Controls.Add(this.btnLngNext);
-            this.strPanel.Controls.Add(this.btnLngPrev);
-            this.strPanel.Controls.Add(this.btnLngClear);
-            this.strPanel.Controls.Add(this.cbLngSelect);
-            this.strPanel.Controls.Add(this.lbLngSelect);
-            this.strPanel.Controls.Add(this.btnClearAll);
-            this.strPanel.Controls.Add(this.lbStringNum);
-            this.strPanel.Controls.Add(this.tbFilename);
-            this.strPanel.Controls.Add(this.lbFilename);
-            this.strPanel.Controls.Add(this.btnCommit);
-            this.strPanel.Controls.Add(this.lbFormat);
-            this.strPanel.Controls.Add(this.tbFormat);
-            this.strPanel.Controls.Add(this.btnImport);
-            this.strPanel.Controls.Add(this.btnExport);
-            this.strPanel.Controls.Add(this.btnAppend);
-            this.strPanel.Controls.Add(this.btnStrDelete);
-            this.strPanel.Controls.Add(this.btnStrAdd);
-            this.strPanel.Controls.Add(this.btnReplace);
-            this.strPanel.Controls.Add(this.btnStrCopy);
-            this.strPanel.Controls.Add(this.btnStrDefault);
+            //            this.strPanel.Children.Add(this.BtnClean);
+            this.strPanel.Children.Add(this.pjse_banner1);
+            this.strPanel.Children.Add(this.ckbDescription);
+            this.strPanel.Children.Add(this.btnLngFirst);
+            this.strPanel.Children.Add(this.btnStrPrev);
+            this.strPanel.Children.Add(this.btnStrNext);
+            this.strPanel.Children.Add(this.ckbDefault);
+            this.strPanel.Children.Add(this.btnStrClear);
+            this.strPanel.Children.Add(this.lvStrItems);
+            this.strPanel.Children.Add(this.btnBigDesc);
+            this.strPanel.Children.Add(this.btnBigString);
+            this.strPanel.Children.Add(this.lbDesc);
+            this.strPanel.Children.Add(this.label1);
+            this.strPanel.Children.Add(this.rtbDescription);
+            this.strPanel.Children.Add(this.rtbTitle);
+            this.strPanel.Children.Add(this.btnLngNext);
+            this.strPanel.Children.Add(this.btnLngPrev);
+            this.strPanel.Children.Add(this.btnLngClear);
+            this.strPanel.Children.Add(this.cbLngSelect);
+            this.strPanel.Children.Add(this.lbLngSelect);
+            this.strPanel.Children.Add(this.btnClearAll);
+            this.strPanel.Children.Add(this.lbStringNum);
+            this.strPanel.Children.Add(this.tbFilename);
+            this.strPanel.Children.Add(this.lbFilename);
+            this.strPanel.Children.Add(this.btnCommit);
+            this.strPanel.Children.Add(this.lbFormat);
+            this.strPanel.Children.Add(this.tbFormat);
+            this.strPanel.Children.Add(this.btnImport);
+            this.strPanel.Children.Add(this.btnExport);
+            this.strPanel.Children.Add(this.btnAppend);
+            this.strPanel.Children.Add(this.btnStrDelete);
+            this.strPanel.Children.Add(this.btnStrAdd);
+            this.strPanel.Children.Add(this.btnReplace);
+            this.strPanel.Children.Add(this.btnStrCopy);
+            this.strPanel.Children.Add(this.btnStrDefault);
             this.strPanel.Name = "strPanel";
-            this.strPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.strPanel_Paint);
-            this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
+            this.strPanel.Paint += (s, e) => this.strPanel_Paint(s, e as SimPe.Scenegraph.Compat.PaintEventArgs ?? new SimPe.Scenegraph.Compat.PaintEventArgs());
+            this.strPanel.Resize += (s, e) => this.strPanel_Resize(s, e);
             // 
             // BtnClean
-            // 
-            resources.ApplyResources(this.BtnClean, "BtnClean");
-            this.BtnClean.Name = "BtnClean";
-            this.BtnClean.Click += new System.EventHandler(this.btnClean_Click);
+            //            this.BtnClean.Name = "BtnClean";
+            this.BtnClean.Click += (s, e) => this.btnClean_Click(s, e);
             // 
             // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
+            //            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // ckbDescription
-            // 
-            resources.ApplyResources(this.ckbDescription, "ckbDescription");
-            this.ckbDescription.Name = "ckbDescription";
-            this.ckbDescription.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            //            this.ckbDescription.Name = "ckbDescription";
+            this.ckbDescription.IsCheckedChanged += (s, e) => this.ckb_CheckedChanged(s, e);
             // 
             // btnLngFirst
-            // 
-            resources.ApplyResources(this.btnLngFirst, "btnLngFirst");
-            this.btnLngFirst.Name = "btnLngFirst";
-            this.btnLngFirst.Click += new System.EventHandler(this.btnLngFirst_Click);
+            //            this.btnLngFirst.Name = "btnLngFirst";
+            this.btnLngFirst.Click += (s, e) => this.btnLngFirst_Click(s, e);
             // 
             // btnStrPrev
-            // 
-            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
-            this.btnStrPrev.Name = "btnStrPrev";
-            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+            //            this.btnStrPrev.Name = "btnStrPrev";
+            this.btnStrPrev.Click += (s, e) => this.btnStrPrev_Click(s, e);
             // 
             // btnStrNext
-            // 
-            resources.ApplyResources(this.btnStrNext, "btnStrNext");
-            this.btnStrNext.Name = "btnStrNext";
-            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
+            //            this.btnStrNext.Name = "btnStrNext";
+            this.btnStrNext.Click += (s, e) => this.btnStrNext_Click(s, e);
             // 
             // ckbDefault
-            // 
-            resources.ApplyResources(this.ckbDefault, "ckbDefault");
-            this.ckbDefault.Name = "ckbDefault";
-            this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            //            this.ckbDefault.Name = "ckbDefault";
+            this.ckbDefault.IsCheckedChanged += (s, e) => this.ckb_CheckedChanged(s, e);
             // 
             // btnStrClear
-            // 
-            resources.ApplyResources(this.btnStrClear, "btnStrClear");
-            this.btnStrClear.Name = "btnStrClear";
-            this.btnStrClear.Click += new System.EventHandler(this.btnStrClear_Click);
+            //            this.btnStrClear.Name = "btnStrClear";
+            this.btnStrClear.Click += (s, e) => this.btnStrClear_Click(s, e);
             // 
             // lvStrItems
             // 
-            this.lvStrItems.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            resources.ApplyResources(this.lvStrItems, "lvStrItems");
-            this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvStrItems.Columns.AddRange(new ColumnHeader[] {
             this.chString,
             this.chLang,
             this.chLangDesc,
             this.chDefault,
             this.chDefaultDesc});
-            this.lvStrItems.FullRowSelect = true;
-            this.lvStrItems.GridLines = true;
-            this.lvStrItems.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lvStrItems.HideSelection = false;
-            this.lvStrItems.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvStrItems.Items")))});
-            this.lvStrItems.MultiSelect = false;
             this.lvStrItems.Name = "lvStrItems";
-            this.lvStrItems.UseCompatibleStateImageBehavior = false;
-            this.lvStrItems.View = System.Windows.Forms.View.Details;
-            this.lvStrItems.ItemActivate += new System.EventHandler(this.lvStrItems_ItemActivate);
-            this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
+
+            this.lvStrItems.ItemActivate += (s, e) => this.lvStrItems_ItemActivate(s, e);
+            this.lvStrItems.SelectionChanged += (s, e) => this.lvStrItems_SelectedIndexChanged(s, e);
             // 
             // chString
-            // 
-            resources.ApplyResources(this.chString, "chString");
-            // 
+            //            // 
             // chLang
-            // 
-            resources.ApplyResources(this.chLang, "chLang");
-            // 
+            //            // 
             // chLangDesc
-            // 
-            resources.ApplyResources(this.chLangDesc, "chLangDesc");
-            // 
+            //            // 
             // chDefault
-            // 
-            resources.ApplyResources(this.chDefault, "chDefault");
-            // 
+            //            // 
             // chDefaultDesc
-            // 
-            resources.ApplyResources(this.chDefaultDesc, "chDefaultDesc");
-            // 
+            //            // 
             // btnBigDesc
-            // 
-            resources.ApplyResources(this.btnBigDesc, "btnBigDesc");
-            this.btnBigDesc.Name = "btnBigDesc";
-            this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
+            //            this.btnBigDesc.Name = "btnBigDesc";
+            this.btnBigDesc.Click += (s, e) => this.btnBigString_Click(s, e);
             // 
             // btnBigString
-            // 
-            resources.ApplyResources(this.btnBigString, "btnBigString");
-            this.btnBigString.Name = "btnBigString";
-            this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
+            //            this.btnBigString.Name = "btnBigString";
+            this.btnBigString.Click += (s, e) => this.btnBigString_Click(s, e);
             // 
             // lbDesc
-            // 
-            resources.ApplyResources(this.lbDesc, "lbDesc");
-            this.lbDesc.Name = "lbDesc";
+            //            this.lbDesc.Name = "lbDesc";
             // 
             // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            //            this.label1.Name = "label1";
             // 
             // rtbDescription
-            // 
-            resources.ApplyResources(this.rtbDescription, "rtbDescription");
-            this.rtbDescription.Name = "rtbDescription";
-            this.rtbDescription.Enter += new System.EventHandler(this.textBoxBase_Enter);
-            this.rtbDescription.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+            //            this.rtbDescription.Name = "rtbDescription";
+            this.rtbDescription.GotFocus += (s, e) => this.textBoxBase_Enter(s, e);
+            this.rtbDescription.TextChanged += (s, e) => this.textBoxBase_TextChanged(s, e);
             // 
             // rtbTitle
-            // 
-            resources.ApplyResources(this.rtbTitle, "rtbTitle");
-            this.rtbTitle.Name = "rtbTitle";
-            this.rtbTitle.Enter += new System.EventHandler(this.textBoxBase_Enter);
-            this.rtbTitle.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+            //            this.rtbTitle.Name = "rtbTitle";
+            this.rtbTitle.GotFocus += (s, e) => this.textBoxBase_Enter(s, e);
+            this.rtbTitle.TextChanged += (s, e) => this.textBoxBase_TextChanged(s, e);
             // 
             // btnLngNext
-            // 
-            resources.ApplyResources(this.btnLngNext, "btnLngNext");
-            this.btnLngNext.Name = "btnLngNext";
-            this.btnLngNext.Click += new System.EventHandler(this.btnLngNext_Click);
+            //            this.btnLngNext.Name = "btnLngNext";
+            this.btnLngNext.Click += (s, e) => this.btnLngNext_Click(s, e);
             // 
             // btnLngPrev
-            // 
-            resources.ApplyResources(this.btnLngPrev, "btnLngPrev");
-            this.btnLngPrev.Name = "btnLngPrev";
-            this.btnLngPrev.Click += new System.EventHandler(this.btnLngPrev_Click);
+            //            this.btnLngPrev.Name = "btnLngPrev";
+            this.btnLngPrev.Click += (s, e) => this.btnLngPrev_Click(s, e);
             // 
             // btnLngClear
-            // 
-            resources.ApplyResources(this.btnLngClear, "btnLngClear");
-            this.btnLngClear.Name = "btnLngClear";
-            this.btnLngClear.Click += new System.EventHandler(this.btnLngClear_Click);
+            //            this.btnLngClear.Name = "btnLngClear";
+            this.btnLngClear.Click += (s, e) => this.btnLngClear_Click(s, e);
             // 
             // cbLngSelect
             // 
-            this.cbLngSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLngSelect.DropDownWidth = 200;
-            resources.ApplyResources(this.cbLngSelect, "cbLngSelect");
-            this.cbLngSelect.Name = "cbLngSelect";
-            this.cbLngSelect.SelectedIndexChanged += new System.EventHandler(this.cbLngSelect_SelectedIndexChanged);
+            this.cbLngSelect.SelectionChanged += (s, e) => this.cbLngSelect_SelectedIndexChanged(s, e);
             // 
             // lbLngSelect
-            // 
-            resources.ApplyResources(this.lbLngSelect, "lbLngSelect");
-            this.lbLngSelect.Name = "lbLngSelect";
+            //            this.lbLngSelect.Name = "lbLngSelect";
             // 
             // btnClearAll
-            // 
-            resources.ApplyResources(this.btnClearAll, "btnClearAll");
-            this.btnClearAll.Name = "btnClearAll";
-            this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
+            //            this.btnClearAll.Name = "btnClearAll";
+            this.btnClearAll.Click += (s, e) => this.btnClearAll_Click(s, e);
             // 
             // lbStringNum
-            // 
-            resources.ApplyResources(this.lbStringNum, "lbStringNum");
-            this.lbStringNum.Name = "lbStringNum";
+            //            this.lbStringNum.Name = "lbStringNum";
             // 
             // tbFilename
-            // 
-            resources.ApplyResources(this.tbFilename, "tbFilename");
-            this.tbFilename.Name = "tbFilename";
-            this.tbFilename.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
-            this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
+            //            this.tbFilename.Name = "tbFilename";
+            this.tbFilename.TextChanged += (s, e) => this.textBoxBase_TextChanged(s, e);
+            this.tbFilename.GotFocus += (s, e) => this.textBoxBase_Enter(s, e);
             // 
             // lbFilename
-            // 
-            resources.ApplyResources(this.lbFilename, "lbFilename");
-            this.lbFilename.Name = "lbFilename";
+            //            this.lbFilename.Name = "lbFilename";
             // 
             // btnCommit
-            // 
-            resources.ApplyResources(this.btnCommit, "btnCommit");
-            this.btnCommit.Name = "btnCommit";
-            this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
+            //            this.btnCommit.Name = "btnCommit";
+            this.btnCommit.Click += (s, e) => this.btnCommit_Click(s, e);
             // 
             // lbFormat
-            // 
-            resources.ApplyResources(this.lbFormat, "lbFormat");
-            this.lbFormat.Name = "lbFormat";
+            //            this.lbFormat.Name = "lbFormat";
             // 
             // tbFormat
-            // 
-            resources.ApplyResources(this.tbFormat, "tbFormat");
-            this.tbFormat.Name = "tbFormat";
-            this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //            this.tbFormat.Name = "tbFormat";
+            this.tbFormat.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbFormat.LostFocus += (s, e) => this.hex16_Validated(s, e);
             // btnImport
-            // 
-            resources.ApplyResources(this.btnImport, "btnImport");
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Click += new System.EventHandler(this.btnStringFile_Click);
+            //            this.btnImport.Name = "btnImport";
+            this.btnImport.Click += (s, e) => this.btnStringFile_Click(s, e);
             // 
             // btnExport
-            // 
-            resources.ApplyResources(this.btnExport, "btnExport");
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Click += new System.EventHandler(this.btnStringFile_Click);
+            //            this.btnExport.Name = "btnExport";
+            this.btnExport.Click += (s, e) => this.btnStringFile_Click(s, e);
             // 
             // btnAppend
-            // 
-            resources.ApplyResources(this.btnAppend, "btnAppend");
-            this.btnAppend.Name = "btnAppend";
-            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
+            //            this.btnAppend.Name = "btnAppend";
+            this.btnAppend.Click += (s, e) => this.btnAppend_Click(s, e);
             // 
             // btnStrDelete
-            // 
-            resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
-            this.btnStrDelete.Name = "btnStrDelete";
-            this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
+            //            this.btnStrDelete.Name = "btnStrDelete";
+            this.btnStrDelete.Click += (s, e) => this.btnStrDelete_Click(s, e);
             // 
             // btnStrAdd
-            // 
-            resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
-            this.btnStrAdd.Name = "btnStrAdd";
-            this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
+            //            this.btnStrAdd.Name = "btnStrAdd";
+            this.btnStrAdd.Click += (s, e) => this.btnStrAdd_Click(s, e);
             // 
             // btnReplace
-            // 
-            resources.ApplyResources(this.btnReplace, "btnReplace");
-            this.btnReplace.Name = "btnReplace";
-            this.btnReplace.Click += new System.EventHandler(this.btnImport_Click);
+            //            this.btnReplace.Name = "btnReplace";
+            this.btnReplace.Click += (s, e) => this.btnImport_Click(s, e);
             // 
             // btnStrCopy
-            // 
-            resources.ApplyResources(this.btnStrCopy, "btnStrCopy");
-            this.btnStrCopy.Name = "btnStrCopy";
-            this.btnStrCopy.Click += new System.EventHandler(this.btnStrCopy_Click);
+            //            this.btnStrCopy.Name = "btnStrCopy";
+            this.btnStrCopy.Click += (s, e) => this.btnStrCopy_Click(s, e);
             // 
             // btnStrDefault
-            // 
-            resources.ApplyResources(this.btnStrDefault, "btnStrDefault");
-            this.btnStrDefault.Name = "btnStrDefault";
-            this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
+            //            this.btnStrDefault.Name = "btnStrDefault";
+            this.btnStrDefault.Click += (s, e) => this.btnStrDefault_Click(s, e);
             // 
             // StrForm
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.strPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "StrForm";
-            this.strPanel.ResumeLayout(false);
-            this.strPanel.PerformLayout();
-            this.ResumeLayout(false);
-
+this.Name = "StrForm";
         }
         #endregion
 
@@ -1105,10 +970,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.rtbDescription.Left = this.lbDesc.Right + 4;
         }
 
-
         private void textBoxBase_Enter(object sender, System.EventArgs e)
         {
-            ((TextBoxBase)sender).SelectAll();
+            ((TextBoxCompat)sender).SelectAll();
         }
 
         private void textBoxBase_TextChanged(object sender, System.EventArgs e)
@@ -1118,20 +982,19 @@ namespace SimPe.PackedFiles.UserInterface
             internalchg = true;
             switch (alTextBoxBase.IndexOf(sender))
             {
-                case 0: wrapper.FileName = ((TextBoxBase)sender).Text; break;
-                case 1: wrapper[lid, index].Title = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
-                case 2: wrapper[lid, index].Description = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
+                case 0: wrapper.FileName = ((TextBoxCompat)sender).Text; break;
+                case 1: wrapper[lid, index].Title = ((TextBoxCompat)sender).Text; updateSelectedItem(); break;
+                case 2: wrapper[lid, index].Description = ((TextBoxCompat)sender).Text; updateSelectedItem(); break;
             }
             internalchg = false;
         }
-
 
         private void hex16_TextChanged(object sender, System.EventArgs ev)
         {
             if (internalchg) return;
             if (!hex16_IsValid(sender)) return;
 
-            ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+            ushort val = Convert.ToUInt16(((TextBoxCompat)sender).Text, 16);
             internalchg = true;
             switch (alHex16.IndexOf(sender))
             {
@@ -1157,19 +1020,17 @@ namespace SimPe.PackedFiles.UserInterface
                 case 0: val = wrapper.Format; break;
             }
 
-            ((TextBox)sender).Text = "0x" + Helper.HexString(val);
-            ((TextBox)sender).SelectAll();
+            ((TextBoxCompat)sender).Text = "0x" + Helper.HexString(val);
+            ((TextBoxCompat)sender).SelectAll();
             internalchg = origstate;
         }
-
 
         private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             if (internalchg) return;
-            if (this.cbLngSelect.SelectedIndex >= 0)
-                setLid((byte)(this.cbLngSelect.SelectedIndex + 1));
+            if (this.cbLngSelect.SelectedIndex != null)
+                setLid((byte)((this.cbLngSelect.SelectedIndex) + 1));
         }
-
 
         private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
         {
@@ -1182,25 +1043,24 @@ namespace SimPe.PackedFiles.UserInterface
             setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
         }
 
-
         private void ckb_CheckedChanged(object sender, System.EventArgs e)
         {
             if (internalchg) return;
-            pjse.Settings.PJSE.StrShowDefault = this.ckbDefault.Checked;
-            pjse.Settings.PJSE.StrShowDesc = this.ckbDescription.Checked;
+            pjse.Settings.PJSE.StrShowDefault = this.ckbDefault.IsChecked == true;
+            pjse.Settings.PJSE.StrShowDesc = this.ckbDescription.IsChecked == true;
 
-            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
+            int w1 = this.chLang.Width + this.chDefault.Width;
+            int w2 = this.chLangDesc.Width + this.chDefaultDesc.Width;
+            if (w1 <= 0) w1 = 100;
+            if (w2 <= 0) w2 = 50;
 
-            int w1 = this.lvStrItems.ClientRectangle.Width - (int)(resources.GetObject("chString.Width")) - 18;
-            int w2 = this.ckbDescription.Checked ? (int)(resources.GetObject("chLangDesc.Width")) : 0;
-
-            if (this.ckbDefault.Checked) w1 /= 2;
+            if (this.ckbDefault.IsChecked == true) w1 /= 2;
             w1 -= w2;
 
             this.chLangDesc.Width = this.chDefault.Width = this.chDefaultDesc.Width = 0;
             this.chLang.Width = w1;
             this.chLangDesc.Width = w2;
-            if (this.ckbDefault.Checked)
+            if (this.ckbDefault.IsChecked == true)
             {
                 this.chDefault.Width = w1;
                 this.chDefaultDesc.Width = w2;
@@ -1213,11 +1073,10 @@ namespace SimPe.PackedFiles.UserInterface
             if (index < 0)
                 throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
 
-            RichTextBox[] rtb = { rtbTitle, rtbDescription };
+            TextBoxCompat[] rtb = { rtbTitle, rtbDescription };
             string result = (new pjse.StrBig()).doBig(rtb[index].Text);
             if (result != null) rtb[index].Text = result;
         }
-
 
         private void btnStrPrev_Click(object sender, System.EventArgs e)
         {
@@ -1228,7 +1087,6 @@ namespace SimPe.PackedFiles.UserInterface
         {
             setIndex(index + 1);
         }
-
 
         private void btnLngFirst_Click(object sender, System.EventArgs e)
         {
@@ -1244,7 +1102,6 @@ namespace SimPe.PackedFiles.UserInterface
         {
             setLid((byte)(lid + 1));
         }
-
 
         private void btnLngClear_Click(object sender, System.EventArgs e)
         {

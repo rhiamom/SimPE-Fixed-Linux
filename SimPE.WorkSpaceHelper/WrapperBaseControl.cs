@@ -58,6 +58,7 @@ namespace SimPe.Windows.Forms
         public System.Windows.Forms.Padding Margin { get; set; }
         public System.Windows.Forms.AnchorStyles Anchor { get; set; }
         public WFControlCollection   Controls  { get; } = new WFControlCollection();
+        public System.Drawing.Image  BackgroundImage { get; set; }
         public void SuspendLayout()  { }
         public void ResumeLayout(bool performLayout = true) { }
         public void PerformLayout()  { }

@@ -137,7 +137,7 @@ namespace SimPe.PackedFiles.Wrapper
             return new AbstractWrapperInfo(
                 "PJSE TRCN Wrapper",
                 "Peter L Jones",
-                "BCON Label Editor",
+                "BCON LabelCompat Editor",
                 1
                 );
         }

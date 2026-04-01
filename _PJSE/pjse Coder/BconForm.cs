@@ -28,7 +28,13 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
+using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
+using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
+using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
 
@@ -37,67 +43,44 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Summary description for BconForm.
 	/// </summary>
-	public class BconForm : System.Windows.Forms.Form, IPackedFileUI
+	public class BconForm : UserControl, IPackedFileUI
 	{
 		#region Form variables
-		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.Panel bconPanel;
-		private System.Windows.Forms.Button btnCommit;
-        private System.Windows.Forms.ListView lvConstants;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox tbValueHex;
-		private System.Windows.Forms.TextBox tbValueDec;
-		private System.Windows.Forms.ColumnHeader chID;
-		private System.Windows.Forms.ColumnHeader chValue;
-		private System.Windows.Forms.ColumnHeader chLabel;
-		private System.Windows.Forms.Button btnStrDelete;
-		private System.Windows.Forms.Button btnStrAdd;
-		private System.Windows.Forms.Label lbFilename;
-        private System.Windows.Forms.GroupBox gbValue;
-		private System.Windows.Forms.CheckBox cbFlag;
-		private System.Windows.Forms.Button btnStrPrev;
-        private System.Windows.Forms.Button btnStrNext;
-        private System.Windows.Forms.Button btnTRCNMaker;
-        private Button btnCancel;
+		private TextBoxCompat tbFilename;
+		private StackPanel bconPanel;
+		private ButtonCompat btnCommit;
+        private ListView lvConstants;
+		private LabelCompat label5;
+		private LabelCompat label6;
+		private TextBoxCompat tbValueHex;
+		private TextBoxCompat tbValueDec;
+		private ColumnHeader chID;
+		private ColumnHeader chValue;
+		private ColumnHeader chLabel;
+		private ButtonCompat btnStrDelete;
+		private ButtonCompat btnStrAdd;
+		private LabelCompat lbFilename;
+        private GroupBox gbValue;
+		private CheckBoxCompat cbFlag;
+		private ButtonCompat btnStrPrev;
+        private ButtonCompat btnStrNext;
+        private ButtonCompat btnTRCNMaker;
+        private ButtonCompat btnCancel;
         private pjse.pjse_banner pjse_banner1;
-        private Button btnUpdateBCON;
+        private ButtonCompat btnUpdateBCON;
         private LinkLabel llIsOverride;
         private pjse.CompareButton cmpBCON;
-        private Button btnClose;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private ButtonCompat btnClose;
 		#endregion
 
 		public BconForm()
 		{
-			//
-			// Required for Windows Form Designer support
-			//
 			InitializeComponent();
-
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-            pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
-            if (SimPe.Helper.XmlRegistry.UseBigIcons) this.lvConstants.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            pjse.FileTable.GFT.FiletableRefresh += (s, e) => this.FiletableRefresh(s, e);
         }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
-            base.Dispose(disposing);
             if (setHandler && wrapper != null)
             {
                 wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
@@ -106,7 +89,6 @@ namespace SimPe.PackedFiles.UserInterface
             wrapper = null;
             trcnres = null;
         }
-
 
 		#region Controller
 		private Bcon wrapper = null;
@@ -120,14 +102,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private bool hex16_IsValid(object sender)
 		{
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			try { Convert.ToUInt16(((TextBoxCompat)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
 
 		private bool dec16_IsValid(object sender)
 		{
-			try { Convert.ToInt16(((TextBox)sender).Text, 10); }
+			try { Convert.ToInt16(((TextBoxCompat)sender).Text, 10); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -194,19 +176,19 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbValueHex.Text = "0x" + SimPe.Helper.HexString(currentItem);
 				this.tbValueDec.Text = currentItem.ToString();
 
-				this.tbValueHex.Enabled = this.tbValueDec.Enabled = true;
+				this.tbValueHex.IsEnabled = this.tbValueDec.IsEnabled = true;
 			}
 			else
 			{
 				origItem = currentItem = -1;
 				this.tbValueHex.Text = this.tbValueDec.Text = "";
-				this.tbValueHex.Enabled = this.tbValueDec.Enabled = false;
+				this.tbValueHex.IsEnabled = this.tbValueDec.IsEnabled = false;
 			}
-			this.btnStrPrev.Enabled = (index > 0);
-			this.btnStrNext.Enabled = (index < this.lvConstants.Items.Count - 1);
+			this.btnStrPrev.IsEnabled = (index > 0);
+			this.btnStrNext.IsEnabled = (index < this.lvConstants.Items.Count - 1);
 			internalchg = false;
 
-			this.btnCancel.Enabled = false;
+			this.btnCancel.IsEnabled = false;
 		}
 
 
@@ -241,9 +223,9 @@ namespace SimPe.PackedFiles.UserInterface
                 pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
                 if (items.Length <= 1) return false;
 
-                pjse.FileTable.Entry item = items[items.Length - 1]; // currentpkg, other, fixed, maxis
+                pjse.FileTable.Entry item = items[items.Length - 1];
                 if (item.PFD == wrapper.FileDescriptor) return false;
-                if (!item.IsMaxis /*&& !item.IsFixed*/) return false; // only supporting objects.package really
+                if (!item.IsMaxis) return false;
 
                 llIsOverride.Tag = item;
                 return true;
@@ -252,18 +234,19 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void common_Popup(pjse.FileTable.Entry item, SimPe.ExpansionItem exp, bool noOverride)
         {
-            if (item == null) return; // this should never happen
+            if (item == null) return;
             Bcon bcon = new Bcon();
             bcon.ProcessData(item.PFD, item.Package);
 
             BconForm ui = (BconForm)bcon.UIHandler;
-            string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-            if (noOverride) tag += ";noOverride"; //
+            string tag = "Popup";
+            if (noOverride) tag += ";noOverride";
             if (exp != null) tag += ";expName=+" + exp.NameShort + "+";
             ui.Tag = tag;
 
             bcon.RefreshUI();
-            ui.Show();
+            var win = new Window { Content = ui, Title = "BCON Viewer" };
+            win.Show();
         }
 
         private String formTitle
@@ -271,11 +254,11 @@ namespace SimPe.PackedFiles.UserInterface
             get
             {
                 return pjse.Localization.GetString("pjseWindowTitle"
-                    , expName // EP Name or Custom
-                    , System.IO.Path.GetFileName(wrapper.Package.SaveFileName) // package Filename without path
-                    , wrapper.FileDescriptor.TypeName.shortname // Type (short name)
-                    , "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group) // Group Number
-                    , "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) // Instance Number
+                    , expName
+                    , System.IO.Path.GetFileName(wrapper.Package.SaveFileName)
+                    , wrapper.FileDescriptor.TypeName.shortname
+                    , "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group)
+                    , "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
                     , wrapper.FileName
                     , pjse.Localization.GetString(isPopup ? "pjseWindowTitleView" : "pjseWindowTitleEdit")
                     );
@@ -285,7 +268,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void doUpdateBCON()
         {
-            if (!isOverride) return; // this should never happen
+            if (!isOverride) return;
             pjse.FileTable.Entry item = (pjse.FileTable.Entry)llIsOverride.Tag;
             Bcon bcon = new Bcon();
             bcon.ProcessData(item.PFD, item.Package);
@@ -343,7 +326,7 @@ namespace SimPe.PackedFiles.UserInterface
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
 
-			btnCommit.Enabled = wrapper.Changed;
+			btnCommit.IsEnabled = wrapper.Changed;
 
 			int i = index;
 			updateLists();
@@ -365,26 +348,23 @@ namespace SimPe.PackedFiles.UserInterface
 			displayBconItem();
 		}
 
-        private void TRCNMaker()
+        private async Task TRCNMaker()
         {
-            bconPanel.Cursor = Cursors.WaitCursor;
-            Application.UseWaitCursor = true;
             try
             {
                 int minArgc = 0;
-                Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype); // find Trcn for this Bcon
+                Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype);
 
                 wrapper.Package.BeginUpdate();
 
                 if (trcn != null && trcn.TextOnly)
                 {
-                    // if it exists but is unreadable, as if user wants to overwrite
-                    DialogResult dr = MessageBox.Show(
+                    SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_overwriteduff")
-                        , btnTRCNMaker.Text
+                        , btnTRCNMaker.Content?.ToString()
                         , MessageBoxButtons.OKCancel
                         , MessageBoxIcon.Warning);
-                    if (dr != DialogResult.OK)
+                    if (dr != SimPe.Scenegraph.Compat.DialogResult.OK)
                         return;
                     wrapper.Package.Remove(trcn.FileDescriptor);
                     trcn = null;
@@ -392,39 +372,36 @@ namespace SimPe.PackedFiles.UserInterface
                 if (trcn != null)
                 {
                     uint vers = trcn.Version;
-                    // if it exists ask if user wants to preserve content
-                    DialogResult dr = MessageBox.Show(
+                    SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_keeplabels")
-                        , btnTRCNMaker.Text
+                        , btnTRCNMaker.Content?.ToString()
                         , MessageBoxButtons.YesNoCancel
                         , MessageBoxIcon.Warning);
-                    if (dr == DialogResult.Cancel)
+                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Cancel)
                         return;
 
                     if (!trcn.Package.Equals(wrapper.Package))
                     {
-                        // Clone the original into this package
-                        if (dr == DialogResult.Yes) Wait.MaxProgress = trcn.Count;
+                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) Wait.MaxProgress = trcn.Count;
                         SimPe.Interfaces.Files.IPackedFileDescriptor npfd = trcn.FileDescriptor.Clone();
                         Trcn ntrcn = new Trcn();
                         ntrcn.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
                         ntrcn.ProcessData(npfd, wrapper.Package);
-                        if (dr == DialogResult.Yes) foreach (TrcnItem item in trcn) { ntrcn.Add(item); Wait.Progress++; }
+                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) foreach (TrcnItem item in trcn) { ntrcn.Add(item); Wait.Progress++; }
                         trcn = ntrcn;
                         trcn.SynchronizeUserData();
-                        trcn.Version = vers; // this screws up the header, Version (header[1]) is the only bit we need
+                        trcn.Version = vers;
                         Wait.MaxProgress = 0;
                     }
 
-                    if (dr == DialogResult.Yes)
+                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes)
                         minArgc = trcn.Count;
                     else
                         trcn.Clear();
                 }
                 else
                 {
-                    // create a new Trcn file
                     SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
                     trcn = new Trcn();
                     npfd.Type = Trcn.Trcntype;
@@ -440,7 +417,7 @@ namespace SimPe.PackedFiles.UserInterface
                 {
                     trcn.Add(new TrcnItem(trcn));
                     trcn[arg].ConstId = (uint)arg;
-                    trcn[arg].ConstName = "Label " + arg.ToString();
+                    trcn[arg].ConstName = "LabelCompat " + arg.ToString();
                     trcn[arg].DefValue = trcn[arg].MaxValue = trcn[arg].MinValue = 0;
                     Wait.Progress++;
                 }
@@ -450,12 +427,12 @@ namespace SimPe.PackedFiles.UserInterface
             finally
             {
                 Wait.SubStop();
-                bconPanel.Cursor = Cursors.Default;
-                Application.UseWaitCursor = false;
             }
-            MessageBox.Show(
+            await MessageBox.ShowAsync(
                     pjse.Localization.GetString("ml_done")
-                    , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    , btnTRCNMaker.Content?.ToString()
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
         }
 
         private void FiletableRefresh(object sender, System.EventArgs e)
@@ -469,18 +446,14 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Returns the Control that will be displayed within SimPe
 		/// </summary>
-		public Control GUIHandle
+		public Avalonia.Controls.Control GUIHandle
 		{
-			get
-			{
-				return bconPanel;
-			}
+			get { return this; }
 		}
 
 		/// <summary>
 		/// Called by the AbstractWrapper when the file should be displayed to the user.
 		/// </summary>
-		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Bcon)wrp;
@@ -493,12 +466,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 			setIndex(lvConstants.Items.Count > 0 ? 0 : -1);
 
-            //tbFilename.Enabled = cbFlag.Enabled = tbValueHex.Enabled = tbValueDec.Enabled = !isPopup;
-            btnClose.Visible = isPopup;
+            btnClose.IsVisible = isPopup;
 
 			if (!setHandler)
 			{
-				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				wrapper.WrapperChanged += (s, e) => this.WrapperChanged(s, e);
 				setHandler = true;
 			}
 		}
@@ -507,10 +479,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             if (isPopup) wrapper.Changed = false;
 
-            this.btnCommit.Enabled = wrapper.Changed;
+            this.btnCommit.IsEnabled = wrapper.Changed;
             if (index >= 0 && sender is BconItem && wrapper.IndexOf((BconItem)sender) == index)
             {
-                this.btnCancel.Enabled = true;
+                this.btnCancel.IsEnabled = true;
                 return;
             }
 
@@ -519,9 +491,8 @@ namespace SimPe.PackedFiles.UserInterface
             if (sender.Equals(wrapper))
             {
                 internalchg = true;
-                this.Text = formTitle;
                 this.cbFlag.Checked = wrapper.Flag;
-                this.llIsOverride.Visible = !isNoOverride && isOverride;
+                this.llIsOverride.IsVisible = !isNoOverride && isOverride;
                 tbFilename.Text = wrapper.FileName;
                 cmpBCON.Wrapper = wrapper;
                 cmpBCON.WrapperName = wrapper.FileName;
@@ -533,257 +504,67 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BconForm));
-            this.lbFilename = new System.Windows.Forms.Label();
-            this.tbFilename = new System.Windows.Forms.TextBox();
-            this.tbValueDec = new System.Windows.Forms.TextBox();
-            this.tbValueHex = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.gbValue = new System.Windows.Forms.GroupBox();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.bconPanel = new System.Windows.Forms.Panel();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.lbFilename = new LabelCompat();
+            this.tbFilename = new TextBoxCompat();
+            this.tbValueDec = new TextBoxCompat();
+            this.tbValueHex = new TextBoxCompat();
+            this.label5 = new LabelCompat();
+            this.label6 = new LabelCompat();
+            this.gbValue = new GroupBox();
+            this.btnCancel = new ButtonCompat();
+            this.bconPanel = new StackPanel();
+            this.btnClose = new ButtonCompat();
             this.cmpBCON = new pjse.CompareButton();
-            this.llIsOverride = new System.Windows.Forms.LinkLabel();
-            this.btnUpdateBCON = new System.Windows.Forms.Button();
+            this.llIsOverride = new LinkLabel();
+            this.btnUpdateBCON = new ButtonCompat();
             this.pjse_banner1 = new pjse.pjse_banner();
-            this.btnStrPrev = new System.Windows.Forms.Button();
-            this.btnStrNext = new System.Windows.Forms.Button();
-            this.cbFlag = new System.Windows.Forms.CheckBox();
-            this.btnStrDelete = new System.Windows.Forms.Button();
-            this.btnStrAdd = new System.Windows.Forms.Button();
-            this.lvConstants = new System.Windows.Forms.ListView();
-            this.chID = new System.Windows.Forms.ColumnHeader();
-            this.chValue = new System.Windows.Forms.ColumnHeader();
-            this.chLabel = new System.Windows.Forms.ColumnHeader();
-            this.btnCommit = new System.Windows.Forms.Button();
-            this.btnTRCNMaker = new System.Windows.Forms.Button();
-            this.gbValue.SuspendLayout();
-            this.bconPanel.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // lbFilename
-            // 
-            resources.ApplyResources(this.lbFilename, "lbFilename");
-            this.lbFilename.Name = "lbFilename";
-            // 
-            // tbFilename
-            // 
-            resources.ApplyResources(this.tbFilename, "tbFilename");
-            this.tbFilename.Name = "tbFilename";
-            this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
-            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
-            // tbValueDec
-            // 
-            resources.ApplyResources(this.tbValueDec, "tbValueDec");
-            this.tbValueDec.Name = "tbValueDec";
-            this.tbValueDec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
-            this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
-            this.tbValueDec.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbValueDec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-            // 
-            // tbValueHex
-            // 
-            resources.ApplyResources(this.tbValueHex, "tbValueHex");
-            this.tbValueHex.Name = "tbValueHex";
-            this.tbValueHex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbValueHex.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbValueHex.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbValueHex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // gbValue
-            // 
-            this.gbValue.BackColor = System.Drawing.Color.Transparent;
-            this.gbValue.Controls.Add(this.btnCancel);
-            this.gbValue.Controls.Add(this.tbValueDec);
-            this.gbValue.Controls.Add(this.tbValueHex);
-            this.gbValue.Controls.Add(this.label5);
-            this.gbValue.Controls.Add(this.label6);
-            resources.ApplyResources(this.gbValue, "gbValue");
-            this.gbValue.Name = "gbValue";
-            this.gbValue.TabStop = false;
-            // 
-            // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // bconPanel
-            // 
-            resources.ApplyResources(this.bconPanel, "bconPanel");
-            this.bconPanel.Controls.Add(this.btnClose);
-            this.bconPanel.Controls.Add(this.cmpBCON);
-            this.bconPanel.Controls.Add(this.llIsOverride);
-            this.bconPanel.Controls.Add(this.btnUpdateBCON);
-            this.bconPanel.Controls.Add(this.pjse_banner1);
-            this.bconPanel.Controls.Add(this.btnStrPrev);
-            this.bconPanel.Controls.Add(this.btnStrNext);
-            this.bconPanel.Controls.Add(this.cbFlag);
-            this.bconPanel.Controls.Add(this.btnStrDelete);
-            this.bconPanel.Controls.Add(this.btnStrAdd);
-            this.bconPanel.Controls.Add(this.lvConstants);
-            this.bconPanel.Controls.Add(this.btnCommit);
-            this.bconPanel.Controls.Add(this.lbFilename);
-            this.bconPanel.Controls.Add(this.tbFilename);
-            this.bconPanel.Controls.Add(this.gbValue);
-            this.bconPanel.Controls.Add(this.btnTRCNMaker);
-            this.bconPanel.Name = "bconPanel";
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // cmpBCON
-            // 
-            resources.ApplyResources(this.cmpBCON, "cmpBCON");
-            this.cmpBCON.Name = "cmpBCON";
-            this.cmpBCON.UseVisualStyleBackColor = true;
-            this.cmpBCON.Wrapper = null;
-            this.cmpBCON.WrapperName = null;
-            this.cmpBCON.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBCON_CompareWith);
-            // 
-            // llIsOverride
-            // 
-            resources.ApplyResources(this.llIsOverride, "llIsOverride");
-            this.llIsOverride.BackColor = System.Drawing.Color.Transparent;
-            this.llIsOverride.Name = "llIsOverride";
-            this.llIsOverride.TabStop = true;
-            this.llIsOverride.UseCompatibleTextRendering = true;
-            this.llIsOverride.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llIsOverride_LinkClicked);
-            // 
-            // btnUpdateBCON
-            // 
-            resources.ApplyResources(this.btnUpdateBCON, "btnUpdateBCON");
-            this.btnUpdateBCON.Name = "btnUpdateBCON";
-            this.btnUpdateBCON.Click += new System.EventHandler(this.btnUpdateBCON_Click);
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
-            this.pjse_banner1.SiblingVisible = true;
-            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
-            // 
-            // btnStrPrev
-            // 
-            this.btnStrPrev.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
-            this.btnStrPrev.Name = "btnStrPrev";
-            this.btnStrPrev.TabStop = false;
-            this.btnStrPrev.UseVisualStyleBackColor = false;
-            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
-            // btnStrNext
-            // 
-            this.btnStrNext.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnStrNext, "btnStrNext");
-            this.btnStrNext.Name = "btnStrNext";
-            this.btnStrNext.TabStop = false;
-            this.btnStrNext.UseVisualStyleBackColor = false;
-            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
-            // cbFlag
-            // 
-            resources.ApplyResources(this.cbFlag, "cbFlag");
-            this.cbFlag.BackColor = System.Drawing.Color.Transparent;
-            this.cbFlag.Name = "cbFlag";
-            this.cbFlag.UseVisualStyleBackColor = false;
-            this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
-            // 
-            // btnStrDelete
-            // 
-            resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
-            this.btnStrDelete.Name = "btnStrDelete";
-            this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
-            // 
-            // btnStrAdd
-            // 
-            resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
-            this.btnStrAdd.Name = "btnStrAdd";
-            this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-            // 
-            // lvConstants
-            // 
-            resources.ApplyResources(this.lvConstants, "lvConstants");
-            this.lvConstants.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chID,
-            this.chValue,
-            this.chLabel});
+            this.btnStrPrev = new ButtonCompat();
+            this.btnStrNext = new ButtonCompat();
+            this.cbFlag = new CheckBoxCompat();
+            this.btnStrDelete = new ButtonCompat();
+            this.btnStrAdd = new ButtonCompat();
+            this.lvConstants = new ListView();
+            this.chID = new ColumnHeader();
+            this.chValue = new ColumnHeader();
+            this.chLabel = new ColumnHeader();
+            this.btnCommit = new ButtonCompat();
+            this.btnTRCNMaker = new ButtonCompat();
+
+            this.lvConstants.Columns.AddRange(new ColumnHeader[] { this.chID, this.chValue, this.chLabel });
             this.lvConstants.FullRowSelect = true;
             this.lvConstants.GridLines = true;
-            this.lvConstants.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvConstants.HideSelection = false;
-            this.lvConstants.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvConstants.Items")))});
             this.lvConstants.MultiSelect = false;
-            this.lvConstants.Name = "lvConstants";
-            this.lvConstants.UseCompatibleStateImageBehavior = false;
-            this.lvConstants.View = System.Windows.Forms.View.Details;
-            this.lvConstants.SelectedIndexChanged += new System.EventHandler(this.lvConstants_SelectedIndexChanged);
-            // 
-            // chID
-            // 
-            resources.ApplyResources(this.chID, "chID");
-            // 
-            // chValue
-            // 
-            resources.ApplyResources(this.chValue, "chValue");
-            // 
-            // chLabel
-            // 
-            resources.ApplyResources(this.chLabel, "chLabel");
-            // 
-            // btnCommit
-            // 
-            resources.ApplyResources(this.btnCommit, "btnCommit");
-            this.btnCommit.Name = "btnCommit";
-            this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
-            // 
-            // btnTRCNMaker
-            // 
-            resources.ApplyResources(this.btnTRCNMaker, "btnTRCNMaker");
-            this.btnTRCNMaker.Name = "btnTRCNMaker";
-            this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
-            // 
-            // BconForm
-            // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.btnClose;
-            this.Controls.Add(this.bconPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "BconForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.gbValue.ResumeLayout(false);
-            this.gbValue.PerformLayout();
-            this.bconPanel.ResumeLayout(false);
-            this.bconPanel.PerformLayout();
-            this.ResumeLayout(false);
+            this.lvConstants.View = SimPe.Scenegraph.Compat.View.Details;
 
+            // Event wiring
+            this.tbFilename.TextChanged += (s, e) => this.tbFilename_TextChanged(s, e);
+            this.tbFilename.GotFocus += (s, e) => this.tbText_Enter(s, e);
+            this.tbValueDec.TextChanged += (s, e) => this.dec16_TextChanged(s, e);
+            this.tbValueDec.LostFocus += (s, e) => this.dec16_Validated(s, null);
+            this.tbValueDec.GotFocus += (s, e) => this.tbText_Enter(s, e);
+            this.tbValueHex.TextChanged += (s, e) => this.hex16_TextChanged(s, e);
+            this.tbValueHex.LostFocus += (s, e) => this.hex16_Validated(s, null);
+            this.tbValueHex.GotFocus += (s, e) => this.tbText_Enter(s, e);
+            this.btnCancel.Click += (s, e) => this.btnCancel_Click(s, e);
+            this.llIsOverride.LinkClicked += (s, e) => this.llIsOverride_LinkClicked(s, e);
+            this.btnUpdateBCON.Click += (s, e) => this.btnUpdateBCON_Click(s, e);
+            this.pjse_banner1.SiblingClick += (s, e) => this.pjse_banner1_SiblingClick(s, e);
+            this.btnStrPrev.Click += (s, e) => this.btnStrPrev_Click(s, e);
+            this.btnStrNext.Click += (s, e) => this.btnStrNext_Click(s, e);
+            this.cbFlag.IsCheckedChanged += (s, e) => this.cbFlag_CheckedChanged(s, e);
+            this.btnStrDelete.Click += (s, e) => this.btnStrDelete_Click(s, e);
+            this.btnStrAdd.Click += (s, e) => this.btnStrAdd_Click(s, e);
+            this.lvConstants.SelectedIndexChanged += (s, e) => this.lvConstants_SelectedIndexChanged(s, e);
+            this.btnCommit.Click += (s, e) => this.btnCommit_Clicked(s, e);
+            this.btnClose.Click += (s, e) => this.btnClose_Click(s, e);
+            this.btnTRCNMaker.Click += async (s, e) => await this.TRCNMaker();
+            this.cmpBCON.CompareWith += (s, e) => this.cmpBCON_CompareWith(s, e);
+
+            Content = bconPanel;
 		}
-
 		#endregion
 
 		private void lvConstants_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -805,20 +586,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbValueHex.Focus();
 		}
 
-		private void btnTRCNMaker_Click(object sender, System.EventArgs e)
-		{
-			this.TRCNMaker();
-		}
 
-
-        private void pjse_banner1_SiblingClick(object sender, EventArgs e)
+        private async void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
             Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype);
             if (trcn == null) return;
             if (trcn.Package != wrapper.Package)
             {
-                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
-                if (dr != DialogResult.Yes) return;
+                SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(trcn.FileDescriptor, trcn.Package);
         }
@@ -868,14 +644,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 			internalchg = true;
-			wrapper.Flag = ((CheckBox)sender).Checked;
+			wrapper.Flag = ((CheckBoxCompat)sender).Checked;
 			internalchg = false;
 		}
 
 
 		private void tbText_Enter(object sender, System.EventArgs e)
 		{
-			((TextBox)sender).SelectAll();
+			((TextBoxCompat)sender).SelectAll();
 		}
 
 		private void tbFilename_TextChanged(object sender, System.EventArgs e)
@@ -892,21 +668,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 			if (!hex16_IsValid(sender)) return;
-			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 16), false, true);
-		}
-
-		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex16_IsValid(sender)) return;
-			e.Cancel = true;
-			hex16_Validated(sender, null);
+			UpdateBconItem_Value(Convert.ToInt16(((TextBoxCompat)sender).Text, 16), false, true);
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(currentItem);
+			((TextBoxCompat)sender).Text = "0x" + Helper.HexString(currentItem);
 			internalchg = origstate;
 		}
 
@@ -915,28 +684,21 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 			if (!dec16_IsValid(sender)) return;
-			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 10), true, false);
-		}
-
-		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (dec16_IsValid(sender)) return;
-			e.Cancel = true;
-			dec16_Validated(sender, null);
+			UpdateBconItem_Value(Convert.ToInt16(((TextBoxCompat)sender).Text, 10), true, false);
 		}
 
 		private void dec16_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = currentItem.ToString();
+			((TextBoxCompat)sender).Text = currentItem.ToString();
 			internalchg = origstate;
 		}
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             if (this.isPopup)
-                Close();
+                (this.VisualRoot as Window)?.Close();
         }
 	}
 }

@@ -26,7 +26,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using System.Threading;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
@@ -35,77 +36,69 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.guidtool
 {
-	/// <summary>
-	/// Summary description for GUIDForm.
-	/// </summary>
-    public class GUIDForm : System.Windows.Forms.Form
+    /// <summary>
+    /// Summary description for GUIDForm.
+    /// </summary>
+    public class GUIDForm : Window
     {
         #region Form variables
 
-        private ProgressBar progressBar1;
-        private System.Windows.Forms.Label lbStatus;
-        private RichTextBox rtbReport;
-        private TextBox tbNumber;
-        private Label lbName;
-        private TextBox tbName;
-        private Label lbNumber;
-        private Button btnSearch;
-        private Button btnClose;
+        private Avalonia.Controls.ProgressBar progressBar1;
+        private LabelCompat lbStatus;
+        private TextBoxCompat rtbReport;
+        private TextBoxCompat tbNumber;
+        private LabelCompat lbName;
+        private TextBoxCompat tbName;
+        private LabelCompat lbNumber;
+        private ButtonCompat btnSearch;
+        private ButtonCompat btnClose;
         private GroupBox groupBox1;
-        private CheckBox ckbObjdGUID;
-        private CheckBox ckbObjdName;
-        private CheckBox ckbNrefName;
-        private CheckBox ckbBhavName;
-        private CheckBox ckbBconName;
+        private CheckBoxCompat2 ckbObjdGUID;
+        private CheckBoxCompat2 ckbObjdName;
+        private CheckBoxCompat2 ckbNrefName;
+        private CheckBoxCompat2 ckbBhavName;
+        private CheckBoxCompat2 ckbBconName;
         private GroupBox groupBox2;
-        private RadioButton rb1default;
-        private RadioButton rb1CPOnly;
-        private Button btnHelp;
-        private CheckBox ckbCallsToBHAV;
+        private Avalonia.Controls.RadioButton rb1default;
+        private Avalonia.Controls.RadioButton rb1CPOnly;
+        private ButtonCompat btnHelp;
+        private CheckBoxCompat2 ckbCallsToBHAV;
         private SimPe.Plugin.GUIDChooser gcGroup;
-        private Button btnClearFilter;
-        private CheckBox ckbSGSearch;
-        private Label label1;
-        private CheckBox ckbFromBHAV;
-        private CheckBox ckbFromObjf;
-        private CheckBox ckbFromTtab;
-        private CheckBox ckbGLOB;
-        private Label label2;
-        private CheckBox ckbSTR;
-        private CheckBox ckbCTSS;
-        private CheckBox ckbTTAs;
-        private CheckBox ckbDefLang;
-        private Panel panel1;
-        private Panel pnFixer;
-        private Button btclipb;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private ButtonCompat btnClearFilter;
+        private CheckBoxCompat2 ckbSGSearch;
+        private LabelCompat label1;
+        private CheckBoxCompat2 ckbFromBHAV;
+        private CheckBoxCompat2 ckbFromObjf;
+        private CheckBoxCompat2 ckbFromTtab;
+        private CheckBoxCompat2 ckbGLOB;
+        private LabelCompat label2;
+        private CheckBoxCompat2 ckbSTR;
+        private CheckBoxCompat2 ckbCTSS;
+        private CheckBoxCompat2 ckbTTAs;
+        private CheckBoxCompat2 ckbDefLang;
+        private StackPanel panel1;
+        private StackPanel pnFixer;
+        private ButtonCompat btclipb;
 
         #endregion
 
         public GUIDForm(bool packageloaded)
         {
-            //
-            // Required for Windows Form Designer support
-            //
             InitializeComponent();
 
-            rb1CPOnly.Enabled = packageloaded;
-            if (!rb1CPOnly.Enabled && rb1CPOnly.Checked)
-                rb1default.Checked = true;
-
+            rb1CPOnly.IsEnabled = packageloaded;
+            if (!rb1CPOnly.IsEnabled && rb1CPOnly.IsChecked == true)
+                rb1default.IsChecked = true;
 
             if (pjse.FileTable.gft == null)
                 pjse.FileTable.GFT.Refresh();
 
             SimPe.ThemeManager tm = SimPe.ThemeManager.Global.CreateChild();
 
-            lHex32 = new List<TextBox>(new TextBox[] { tbNumber, });
-            rbGroup = new List<RadioButton>(new RadioButton[] { rb1default, rb1CPOnly });
+            lHex32 = new List<TextBoxCompat>(new TextBoxCompat[] { tbNumber, });
+            rbGroup = new List<Avalonia.Controls.RadioButton>(new Avalonia.Controls.RadioButton[] { rb1default, rb1CPOnly });
 
-            this.oldText = this.btnSearch.Text;
+            this.oldText = this.btnSearch.Content?.ToString();
 
             SearchComplete += new EventHandler(Complete);
 
@@ -128,33 +121,19 @@ namespace pjse.guidtool
             #endregion
         }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        public void Dispose() { }
 
 
         private bool searching = false;
         private int matches = 0;
         private string oldText = null;
-        //private string prompt = null;
         private Thread searchThread = null;
 
         private List<String> sgNames = null;
         private List<UInt32> sgGroups = null;
 
-        private List<RadioButton> rbGroup = null;
-        private static bool Selected(RadioButton rb) { return rb.Checked; }
+        private List<Avalonia.Controls.RadioButton> rbGroup = null;
+        private static bool Selected(Avalonia.Controls.RadioButton rb) { return rb.IsChecked == true; }
 
         private static int byPackageGroupTypeInstance(pjse.FileTable.Entry x, pjse.FileTable.Entry y)
         {
@@ -302,7 +281,7 @@ namespace pjse.guidtool
 
                 results.Sort(byPackageGroupTypeInstance);
 
-                Invoke(setProgress, new object[] { false, results.Count });
+                Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => setProgress( false, results.Count )).GetAwaiter().GetResult();
 
                 int j = 0;
                 pjse.FileTable.Entry previtem = null;
@@ -325,24 +304,24 @@ namespace pjse.guidtool
                         if ((type[0] && itemguid == searchNumber) ||
                             ((type[1] || type[2] || type[3]) && item.ToString().ToLower().Contains(searchText)) ||
                             type[10])
-                            Invoke(addResult, new object[] { itemguid, item, });
+                            Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
 
                         else if (type[5]) switch (item.Type)
                             {
                                 case Bhav.Bhavtype:
                                     foreach (Instruction i in (Bhav)item.Wrapper)
                                         if (i.OpCode == searchNumber)
-                                            Invoke(addResult, new object[] { itemguid, item, });
+                                            Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
                                     break;
                                 case Objf.Objftype:
                                     foreach (ObjfItem i in (Objf)item.Wrapper)
                                         if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                            Invoke(addResult, new object[] { itemguid, item, });
+                                            Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
                                     break;
                                 case Ttab.Ttabtype:
                                     foreach (TtabItem i in (Ttab)item.Wrapper)
                                         if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                            Invoke(addResult, new object[] { itemguid, item, });
+                                            Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
                                     break;
                             }
 
@@ -355,7 +334,7 @@ namespace pjse.guidtool
                                 {
                                     if (si.Title.ToString().ToLower().Contains(searchText))
                                     {
-                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
                                         break;
                                     }
                                 }
@@ -364,16 +343,15 @@ namespace pjse.guidtool
                                 {
                                     if (si.Title.ToString().ToLower().Contains(searchText))
                                     {
-                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => addResult( itemguid, item)).GetAwaiter().GetResult();
                                         break;
                                     }
                                 }
                         }
                     }
-                //DealtWith:
-                    Invoke(setProgress, new object[] { true, ++j });
+                    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => setProgress( true, ++j )).GetAwaiter().GetResult();
                     Thread.Sleep(0);
-                    if ((bool)Invoke(stopSearch))
+                    if (!searching)
                         break;
                 }
             }
@@ -381,7 +359,7 @@ namespace pjse.guidtool
             finally
             {
                 Thread.Sleep(0);
-                BeginInvoke(onSearchComplete, new object[] { this, EventArgs.Empty });
+                Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => onSearchComplete( this, EventArgs.Empty ));
             }
         }
 
@@ -400,27 +378,24 @@ namespace pjse.guidtool
         private delegate void AddResultCallback(uint itemguid, pjse.FileTable.Entry item);
         private void AddResult(uint itemguid, pjse.FileTable.Entry item)
         {
-            //string report_line = "Group {0}: [{1} guid: {2}] {3} ({4})";
             if (item.Type == SimPe.Data.MetaData.OBJD_FILE)
             {
-                this.rtbReport.AppendText(Localization.GetString("gt_reportOBJD",
+                this.rtbReport.Text += Localization.GetString("gt_reportOBJD",
                     SimPe.Helper.HexString(item.PFD.Group),
                     item.PFD.TypeName.Name,
                     "0x" + SimPe.Helper.HexString(itemguid),
                     item.ToString(),
-                    item.Package.FileName) + "\r\n");
+                    item.Package.FileName) + "\r\n";
             }
             else
-            //string report_line = "Group {0}: [{1} {2}] {3} ({4})";
             {
-                this.rtbReport.AppendText(Localization.GetString("gt_report",
+                this.rtbReport.Text += Localization.GetString("gt_report",
                     SimPe.Helper.HexString(item.PFD.Group),
                     item.PFD.TypeName.Name,
                     item.ToString(),
-                    item.Package.FileName)+"\r\n");
+                    item.Package.FileName)+"\r\n";
             }
 
-            this.rtbReport.ScrollToCaret();
             matches++;
         }
 
@@ -439,29 +414,27 @@ namespace pjse.guidtool
         private void Start()
         {
             bool[] type = new bool[] {
-                /*0*/ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
-                /*5*/ckbCallsToBHAV.Checked, ckbSGSearch.Checked, ckbFromBHAV.Checked, ckbFromObjf.Checked, ckbFromTtab.Checked,
-                /*10*/ckbGLOB.Checked, ckbSTR.Checked, ckbCTSS.Checked, ckbTTAs.Checked, ckbDefLang.Checked,
+                /*0*/ckbObjdGUID.IsChecked == true, ckbObjdName.IsChecked == true, ckbNrefName.IsChecked == true, ckbBhavName.IsChecked == true, ckbBconName.IsChecked == true,
+                /*5*/ckbCallsToBHAV.IsChecked == true, ckbSGSearch.IsChecked == true, ckbFromBHAV.IsChecked == true, ckbFromObjf.IsChecked == true, ckbFromTtab.IsChecked == true,
+                /*10*/ckbGLOB.IsChecked == true, ckbSTR.IsChecked == true, ckbCTSS.IsChecked == true, ckbTTAs.IsChecked == true, ckbDefLang.IsChecked == true,
             };
             uint number = 0;
             try { number = Convert.ToUInt32(this.tbNumber.Text.Trim(), 16); }
             catch(System.FormatException) { number = 0; }
             this.tbNumber.Text = "0x" + SimPe.Helper.HexString(number);
-            if (number == 0) { type[0] = type[5] = false; } // don't search for 0 GUID...
-            if (number < 0x2000 || number > 0x2fff) { type[6] = false; } // don't do SG search except for SG BHAVs...
-            if (gcGroup.Value == 0) { type[6] = type[10] = false; } // don't search with no Group filter
+            if (number == 0) { type[0] = type[5] = false; }
+            if (number < 0x2000 || number > 0x2fff) { type[6] = false; }
+            if (gcGroup.Value == 0) { type[6] = type[10] = false; }
             this.tbName.Text = this.tbName.Text.Trim().ToLower();
-            if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = type[11] = type[12] = type[13] = false; } // don't search for empty string
+            if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = type[11] = type[12] = type[13] = false; }
             SimPe.WaitingScreen.Wait();
-            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
-            groupBox1.Enabled = false;
-            ckbObjdGUID.Enabled = ckbCallsToBHAV.Enabled = ckbFromBHAV.Enabled = ckbFromObjf.Enabled = ckbFromTtab.Enabled = false;
-            gcGroup.Enabled = ckbSGSearch.Enabled = btnClearFilter.Enabled = tbNumber.Enabled = tbName.Enabled = this.btnClose.Enabled = false;
-            this.btnSearch.Text = pjse.Localization.GetString("gt_Stop");
-            this.lbStatus.Visible = this.btclipb.Visible = false;
+            groupBox1.IsEnabled = false;
+            ckbObjdGUID.IsEnabled = ckbCallsToBHAV.IsEnabled = ckbFromBHAV.IsEnabled = ckbFromObjf.IsEnabled = ckbFromTtab.IsEnabled = false;
+            gcGroup.IsEnabled = ckbSGSearch.IsEnabled = btnClearFilter.IsEnabled = tbNumber.IsEnabled = tbName.IsEnabled = this.btnClose.IsEnabled = false;
+            this.btnSearch.Content = pjse.Localization.GetString("gt_Stop");
+            this.lbStatus.IsVisible = this.btclipb.IsVisible = false;
             this.progressBar1.Value = 0;
-            this.progressBar1.Visible = true;
+            this.progressBar1.IsVisible = true;
             this.rtbReport.Text = "";
 
             searching = true;
@@ -482,8 +455,7 @@ namespace pjse.guidtool
             if (!searching) Complete(null, null);
             else
             {
-                this.btnSearch.Enabled = false;
-                this.btnSearch.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+                this.btnSearch.IsEnabled = false;
                 searching = false;
             }
         }
@@ -494,389 +466,146 @@ namespace pjse.guidtool
             while (searchThread != null && searchThread.IsAlive)
                 searchThread.Join(10);
             searchThread = null;
-            this.Cursor = this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
-            ckbObjdGUID.Enabled = ckbCallsToBHAV.Enabled = ckbFromBHAV.Enabled = ckbFromObjf.Enabled = ckbFromTtab.Enabled = gcGroup.Enabled = true;
-            ckbSGSearch.Enabled = btnClearFilter.Enabled = tbNumber.Enabled = tbName.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
-            groupBox1.Enabled = true;
-            this.btnSearch.Text = oldText;
+            ckbObjdGUID.IsEnabled = ckbCallsToBHAV.IsEnabled = ckbFromBHAV.IsEnabled = ckbFromObjf.IsEnabled = ckbFromTtab.IsEnabled = gcGroup.IsEnabled = true;
+            ckbSGSearch.IsEnabled = btnClearFilter.IsEnabled = tbNumber.IsEnabled = tbName.IsEnabled = this.btnClose.IsEnabled = this.btnSearch.IsEnabled = true;
+            groupBox1.IsEnabled = true;
+            this.btnSearch.Content = oldText;
             this.progressBar1.Value = 0;
-            this.progressBar1.Visible = false;
-            this.lbStatus.Visible = true;
+            this.progressBar1.IsVisible = false;
+            this.lbStatus.IsVisible = true;
             if (matches > 0)
             {
-                this.lbStatus.Text = pjse.Localization.GetString("gt_MatchesFound") + ": " + matches.ToString();
-                this.btclipb.Visible = true;
+                this.lbStatus.Content = pjse.Localization.GetString("gt_MatchesFound") + ": " + matches.ToString();
+                this.btclipb.IsVisible = true;
             }
             else
             {
-                this.lbStatus.Text = pjse.Localization.GetString("gt_NoMatchesFound");
-                this.btclipb.Visible = false;
+                this.lbStatus.Content = pjse.Localization.GetString("gt_NoMatchesFound");
+                this.btclipb.IsVisible = false;
             }
         }
 
 
-        List<TextBox> lHex32 = null;
+        List<TextBoxCompat> lHex32 = null;
         private bool hex32_IsValid(object sender)
-		{
-			if (!(sender is TextBox) || lHex32.IndexOf((TextBox)sender) < 0)
-				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
-			catch (Exception) { return false; }
-			return true;
-		}
-
-        #region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIDForm));
-            this.progressBar1 = new ProgressBar();
-            this.lbStatus = new System.Windows.Forms.Label();
-            this.rtbReport = new System.Windows.Forms.RichTextBox();
-            this.lbNumber = new System.Windows.Forms.Label();
-            this.tbNumber = new System.Windows.Forms.TextBox();
-            this.lbName = new System.Windows.Forms.Label();
-            this.tbName = new System.Windows.Forms.TextBox();
-            this.gcGroup = new SimPe.Plugin.GUIDChooser();
-            this.ckbSGSearch = new System.Windows.Forms.CheckBox();
-            this.btnClearFilter = new System.Windows.Forms.Button();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ckbObjdName = new System.Windows.Forms.CheckBox();
-            this.ckbGLOB = new System.Windows.Forms.CheckBox();
-            this.ckbSTR = new System.Windows.Forms.CheckBox();
-            this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
-            this.ckbCallsToBHAV = new System.Windows.Forms.CheckBox();
-            this.ckbCTSS = new System.Windows.Forms.CheckBox();
-            this.ckbNrefName = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ckbTTAs = new System.Windows.Forms.CheckBox();
-            this.ckbFromTtab = new System.Windows.Forms.CheckBox();
-            this.ckbBhavName = new System.Windows.Forms.CheckBox();
-            this.ckbDefLang = new System.Windows.Forms.CheckBox();
-            this.ckbFromObjf = new System.Windows.Forms.CheckBox();
-            this.ckbFromBHAV = new System.Windows.Forms.CheckBox();
-            this.ckbBconName = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rb1default = new System.Windows.Forms.RadioButton();
-            this.rb1CPOnly = new System.Windows.Forms.RadioButton();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pnFixer = new System.Windows.Forms.Panel();
-            this.btclipb = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.pnFixer.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // progressBar1
-            // 
-            resources.ApplyResources(this.progressBar1, "progressBar1");
-            // Transparent BackColor not supported on ProgressBar in .NET 8
-            
-            this.progressBar1.Maximum = 100;
-            this.progressBar1.Minimum = 0;
-            this.progressBar1.Name = "progressBar1";
-            
-            
-            this.progressBar1.Value = 0;
-            this.progressBar1.Visible = false;
-            // 
-            // lbStatus
-            // 
-            resources.ApplyResources(this.lbStatus, "lbStatus");
-            this.lbStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lbStatus.Name = "lbStatus";
-            // 
-            // rtbReport
-            // 
-            resources.ApplyResources(this.rtbReport, "rtbReport");
-            this.rtbReport.BackColor = System.Drawing.SystemColors.Window;
-            this.rtbReport.DetectUrls = false;
-            this.rtbReport.Name = "rtbReport";
-            this.rtbReport.ReadOnly = true;
-            this.rtbReport.ShowSelectionMargin = true;
-            // 
-            // lbNumber
-            // 
-            resources.ApplyResources(this.lbNumber, "lbNumber");
-            this.lbNumber.Name = "lbNumber";
-            // 
-            // tbNumber
-            // 
-            resources.ApplyResources(this.tbNumber, "tbNumber");
-            this.tbNumber.Name = "tbNumber";
-            // 
-            // lbName
-            // 
-            resources.ApplyResources(this.lbName, "lbName");
-            this.lbName.Name = "lbName";
-            // 
-            // tbName
-            // 
-            resources.ApplyResources(this.tbName, "tbName");
-            this.tbName.Name = "tbName";
-            // 
-            // gcGroup
-            // 
-            resources.ApplyResources(this.gcGroup, "gcGroup");
-            this.gcGroup.BackColor = System.Drawing.Color.Transparent;
-            this.gcGroup.ComboBoxWidth = 420;
-            this.gcGroup.DropDownHeight = 250;
-            this.gcGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-            this.gcGroup.DropDownWidth = 420;
-            this.gcGroup.Label = "Group Filter:";
-            this.gcGroup.MaximumSize = new System.Drawing.Size(587, 23);
-            this.gcGroup.Name = "gcGroup";
-            this.gcGroup.Value = ((uint)(0u));
-            // 
-            // ckbSGSearch
-            // 
-            resources.ApplyResources(this.ckbSGSearch, "ckbSGSearch");
-            this.ckbSGSearch.BackColor = System.Drawing.Color.Transparent;
-            this.ckbSGSearch.Name = "ckbSGSearch";
-            this.ckbSGSearch.UseVisualStyleBackColor = false;
-            // 
-            // btnClearFilter
-            // 
-            resources.ApplyResources(this.btnClearFilter, "btnClearFilter");
-            this.btnClearFilter.BackColor = System.Drawing.Color.Transparent;
-            this.btnClearFilter.Name = "btnClearFilter";
-            this.btnClearFilter.UseVisualStyleBackColor = false;
-            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
-            // 
-            // btnSearch
-            // 
-            resources.ApplyResources(this.btnSearch, "btnSearch");
-            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Name = "btnClose";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // groupBox1
-            // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.ckbObjdName);
-            this.groupBox1.Controls.Add(this.ckbGLOB);
-            this.groupBox1.Controls.Add(this.ckbSTR);
-            this.groupBox1.Controls.Add(this.ckbObjdGUID);
-            this.groupBox1.Controls.Add(this.ckbCallsToBHAV);
-            this.groupBox1.Controls.Add(this.ckbCTSS);
-            this.groupBox1.Controls.Add(this.ckbNrefName);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.ckbTTAs);
-            this.groupBox1.Controls.Add(this.ckbFromTtab);
-            this.groupBox1.Controls.Add(this.ckbBhavName);
-            this.groupBox1.Controls.Add(this.ckbDefLang);
-            this.groupBox1.Controls.Add(this.ckbFromObjf);
-            this.groupBox1.Controls.Add(this.ckbFromBHAV);
-            this.groupBox1.Controls.Add(this.ckbBconName);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // ckbObjdName
-            // 
-            resources.ApplyResources(this.ckbObjdName, "ckbObjdName");
-            this.ckbObjdName.Name = "ckbObjdName";
-            this.ckbObjdName.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // ckbGLOB
-            // 
-            resources.ApplyResources(this.ckbGLOB, "ckbGLOB");
-            this.ckbGLOB.Name = "ckbGLOB";
-            this.ckbGLOB.CheckedChanged += new System.EventHandler(this.ckbGLOB_CheckedChanged);
-            // 
-            // ckbSTR
-            // 
-            resources.ApplyResources(this.ckbSTR, "ckbSTR");
-            this.ckbSTR.Name = "ckbSTR";
-            this.ckbSTR.UseVisualStyleBackColor = true;
-            this.ckbSTR.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // ckbObjdGUID
-            // 
-            resources.ApplyResources(this.ckbObjdGUID, "ckbObjdGUID");
-            this.ckbObjdGUID.Name = "ckbObjdGUID";
-            this.ckbObjdGUID.CheckedChanged += new System.EventHandler(this.ckbObjdGUID_CheckedChanged);
-            // 
-            // ckbCallsToBHAV
-            // 
-            resources.ApplyResources(this.ckbCallsToBHAV, "ckbCallsToBHAV");
-            this.ckbCallsToBHAV.Name = "ckbCallsToBHAV";
-            this.ckbCallsToBHAV.UseVisualStyleBackColor = true;
-            this.ckbCallsToBHAV.CheckedChanged += new System.EventHandler(this.ckbCallsToBHAV_CheckedChanged);
-            // 
-            // ckbCTSS
-            // 
-            resources.ApplyResources(this.ckbCTSS, "ckbCTSS");
-            this.ckbCTSS.Name = "ckbCTSS";
-            this.ckbCTSS.UseVisualStyleBackColor = true;
-            this.ckbCTSS.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // ckbNrefName
-            // 
-            resources.ApplyResources(this.ckbNrefName, "ckbNrefName");
-            this.ckbNrefName.Name = "ckbNrefName";
-            this.ckbNrefName.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // ckbTTAs
-            // 
-            resources.ApplyResources(this.ckbTTAs, "ckbTTAs");
-            this.ckbTTAs.Name = "ckbTTAs";
-            this.ckbTTAs.UseVisualStyleBackColor = true;
-            this.ckbTTAs.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // ckbFromTtab
-            // 
-            resources.ApplyResources(this.ckbFromTtab, "ckbFromTtab");
-            this.ckbFromTtab.Name = "ckbFromTtab";
-            // 
-            // ckbBhavName
-            // 
-            resources.ApplyResources(this.ckbBhavName, "ckbBhavName");
-            this.ckbBhavName.Name = "ckbBhavName";
-            this.ckbBhavName.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // ckbDefLang
-            // 
-            resources.ApplyResources(this.ckbDefLang, "ckbDefLang");
-            this.ckbDefLang.Name = "ckbDefLang";
-            this.ckbDefLang.UseVisualStyleBackColor = true;
-            // 
-            // ckbFromObjf
-            // 
-            resources.ApplyResources(this.ckbFromObjf, "ckbFromObjf");
-            this.ckbFromObjf.Name = "ckbFromObjf";
-            // 
-            // ckbFromBHAV
-            // 
-            resources.ApplyResources(this.ckbFromBHAV, "ckbFromBHAV");
-            this.ckbFromBHAV.Name = "ckbFromBHAV";
-            // 
-            // ckbBconName
-            // 
-            resources.ApplyResources(this.ckbBconName, "ckbBconName");
-            this.ckbBconName.Name = "ckbBconName";
-            this.ckbBconName.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Controls.Add(this.rb1default);
-            this.groupBox2.Controls.Add(this.rb1CPOnly);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // rb1default
-            // 
-            resources.ApplyResources(this.rb1default, "rb1default");
-            this.rb1default.Checked = true;
-            this.rb1default.Name = "rb1default";
-            this.rb1default.TabStop = true;
-            // 
-            // rb1CPOnly
-            // 
-            resources.ApplyResources(this.rb1CPOnly, "rb1CPOnly");
-            this.rb1CPOnly.Name = "rb1CPOnly";
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.BackColor = System.Drawing.Color.Transparent;
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.UseVisualStyleBackColor = false;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            
-            this.panel1.Controls.Add(this.btclipb);
-            this.panel1.Controls.Add(this.pnFixer);
-            this.panel1.Controls.Add(this.tbName);
-            this.panel1.Controls.Add(this.lbNumber);
-            this.panel1.Controls.Add(this.lbName);
-            this.panel1.Controls.Add(this.btnClearFilter);
-            this.panel1.Controls.Add(this.ckbSGSearch);
-            this.panel1.Controls.Add(this.tbNumber);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Controls.Add(this.btnHelp);
-            this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Controls.Add(this.lbStatus);
-            this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Controls.Add(this.rtbReport);
-            this.panel1.Controls.Add(this.groupBox2);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
-            
-            // 
-            // pnFixer
-            // 
-            this.pnFixer.Controls.Add(this.gcGroup);
-            resources.ApplyResources(this.pnFixer, "pnFixer");
-            this.pnFixer.Name = "pnFixer";
-            // 
-            // btclipb
-            // 
-            resources.ApplyResources(this.btclipb, "btclipb");
-            this.btclipb.Name = "btclipb";
-            this.btclipb.UseVisualStyleBackColor = true;
-            this.btclipb.Click += new System.EventHandler(this.btclipb_Click);
-            // 
-            // GUIDForm
-            // 
-            this.AcceptButton = this.btnSearch;
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnClose;
-            this.Controls.Add(this.panel1);
-            this.Name = "GUIDForm";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.pnFixer.ResumeLayout(false);
-            this.pnFixer.PerformLayout();
-            this.ResumeLayout(false);
-
-		}
-		#endregion
-
-        protected override void OnClosing(CancelEventArgs e)
         {
-            // PersistantHeight = this.Height;
-            // PersistantWidth = this.Width;
+            if (!(sender is TextBoxCompat) || lHex32.IndexOf((TextBoxCompat)sender) < 0)
+                throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
+            try { Convert.ToUInt32(((TextBoxCompat)sender).Text, 16); }
+            catch (Exception) { return false; }
+            return true;
+        }
+
+        #region InitializeComponent
+        private void InitializeComponent()
+        {
+            this.progressBar1 = new Avalonia.Controls.ProgressBar { Minimum = 0, Maximum = 100, Value = 0, IsVisible = false };
+            this.lbStatus = new LabelCompat();
+            this.rtbReport = new TextBoxCompat { IsReadOnly = true, AcceptsReturn = true };
+            this.lbNumber = new LabelCompat();
+            this.tbNumber = new TextBoxCompat();
+            this.lbName = new LabelCompat();
+            this.tbName = new TextBoxCompat();
+            this.gcGroup = new SimPe.Plugin.GUIDChooser();
+            this.ckbSGSearch = new CheckBoxCompat2();
+            this.btnClearFilter = new ButtonCompat { Content = "Clear Filter" };
+            this.btnSearch = new ButtonCompat { Content = "Search" };
+            this.btnClose = new ButtonCompat { Content = "Close" };
+            this.groupBox1 = new GroupBox();
+            this.label2 = new LabelCompat();
+            this.ckbObjdName = new CheckBoxCompat2();
+            this.ckbGLOB = new CheckBoxCompat2();
+            this.ckbSTR = new CheckBoxCompat2();
+            this.ckbObjdGUID = new CheckBoxCompat2();
+            this.ckbCallsToBHAV = new CheckBoxCompat2();
+            this.ckbCTSS = new CheckBoxCompat2();
+            this.ckbNrefName = new CheckBoxCompat2();
+            this.label1 = new LabelCompat();
+            this.ckbTTAs = new CheckBoxCompat2();
+            this.ckbFromTtab = new CheckBoxCompat2();
+            this.ckbBhavName = new CheckBoxCompat2();
+            this.ckbDefLang = new CheckBoxCompat2();
+            this.ckbFromObjf = new CheckBoxCompat2();
+            this.ckbFromBHAV = new CheckBoxCompat2();
+            this.ckbBconName = new CheckBoxCompat2();
+            this.groupBox2 = new GroupBox();
+            this.rb1default = new Avalonia.Controls.RadioButton { IsChecked = true };
+            this.rb1CPOnly = new Avalonia.Controls.RadioButton();
+            this.btnHelp = new ButtonCompat { Content = "Help" };
+            this.panel1 = new StackPanel();
+            this.pnFixer = new StackPanel();
+            this.btclipb = new ButtonCompat { Content = "Copy to Clipboard" };
+
+            this.ckbObjdName.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbGLOB.IsCheckedChanged += (s, e) => this.ckbGLOB_CheckedChanged(s, e);
+            this.ckbSTR.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbObjdGUID.IsCheckedChanged += (s, e) => this.ckbObjdGUID_CheckedChanged(s, e);
+            this.ckbCallsToBHAV.IsCheckedChanged += (s, e) => this.ckbCallsToBHAV_CheckedChanged(s, e);
+            this.ckbCTSS.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbNrefName.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbTTAs.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbBhavName.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.ckbBconName.IsCheckedChanged += (s, e) => this.ckbSomeName_CheckedChanged(s, e);
+            this.btnClearFilter.Click += (s, e) => this.btnClearFilter_Click(s, e);
+            this.btnSearch.Click += (s, e) => this.btnSearch_Click(s, e);
+            this.btnClose.Click += (s, e) => this.btnClose_Click(s, e);
+            this.btnHelp.Click += (s, e) => this.btnHelp_Click(s, e);
+            this.btclipb.Click += (s, e) => this.btclipb_Click(s, e);
+
+            this.gcGroup.ComboBoxWidth = 420;
+            this.gcGroup.LabelCompat = "Group Filter:";
+            this.gcGroup.Value = ((uint)(0u));
+
+            this.pnFixer.Children.Add(this.gcGroup);
+
+            var checkPanel = new WrapPanel();
+            checkPanel.Children.Add(this.label2);
+            checkPanel.Children.Add(this.ckbObjdName);
+            checkPanel.Children.Add(this.ckbGLOB);
+            checkPanel.Children.Add(this.ckbSTR);
+            checkPanel.Children.Add(this.ckbObjdGUID);
+            checkPanel.Children.Add(this.ckbCallsToBHAV);
+            checkPanel.Children.Add(this.ckbCTSS);
+            checkPanel.Children.Add(this.ckbNrefName);
+            checkPanel.Children.Add(this.label1);
+            checkPanel.Children.Add(this.ckbTTAs);
+            checkPanel.Children.Add(this.ckbFromTtab);
+            checkPanel.Children.Add(this.ckbBhavName);
+            checkPanel.Children.Add(this.ckbDefLang);
+            checkPanel.Children.Add(this.ckbFromObjf);
+            checkPanel.Children.Add(this.ckbFromBHAV);
+            checkPanel.Children.Add(this.ckbBconName);
+            this.groupBox1.Content = checkPanel;
+
+            var rbPanel = new StackPanel();
+            rbPanel.Children.Add(this.rb1default);
+            rbPanel.Children.Add(this.rb1CPOnly);
+            this.groupBox2.Content = rbPanel;
+
+            this.panel1.Children.Add(this.btclipb);
+            this.panel1.Children.Add(this.pnFixer);
+            this.panel1.Children.Add(this.tbName);
+            this.panel1.Children.Add(this.lbNumber);
+            this.panel1.Children.Add(this.lbName);
+            this.panel1.Children.Add(this.btnClearFilter);
+            this.panel1.Children.Add(this.ckbSGSearch);
+            this.panel1.Children.Add(this.tbNumber);
+            this.panel1.Children.Add(this.groupBox1);
+            this.panel1.Children.Add(this.btnHelp);
+            this.panel1.Children.Add(this.btnSearch);
+            this.panel1.Children.Add(this.btnClose);
+            this.panel1.Children.Add(this.lbStatus);
+            this.panel1.Children.Add(this.progressBar1);
+            this.panel1.Children.Add(this.rtbReport);
+            this.panel1.Children.Add(this.groupBox2);
+
+            this.Content = this.panel1;
+            this.Name = "GUIDForm";
+        }
+        #endregion
+
+        protected override void OnClosing(Avalonia.Controls.WindowClosingEventArgs e)
+        {
             searching = false;
             if (searchThread != null && searchThread.IsAlive)
             {
@@ -888,21 +617,18 @@ namespace pjse.guidtool
             Hide();
         }
 
-		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex32_IsValid(sender)) return;
+        private void hex32_Validating(object sender, EventArgs e)
+        {
+            if (hex32_IsValid(sender)) return;
 
-			e.Cancel = true;
+            uint val = 0;
+            switch (lHex32.IndexOf((TextBoxCompat)sender))
+            {
+                case 0: val = 0; break;
+            }
 
-			uint val = 0;
-			switch (lHex32.IndexOf((TextBox)sender))
-			{
-				case 0: val = 0; break;
-			}
-
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
-			((TextBox)sender).SelectAll();
-		}
+            ((TextBoxCompat)sender).Text = "0x" + SimPe.Helper.HexString(val);
+        }
 
         private void btnSearch_Click(object sender, System.EventArgs e)
         {
@@ -923,20 +649,19 @@ namespace pjse.guidtool
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
-            //Hide();
         }
 
-        private bool isCkbObjdGUIDEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
-        private bool isCkbCallsToBHAVEnabled { get { return !ckbObjdGUID.Checked && !ckbGLOB.Checked && !isCkbSomeTextChecked; } }
-        private bool isCkbGLOBEnabled { get { return !ckbObjdGUID.Checked && !ckbCallsToBHAV.Checked && !isCkbSomeTextChecked; } }
-        private bool isFlpNamesEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
-        private static bool isChecked(CheckBox cb) { return cb.Checked; }
+        private bool isCkbObjdGUIDEnabled { get { return !ckbCallsToBHAV.IsChecked == true && !ckbGLOB.IsChecked == true; } }
+        private bool isCkbCallsToBHAVEnabled { get { return !ckbObjdGUID.IsChecked == true && !ckbGLOB.IsChecked == true && !isCkbSomeTextChecked; } }
+        private bool isCkbGLOBEnabled { get { return !ckbObjdGUID.IsChecked == true && !ckbCallsToBHAV.IsChecked == true && !isCkbSomeTextChecked; } }
+        private bool isFlpNamesEnabled { get { return !ckbCallsToBHAV.IsChecked == true && !ckbGLOB.IsChecked == true; } }
+        private static bool isChecked(CheckBoxCompat2 cb) { return cb.IsChecked == true; }
         private bool isCkbSomeTextChecked { get { return isCkbSomeNameChecked || isCkbSomeStringChecked; } }
         private bool isCkbSomeNameChecked
         {
             get
             {
-                List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbObjdName, ckbNrefName, ckbBhavName, ckbBconName, });
+                List<CheckBoxCompat2> lcb = new List<CheckBoxCompat2>(new CheckBoxCompat2[] { ckbObjdName, ckbNrefName, ckbBhavName, ckbBconName, });
                 return (lcb.Find(isChecked) != null);
             }
         }
@@ -944,52 +669,52 @@ namespace pjse.guidtool
         {
             get
             {
-                List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbSTR, ckbCTSS, ckbTTAs, });
+                List<CheckBoxCompat2> lcb = new List<CheckBoxCompat2>(new CheckBoxCompat2[] { ckbSTR, ckbCTSS, ckbTTAs, });
                 return (lcb.Find(isChecked) != null);
             }
         }
 
         private void ckbObjdGUID_CheckedChanged(object sender, EventArgs e)
         {
-            ckbCallsToBHAV.Enabled = isCkbCallsToBHAVEnabled;
-            ckbGLOB.Enabled = isCkbGLOBEnabled;
-            ckbSTR.Enabled = ckbCTSS.Enabled = ckbTTAs.Enabled = ckbDefLang.Enabled = ckbObjdName.Enabled = ckbNrefName.Enabled = ckbBhavName.Enabled = ckbBconName.Enabled = isFlpNamesEnabled;
+            ckbCallsToBHAV.IsEnabled = isCkbCallsToBHAVEnabled;
+            ckbGLOB.IsEnabled = isCkbGLOBEnabled;
+            ckbSTR.IsEnabled = ckbCTSS.IsEnabled = ckbTTAs.IsEnabled = ckbDefLang.IsEnabled = ckbObjdName.IsEnabled = ckbNrefName.IsEnabled = ckbBhavName.IsEnabled = ckbBconName.IsEnabled = isFlpNamesEnabled;
 
-            if (ckbObjdGUID.Checked) ckbCallsToBHAV.Checked = ckbGLOB.Checked = false;
+            if (ckbObjdGUID.IsChecked == true) ckbCallsToBHAV.IsChecked = ckbGLOB.IsChecked = false;
 
-            tbNumber.Enabled = ckbObjdGUID.Checked;
-            lbNumber.Text = ckbObjdGUID.Checked ? pjse.Localization.GetString("GUID") : "";
+            tbNumber.IsEnabled = ckbObjdGUID.IsChecked == true;
+            lbNumber.Content = ckbObjdGUID.IsChecked == true ? pjse.Localization.GetString("GUID") : "";
         }
 
         private void ckbCallsToBHAV_CheckedChanged(object sender, EventArgs e)
         {
-            ckbGLOB.Enabled = isCkbGLOBEnabled;
-            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
-            ckbSTR.Enabled = ckbCTSS.Enabled = ckbTTAs.Enabled = ckbDefLang.Enabled = ckbObjdName.Enabled = ckbNrefName.Enabled = ckbBhavName.Enabled = ckbBconName.Enabled = isFlpNamesEnabled;
+            ckbGLOB.IsEnabled = isCkbGLOBEnabled;
+            ckbObjdGUID.IsEnabled = isCkbObjdGUIDEnabled;
+            ckbSTR.IsEnabled = ckbCTSS.IsEnabled = ckbTTAs.IsEnabled = ckbDefLang.IsEnabled = ckbObjdName.IsEnabled = ckbNrefName.IsEnabled = ckbBhavName.IsEnabled = ckbBconName.IsEnabled = isFlpNamesEnabled;
 
-            if (ckbCallsToBHAV.Checked) ckbObjdGUID.Checked = ckbGLOB.Checked = false;
+            if (ckbCallsToBHAV.IsChecked == true) ckbObjdGUID.IsChecked = ckbGLOB.IsChecked = false;
 
-            tbNumber.Enabled = ckbSGSearch.Enabled = ckbFromBHAV.Enabled = ckbFromObjf.Enabled = ckbFromTtab.Enabled = ckbCallsToBHAV.Checked;
-            lbNumber.Text = ckbCallsToBHAV.Checked ? pjse.Localization.GetString("OpCode") : "";
+            tbNumber.IsEnabled = ckbSGSearch.IsEnabled = ckbFromBHAV.IsEnabled = ckbFromObjf.IsEnabled = ckbFromTtab.IsEnabled = ckbCallsToBHAV.IsChecked == true;
+            lbNumber.Content = ckbCallsToBHAV.IsChecked == true ? pjse.Localization.GetString("OpCode") : "";
         }
 
         private void ckbGLOB_CheckedChanged(object sender, EventArgs e)
         {
-            ckbCallsToBHAV.Enabled = isCkbObjdGUIDEnabled;
-            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
-            ckbSTR.Enabled = ckbCTSS.Enabled = ckbTTAs.Enabled = ckbDefLang.Enabled = ckbObjdName.Enabled = ckbNrefName.Enabled = ckbBhavName.Enabled = ckbBconName.Enabled = isFlpNamesEnabled;
+            ckbCallsToBHAV.IsEnabled = isCkbObjdGUIDEnabled;
+            ckbObjdGUID.IsEnabled = isCkbObjdGUIDEnabled;
+            ckbSTR.IsEnabled = ckbCTSS.IsEnabled = ckbTTAs.IsEnabled = ckbDefLang.IsEnabled = ckbObjdName.IsEnabled = ckbNrefName.IsEnabled = ckbBhavName.IsEnabled = ckbBconName.IsEnabled = isFlpNamesEnabled;
 
-            if (ckbGLOB.Checked) ckbObjdGUID.Checked = ckbCallsToBHAV.Checked = false;
+            if (ckbGLOB.IsChecked == true) ckbObjdGUID.IsChecked = ckbCallsToBHAV.IsChecked = false;
         }
 
         private void ckbSomeName_CheckedChanged(object sender, EventArgs e)
         {
-            ckbCallsToBHAV.Enabled = isCkbCallsToBHAVEnabled;
-            ckbGLOB.Enabled = isCkbGLOBEnabled;
-            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
+            ckbCallsToBHAV.IsEnabled = isCkbCallsToBHAVEnabled;
+            ckbGLOB.IsEnabled = isCkbGLOBEnabled;
+            ckbObjdGUID.IsEnabled = isCkbObjdGUIDEnabled;
 
-            lbName.Enabled = tbName.Enabled = isCkbSomeTextChecked;
-            ckbDefLang.Enabled = isCkbSomeStringChecked;
+            lbName.IsEnabled = tbName.IsEnabled = isCkbSomeTextChecked;
+            ckbDefLang.IsEnabled = isCkbSomeStringChecked;
         }
 
         private void btnClearFilter_Click(object sender, EventArgs e)
@@ -1000,8 +725,8 @@ namespace pjse.guidtool
         private void btclipb_Click(object sender, EventArgs e)
         {
             string text = "";
-            foreach (string clit in this.rtbReport.Lines) text += clit + "\r\n";
-            Clipboard.SetDataObject(text, true);
+            foreach (string clit in this.rtbReport.Text.Split('\n')) text += clit + "\r\n";
+            _ = Clipboard?.SetTextAsync(text);
         }
-	}
+    }
 }

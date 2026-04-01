@@ -165,5 +165,6 @@
     <ProjectReference Include="..\..\SimPE.Packages\SimPE.Packages.csproj" />
     <ProjectReference Include="..\..\SimPE.Splash\SimPE.Splash.csproj" />
     <ProjectReference Include="..\..\SimPE.WorkSpaceHelper\SimPE.WorkSpaceHelper.csproj" />
+    <ProjectReference Include="..\..\SimPE.Scenegraph\SimPE.Scenegraph.csproj" />
   </ItemGroup>
 </Project>

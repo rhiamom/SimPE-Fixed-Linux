@@ -28,7 +28,9 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;
@@ -38,7 +40,7 @@ using pjse;
 
 namespace pjse
 {
-    public partial class CompareButton : Button
+    public partial class CompareButton : ButtonCompat
     {
         private pjse.ExtendedWrapper wrapper = null;
         public pjse.ExtendedWrapper Wrapper
@@ -79,7 +81,7 @@ namespace pjse
         private void btnCompare_Click(object sender, EventArgs e)
         {
             if (wrapper != null)
-                this.cmenuCompare.Show((Control)sender, new Point(3, 3));
+                this.cmenuCompare.Open((Control)sender);
         }
 
         private void cmenuCompare_Opening(object sender, CancelEventArgs e)
@@ -91,7 +93,7 @@ namespace pjse
                 if (exp.Exists && exp.Flag.FullObjectsPackage)
                 {
                     ToolStripMenuItem tsmi = new ToolStripMenuItem();
-                    tsmi.Click += new EventHandler(tsmi_Click);
+                    tsmi.Click += (s, e) => tsmi_Click(s, e);
                     tsmi.Tag = exp;
                     tsmi.Text = exp.Name;
                     cmenuCompare.Items.Add(tsmi);
@@ -103,7 +105,7 @@ namespace pjse
         {
             pjse.FileTable.Entry fe;
             SimPe.ExpansionItem exp;
-            int i = cmenuCompare.Items.IndexOf((ToolStripItem)sender);
+            int i = cmenuCompare.Items.IndexOf((Avalonia.Controls.MenuItem)sender);
             if (i < 0)
                 throw new ArgumentOutOfRangeException("menuItem", "Unrecognised object triggered event");
             else if (i == 0)
@@ -121,7 +123,7 @@ namespace pjse
             }
             else
             {
-                exp = (SimPe.ExpansionItem)cmenuCompare.Items[i].Tag;
+                exp = (SimPe.ExpansionItem)((Avalonia.Controls.Control)cmenuCompare.Items[i]).Tag;
                 SimPe.Packages.GeneratableFile op = SimPe.Packages.GeneratableFile.LoadFromFile(
                     System.IO.Path.Combine(System.IO.Path.Combine(exp.InstallFolder, exp.ObjectsSubFolder), "objects.package"));
                 if (op == null)

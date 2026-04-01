@@ -23,7 +23,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x0002
@@ -31,20 +32,19 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 	/// <summary>
 	/// Summary description for BhavInstruction.
 	/// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
     {
         #region Form variables
 
-        internal System.Windows.Forms.Panel pnWiz0x0002;
-        private System.Windows.Forms.ComboBox cbOperator;
+        internal StackPanel pnWiz0x0002;
+        private ComboBoxCompat cbOperator;
         private LabelledDataOwner labelledDataOwner1;
         private LabelledDataOwner labelledDataOwner2;
         private FlowLayoutPanel flowLayoutPanel1;
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
-        #endregion
+                #endregion
 
         public UI()
         {
@@ -64,16 +64,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
             }
-            base.Dispose(disposing);
+
 
             inst = null;
         }
@@ -82,7 +78,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
         private Instruction inst = null;
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWiz0x0002; } }
+        public StackPanel WizPanel { get { return this.pnWiz0x0002; } }
 
         public void Execute(Instruction inst)
         {
@@ -108,7 +104,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
                 ops[0x06] = labelledDataOwner1.DataOwner;
                 BhavWiz.FromShort(ref ops, 0, labelledDataOwner1.Value);
 
-                ops[0x05] = (byte)cbOperator.SelectedIndex;
+                ops[0x05] = (byte)(cbOperator.SelectedIndex);
 
                 ops[0x07] = labelledDataOwner2.DataOwner;
                 BhavWiz.FromShort(ref ops, 2, labelledDataOwner2.Value);
@@ -124,27 +120,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+        {            this.pnWiz0x0002 = new StackPanel();
             this.labelledDataOwner2 = new pjse.LabelledDataOwner();
             this.labelledDataOwner1 = new pjse.LabelledDataOwner();
-            this.cbOperator = new System.Windows.Forms.ComboBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnWiz0x0002.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.SuspendLayout();
-            //
+            this.cbOperator = new ComboBoxCompat();
+            this.flowLayoutPanel1 = new FlowLayoutPanel();            //
             // pnWiz0x0002
-            //
-            resources.ApplyResources(this.pnWiz0x0002, "pnWiz0x0002");
-            this.pnWiz0x0002.Controls.Add(this.flowLayoutPanel1);
+            //            this.pnWiz0x0002.Children.Add(this.flowLayoutPanel1);
             this.pnWiz0x0002.Name = "pnWiz0x0002";
             //
             // labelledDataOwner2
-            //
-            resources.ApplyResources(this.labelledDataOwner2, "labelledDataOwner2");
-            this.labelledDataOwner2.DataOwner = ((byte)(255));
+            //            this.labelledDataOwner2.DataOwner = ((byte)(255));
             this.labelledDataOwner2.DataOwnerEnabled = true;
             this.labelledDataOwner2.FlagsFor = this.labelledDataOwner1;
             this.labelledDataOwner2.Instruction = null;
@@ -155,9 +141,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             this.labelledDataOwner2.Value = ((ushort)(0));
             //
             // labelledDataOwner1
-            //
-            resources.ApplyResources(this.labelledDataOwner1, "labelledDataOwner1");
-            this.labelledDataOwner1.DataOwner = ((byte)(255));
+            //            this.labelledDataOwner1.DataOwner = ((byte)(255));
             this.labelledDataOwner1.DataOwnerEnabled = true;
             this.labelledDataOwner1.DecimalVisible = false;
             this.labelledDataOwner1.Instruction = null;
@@ -170,38 +154,24 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             //
             // cbOperator
             //
-            this.cbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.cbOperator, "cbOperator");
             this.cbOperator.Name = "cbOperator";
-            this.cbOperator.SelectedIndexChanged += new System.EventHandler(this.cbOperator_SelectedIndexChanged);
+            this.cbOperator.SelectionChanged += (s, e) => this.cbOperator_SelectedIndexChanged(s, e);
             //
             // flowLayoutPanel1
-            //
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
-            this.flowLayoutPanel1.Controls.Add(this.labelledDataOwner1);
-            this.flowLayoutPanel1.Controls.Add(this.cbOperator);
-            this.flowLayoutPanel1.Controls.Add(this.labelledDataOwner2);
+            //            this.flowLayoutPanel1.Children.Add(this.labelledDataOwner1);
+            this.flowLayoutPanel1.Children.Add(this.cbOperator);
+            this.flowLayoutPanel1.Children.Add(this.labelledDataOwner2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             //
             // UI
-            //
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.pnWiz0x0002);
-            this.Name = "UI";
-            this.pnWiz0x0002.ResumeLayout(false);
-            this.pnWiz0x0002.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            //            this.Controls.Add(this.pnWiz0x0002);
 
         }
         #endregion
 
         private void cbOperator_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            labelledDataOwner2.UseFlagNames = (cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10);
+            labelledDataOwner2.UseFlagNames = ((cbOperator.SelectedIndex) >= 8 && (cbOperator.SelectedIndex) <= 10);
         }
     }
 }

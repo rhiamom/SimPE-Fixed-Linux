@@ -28,72 +28,48 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 
 namespace pjse
 {
-    public partial class PickANumber : Form
+    public partial class PickANumber : Window
     {
+        private bool _dialogAccepted = false;
+        public bool DialogAccepted { get { return _dialogAccepted; } }
+
         public PickANumber()
         {
             InitializeComponent();
         }
 
-        private List<TextBox> ltb = new List<TextBox>();
-        private List<RadioButton> lrb = new List<RadioButton>();
+        private List<TextBoxCompat> ltb = new List<TextBoxCompat>();
+        private List<Avalonia.Controls.RadioButton> lrb = new List<Avalonia.Controls.RadioButton>();
         private List<pjse.BhavOperandWizards.DataOwnerControl> ldoc = new List<pjse.BhavOperandWizards.DataOwnerControl>();
         private int selectedRB = -1;
 
         public PickANumber(ushort[] values, string[] labels) : this()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PickANumber));
-            this.tableLayoutPanel1.Controls.Clear();
-            this.tableLayoutPanel1.ColumnStyles.Clear();
-            this.tableLayoutPanel1.RowStyles.Clear();
-            this.tableLayoutPanel1.RowCount = 0;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-
-            this.tableLayoutPanel1.RowCount++;
-            this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-
             for (int i = 0; i < values.Length; i++)
             {
-                this.tableLayoutPanel1.RowCount++;
-                this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-                TextBox t = new TextBox();
+                TextBoxCompat t = new TextBoxCompat();
                 t.Name = "textBox" + (i + 2).ToString();
-                resources.ApplyResources(t, "textBox1");
                 ltb.Add(t);
-                t.Enabled = false;
+                t.IsEnabled = false;
                 pjse.BhavOperandWizards.DataOwnerControl d = new pjse.BhavOperandWizards.DataOwnerControl(null, null, null,
                     t, null, null, null, 0x07, values[i]);
                 ldoc.Add(d);
-                this.tableLayoutPanel1.Controls.Add(t, 1, tableLayoutPanel1.RowCount - 1);
 
-                RadioButton r = new RadioButton();
-                resources.ApplyResources(r, "radioButton1");
-                r.Text = labels[i];
-                r.Checked = false;
-                r.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-                r.TextAlign = ContentAlignment.MiddleRight;
+                Avalonia.Controls.RadioButton r = new Avalonia.Controls.RadioButton();
+                r.Content = labels[i];
+                r.IsChecked = false;
+                r.IsCheckedChanged += (s, e) => radioButton1_CheckedChanged(s, e);
                 lrb.Add(r);
-                this.tableLayoutPanel1.Controls.Add(r, 0, tableLayoutPanel1.RowCount - 1);
             }
 
-            ltb[ltb.Count - 1].Enabled = true;
-            ltb[ltb.Count - 1].Enter += new System.EventHandler(this.ltbLast_Enter);
-            lrb[0].Checked = true;
-
-            this.tableLayoutPanel1.RowCount++;
-            int last = this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, (float)(btnOK.Height * 1.5)));
-            this.tableLayoutPanel1.Controls.Add(btnOK, 0, last);
-            this.tableLayoutPanel1.Controls.Add(btnCancel, 1, last);
-            this.AcceptButton = btnOK;
-            this.CancelButton = btnCancel;
+            ltb[ltb.Count - 1].IsEnabled = true;
+            ltb[ltb.Count - 1].GotFocus += (s, e) => ltbLast_Enter(s, e);
+            lrb[0].IsChecked = true;
         }
 
         public uint Value
@@ -104,26 +80,26 @@ namespace pjse
             }
         }
 
-        public String Title
+        public String FormTitle
         {
-            get { return this.Text; }
-            set { this.Text = value; }
+            get { return this.Title; }
+            set { this.Title = value; }
         }
 
         public String Prompt
         {
-            get { return this.label1.Text; }
-            set { this.label1.Text = value; }
+            get { return this.label1?.Content?.ToString() ?? ""; }
+            set { if (this.label1 != null) this.label1.Content = value; }
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            selectedRB = lrb.IndexOf((RadioButton)sender);
+            selectedRB = lrb.IndexOf((Avalonia.Controls.RadioButton)sender);
         }
 
         private void ltbLast_Enter(object sender, EventArgs e)
         {
-            lrb[ltb.Count - 1].Checked = true;
+            lrb[ltb.Count - 1].IsChecked = true;
         }
     }
 }

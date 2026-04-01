@@ -82,7 +82,7 @@ namespace SimPe.Plugin
         #endregion
 
         #region IPackedFileUI Member
-        System.Windows.Forms.Control IPackedFileUI.GUIHandle
+        Avalonia.Controls.Control IPackedFileUI.GUIHandle
         {
             get { return this; }
         }

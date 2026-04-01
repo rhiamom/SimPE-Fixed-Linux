@@ -21,7 +21,8 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x006d
@@ -29,55 +30,54 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
+    internal class UI : Window, iBhavOperandWizForm
     {
         #region Form variables
 
-        internal System.Windows.Forms.Panel pnWiz0x006d;
-        private Label label1;
+        internal StackPanel pnWiz0x006d;
+        private LabelCompat label1;
         private Panel pnMaterial;
-        private Label label3;
-        private ComboBox cbPicker1;
-        private CheckBox cbDecimal;
-        private TextBox tbVal1;
-        private CheckBox cbAttrPicker;
-        private ComboBox cbDataOwner1;
+        private LabelCompat label3;
+        private ComboBoxCompat cbPicker1;
+        private CheckBoxCompat2 cbDecimal;
+        private TextBoxCompat tbVal1;
+        private CheckBoxCompat2 cbAttrPicker;
+        private ComboBoxCompat cbDataOwner1;
         private RadioButton rb1Object;
         private RadioButton rb1Me;
         private RadioButton rb1ScrShot;
         private Panel pnNotScrShot;
-        private CheckBox ckbMaterialTemp;
+        private CheckBoxCompat2 ckbMaterialTemp;
         private RadioButton rb2MovingTexture;
         private RadioButton rb2Material;
-        private Label label5;
-        private TextBox tbVal3;
-        private ComboBox cbMatScope;
-        private Label label6;
-        private Button btnMaterial;
-        private TextBox tbMaterial;
+        private LabelCompat label5;
+        private TextBoxCompat tbVal3;
+        private ComboBoxCompat cbMatScope;
+        private LabelCompat label6;
+        private ButtonCompat btnMaterial;
+        private TextBoxCompat tbMaterial;
         private Panel panel1;
-        private Label label2;
+        private LabelCompat label2;
         private RadioButton rb3Object;
         private RadioButton rb3Me;
         private Panel pnNotAllOver;
-        private CheckBox ckbAllOver;
-        private ComboBox cbMeshScope;
-        private Label label4;
-        private Label label7;
-        private TextBox tbMesh;
-        private Button btnMesh;
-        private TextBox tbVal5;
-        private Label label8;
-        private CheckBox ckbMeshTemp;
-        private Label label9;
-        private ComboBox cbPicker2;
-        private TextBox tbVal2;
-        private ComboBox cbDataOwner2;
+        private CheckBoxCompat2 ckbAllOver;
+        private ComboBoxCompat cbMeshScope;
+        private LabelCompat label4;
+        private LabelCompat label7;
+        private TextBoxCompat tbMesh;
+        private ButtonCompat btnMesh;
+        private TextBoxCompat tbVal5;
+        private LabelCompat label8;
+        private CheckBoxCompat2 ckbMeshTemp;
+        private LabelCompat label9;
+        private ComboBoxCompat cbPicker2;
+        private TextBoxCompat tbVal2;
+        private ComboBoxCompat cbDataOwner2;
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
-        #endregion
+                #endregion
 
         public UI()
         {
@@ -93,16 +93,12 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
             }
-            base.Dispose(disposing);
+
 
             inst = null;
         }
@@ -128,10 +124,10 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
         }
 
-        private void doStrChooser(ComboBox scope, pjse.GS.GlobalStr instance, TextBox tbVal, TextBox strText)
+        private void doStrChooser(ComboBoxCompat scope, pjse.GS.GlobalStr instance, TextBoxCompat tbVal, TextBoxCompat strText)
         {
             Scope[] s = { Scope.Private, Scope.SemiGlobal, Scope.Global };
-            pjse.FileTable.Entry[] items = (scope.SelectedIndex < 0) ? null :
+            pjse.FileTable.Entry[] items = ((scope.SelectedIndex) < 0) ? null :
                 pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, inst.Parent.GroupForScope(s[scope.SelectedIndex]), (uint)instance];
 
             if (items == null || items.Length == 0)
@@ -155,29 +151,29 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             }
         }
 
-        private void doStrValue(ComboBox scope, pjse.GS.GlobalStr instance, ushort strno, TextBox strText)
+        private void doStrValue(ComboBoxCompat scope, pjse.GS.GlobalStr instance, ushort strno, TextBoxCompat strText)
         {
             Scope[] s = { Scope.Private, Scope.Global, Scope.SemiGlobal };
-            strText.Text = (scope.SelectedIndex < 0) ? "" :
+            strText.Text = ((scope.SelectedIndex) < 0) ? "" :
                 ((BhavWiz)inst).readStr(s[scope.SelectedIndex], instance, strno, -1, pjse.Detail.ErrorNames);
         }
 
         private void MaterialFrom()
         {
-            this.pnNotScrShot.Enabled = !this.rb1ScrShot.Checked;
-            this.tbVal3.Enabled = !this.ckbMaterialTemp.Checked;
-            this.btnMaterial.Enabled = this.tbMaterial.Visible = this.rb1Me.Checked && !this.ckbMaterialTemp.Checked;
+            this.pnNotScrShot.IsEnabled = !this.rb1ScrShot.IsChecked == true;
+            this.tbVal3.IsEnabled = !this.ckbMaterialTemp.IsChecked == true;
+            this.btnMaterial.IsEnabled = this.tbMaterial.IsVisible = this.rb1Me.IsChecked == true && !this.ckbMaterialTemp.IsChecked == true;
         }
 
         private void MeshFrom()
         {
-            this.pnNotAllOver.Enabled = !this.ckbAllOver.Checked;
-            this.tbVal5.Enabled = !this.ckbMeshTemp.Checked;
-            this.btnMesh.Enabled = this.tbMesh.Visible = !this.ckbAllOver.Checked && this.rb3Me.Checked && !this.ckbMeshTemp.Checked;
+            this.pnNotAllOver.IsEnabled = !this.ckbAllOver.IsChecked == true;
+            this.tbVal5.IsEnabled = !this.ckbMeshTemp.IsChecked == true;
+            this.btnMesh.IsEnabled = this.tbMesh.IsVisible = !this.ckbAllOver.IsChecked == true && this.rb3Me.IsChecked == true && !this.ckbMeshTemp.IsChecked == true;
         }
 
         #region iBhavOperandWizForm
-        public Panel WizPanel { get { return this.pnWiz0x006d; } }
+        public StackPanel WizPanel { get { return this.pnWiz0x006d; } }
 
         public void Execute(Instruction inst)
         {
@@ -191,8 +187,10 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             doid3 = new DataOwnerControl(inst, null, null, this.tbVal3, this.cbDecimal, this.cbAttrPicker, null,
                 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
 
-            this.rb3Object.Checked = ((ops1[0x02] & 0x01) != 0);
-            this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
+            this.rb3Object.IsChecked = ((ops1[0x02] & 0x01) != 0);
+            this.rb3Me.IsChecked = !this.rb3Object.IsChecked == true;
+            this.btnMesh.IsVisible = this.rb3Me.IsChecked == true;
+            this.tbMesh.IsVisible = this.rb3Me.IsChecked == true;
 
             this.cbMatScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0x06)
@@ -202,15 +200,15 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 case 0x04: this.cbMatScope.SelectedIndex = 1; break; // SemiGlobal
             }
 
-            this.rb1ScrShot.Checked = ((ops2[0x05] & 0x02) != 0);
-            this.rb1Me.Checked = !this.rb1ScrShot.Checked && ((ops1[0x02] & 0x08) == 0);
-            this.rb1Object.Checked = !this.rb1ScrShot.Checked && !this.rb1Me.Checked;
+            this.rb1ScrShot.IsChecked = ((ops2[0x05] & 0x02) != 0);
+            this.rb1Me.IsChecked = !this.rb1ScrShot.IsChecked == true && ((ops1[0x02] & 0x08) == 0);
+            this.rb1Object.IsChecked = !this.rb1ScrShot.IsChecked == true && !this.rb1Me.IsChecked == true;
 
-            this.rb2MovingTexture.Checked = ((ops2[0x05] & 0x01) != 0);
-            this.rb2Material.Checked = !this.rb2MovingTexture.Checked;
+            this.rb2MovingTexture.IsChecked = ((ops2[0x05] & 0x01) != 0);
+            this.rb2Material.IsChecked = !this.rb2MovingTexture.IsChecked == true;
 
-            this.ckbMaterialTemp.Checked = ((ops1[0x02] & 0x10) != 0);
-            this.ckbMeshTemp.Checked     = ((ops1[0x02] & 0x20) != 0);
+            this.ckbMaterialTemp.IsChecked = ((ops1[0x02] & 0x10) != 0);
+            this.ckbMeshTemp.IsChecked     = ((ops1[0x02] & 0x20) != 0);
 
             this.cbMeshScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0xc0)
@@ -222,7 +220,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
             doid5 = new DataOwnerControl(inst, null, null, this.tbVal5, this.cbDecimal, this.cbAttrPicker, null,
                 0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
-            this.ckbAllOver.Checked = (ops1[0x04] & 0x80) != 0;
+            this.ckbAllOver.IsChecked = (ops1[0x04] & 0x80) != 0;
 
             doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, null,
                 ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
@@ -250,15 +248,15 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 BhavWiz.FromShort(ref ops1, 0, doid3.Value);
 
                 ops1[0x02] = 0x00;
-                ops1[0x02] |= (byte)(this.rb3Object.Checked ? 0x01 : 0x00);
+                ops1[0x02] |= (byte)(this.rb3Object.IsChecked == true ? 0x01 : 0x00);
                 switch (this.cbMatScope.SelectedIndex)
                 {
                     case 2: ops1[0x02] |= 0x02; break; // Global
                     case 1: ops1[0x02] |= 0x04; break; // SemiGlobal
                 }
-                ops1[0x02] |= (byte)(this.rb1Object.Checked ? 0x08 : 0x00);
-                ops1[0x02] |= (byte)(this.ckbMaterialTemp.Checked ? 0x10 : 0x00);
-                ops1[0x02] |= (byte)(this.ckbMeshTemp.Checked ? 0x20 : 0x00);
+                ops1[0x02] |= (byte)(this.rb1Object.IsChecked == true ? 0x08 : 0x00);
+                ops1[0x02] |= (byte)(this.ckbMaterialTemp.IsChecked == true ? 0x10 : 0x00);
+                ops1[0x02] |= (byte)(this.ckbMeshTemp.IsChecked == true ? 0x20 : 0x00);
                 switch (this.cbMeshScope.SelectedIndex)
                 {
                     case 2: ops1[0x02] |= 0x40; break; // Global
@@ -266,7 +264,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 }
 
                 BhavWiz.FromShort(ref ops1, 3, (ushort)(doid5.Value & 0x7fff));
-                ops1[0x04] |= (byte)(this.ckbAllOver.Checked ? 0x80 : 0x00);
+                ops1[0x04] |= (byte)(this.ckbAllOver.IsChecked == true ? 0x80 : 0x00);
 
                 ops1[0x05] = doid1.DataOwner;
                 BhavWiz.FromShort(ref ops1, 6, doid1.Value);
@@ -275,8 +273,8 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 BhavWiz.FromShort(ref ops2, 1, doid2.Value);
 
                 ops2[0x05] &= 0xfc;
-                ops2[0x05] |= (byte)(this.rb2MovingTexture.Checked ? 0x01 : 0x00);
-                ops2[0x05] |= (byte)(this.rb1ScrShot.Checked ? 0x02 : 0x00);
+                ops2[0x05] |= (byte)(this.rb2MovingTexture.IsChecked == true ? 0x01 : 0x00);
+                ops2[0x05] |= (byte)(this.rb1ScrShot.IsChecked == true ? 0x02 : 0x00);
             }
             return inst;
         }
@@ -289,367 +287,221 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWiz0x006d = new System.Windows.Forms.Panel();
-            this.cbPicker2 = new System.Windows.Forms.ComboBox();
-            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
-            this.cbDecimal = new System.Windows.Forms.CheckBox();
-            this.tbVal2 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pnNotAllOver = new System.Windows.Forms.Panel();
-            this.tbMesh = new System.Windows.Forms.TextBox();
-            this.btnMesh = new System.Windows.Forms.Button();
-            this.tbVal5 = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.ckbMeshTemp = new System.Windows.Forms.CheckBox();
-            this.cbMeshScope = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ckbAllOver = new System.Windows.Forms.CheckBox();
-            this.rb3Object = new System.Windows.Forms.RadioButton();
-            this.rb3Me = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.tbVal1 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-            this.pnMaterial = new System.Windows.Forms.Panel();
-            this.pnNotScrShot = new System.Windows.Forms.Panel();
-            this.tbMaterial = new System.Windows.Forms.TextBox();
-            this.btnMaterial = new System.Windows.Forms.Button();
-            this.tbVal3 = new System.Windows.Forms.TextBox();
-            this.cbMatScope = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.ckbMaterialTemp = new System.Windows.Forms.CheckBox();
-            this.rb2MovingTexture = new System.Windows.Forms.RadioButton();
-            this.rb2Material = new System.Windows.Forms.RadioButton();
-            this.rb1Object = new System.Windows.Forms.RadioButton();
-            this.rb1Me = new System.Windows.Forms.RadioButton();
-            this.rb1ScrShot = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnWiz0x006d.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.pnNotAllOver.SuspendLayout();
-            this.pnMaterial.SuspendLayout();
-            this.pnNotScrShot.SuspendLayout();
-            this.SuspendLayout();
-            //
+        {            this.pnWiz0x006d = new StackPanel();
+            this.cbPicker2 = new ComboBoxCompat();
+            this.cbAttrPicker = new CheckBoxCompat2();
+            this.cbDecimal = new CheckBoxCompat2();
+            this.tbVal2 = new TextBoxCompat();
+            this.cbDataOwner2 = new ComboBoxCompat();
+            this.panel1 = new StackPanel();
+            this.pnNotAllOver = new StackPanel();
+            this.tbMesh = new TextBoxCompat();
+            this.btnMesh = new ButtonCompat();
+            this.tbVal5 = new TextBoxCompat();
+            this.label8 = new LabelCompat();
+            this.ckbMeshTemp = new CheckBoxCompat2();
+            this.cbMeshScope = new ComboBoxCompat();
+            this.label4 = new LabelCompat();
+            this.ckbAllOver = new CheckBoxCompat2();
+            this.rb3Object = new Avalonia.Controls.RadioButton();
+            this.rb3Me = new Avalonia.Controls.RadioButton();
+            this.label2 = new LabelCompat();
+            this.cbPicker1 = new ComboBoxCompat();
+            this.tbVal1 = new TextBoxCompat();
+            this.cbDataOwner1 = new ComboBoxCompat();
+            this.pnMaterial = new StackPanel();
+            this.pnNotScrShot = new StackPanel();
+            this.tbMaterial = new TextBoxCompat();
+            this.btnMaterial = new ButtonCompat();
+            this.tbVal3 = new TextBoxCompat();
+            this.cbMatScope = new ComboBoxCompat();
+            this.label7 = new LabelCompat();
+            this.label6 = new LabelCompat();
+            this.label5 = new LabelCompat();
+            this.ckbMaterialTemp = new CheckBoxCompat2();
+            this.rb2MovingTexture = new Avalonia.Controls.RadioButton();
+            this.rb2Material = new Avalonia.Controls.RadioButton();
+            this.rb1Object = new Avalonia.Controls.RadioButton();
+            this.rb1Me = new Avalonia.Controls.RadioButton();
+            this.rb1ScrShot = new Avalonia.Controls.RadioButton();
+            this.label3 = new LabelCompat();
+            this.label9 = new LabelCompat();
+            this.label1 = new LabelCompat();            //
             // pnWiz0x006d
             //
-            this.pnWiz0x006d.Controls.Add(this.cbPicker2);
-            this.pnWiz0x006d.Controls.Add(this.cbAttrPicker);
-            this.pnWiz0x006d.Controls.Add(this.cbDecimal);
-            this.pnWiz0x006d.Controls.Add(this.tbVal2);
-            this.pnWiz0x006d.Controls.Add(this.cbDataOwner2);
-            this.pnWiz0x006d.Controls.Add(this.panel1);
-            this.pnWiz0x006d.Controls.Add(this.cbPicker1);
-            this.pnWiz0x006d.Controls.Add(this.tbVal1);
-            this.pnWiz0x006d.Controls.Add(this.cbDataOwner1);
-            this.pnWiz0x006d.Controls.Add(this.pnMaterial);
-            this.pnWiz0x006d.Controls.Add(this.label9);
-            this.pnWiz0x006d.Controls.Add(this.label1);
-            resources.ApplyResources(this.pnWiz0x006d, "pnWiz0x006d");
-            this.pnWiz0x006d.Name = "pnWiz0x006d";
+            this.pnWiz0x006d.Children.Add(this.cbPicker2);
+            this.pnWiz0x006d.Children.Add(this.cbAttrPicker);
+            this.pnWiz0x006d.Children.Add(this.cbDecimal);
+            this.pnWiz0x006d.Children.Add(this.tbVal2);
+            this.pnWiz0x006d.Children.Add(this.cbDataOwner2);
+            this.pnWiz0x006d.Children.Add(this.panel1);
+            this.pnWiz0x006d.Children.Add(this.cbPicker1);
+            this.pnWiz0x006d.Children.Add(this.tbVal1);
+            this.pnWiz0x006d.Children.Add(this.cbDataOwner1);
+            this.pnWiz0x006d.Children.Add(this.pnMaterial);
+            this.pnWiz0x006d.Children.Add(this.label9);
+            this.pnWiz0x006d.Children.Add(this.label1);            this.pnWiz0x006d.Name = "pnWiz0x006d";
             //
             // cbPicker2
             //
-            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker2, "cbPicker2");
             this.cbPicker2.Name = "cbPicker2";
             //
             // cbAttrPicker
-            //
-            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
-            this.cbAttrPicker.Name = "cbAttrPicker";
+            //            this.cbAttrPicker.Name = "cbAttrPicker";
             //
             // cbDecimal
-            //
-            resources.ApplyResources(this.cbDecimal, "cbDecimal");
-            this.cbDecimal.Name = "cbDecimal";
+            //            this.cbDecimal.Name = "cbDecimal";
             //
             // tbVal2
-            //
-            resources.ApplyResources(this.tbVal2, "tbVal2");
-            this.tbVal2.Name = "tbVal2";
+            //            this.tbVal2.Name = "tbVal2";
             //
             // cbDataOwner2
             //
-            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
             this.cbDataOwner2.Name = "cbDataOwner2";
             //
             // panel1
-            //
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.pnNotAllOver);
-            this.panel1.Controls.Add(this.ckbAllOver);
-            this.panel1.Controls.Add(this.rb3Object);
-            this.panel1.Controls.Add(this.rb3Me);
-            this.panel1.Controls.Add(this.label2);
+            //            this.panel1.Children.Add(this.pnNotAllOver);
+            this.panel1.Children.Add(this.ckbAllOver);
+            this.panel1.Children.Add(this.rb3Object);
+            this.panel1.Children.Add(this.rb3Me);
+            this.panel1.Children.Add(this.label2);
             this.panel1.Name = "panel1";
             //
             // pnNotAllOver
-            //
-            resources.ApplyResources(this.pnNotAllOver, "pnNotAllOver");
-            this.pnNotAllOver.Controls.Add(this.tbMesh);
-            this.pnNotAllOver.Controls.Add(this.btnMesh);
-            this.pnNotAllOver.Controls.Add(this.tbVal5);
-            this.pnNotAllOver.Controls.Add(this.label8);
-            this.pnNotAllOver.Controls.Add(this.ckbMeshTemp);
-            this.pnNotAllOver.Controls.Add(this.cbMeshScope);
-            this.pnNotAllOver.Controls.Add(this.label4);
+            //            this.pnNotAllOver.Children.Add(this.tbMesh);
+            this.pnNotAllOver.Children.Add(this.btnMesh);
+            this.pnNotAllOver.Children.Add(this.tbVal5);
+            this.pnNotAllOver.Children.Add(this.label8);
+            this.pnNotAllOver.Children.Add(this.ckbMeshTemp);
+            this.pnNotAllOver.Children.Add(this.cbMeshScope);
+            this.pnNotAllOver.Children.Add(this.label4);
             this.pnNotAllOver.Name = "pnNotAllOver";
             //
             // tbMesh
-            //
-            resources.ApplyResources(this.tbMesh, "tbMesh");
-            this.tbMesh.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbMesh.Name = "tbMesh";
-            this.tbMesh.ReadOnly = true;
-            this.tbMesh.TabStop = false;
-            //
+            //            this.tbMesh.Name = "tbMesh";
+            this.tbMesh.IsReadOnly = true;
             // btnMesh
-            //
-            resources.ApplyResources(this.btnMesh, "btnMesh");
-            this.btnMesh.Name = "btnMesh";
-            this.btnMesh.Click += new System.EventHandler(this.btnMesh_Click);
+            //            this.btnMesh.Name = "btnMesh";
+            this.btnMesh.Click += (s, e) => this.btnMesh_Click(s, e);
             //
             // tbVal5
-            //
-            resources.ApplyResources(this.tbVal5, "tbVal5");
-            this.tbVal5.Name = "tbVal5";
+            //            this.tbVal5.Name = "tbVal5";
             //
             // label8
-            //
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
+            //            this.label8.Name = "label8";
             //
             // ckbMeshTemp
-            //
-            resources.ApplyResources(this.ckbMeshTemp, "ckbMeshTemp");
-            this.ckbMeshTemp.Name = "ckbMeshTemp";
-            this.ckbMeshTemp.UseVisualStyleBackColor = true;
-            this.ckbMeshTemp.CheckedChanged += new System.EventHandler(this.ckbMeshTemp_CheckedChanged);
+            //            this.ckbMeshTemp.Name = "ckbMeshTemp";
+            this.ckbMeshTemp.IsCheckedChanged += (s, e) => this.ckbMeshTemp_CheckedChanged(s, e);
             //
             // cbMeshScope
             //
-            this.cbMeshScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMeshScope.FormattingEnabled = true;
-            this.cbMeshScope.Items.AddRange(new object[] {
-            resources.GetString("cbMeshScope.Items"),
-            resources.GetString("cbMeshScope.Items1"),
-            resources.GetString("cbMeshScope.Items2")});
-            resources.ApplyResources(this.cbMeshScope, "cbMeshScope");
-            this.cbMeshScope.Name = "cbMeshScope";
-            this.cbMeshScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
+            this.cbMeshScope.SelectionChanged += (s, e) => this.cbMatMeshScope_SelectedIndexChanged(s, e);
             //
             // label4
-            //
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
+            //            this.label4.Name = "label4";
             //
             // ckbAllOver
-            //
-            resources.ApplyResources(this.ckbAllOver, "ckbAllOver");
-            this.ckbAllOver.Name = "ckbAllOver";
-            this.ckbAllOver.UseVisualStyleBackColor = true;
-            this.ckbAllOver.CheckedChanged += new System.EventHandler(this.ckbAllOver_CheckedChanged);
+            //            this.ckbAllOver.Name = "ckbAllOver";
+            this.ckbAllOver.IsCheckedChanged += (s, e) => this.ckbAllOver_CheckedChanged(s, e);
             //
             // rb3Object
-            //
-            resources.ApplyResources(this.rb3Object, "rb3Object");
-            this.rb3Object.Name = "rb3Object";
-            this.rb3Object.TabStop = true;
-            this.rb3Object.UseVisualStyleBackColor = true;
-            this.rb3Object.CheckedChanged += new System.EventHandler(this.rb3group_CheckedChanged);
+            //            this.rb3Object.Name = "rb3Object";
+            this.rb3Object.IsCheckedChanged += (s, e) => this.rb3group_CheckedChanged(s, e);
             //
             // rb3Me
-            //
-            resources.ApplyResources(this.rb3Me, "rb3Me");
-            this.rb3Me.Name = "rb3Me";
-            this.rb3Me.TabStop = true;
-            this.rb3Me.UseVisualStyleBackColor = true;
-            this.rb3Me.CheckedChanged += new System.EventHandler(this.rb3group_CheckedChanged);
+            //            this.rb3Me.Name = "rb3Me";
+            this.rb3Me.IsCheckedChanged += (s, e) => this.rb3group_CheckedChanged(s, e);
             //
             // label2
-            //
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
+            //            this.label2.Name = "label2";
             //
             // cbPicker1
             //
-            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
             //
             // tbVal1
-            //
-            resources.ApplyResources(this.tbVal1, "tbVal1");
-            this.tbVal1.Name = "tbVal1";
+            //            this.tbVal1.Name = "tbVal1";
             //
             // cbDataOwner1
             //
-            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
             //
             // pnMaterial
-            //
-            resources.ApplyResources(this.pnMaterial, "pnMaterial");
-            this.pnMaterial.Controls.Add(this.pnNotScrShot);
-            this.pnMaterial.Controls.Add(this.rb1Object);
-            this.pnMaterial.Controls.Add(this.rb1Me);
-            this.pnMaterial.Controls.Add(this.rb1ScrShot);
-            this.pnMaterial.Controls.Add(this.label3);
+            //            this.pnMaterial.Children.Add(this.pnNotScrShot);
+            this.pnMaterial.Children.Add(this.rb1Object);
+            this.pnMaterial.Children.Add(this.rb1Me);
+            this.pnMaterial.Children.Add(this.rb1ScrShot);
+            this.pnMaterial.Children.Add(this.label3);
             this.pnMaterial.Name = "pnMaterial";
             //
             // pnNotScrShot
-            //
-            resources.ApplyResources(this.pnNotScrShot, "pnNotScrShot");
-            this.pnNotScrShot.Controls.Add(this.tbMaterial);
-            this.pnNotScrShot.Controls.Add(this.btnMaterial);
-            this.pnNotScrShot.Controls.Add(this.tbVal3);
-            this.pnNotScrShot.Controls.Add(this.cbMatScope);
-            this.pnNotScrShot.Controls.Add(this.label7);
-            this.pnNotScrShot.Controls.Add(this.label6);
-            this.pnNotScrShot.Controls.Add(this.label5);
-            this.pnNotScrShot.Controls.Add(this.ckbMaterialTemp);
-            this.pnNotScrShot.Controls.Add(this.rb2MovingTexture);
-            this.pnNotScrShot.Controls.Add(this.rb2Material);
+            //            this.pnNotScrShot.Children.Add(this.tbMaterial);
+            this.pnNotScrShot.Children.Add(this.btnMaterial);
+            this.pnNotScrShot.Children.Add(this.tbVal3);
+            this.pnNotScrShot.Children.Add(this.cbMatScope);
+            this.pnNotScrShot.Children.Add(this.label7);
+            this.pnNotScrShot.Children.Add(this.label6);
+            this.pnNotScrShot.Children.Add(this.label5);
+            this.pnNotScrShot.Children.Add(this.ckbMaterialTemp);
+            this.pnNotScrShot.Children.Add(this.rb2MovingTexture);
+            this.pnNotScrShot.Children.Add(this.rb2Material);
             this.pnNotScrShot.Name = "pnNotScrShot";
             //
             // tbMaterial
-            //
-            resources.ApplyResources(this.tbMaterial, "tbMaterial");
-            this.tbMaterial.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbMaterial.Name = "tbMaterial";
-            this.tbMaterial.ReadOnly = true;
-            this.tbMaterial.TabStop = false;
-            //
+            //            this.tbMaterial.Name = "tbMaterial";
+            this.tbMaterial.IsReadOnly = true;
             // btnMaterial
-            //
-            resources.ApplyResources(this.btnMaterial, "btnMaterial");
-            this.btnMaterial.Name = "btnMaterial";
-            this.btnMaterial.Click += new System.EventHandler(this.btnMaterial_Click);
+            //            this.btnMaterial.Name = "btnMaterial";
+            this.btnMaterial.Click += (s, e) => this.btnMaterial_Click(s, e);
             //
             // tbVal3
-            //
-            resources.ApplyResources(this.tbVal3, "tbVal3");
-            this.tbVal3.Name = "tbVal3";
+            //            this.tbVal3.Name = "tbVal3";
             //
             // cbMatScope
             //
-            this.cbMatScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMatScope.FormattingEnabled = true;
-            this.cbMatScope.Items.AddRange(new object[] {
-            resources.GetString("cbMatScope.Items"),
-            resources.GetString("cbMatScope.Items1"),
-            resources.GetString("cbMatScope.Items2")});
-            resources.ApplyResources(this.cbMatScope, "cbMatScope");
-            this.cbMatScope.Name = "cbMatScope";
-            this.cbMatScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
+            this.cbMatScope.SelectionChanged += (s, e) => this.cbMatMeshScope_SelectedIndexChanged(s, e);
             //
             // label7
-            //
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
+            //            this.label7.Name = "label7";
             //
             // label6
-            //
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
+            //            this.label6.Name = "label6";
             //
             // label5
-            //
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
+            //            this.label5.Name = "label5";
             //
             // ckbMaterialTemp
-            //
-            resources.ApplyResources(this.ckbMaterialTemp, "ckbMaterialTemp");
-            this.ckbMaterialTemp.Name = "ckbMaterialTemp";
-            this.ckbMaterialTemp.UseVisualStyleBackColor = true;
-            this.ckbMaterialTemp.CheckedChanged += new System.EventHandler(this.ckbMaterialTemp_CheckedChanged);
+            //            this.ckbMaterialTemp.Name = "ckbMaterialTemp";
+            this.ckbMaterialTemp.IsCheckedChanged += (s, e) => this.ckbMaterialTemp_CheckedChanged(s, e);
             //
             // rb2MovingTexture
-            //
-            resources.ApplyResources(this.rb2MovingTexture, "rb2MovingTexture");
-            this.rb2MovingTexture.Name = "rb2MovingTexture";
-            this.rb2MovingTexture.TabStop = true;
-            this.rb2MovingTexture.UseVisualStyleBackColor = true;
-            //
+            //            this.rb2MovingTexture.Name = "rb2MovingTexture";
             // rb2Material
-            //
-            resources.ApplyResources(this.rb2Material, "rb2Material");
-            this.rb2Material.Name = "rb2Material";
-            this.rb2Material.TabStop = true;
-            this.rb2Material.UseVisualStyleBackColor = true;
-            //
+            //            this.rb2Material.Name = "rb2Material";
             // rb1Object
-            //
-            resources.ApplyResources(this.rb1Object, "rb1Object");
-            this.rb1Object.Name = "rb1Object";
-            this.rb1Object.TabStop = true;
-            this.rb1Object.UseVisualStyleBackColor = true;
-            this.rb1Object.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
+            //            this.rb1Object.Name = "rb1Object";
+            this.rb1Object.IsCheckedChanged += (s, e) => this.rb1group_CheckedChanged(s, e);
             //
             // rb1Me
-            //
-            resources.ApplyResources(this.rb1Me, "rb1Me");
-            this.rb1Me.Name = "rb1Me";
-            this.rb1Me.TabStop = true;
-            this.rb1Me.UseVisualStyleBackColor = true;
-            this.rb1Me.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
+            //            this.rb1Me.Name = "rb1Me";
+            this.rb1Me.IsCheckedChanged += (s, e) => this.rb1group_CheckedChanged(s, e);
             //
             // rb1ScrShot
-            //
-            resources.ApplyResources(this.rb1ScrShot, "rb1ScrShot");
-            this.rb1ScrShot.Name = "rb1ScrShot";
-            this.rb1ScrShot.TabStop = true;
-            this.rb1ScrShot.UseVisualStyleBackColor = true;
-            this.rb1ScrShot.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
+            //            this.rb1ScrShot.Name = "rb1ScrShot";
+            this.rb1ScrShot.IsCheckedChanged += (s, e) => this.rb1group_CheckedChanged(s, e);
             //
             // label3
-            //
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
+            //            this.label3.Name = "label3";
             //
             // label9
-            //
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
+            //            this.label9.Name = "label9";
             //
             // label1
-            //
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            //            this.label1.Name = "label1";
             //
             // UI
-            //
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.pnWiz0x006d);
-            this.Name = "UI";
-            this.pnWiz0x006d.ResumeLayout(false);
-            this.pnWiz0x006d.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.pnNotAllOver.ResumeLayout(false);
-            this.pnNotAllOver.PerformLayout();
-            this.pnMaterial.ResumeLayout(false);
-            this.pnMaterial.PerformLayout();
-            this.pnNotScrShot.ResumeLayout(false);
-            this.pnNotScrShot.PerformLayout();
-            this.ResumeLayout(false);
-
+            //            this.Controls.Add(this.pnWiz0x006d);
         }
         #endregion
 
