@@ -45,11 +45,8 @@ namespace SimPe
     partial class MainForm
     {
         // InitializeComponent() is generated from MainForm.axaml — do NOT declare it here.
-        // lv, tv: declared by AXAML code-gen when x:Name is active; stubbed here for diagnostic build.
-        // dc: same — stub allows SetupMainForm() to compile when x:Name="dc" is not in AXAML.
-        internal SimPe.Windows.Forms.ResourceListViewExt lv = new SimPe.Windows.Forms.ResourceListViewExt();
-        internal SimPe.Windows.Forms.ResourceTreeViewExt tv = new SimPe.Windows.Forms.ResourceTreeViewExt();
-        internal Avalonia.Controls.TabControl dc           = new Avalonia.Controls.TabControl();
+        // lv, tv, dc, tbInst, tbGrp, cbsemig, waitControl1 are declared by the AXAML source
+        // generator from x:Name attributes in MainForm.axaml — do NOT re-declare them here.
         private Ambertation.Windows.Forms.DockPanel tbContainer = new Ambertation.Windows.Forms.DockPanel();
         private System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
         private Menu menuBar1 = new Menu();
@@ -60,8 +57,7 @@ namespace SimPe
         private StackPanel xpGradientPanel1 = new StackPanel();
         private LinkLabel xpLinkedLabelIcon1 = new LinkLabel();
         private Button biOpen = new Button();
-        private TextBox tbInst = new TextBox();
-        private TextBox tbGrp = new TextBox();
+        // tbInst, tbGrp — provided by AXAML x:Name
         private System.Windows.Forms.ToolStripMenuItem miRecent = new System.Windows.Forms.ToolStripMenuItem();
         private System.Windows.Forms.ToolStripMenuItem miExtra = new System.Windows.Forms.ToolStripMenuItem();
         private StackPanel xpGradientPanel2 = new StackPanel();
@@ -105,13 +101,12 @@ namespace SimPe
         private LinkLabel xpLinkedLabelIcon2 = new LinkLabel();
         private System.Windows.Forms.ToolStrip tbTools = new System.Windows.Forms.ToolStrip();
         private System.Windows.Forms.ToolStrip tbWindow = new System.Windows.Forms.ToolStrip();
-        private ComboBox cbsemig = new ComboBox();
+        // cbsemig — provided by AXAML x:Name
         private LinkLabel xpLinkedLabelIcon3 = new LinkLabel();
-        // dc is declared by MainForm.axaml code-gen (x:Name="dc").
         private System.Windows.Forms.ToolStripMenuItem miSaveCopyAs = new System.Windows.Forms.ToolStripMenuItem();
         private Button biReset = new Button();
         private System.Windows.Forms.ToolStripMenuItem mbiTopics = new System.Windows.Forms.ToolStripMenuItem();
-        internal SimPe.WaitControl waitControl1 = new SimPe.WaitControl();
+        // waitControl1 — provided by AXAML x:Name
         private object toolStripMenuItem1 = null;
         private object toolStripMenuItem2 = null;
         private object toolStripMenuItem3 = null;
@@ -125,7 +120,6 @@ namespace SimPe
         private Ambertation.Windows.Forms.DockContainer dockBottom = new Ambertation.Windows.Forms.DockContainer();
         private Ambertation.Windows.Forms.DockContainer dockCenter = new Ambertation.Windows.Forms.DockContainer();
         private Ambertation.Windows.Forms.DockPanel dcResourceList = new Ambertation.Windows.Forms.DockPanel();
-        // lv and tv are declared by MainForm.axaml code-gen (x:Name="lv", x:Name="tv").
         private SimPe.Windows.Forms.ResourceViewManager resourceViewManager1 = new SimPe.Windows.Forms.ResourceViewManager();
         private TextBlock label3 = new TextBlock();
         private TextBlock label2 = new TextBlock();

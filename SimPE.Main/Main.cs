@@ -439,18 +439,14 @@ namespace SimPe
 
 		private void Activate_miNoMeta(object sender, System.EventArgs e)
 		{
-			ToolStripMenuItem mi = (ToolStripMenuItem)sender;
-			mi.Checked = !mi.Checked;
-
-			Helper.XmlRegistry.LoadMetaInfo = !mi.Checked;
+			miMetaInfo.Checked = !miMetaInfo.Checked;
+			Helper.XmlRegistry.LoadMetaInfo = !miMetaInfo.Checked;
 		}
 
 		private void Activate_miFileNames(object sender, System.EventArgs e)
 		{
-			ToolStripMenuItem mi = (ToolStripMenuItem)sender;
-			mi.Checked = !mi.Checked;
-
-			Helper.XmlRegistry.DecodeFilenamesState = mi.Checked;
+			miFileNames.Checked = !miFileNames.Checked;
+			Helper.XmlRegistry.DecodeFilenamesState = miFileNames.Checked;
 		}
 
 		private void Activate_miExit(object sender, System.EventArgs e)
@@ -740,7 +736,8 @@ namespace SimPe
             Helper.XmlRegistry.Flush(); // Writes SimPeXREGW
             StoreLayout(); // Writes SimPeLayoutW
             Helper.XmlRegistry.Layout.Flush(); // Writes Layout2XREGW
-            File.SetLastWriteTime(Helper.DataFolder.FoldersXREGW, DateTime.Now); // It was written by the Options form
+            if (File.Exists(Helper.DataFolder.FoldersXREGW))
+                File.SetLastWriteTime(Helper.DataFolder.FoldersXREGW, DateTime.Now); // It was written by the Options form
         }
         private void tsmiSaveProfile_Click(object sender, EventArgs e)
         {

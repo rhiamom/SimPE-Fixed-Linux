@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:rc="using:SimPe.Windows.Forms"
+        xmlns:simpe="using:SimPe"
         x:Class="SimPe.MainForm"
         Title="SimPE - Sims Package Editor"
         Width="1200" Height="800"
@@ -11,44 +12,50 @@
         <!-- ── Menu bar ── -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New"              />
-                <MenuItem Header="_Open..."          />
-                <MenuItem Header="Open _In">
-                    <MenuItem Header="Sims 2 Resources..." />
-                    <MenuItem Header="_Downloads..."       />
+                <MenuItem x:Name="avlnNew"              Header="_New" />
+                <MenuItem x:Name="avlnOpen"             Header="_Open..." />
+                <MenuItem x:Name="avlnOpenIn"           Header="Open _In">
+                    <MenuItem x:Name="avlnOpenSimsRes"  Header="Sims 2 Resources..." />
+                    <MenuItem x:Name="avlnOpenDownloads" Header="_Downloads..." />
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="_Save"             />
-                <MenuItem Header="Save _As..."       />
-                <MenuItem Header="Save _Copy As..."  />
+                <MenuItem x:Name="avlnSave"             Header="_Save" />
+                <MenuItem x:Name="avlnSaveAs"           Header="Save _As..." />
+                <MenuItem x:Name="avlnSaveCopyAs"       Header="Save _Copy As..." />
                 <Separator/>
-                <MenuItem Header="_Close"            />
+                <MenuItem x:Name="avlnClose"            Header="_Close" />
                 <Separator/>
-                <MenuItem Header="E_xit"             />
+                <MenuItem x:Name="avlnExit"             Header="E_xit" />
             </MenuItem>
-            <MenuItem Header="_Tools"     />
+            <MenuItem Header="_Tools"   x:Name="avlnTools" />
             <MenuItem Header="_Settings">
-                <MenuItem Header="Preferences..."    />
-                <MenuItem Header="Game Root..."      />
+                <MenuItem x:Name="avlnPreferences"      Header="Preferences..." />
+                <MenuItem x:Name="avlnGameRoot"         Header="Game Root..." />
                 <Separator/>
-                <MenuItem Header="Load Meta Info"    />
-                <MenuItem Header="Decode Filenames"  />
+                <MenuItem x:Name="avlnMetaInfo"         Header="Load Meta Info" />
+                <MenuItem x:Name="avlnFileNames"        Header="Decode Filenames" />
                 <Separator/>
-                <MenuItem Header="Save Profile..."   />
-                <MenuItem Header="Save Preferences..." />
+                <MenuItem x:Name="avlnSaveProfile"      Header="Save Profile..." />
+                <MenuItem x:Name="avlnSavePrefs"        Header="Save Preferences..." />
                 <Separator/>
-                <MenuItem Header="Stop Waiting"      />
+                <MenuItem x:Name="avlnStopWaiting"      Header="Stop Waiting" />
             </MenuItem>
-            <MenuItem Header="_Window"    />
+            <MenuItem Header="_Window"  x:Name="avlnWindow" />
             <MenuItem Header="_Help">
-                <MenuItem Header="Welcome..."        />
-                <MenuItem Header="About SimPE..."    />
+                <MenuItem x:Name="avlnWelcome"          Header="Welcome..." />
+                <MenuItem x:Name="avlnAbout"            Header="About SimPE..." />
                 <Separator/>
-                <MenuItem Header="Knowledge Base"    />
+                <MenuItem x:Name="avlnKBase"            Header="Knowledge Base" />
             </MenuItem>
         </Menu>
 
-        <!-- ── DIAGNOSTIC: replace custom controls with plain boxes to test AXAML loading ── -->
+        <!-- ── Menu / content separator ── -->
+        <Border DockPanel.Dock="Top" Height="1" Background="#AAAAAA" />
+
+        <!-- ── Status / wait bar ── -->
+        <simpe:WaitControl x:Name="waitControl1" DockPanel.Dock="Bottom" />
+
+        <!-- ── Main content ── -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"  MinHeight="100" />
@@ -56,7 +63,7 @@
                 <RowDefinition Height="*"   MinHeight="80"  />
             </Grid.RowDefinitions>
 
-            <!-- Upper panel -->
+            <!-- Upper panel: tree | list | filter/workshops -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"    MinWidth="120" />
@@ -66,37 +73,101 @@
                     <ColumnDefinition Width="1.5*" MinWidth="180" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Tree placeholder -->
-                <Border Grid.Column="0" Background="#EEF" BorderBrush="#888" BorderThickness="1">
-                    <TextBlock Text="Resource Tree" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Border>
+                <!-- Resource tree -->
+                <rc:ResourceTreeViewExt x:Name="tv" Grid.Column="0" />
 
                 <GridSplitter Grid.Column="1" ResizeDirection="Columns"
                               HorizontalAlignment="Stretch" Background="#888" />
 
-                <!-- List placeholder -->
-                <Border Grid.Column="2" Background="#EFE" BorderBrush="#888" BorderThickness="1">
-                    <TextBlock Text="Resource List" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Border>
+                <!-- Resource list -->
+                <rc:ResourceListViewExt x:Name="lv" Grid.Column="2" />
 
                 <GridSplitter Grid.Column="3" ResizeDirection="Columns"
                               HorizontalAlignment="Stretch" Background="#888" />
 
-                <!-- Right panel -->
-                <TabControl Grid.Column="4" TabStripPlacement="Right">
-                    <TabItem Header="Object Workshop"  />
-                    <TabItem Header="Filter Resources" />
-                </TabControl>
+                <!-- Right panel: header bar + content + compact tab strip on right edge -->
+                <Grid Grid.Column="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Header bar showing active panel name -->
+                    <Border Grid.Row="0"
+                            Background="#EBEBEB"
+                            BorderBrush="Gray"
+                            BorderThickness="0,0,0,1"
+                            MinHeight="26">
+                        <TextBlock x:Name="lblRightPanelTitle"
+                                   Text="Object Workshop"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Margin="4,0" />
+                    </Border>
+
+                    <!-- Content + tab strip -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Content panels (only one visible at a time) -->
+                        <Border x:Name="pnlObjectWorkshop" Grid.Column="0" Background="#AAAAAA" />
+                        <ScrollViewer x:Name="pnlFilterResources" Grid.Column="0"
+                                      IsVisible="False" VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="6,4">
+                                <TextBlock Text="Instance:" Margin="0,2"/>
+                                <TextBox x:Name="tbInst" Margin="0,2" />
+                                <TextBlock Text="Group:" Margin="0,6,0,2"/>
+                                <TextBox x:Name="tbGrp" Margin="0,2" />
+                                <TextBlock Text="SemiGlobal:" Margin="0,6,0,2"/>
+                                <ComboBox x:Name="cbsemig" HorizontalAlignment="Stretch" Margin="0,2" />
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Compact rotated tab strip on right edge -->
+                        <Border Grid.Column="1"
+                                BorderBrush="Gray" BorderThickness="1,0,0,0"
+                                Background="#F0F0F0">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                                <LayoutTransformControl>
+                                    <LayoutTransformControl.LayoutTransform>
+                                        <RotateTransform Angle="90" />
+                                    </LayoutTransformControl.LayoutTransform>
+                                    <ToggleButton x:Name="tabBtnObjectWorkshop"
+                                                  IsChecked="True"
+                                                  Padding="6,4" FontSize="11"
+                                                  Background="Transparent"
+                                                  BorderThickness="0,0,0,1" BorderBrush="Gray"
+                                                  CornerRadius="0" MinWidth="0">
+                                        <TextBlock Text="Object Workshop" />
+                                    </ToggleButton>
+                                </LayoutTransformControl>
+                                <LayoutTransformControl>
+                                    <LayoutTransformControl.LayoutTransform>
+                                        <RotateTransform Angle="90" />
+                                    </LayoutTransformControl.LayoutTransform>
+                                    <ToggleButton x:Name="tabBtnFilterResources"
+                                                  Padding="6,4" FontSize="11"
+                                                  Background="Transparent"
+                                                  BorderThickness="0,0,0,1" BorderBrush="Gray"
+                                                  CornerRadius="0" MinWidth="0">
+                                        <TextBlock Text="Filter Resources" />
+                                    </ToggleButton>
+                                </LayoutTransformControl>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
             </Grid>
 
             <!-- Horizontal splitter -->
             <GridSplitter Grid.Row="1" ResizeDirection="Rows"
                           HorizontalAlignment="Stretch" Background="#888" />
 
-            <!-- Lower panel -->
-            <Border Grid.Row="2" Background="#FEE" BorderBrush="#888" BorderThickness="1">
-                <TextBlock Text="Plugin View" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Border>
+            <!-- Plugin view -->
+            <TabControl x:Name="dc" Grid.Row="2" />
 
         </Grid>
     </DockPanel>

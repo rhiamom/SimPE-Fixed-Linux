@@ -74,9 +74,9 @@ namespace SimPe.Windows.Forms
             if (Helper.XmlRegistry.UseBigIcons)
                 tv.FontSize = FontSize + 5;
 
-            tbType  = new Avalonia.Controls.Primitives.ToggleButton { Content = "T" };
-            tbGroup = new Avalonia.Controls.Primitives.ToggleButton { Content = "G" };
-            tbInst  = new Avalonia.Controls.Primitives.ToggleButton { Content = "I" };
+            tbType  = new Avalonia.Controls.Primitives.ToggleButton { Content = "T", Width = 22, Height = 22, Padding = new Avalonia.Thickness(0), HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center, VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            tbGroup = new Avalonia.Controls.Primitives.ToggleButton { Content = "G", Width = 22, Height = 22, Padding = new Avalonia.Thickness(0), HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center, VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            tbInst  = new Avalonia.Controls.Primitives.ToggleButton { Content = "I", Width = 22, Height = 22, Padding = new Avalonia.Thickness(0), HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center, VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center };
 
             Avalonia.Controls.ToolTip.SetTip(tbType,  "By Type");
             Avalonia.Controls.ToolTip.SetTip(tbGroup, "By Group");
@@ -89,6 +89,7 @@ namespace SimPe.Windows.Forms
             var buttons = new Avalonia.Controls.StackPanel
             {
                 Orientation = Avalonia.Layout.Orientation.Horizontal,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
                 Spacing = 2,
                 Margin = new Avalonia.Thickness(2),
             };
@@ -96,9 +97,31 @@ namespace SimPe.Windows.Forms
             buttons.Children.Add(tbGroup);
             buttons.Children.Add(tbInst);
 
+            var headerTitle = new Avalonia.Controls.TextBlock
+            {
+                Text = "Resource Tree",
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                FontWeight = Avalonia.Media.FontWeight.SemiBold,
+                Margin = new Avalonia.Thickness(4, 0),
+            };
+
+            var headerContent = new Avalonia.Controls.DockPanel { LastChildFill = true };
+            Avalonia.Controls.DockPanel.SetDock(buttons, Avalonia.Controls.Dock.Right);
+            headerContent.Children.Add(buttons);
+            headerContent.Children.Add(headerTitle);
+
+            var headerBar = new Avalonia.Controls.Border
+            {
+                Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(235, 235, 235)),
+                BorderBrush = Avalonia.Media.Brushes.Gray,
+                BorderThickness = new Avalonia.Thickness(0, 0, 0, 1),
+                MinHeight = 26,
+                Child = headerContent,
+            };
+
             var dock = new Avalonia.Controls.DockPanel();
-            Avalonia.Controls.DockPanel.SetDock(buttons, Avalonia.Controls.Dock.Top);
-            dock.Children.Add(buttons);
+            Avalonia.Controls.DockPanel.SetDock(headerBar, Avalonia.Controls.Dock.Top);
+            dock.Children.Add(headerBar);
             dock.Children.Add(tv);
             Content = dock;
 

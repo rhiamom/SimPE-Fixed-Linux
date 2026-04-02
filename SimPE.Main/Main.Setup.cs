@@ -179,7 +179,10 @@ namespace SimPe
 
             this.Opened += MainForm_FirstShown;
 
-            if (Helper.XmlRegistry.ShowWelcomeOnStartup)
+            // Welcome window is non-functional on Mac (RTF content not ported); skip for now.
+            if (Helper.XmlRegistry.ShowWelcomeOnStartup &&
+                System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                    System.Runtime.InteropServices.OSPlatform.Windows))
                 About.ShowWelcome();
 
             //if (Helper.XmlRegistry.CheckForUpdates)

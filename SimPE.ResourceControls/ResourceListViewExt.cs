@@ -83,7 +83,26 @@ namespace SimPe.Windows.Forms
             lv.PointerReleased  += lv_PointerReleased;
             lv.KeyUp            += lv_KeyUp_Handler;
 
-            Content = lv;
+            var headerBar = new Avalonia.Controls.Border
+            {
+                Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(235, 235, 235)),
+                BorderBrush = Avalonia.Media.Brushes.Gray,
+                BorderThickness = new Avalonia.Thickness(0, 0, 0, 1),
+                MinHeight = 26,
+                Child = new Avalonia.Controls.TextBlock
+                {
+                    Text = "Resource List",
+                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                    FontWeight = Avalonia.Media.FontWeight.SemiBold,
+                    Margin = new Avalonia.Thickness(4, 0),
+                },
+            };
+
+            var dock = new Avalonia.Controls.DockPanel();
+            Avalonia.Controls.DockPanel.SetDock(headerBar, Avalonia.Controls.Dock.Top);
+            dock.Children.Add(headerBar);
+            dock.Children.Add(lv);
+            Content = dock;
 
             colCols = new List<Avalonia.Controls.DataGridTextColumn>(
                 new[] { clTNameCol, clTypeCol, clGroupCol, clInstHiCol, clInstCol, clOffsetCol, clSizeCol });
