@@ -25,8 +25,28 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.IO;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using SimPe.Scenegraph.Compat;
+using ImageList   = SimPe.Scenegraph.Compat.ImageList;
+using ToolTip     = SimPe.Scenegraph.Compat.ToolTip;
+using TabControl      = SimPe.Scenegraph.Compat.TabControlCompat;
+using TabPageCompat   = SimPe.Scenegraph.Compat.TabPage;
+using Image           = System.Drawing.Image;
+using Label       = SimPe.Scenegraph.Compat.LabelCompat;
+using PictureBox  = SimPe.Scenegraph.Compat.PictureBox;
+using Button      = Avalonia.Controls.Button;
+using LinkLabel   = SimPe.Scenegraph.Compat.LinkLabel;
+using ListView    = SimPe.Scenegraph.Compat.ListView;
+using CheckBox    = Avalonia.Controls.CheckBox;
+using Panel       = SimPe.Scenegraph.Compat.PanelCompat;
+using ListViewItem = SimPe.Scenegraph.Compat.ListViewItem;
+using LinkLabelLinkClickedEventArgs = SimPe.Scenegraph.Compat.LinkLabelLinkClickedEventArgs;
+using OpenFileDialog = SimPe.Scenegraph.Compat.OpenFileDialogCompat;
+using SaveFileDialog = SimPe.Scenegraph.Compat.SaveFileDialogCompat;
+using MessageBox     = SimPe.Scenegraph.Compat.MessageBox;
+using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
 
 namespace SimPe.Plugin
 {
@@ -35,43 +55,40 @@ namespace SimPe.Plugin
 	/// </summary>
 	public class PhotoStudio : Avalonia.Controls.Window
 	{
-		private System.Windows.Forms.ImageList ilist;
-		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.PictureBox pb;
-		private System.Windows.Forms.Button btopen;
-		private System.Windows.Forms.OpenFileDialog ofd;
-		private System.Windows.Forms.SaveFileDialog sfd;
-		private System.Windows.Forms.Label lbname;
-		private System.Windows.Forms.Label lbsize;
-		private System.Windows.Forms.LinkLabel llcreate;
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.ListView lv;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox cbquality;
-		private System.Windows.Forms.ListView lvbase;
-		private System.Windows.Forms.ImageList ibase;
-		private System.Windows.Forms.PictureBox pbpreview;
-		private System.Windows.Forms.CheckBox cbprev;
-		private System.Windows.Forms.CheckBox cbflip;
-        private System.Windows.Forms.Panel panel1;
+		private ImageList ilist;
+		private ToolTip toolTip1;
+		private TabControl tabControl1;
+		private TabPageCompat tabPage1;
+		private Label label1;
+		private PictureBox pb;
+		private Button btopen;
+		private OpenFileDialog ofd;
+		private SaveFileDialog sfd;
+		private Label lbname;
+		private Label lbsize;
+		private LinkLabel llcreate;
+		private TabPageCompat tabPage2;
+		private ListView lv;
+		private Label label2;
+		private ComboBox cbquality;
+		private ListView lvbase;
+		private ImageList ibase;
+		private PictureBox pbpreview;
+		private CheckBox cbprev;
+		private CheckBox cbflip;
+        private Panel panel1;
 		private System.ComponentModel.IContainer components;
 
         public PhotoStudio()
         {
-            //
-            // Required designer variable.
-            //
             InitializeComponent();
             ThemeManager tm = ThemeManager.Global.CreateChild();
             tm.AddControl(this.panel1);
 
             //load all additional Package Templates
             string[] files = System.IO.Directory.GetFiles(Helper.SimPeDataPath, "*.template");
-            
-            
+
+
             if (files.Length == 0)
             {
                 SimPe.WaitingScreen.Stop();
@@ -130,220 +147,107 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
+		#region Avalonia layout
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PhotoStudio));
-            this.ilist = new System.Windows.Forms.ImageList(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btopen = new System.Windows.Forms.Button();
-            this.cbquality = new System.Windows.Forms.ComboBox();
-            this.lvbase = new System.Windows.Forms.ListView();
-            this.ibase = new System.Windows.Forms.ImageList(this.components);
-            this.pbpreview = new System.Windows.Forms.PictureBox();
-            this.cbflip = new System.Windows.Forms.CheckBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lbsize = new System.Windows.Forms.Label();
-            this.lbname = new System.Windows.Forms.Label();
-            this.pb = new System.Windows.Forms.PictureBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lv = new System.Windows.Forms.ListView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.llcreate = new System.Windows.Forms.LinkLabel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbprev = new System.Windows.Forms.CheckBox();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pbpreview)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
-            // 
-            // ilist
-            // 
-            this.ilist.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.ilist, "ilist");
-            this.ilist.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // btopen
-            // 
-            resources.ApplyResources(this.btopen, "btopen");
-            this.btopen.Name = "btopen";
-            this.toolTip1.SetToolTip(this.btopen, resources.GetString("btopen.ToolTip"));
-            this.btopen.Click += new System.EventHandler(this.OpenImage);
-            // 
-            // cbquality
-            // 
-            resources.ApplyResources(this.cbquality, "cbquality");
-            //this.cbquality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbquality.Items.AddRange(new object[] {
-            resources.GetString("cbquality.Items"),
-            resources.GetString("cbquality.Items1")});
-            this.cbquality.Name = "cbquality";
-            this.toolTip1.SetToolTip(this.cbquality, resources.GetString("cbquality.ToolTip"));
-            // 
-            // lvbase
-            // 
-            resources.ApplyResources(this.lvbase, "lvbase");
-            this.lvbase.HideSelection = false;
-            this.lvbase.LargeImageList = this.ibase;
-            this.lvbase.MultiSelect = false;
-            this.lvbase.Name = "lvbase";
-            this.toolTip1.SetToolTip(this.lvbase, resources.GetString("lvbase.ToolTip"));
-            this.lvbase.UseCompatibleStateImageBehavior = false;
-            this.lvbase.SelectedIndexChanged += new System.EventHandler(this.lvbase_SelectedIndexChanged);
-            // 
-            // ibase
-            // 
-            this.ibase.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.ibase, "ibase");
-            this.ibase.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // pbpreview
-            // 
-            resources.ApplyResources(this.pbpreview, "pbpreview");
-            this.pbpreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbpreview.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbpreview.Name = "pbpreview";
-            this.pbpreview.TabStop = false;
-            this.toolTip1.SetToolTip(this.pbpreview, resources.GetString("pbpreview.ToolTip"));
-            this.pbpreview.Click += new System.EventHandler(this.pbpreview_Click);
-            // 
-            // cbflip
-            // 
-            resources.ApplyResources(this.cbflip, "cbflip");
-            this.cbflip.BackColor = System.Drawing.Color.Transparent;
-            this.cbflip.Checked = true;
-            this.cbflip.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbflip.Name = "cbflip";
-            this.toolTip1.SetToolTip(this.cbflip, resources.GetString("cbflip.ToolTip"));
-            this.cbflip.UseVisualStyleBackColor = false;
-            this.cbflip.CheckedChanged += new System.EventHandler(this.lvbase_SelectedIndexChanged);
-            // 
-            // tabControl1
-            // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.lvbase_SelectedIndexChanged);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.lbsize);
-            this.tabPage1.Controls.Add(this.lbname);
-            this.tabPage1.Controls.Add(this.btopen);
-            this.tabPage1.Controls.Add(this.pb);
-            resources.ApplyResources(this.tabPage1, "tabPage1");
-            this.tabPage1.Name = "tabPage1";
-            // 
-            // lbsize
-            // 
-            resources.ApplyResources(this.lbsize, "lbsize");
-            this.lbsize.Name = "lbsize";
-            // 
-            // lbname
-            // 
-            resources.ApplyResources(this.lbname, "lbname");
-            this.lbname.Name = "lbname";
-            // 
-            // pb
-            // 
-            resources.ApplyResources(this.pb, "pb");
-            this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Name = "pb";
-            this.pb.TabStop = false;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage2.Controls.Add(this.lv);
-            resources.ApplyResources(this.tabPage2, "tabPage2");
-            this.tabPage2.Name = "tabPage2";
-            // 
-            // lv
-            // 
-            resources.ApplyResources(this.lv, "lv");
-            this.lv.LargeImageList = this.ilist;
-            this.lv.Name = "lv";
-            this.lv.UseCompatibleStateImageBehavior = false;
-            this.lv.SelectedIndexChanged += new System.EventHandler(this.lvbase_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Name = "label1";
-            // 
-            // llcreate
-            // 
-            resources.ApplyResources(this.llcreate, "llcreate");
-            this.llcreate.BackColor = System.Drawing.Color.Transparent;
-            this.llcreate.Name = "llcreate";
-            this.llcreate.TabStop = true;
-            this.llcreate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CreateImage);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Name = "label2";
-            // 
-            // cbprev
-            // 
-            resources.ApplyResources(this.cbprev, "cbprev");
-            this.cbprev.BackColor = System.Drawing.Color.Transparent;
-            this.cbprev.Name = "cbprev";
-            this.cbprev.UseVisualStyleBackColor = false;
-            this.cbprev.CheckedChanged += new System.EventHandler(this.lvbase_SelectedIndexChanged);
-            // 
-            // ofd
-            // 
-            resources.ApplyResources(this.ofd, "ofd");
-            // 
-            // sfd
-            // 
-            resources.ApplyResources(this.sfd, "sfd");
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.pbpreview);
-            this.panel1.Controls.Add(this.lvbase);
-            this.panel1.Controls.Add(this.cbquality);
-            this.panel1.Controls.Add(this.llcreate);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.tabControl1);
-            this.panel1.Controls.Add(this.cbprev);
-            this.panel1.Controls.Add(this.cbflip);
-            this.panel1.Name = "panel1";
-            // 
-            // PhotoStudio
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Name = "PhotoStudio";
-            ((System.ComponentModel.ISupportInitialize)(this.pbpreview)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+			this.Title  = "Photo Studio";
+			this.Width  = 820;
+			this.Height = 560;
 
+			// ── Image lists ───────────────────────────────────────────────────────
+			this.ilist = new ImageList { ColorDepth = SimPe.Scenegraph.Compat.ColorDepth.Depth32Bit, ImageSize = new System.Drawing.Size(64, 64) };
+			this.ibase = new ImageList { ColorDepth = SimPe.Scenegraph.Compat.ColorDepth.Depth32Bit, ImageSize = new System.Drawing.Size(96, 96) };
+			this.toolTip1 = new ToolTip();
+
+			// ── Tab page 1: Images ────────────────────────────────────────────────
+			this.lbname = new Label { Text = "No Image" };
+			this.lbsize = new Label { Text = "0x0" };
+			this.btopen = new Button { Content = "Open..." };
+			this.btopen.Click += (s, e) => OpenImage(s, e);
+
+			this.pb = new PictureBox { Size = new System.Drawing.Size(430, 160) };
+
+			var tab1Inner = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 4, Margin = new Avalonia.Thickness(4) };
+			tab1Inner.Children.Add(this.pb);
+			tab1Inner.Children.Add(this.lbname);
+			tab1Inner.Children.Add(this.lbsize);
+			tab1Inner.Children.Add(this.btopen);
+
+			this.tabPage1 = new TabPageCompat { Text = "Images" };
+			this.tabPage1.Content = tab1Inner;
+
+			// ── Tab page 2: Sims ──────────────────────────────────────────────────
+			this.lv = new ListView();
+			this.lv.LargeImageList = this.ilist;
+			this.lv.UseCompatibleStateImageBehavior = false;
+			this.lv.SelectedIndexChanged += (s, e) => lvbase_SelectedIndexChanged(s, e);
+
+			this.tabPage2 = new TabPageCompat { Text = "Sims" };
+			this.tabPage2.Content = this.lv;
+
+			// ── TabControl ────────────────────────────────────────────────────────
+			this.tabControl1 = new TabControl();
+			this.tabControl1.Items.Add(this.tabPage1);
+			this.tabControl1.Items.Add(this.tabPage2);
+			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.SelectionChanged += (s, e) => lvbase_SelectedIndexChanged(s, e);
+
+			// ── Template list (lvbase) ────────────────────────────────────────────
+			this.lvbase = new ListView();
+			this.lvbase.HideSelection = false;
+			this.lvbase.LargeImageList = this.ibase;
+			this.lvbase.MultiSelect = false;
+			this.lvbase.UseCompatibleStateImageBehavior = false;
+			this.lvbase.SelectedIndexChanged += (s, e) => lvbase_SelectedIndexChanged(s, e);
+
+			// ── Preview + quality + flip controls ────────────────────────────────
+			this.pbpreview = new PictureBox { Size = new System.Drawing.Size(200, 200) };
+
+			this.cbflip = new CheckBox { Content = "Flip Image:", IsChecked = true };
+			this.cbflip.IsCheckedChanged += (s, e) => lvbase_SelectedIndexChanged(s, e);
+
+			this.cbprev = new CheckBox { Content = "Preview" };
+			this.cbprev.IsCheckedChanged += (s, e) => lvbase_SelectedIndexChanged(s, e);
+
+			this.label1   = new Label { Text = "Picture Base:" };
+			this.label2   = new Label { Text = "Quality:" };
+			this.llcreate = new LinkLabel { Text = "create" };
+			this.llcreate.LinkClicked += (s, e) => CreateImage(s, e);
+
+			this.cbquality = new ComboBox();
+			this.cbquality.Items.Add("High Quality (RAW24)");
+			this.cbquality.Items.Add("Compressed Format");
+
+			// ── Dialog stubs ──────────────────────────────────────────────────────
+			this.ofd = new OpenFileDialog();
+			this.ofd.Filter = "All Image Files (*.jpg;*.bmp;*.gif;*.png)|*.jpg;*.bmp;*.gif;*.png|All Files (*.*)|*.*";
+			this.sfd = new SaveFileDialog();
+			this.sfd.Filter = "Package File (*.package)|*.package|All Files (*.*)|*.*";
+
+			// ── Right column layout ───────────────────────────────────────────────
+			var rightCol = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 4, Width = 220 };
+			rightCol.Children.Add(this.label1);
+			rightCol.Children.Add(this.lvbase);
+			rightCol.Children.Add(this.cbflip);
+			rightCol.Children.Add(this.cbprev);
+			rightCol.Children.Add(this.label2);
+			rightCol.Children.Add(this.cbquality);
+			rightCol.Children.Add(this.llcreate);
+			rightCol.Children.Add(this.pbpreview);
+
+			// ── Main grid ─────────────────────────────────────────────────────────
+			var mainGrid = new Avalonia.Controls.Grid { Margin = new Avalonia.Thickness(8) };
+			mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+			mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(228) });
+			Avalonia.Controls.Grid.SetColumn(this.tabControl1, 0);
+			Avalonia.Controls.Grid.SetColumn(rightCol, 1);
+			mainGrid.Children.Add(this.tabControl1);
+			mainGrid.Children.Add(rightCol);
+
+			this.panel1 = new Panel();
+			this.panel1.Children.Add(mainGrid);
+
+			this.Content = this.panel1;
 		}
 		#endregion
 
@@ -353,14 +257,14 @@ namespace SimPe.Plugin
             if (sdesc.HasImage)
 			{
                 this.ilist.Images.Add(sdesc.Image);
-			} 
-			else 
+			}
+			else
 			{
                 this.ilist.Images.Add(new Bitmap(SimPe.GetImage.NoOne));
 			}
 		}
 
-		protected void AddSim(SimPe.PackedFiles.Wrapper.SDesc sdesc) 
+		protected void AddSim(SimPe.PackedFiles.Wrapper.SDesc sdesc)
 		{
             if (!sdesc.AvailableCharacterData || sdesc.HasImage == false) return;
 
@@ -369,24 +273,24 @@ namespace SimPe.Plugin
 			lvi.Text = sdesc.SimName +" "+sdesc.SimFamilyName;
 			lvi.ImageIndex = ilist.Images.Count -1;
 			lvi.Tag = sdesc;
-		
-			
+
+
 			lv.Items.Add(lvi);
 		}
 
 		SimPe.Interfaces.Files.IPackedFileDescriptor pfd;
 		SimPe.Interfaces.Files.IPackageFile package;
-		public Interfaces.Plugin.IToolResult Execute(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package, Interfaces.IProviderRegistry prov) 
+		public Interfaces.Plugin.IToolResult Execute(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package, Interfaces.IProviderRegistry prov)
 		{
 			this.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
-			
+
 			this.pfd = null;
 			this.package = null;
 
 			ilist.Images.Clear();
 			lv.Items.Clear();
 
-			if (package!=null) 
+			if (package!=null)
 			{
 				Interfaces.Files.IPackedFileDescriptor[] pfds = package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
 				if (pfds.Length>0) WaitingScreen.Wait();
@@ -419,7 +323,7 @@ namespace SimPe.Plugin
 		/// Returns the selected Format
 		/// </summary>
 		/// <returns></returns>
-		ImageLoader.TxtrFormats SelectedFormat() 
+		ImageLoader.TxtrFormats SelectedFormat()
 		{
 			ImageLoader.TxtrFormats format = ImageLoader.TxtrFormats.Raw32Bit;
 			if (cbquality.SelectedIndex==1) format = ImageLoader.TxtrFormats.DXT1Format;
@@ -435,47 +339,56 @@ namespace SimPe.Plugin
 		/// <returns>Preview Image </returns>
 		Image ShowPreview(Image img)
 		{
-			if ((!cbprev.Checked) || (img==null) || (lvbase.SelectedItems.Count==0)) return new Bitmap(1, 1);
+			if ((cbprev.IsChecked != true) || (img==null) || (lvbase.SelectedItems.Count==0)) return new Bitmap(1, 1);
 
-			
-			SimPe.Interfaces.Files.IPackageFile pkg = BuildPicture("dummy.package", img, (PhotoStudioTemplate)lvbase.SelectedItems[0].Tag, ImageLoader.TxtrFormats.Raw32Bit, false, false, cbflip.Checked);
-			try 
+
+			SimPe.Interfaces.Files.IPackageFile pkg = BuildPicture("dummy.package", img, (PhotoStudioTemplate)lvbase.SelectedItems[0].Tag, ImageLoader.TxtrFormats.Raw32Bit, false, false, cbflip.IsChecked == true);
+			try
 			{
 				SimPe.Plugin.Txtr txtr = new Txtr(null, false);
 
 				//load TXTR
 				Interfaces.Files.IPackedFileDescriptor[] pfd = pkg.FindFile(((PhotoStudioTemplate)lvbase.SelectedItems[0].Tag).TxtrFile+"_txtr", 0x1C4A276C);
-				if (pfd.Length>0) 
+				if (pfd.Length>0)
 				{
 					txtr.ProcessData(pfd[0], pkg);
 				}
 
 				SimPe.Plugin.ImageData id = (SimPe.Plugin.ImageData)txtr.Blocks[0];
 				return id.MipMapBlocks[0].MipMaps[id.MipMapBlocks[0].MipMaps.Length-1].Texture;
-			} 
-			catch (Exception) 
+			}
+			catch (Exception)
 			{
-				//((SimPe.Packages.GeneratableFile)pkg).Save("c:\\dummy.package");
 				return new Bitmap(1, 1);
-			}		
+			}
 
 		}
 
 		Image loadimg = null;
-		private void OpenImage(object sender, System.EventArgs e)
+		private async void OpenImage(object sender, System.EventArgs e)
 		{
-			if (ofd.ShowDialog()==DialogResult.OK) 
+			var files = await StorageProvider.OpenFilePickerAsync(new Avalonia.Platform.Storage.FilePickerOpenOptions
 			{
-				try 
+				AllowMultiple = false,
+				FileTypeFilter = new[]
 				{
-					loadimg = Image.FromFile(ofd.FileName);
-					lbname.Text = System.IO.Path.GetFileName(ofd.FileName);
+					new Avalonia.Platform.Storage.FilePickerFileType("Image Files") { Patterns = new[] { "*.jpg", "*.bmp", "*.gif", "*.png" } },
+					new Avalonia.Platform.Storage.FilePickerFileType("All Files")   { Patterns = new[] { "*.*" } }
+				}
+			});
+			if (files.Count > 0)
+			{
+				try
+				{
+					string fileName = files[0].Path.LocalPath;
+					loadimg = Image.FromFile(fileName);
+					lbname.Text = System.IO.Path.GetFileName(fileName);
 					lbsize.Text = loadimg.Width.ToString() + "x" + loadimg.Height.ToString();
-					pb.Image = SimPe.Plugin.ImageLoader.Preview(loadimg, pb.Size);					
+					pb.Image = SimPe.Plugin.ImageLoader.Preview(loadimg, pb.Size);
 					preview = this.ShowPreview(loadimg);
 					pbpreview.Image = SimPe.Plugin.ImageLoader.Preview(preview, pbpreview.Size);
-				} 
-				catch (Exception) 
+				}
+				catch (Exception)
 				{
 					pb.Image = null;
 				}
@@ -501,7 +414,7 @@ namespace SimPe.Plugin
 		/// <param name="rename">true, if the Texture should be renamed</param>
 		/// <param name="flip">true if the Image should be flipped</param>
 		/// <returns>The package with the Recolor</returns>
-		protected static SimPe.Packages.GeneratableFile BuildPicture(string filename, Image img, PhotoStudioTemplate template, ImageLoader.TxtrFormats format, bool ddstool, bool rename, bool flip) 
+		protected static SimPe.Packages.GeneratableFile BuildPicture(string filename, Image img, PhotoStudioTemplate template, ImageLoader.TxtrFormats format, bool ddstool, bool rename, bool flip)
 		{
 			WaitingScreen.Wait();
             try
@@ -566,7 +479,6 @@ namespace SimPe.Plugin
                     SimPe.Plugin.ImageData id = (SimPe.Plugin.ImageData)txtr.Blocks[0];
                     SimPe.Plugin.MipMapBlock mmp = id.MipMapBlocks[0];
                     SimPe.Plugin.MipMap mm = mmp.MipMaps[mmp.MipMaps.Length - 1];
-                    //mm.Data = null;
 
                     WaitingScreen.UpdateMessage("Updating Image");
                     Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
@@ -610,36 +522,48 @@ namespace SimPe.Plugin
             finally { WaitingScreen.Stop(); }
 		}
 
-		private void CreateImage(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private async void CreateImage(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			if (lvbase.SelectedItems.Count==0) return;
 			Image img = null;
 
 			//get the Image depending on the Active Tab
-			if (tabControl1.SelectedIndex==0) 
+			if (tabControl1.SelectedIndex==0)
 			{
 				img = loadimg;
-			} 
-			else if (tabControl1.SelectedIndex==1) 
+			}
+			else if (tabControl1.SelectedIndex==1)
 			{
 				if (lv.SelectedItems.Count<1) return;
-			
+
 				PackedFiles.Wrapper.SDesc sdesc = (PackedFiles.Wrapper.SDesc)lv.SelectedItems[0].Tag;
-				img = sdesc.Image;				
+				img = sdesc.Image;
 			}
 
 			if (img == null) return;
-			if (sfd.ShowDialog()==DialogResult.OK) 
+
+			var saveFiles = await StorageProvider.SaveFilePickerAsync(new Avalonia.Platform.Storage.FilePickerSaveOptions
 			{
-				try 
+				FileTypeChoices = new[]
+				{
+					new Avalonia.Platform.Storage.FilePickerFileType("Package File") { Patterns = new[] { "*.package" } },
+					new Avalonia.Platform.Storage.FilePickerFileType("All Files")    { Patterns = new[] { "*.*" } }
+				},
+				SuggestedStartLocation = await StorageProvider.TryGetFolderFromPathAsync(
+					new Uri(System.IO.Path.Combine(PathProvider.SimSavegameFolder, "Downloads")))
+			});
+
+			if (saveFiles != null)
+			{
+				try
 				{
 					this.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
-					this.package = BuildPicture(sfd.FileName, img, (PhotoStudioTemplate)lvbase.SelectedItems[0].Tag, SelectedFormat(), (cbquality.SelectedIndex==2), true, cbflip.Checked);
+					this.package = BuildPicture(saveFiles.Path.LocalPath, img, (PhotoStudioTemplate)lvbase.SelectedItems[0].Tag, SelectedFormat(), (cbquality.SelectedIndex==2), true, cbflip.IsChecked == true);
 					((SimPe.Packages.GeneratableFile)this.package).Save();
 					this.Cursor = null;
 					Close();
-				} 
-				catch (Exception ex) 
+				}
+				catch (Exception ex)
 				{
 					Helper.ExceptionMessage("", ex);
 				}
@@ -650,24 +574,24 @@ namespace SimPe.Plugin
 		private void lvbase_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			this.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
-			if (tabControl1.SelectedIndex==0) 
+			if (tabControl1.SelectedIndex==0)
 			{
 				preview = this.ShowPreview(loadimg);
-			} 
-			else 
+			}
+			else
 			{
 				if (lv.SelectedItems.Count>0)
 				{
 					PackedFiles.Wrapper.SDesc sdesc = (PackedFiles.Wrapper.SDesc)lv.SelectedItems[0].Tag;
 					preview = this.ShowPreview(sdesc.Image);
-				} 
-				else 
+				}
+				else
 				{
 					preview = null;
 				}
 			}
-			
-			
+
+
 			pbpreview.Image = SimPe.Plugin.ImageLoader.Preview(preview, pbpreview.Size);
 			this.Cursor = null;
 		}
@@ -676,22 +600,17 @@ namespace SimPe.Plugin
 		{
 			if (preview==null) return;
 
-			Form form = new Form();
-			form.Width = preview.Width;
-			form.Height = preview.Height;
+			var win = new Avalonia.Controls.Window();
+			win.Width  = preview.Width;
+			win.Height = preview.Height;
+			win.Title  = "Preview";
 
-			PictureBox pb = new PictureBox();
-			pb.Size = new Size(preview.Width, preview.Height);
-			pb.Parent = form;
-			pb.Left = 0;
-			pb.Top = 0;
-			pb.Image = preview;
-			
-			form.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-			form.Text = "Preview";
+			var previewBox = new PictureBox();
+			previewBox.Size  = new System.Drawing.Size(preview.Width, preview.Height);
+			previewBox.Image = preview;
 
-			form.ShowDialog();
-
+			win.Content = previewBox;
+			win.Show();
 		}
 	}
 }

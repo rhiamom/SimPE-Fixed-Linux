@@ -29,6 +29,7 @@ using System.ComponentModel;
 using Avalonia.Controls;
 using SimPe.Scenegraph.Compat;
 using SimPe.Plugin;
+using DialogResult = SimPe.DialogResult;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;

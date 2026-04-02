@@ -615,9 +615,9 @@ namespace SimPe.PackedFiles.UserInterface
                 ? pjse.Localization.GetString("strLangLoad")
                 : pjse.Localization.GetString("strLangSave");
             fd.ValidateNames = true;
-            SimPe.Scenegraph.Compat.DialogResult dr = fd.ShowDialog();
+            SimPe.DialogResult dr = fd.ShowDialog();
 
-            if (dr == SimPe.Scenegraph.Compat.DialogResult.OK)
+            if (dr == SimPe.DialogResult.OK)
             {
                 if (load)
                 {

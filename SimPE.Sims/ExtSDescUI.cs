@@ -33,6 +33,9 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using Button = Avalonia.Controls.Button;
+using ComboBox = Avalonia.Controls.ComboBox;
+using ListBox = Avalonia.Controls.ListBox;
+using Panel = Avalonia.Controls.Panel;
 using System.ComponentModel;
 using System.Drawing;
 

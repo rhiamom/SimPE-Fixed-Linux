@@ -185,6 +185,7 @@ namespace SimPe.Scenegraph.Compat
         public bool GridLines { get; set; }
         public ImageList LargeImageList { get; set; }
         public ImageList SmallImageList { get; set; }
+        public ImageList StateImageList { get; set; }
         public System.Drawing.Font Font { get; set; }
         public object View { get; set; }
         public bool UseCompatibleStateImageBehavior { get; set; }
@@ -555,22 +556,22 @@ namespace SimPe.Scenegraph.Compat
         }
     }
 
-    // ── MessageBox / DialogResult ─────────────────────────────────────────────
+    // ── MessageBox ────────────────────────────────────────────────────────────
+    // DialogResult is defined in SimPe.Helper (SimPe.DialogResult) — no duplicate here.
 
-    public enum DialogResult { None, OK, Cancel, Yes, No, Abort, Retry, Ignore }
     public enum MessageBoxButtons { OK, OKCancel, YesNo, YesNoCancel, AbortRetryIgnore, RetryCancel }
     public enum MessageBoxIcon { None, Error, Warning, Information, Question, Hand, Stop, Asterisk, Exclamation }
 
     /// <summary>Async MessageBox replacement for Avalonia (no blocking UI thread).</summary>
     public static class MessageBox
     {
-        public static async Task<DialogResult> ShowAsync(
+        public static async Task<SimPe.DialogResult> ShowAsync(
             string text,
             string caption = "",
             MessageBoxButtons buttons = MessageBoxButtons.OK,
             MessageBoxIcon icon = MessageBoxIcon.None)
         {
-            var tcs = new TaskCompletionSource<DialogResult>();
+            var tcs = new TaskCompletionSource<SimPe.DialogResult>();
             var win = new Window
             {
                 Title = caption,
@@ -590,7 +591,7 @@ namespace SimPe.Scenegraph.Compat
 
             var btnRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8, HorizontalAlignment = HorizontalAlignment.Center };
 
-            void AddBtn(string label, DialogResult res)
+            void AddBtn(string label, SimPe.DialogResult res)
             {
                 var btn = new Avalonia.Controls.Button { Content = label, MinWidth = 80 };
                 btn.Click += (s, e) => { win.Close(); tcs.TrySetResult(res); };
@@ -599,50 +600,50 @@ namespace SimPe.Scenegraph.Compat
 
             switch (buttons)
             {
-                case MessageBoxButtons.OK:              AddBtn("OK", DialogResult.OK); break;
-                case MessageBoxButtons.OKCancel:        AddBtn("OK", DialogResult.OK); AddBtn("Cancel", DialogResult.Cancel); break;
-                case MessageBoxButtons.YesNo:           AddBtn("Yes", DialogResult.Yes); AddBtn("No", DialogResult.No); break;
-                case MessageBoxButtons.YesNoCancel:     AddBtn("Yes", DialogResult.Yes); AddBtn("No", DialogResult.No); AddBtn("Cancel", DialogResult.Cancel); break;
-                case MessageBoxButtons.RetryCancel:     AddBtn("Retry", DialogResult.Retry); AddBtn("Cancel", DialogResult.Cancel); break;
-                case MessageBoxButtons.AbortRetryIgnore: AddBtn("Abort", DialogResult.Abort); AddBtn("Retry", DialogResult.Retry); AddBtn("Ignore", DialogResult.Ignore); break;
-                default: AddBtn("OK", DialogResult.OK); break;
+                case MessageBoxButtons.OK:              AddBtn("OK", SimPe.DialogResult.OK); break;
+                case MessageBoxButtons.OKCancel:        AddBtn("OK", SimPe.DialogResult.OK); AddBtn("Cancel", SimPe.DialogResult.Cancel); break;
+                case MessageBoxButtons.YesNo:           AddBtn("Yes", SimPe.DialogResult.Yes); AddBtn("No", SimPe.DialogResult.No); break;
+                case MessageBoxButtons.YesNoCancel:     AddBtn("Yes", SimPe.DialogResult.Yes); AddBtn("No", SimPe.DialogResult.No); AddBtn("Cancel", SimPe.DialogResult.Cancel); break;
+                case MessageBoxButtons.RetryCancel:     AddBtn("Retry", SimPe.DialogResult.Retry); AddBtn("Cancel", SimPe.DialogResult.Cancel); break;
+                case MessageBoxButtons.AbortRetryIgnore: AddBtn("Abort", SimPe.DialogResult.Abort); AddBtn("Retry", SimPe.DialogResult.Retry); AddBtn("Ignore", SimPe.DialogResult.Ignore); break;
+                default: AddBtn("OK", SimPe.DialogResult.OK); break;
             }
 
             panel.Children.Add(btnRow);
             win.Content = panel;
-            win.Closed += (s, e) => tcs.TrySetResult(DialogResult.Cancel);
+            win.Closed += (s, e) => tcs.TrySetResult(SimPe.DialogResult.Cancel);
             win.Show();
             return await tcs.Task;
         }
 
         /// <summary>Synchronous wrapper — shows the dialog without awaiting. Returns Cancel immediately.</summary>
-        public static DialogResult Show(
+        public static SimPe.DialogResult Show(
             string text,
             string caption = "",
             MessageBoxButtons buttons = MessageBoxButtons.OK,
             MessageBoxIcon icon = MessageBoxIcon.None)
         {
             _ = ShowAsync(text, caption, buttons, icon);
-            return DialogResult.Cancel;
+            return SimPe.DialogResult.Cancel;
         }
 
         // Overloads accepting SimPe.MessageBoxButtons/Icon (from SimPe.WorkSpaceHelper)
-        public static async Task<DialogResult> ShowAsync(
+        public static async Task<SimPe.DialogResult> ShowAsync(
             string text, string caption,
             SimPe.MessageBoxButtons buttons, SimPe.MessageBoxIcon icon)
             => await ShowAsync(text, caption, (MessageBoxButtons)(int)buttons, (MessageBoxIcon)(int)icon);
 
-        public static async Task<DialogResult> ShowAsync(
+        public static async Task<SimPe.DialogResult> ShowAsync(
             string text, string caption,
             SimPe.MessageBoxButtons buttons)
             => await ShowAsync(text, caption, (MessageBoxButtons)(int)buttons);
 
-        public static DialogResult Show(
+        public static SimPe.DialogResult Show(
             string text, string caption,
             SimPe.MessageBoxButtons buttons, SimPe.MessageBoxIcon icon)
             => Show(text, caption, (MessageBoxButtons)(int)buttons, (MessageBoxIcon)(int)icon);
 
-        public static DialogResult Show(
+        public static SimPe.DialogResult Show(
             string text, string caption,
             SimPe.MessageBoxButtons buttons)
             => Show(text, caption, (MessageBoxButtons)(int)buttons);
@@ -874,6 +875,11 @@ namespace SimPe.Scenegraph.Compat
         public void SuspendLayout() { }
         public void ResumeLayout(bool performLayout = false) { }
         public void SelectAll() => SelectionStart = 0;
+        public int SelectionLength
+        {
+            get => SelectionEnd - SelectionStart;
+            set => SelectionEnd = SelectionStart + value;
+        }
     }
 
     /// <summary>WinForms-compat Label — extends Avalonia Label.</summary>
@@ -881,6 +887,7 @@ namespace SimPe.Scenegraph.Compat
     {
         public string Text { get => Content?.ToString() ?? ""; set => Content = value; }
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
         public System.Drawing.Point Location { get; set; }
         public new System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
@@ -990,6 +997,27 @@ namespace SimPe.Scenegraph.Compat
         public int FindStringExact(string s) { int i = 0; foreach (var item in Items) { if (item?.ToString() == s) return i; i++; } return -1; }
     }
 
+    /// <summary>WinForms ListBox compat — wraps Avalonia ListBox with WinForms-compatible API.</summary>
+    public class ListBoxCompat : Avalonia.Controls.ListBox
+    {
+        public bool Sorted { get; set; }            // no-op: Avalonia has no built-in sort
+        public new bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool IntegralHeight { get; set; }
+        public int ItemHeight { get; set; }
+        public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
+        public System.Drawing.Point Location { get; set; }
+        public new System.Drawing.Size Size { get; set; }
+        public new string Name { get => base.Name; set => base.Name = value; }
+        public void BeginUpdate() { }
+        public void EndUpdate() { }
+        public void ClearSelected() { SelectedIndex = -1; }
+        public event EventHandler SelectedIndexChanged;
+        public ListBoxCompat()
+        {
+            SelectionChanged += (s, e) => SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     /// <summary>WinForms FileDialog compat base — replaces System.Windows.Forms.FileDialog.</summary>
     public abstract class FileDialogCompat
     {
@@ -1009,8 +1037,8 @@ namespace SimPe.Scenegraph.Compat
         public string Title { get; set; } = "";
         public bool ValidateNames { get; set; } = true;
         // Synchronous stub — always returns Cancel; real async show done separately
-        public DialogResult ShowDialog() => DialogResult.Cancel;
-        public DialogResult ShowDialog(object owner) => DialogResult.Cancel;
+        public SimPe.DialogResult ShowDialog() => SimPe.DialogResult.Cancel;
+        public SimPe.DialogResult ShowDialog(object owner) => SimPe.DialogResult.Cancel;
     }
 
     /// <summary>WinForms OpenFileDialog compat stub.</summary>

@@ -25,10 +25,19 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Image = System.Drawing.Image;
+using Avalonia.Layout;
+using SimPe.Scenegraph.Compat;
 using SimPe;
 using SimPe.Data;
 using SimPe.Interfaces;
+using Button    = Avalonia.Controls.Button;
+using CheckBox  = Avalonia.Controls.CheckBox;
+using Panel     = SimPe.Scenegraph.Compat.PanelCompat;
+using PictureBox = SimPe.Scenegraph.Compat.PictureBox;
+using TextBox   = SimPe.Scenegraph.Compat.TextBoxCompat;
+using ListBox   = SimPe.Scenegraph.Compat.ListBoxCompat;
 
 
 namespace SimPe.Plugin
@@ -38,18 +47,18 @@ namespace SimPe.Plugin
 	/// </summary>
 	public class SkinWorkshop : Avalonia.Controls.Window
     {
-		private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.CheckBox cbfix;
+		private SimPe.Scenegraph.Compat.OpenFileDialogCompat ofd;
+        private CheckBox cbfix;
         private System.ComponentModel.IContainer components;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel taskBox2;
-        private System.Windows.Forms.Panel taskBox1;
-        private System.Windows.Forms.ListBox lbobj;
-        private System.Windows.Forms.Button btclone;
-        private System.Windows.Forms.CheckBox cbgid;
-        private System.Windows.Forms.SaveFileDialog sfd;
-        private System.Windows.Forms.TextBox tbseek;
-        private System.Windows.Forms.PictureBox pb;
+        private Panel panel1;
+        private Panel taskBox2;
+        private Panel taskBox1;
+        private ListBox lbobj;
+        private Button btclone;
+        private CheckBox cbgid;
+        private SimPe.Scenegraph.Compat.SaveFileDialogCompat sfd;
+        private TextBox tbseek;
+        private PictureBox pb;
 
         SimPe.Packages.GeneratableFile package;
         SimPe.Interfaces.Files.IPackageFile simpe_pkg;
@@ -61,9 +70,8 @@ namespace SimPe.Plugin
             tm.AddControl(this.panel1);
             tm.AddControl(this.taskBox1);
             tm.AddControl(this.taskBox2);
-			btclone.Enabled = false;
-			btclone.Refresh();
-            lbobj.SelectionMode = SelectionMode.One;
+			btclone.IsEnabled = false;
+            lbobj.SelectionMode = Avalonia.Controls.SelectionMode.Single;
 		}
 
 		#region Cache Handling		
@@ -126,7 +134,6 @@ namespace SimPe.Plugin
                     LoadCachIndex();
                     lbobj.BeginUpdate();
                     lbobj.Items.Clear();
-                    lbobj.Sorted = false;
                     FileTable.FileIndex.Load();
                     Interfaces.Scenegraph.IScenegraphFileIndexItem[] nrefitems = FileTable.FileIndex.Sort(FileTable.FileIndex.FindFile(type, true));
                     WaitingScreen.UpdateMessage("Loading Items");
@@ -207,7 +214,6 @@ namespace SimPe.Plugin
 
                     SaveCacheIndex();
                     WaitingScreen.UpdateMessage("Sorting Items");
-                    lbobj.Sorted = true;
                     lbobj.EndUpdate();
                 }
                 finally { WaitingScreen.Stop(this); }
@@ -228,158 +234,75 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
+		#region Avalonia layout
 		private void InitializeComponent()
 		{
-            this.lbobj = new System.Windows.Forms.ListBox();
-            this.btclone = new System.Windows.Forms.Button();
-            this.pb = new System.Windows.Forms.PictureBox();
-            this.cbfix = new System.Windows.Forms.CheckBox();
-            this.cbgid = new System.Windows.Forms.CheckBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.tbseek = new System.Windows.Forms.TextBox();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.taskBox2 = new System.Windows.Forms.Panel();
-            this.taskBox1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.taskBox2.SuspendLayout();
-            this.taskBox1.SuspendLayout();
-            // 
-            // lbobj
-            // 
-            this.lbobj.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbobj.IntegralHeight = false;
-            this.lbobj.ItemHeight = 25;
-            this.lbobj.Location = new System.Drawing.Point(9, 106);
-            this.lbobj.Name = "lbobj";
-            this.lbobj.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbobj.Size = new System.Drawing.Size(766, 113);
-            this.lbobj.TabIndex = 0;
-            this.lbobj.SelectedIndexChanged += new System.EventHandler(this.Select);
-            // 
-            // btclone
-            // 
-            this.btclone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btclone.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btclone.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btclone.Location = new System.Drawing.Point(629, 212);
-            this.btclone.Name = "btclone";
-            this.btclone.Size = new System.Drawing.Size(117, 34);
-            this.btclone.TabIndex = 1;
-            this.btclone.Text = "Start";
-            this.btclone.Click += new System.EventHandler(this.Start);
-            // 
-            // pb
-            // 
-            this.pb.BackColor = System.Drawing.Color.Transparent;
-            this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb.Location = new System.Drawing.Point(11, 60);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(201, 192);
-            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pb.TabIndex = 6;
-            this.pb.TabStop = false;
-            // 
-            // cbfix
-            // 
-            this.cbfix.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbfix.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbfix.Location = new System.Drawing.Point(239, 116);
-            this.cbfix.Name = "cbfix";
-            this.cbfix.Size = new System.Drawing.Size(352, 36);
-            this.cbfix.TabIndex = 5;
-            this.cbfix.Text = "Fix Cloned Files (sug. by.  wes_h)";
-            // 
-            // cbgid
-            // 
-            this.cbgid.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cbgid.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbgid.Location = new System.Drawing.Point(239, 70);
-            this.cbgid.Name = "cbgid";
-            this.cbgid.Size = new System.Drawing.Size(390, 36);
-            this.cbgid.TabIndex = 2;
-            this.cbgid.Text = "Set Custom Group ID (0x1c050000)";
-            // 
-            // sfd
-            // 
-            this.sfd.Filter = "Package File (*.package)|*.package|All Files (*.*)|*.*";
-            this.sfd.Title = "Alternative Colour Pacakge";
-            // 
-            // tbseek
-            // 
-            this.tbseek.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbseek.Location = new System.Drawing.Point(9, 66);
-            this.tbseek.Name = "tbseek";
-            this.tbseek.Size = new System.Drawing.Size(766, 31);
-            this.tbseek.TabIndex = 3;
-            this.tbseek.TextChanged += new System.EventHandler(this.SeekItem);
-            // 
-            // ofd
-            // 
-            this.ofd.Filter = "Package File (*.package)|*.package|All Files (*.*)|*.*";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.taskBox2);
-            this.panel1.Controls.Add(this.taskBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(795, 518);
-            this.panel1.TabIndex = 5;
-            // 
-            // taskBox2
-            // 
-            this.taskBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.taskBox2.BackColor = System.Drawing.Color.Transparent;
-            this.taskBox2.Controls.Add(this.cbfix);
-            this.taskBox2.Controls.Add(this.btclone);
-            this.taskBox2.Controls.Add(this.pb);
-            this.taskBox2.Controls.Add(this.cbgid);
-            this.taskBox2.Location = new System.Drawing.Point(5, 251);
-            this.taskBox2.Name = "taskBox2";
-            this.taskBox2.Padding = new System.Windows.Forms.Padding(4, 44, 4, 4);
-            this.taskBox2.Size = new System.Drawing.Size(782, 262);
-            this.taskBox2.TabIndex = 6;
-            // 
-            // taskBox1
-            // 
-            this.taskBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskBox1.BackColor = System.Drawing.Color.Transparent;
-            this.taskBox1.Controls.Add(this.tbseek);
-            this.taskBox1.Controls.Add(this.lbobj);
-            this.taskBox1.Location = new System.Drawing.Point(5, 4);
-            this.taskBox1.Name = "taskBox1";
-            this.taskBox1.Padding = new System.Windows.Forms.Padding(4, 44, 4, 4);
-            this.taskBox1.Size = new System.Drawing.Size(785, 231);
-            this.taskBox1.TabIndex = 5;
-            // 
-            // SkinWorkshop
-            // 
-            this.Width = 795; this.Height = 518;
-            this.MinWidth = 817; this.MinHeight = 480;
-            this.Name = "SkinWorkshop";
+            this.Width  = 795;
+            this.Height = 518;
+            this.MinWidth  = 817;
+            this.MinHeight = 480;
             this.WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner;
             this.Title = "Skin Workshop (biggest thanks to RGiles and Numenor)";
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.taskBox2.ResumeLayout(false);
-            this.taskBox1.ResumeLayout(false);
-            this.taskBox1.PerformLayout();
 
+            this.sfd = new SimPe.Scenegraph.Compat.SaveFileDialogCompat
+            {
+                Filter = "Package File (*.package)|*.package|All Files (*.*)|*.*",
+                Title  = "Alternative Colour Package"
+            };
+            this.ofd = new SimPe.Scenegraph.Compat.OpenFileDialogCompat
+            {
+                Filter = "Package File (*.package)|*.package|All Files (*.*)|*.*"
+            };
+
+            // ── Search box + list ─────────────────────────────────────────────────
+            this.tbseek = new TextBox();
+            this.tbseek.TextChanged += this.SeekItem;
+
+            this.lbobj = new ListBox();
+            this.lbobj.SelectionMode = Avalonia.Controls.SelectionMode.Multiple;
+            this.lbobj.SelectedIndexChanged += this.Select;
+
+            this.taskBox1 = new Panel();
+            var task1inner = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            task1inner.Children.Add(this.tbseek);
+            task1inner.Children.Add(this.lbobj);
+            this.taskBox1.Children.Add(task1inner);
+
+            // ── Options + button ──────────────────────────────────────────────────
+            this.pb = new PictureBox { Width = 201, Height = 192 };
+            this.cbgid  = new CheckBox { Content = "Set Custom Group ID (0x1c050000)" };
+            this.cbfix  = new CheckBox { Content = "Fix Cloned Files (sug. by wes_h)" };
+            this.btclone = new Button  { Content = "Start" };
+            this.btclone.Click += (s, e) => Start(s, e);
+
+            this.taskBox2 = new Panel();
+            var task2inner = new Avalonia.Controls.Grid();
+            task2inner.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(Avalonia.Controls.GridLength.Auto));
+            task2inner.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(1, Avalonia.Controls.GridUnitType.Star));
+            var task2opts = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 4 };
+            task2opts.Children.Add(this.cbgid);
+            task2opts.Children.Add(this.cbfix);
+            var task2right = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 4 };
+            task2right.Children.Add(task2opts);
+            task2right.Children.Add(this.btclone);
+            Avalonia.Controls.Grid.SetColumn(this.pb, 0);
+            Avalonia.Controls.Grid.SetColumn(task2right, 1);
+            task2inner.Children.Add(this.pb);
+            task2inner.Children.Add(task2right);
+            this.taskBox2.Children.Add(task2inner);
+
+            // ── Root layout ───────────────────────────────────────────────────────
+            this.panel1 = new Panel();
+            var rootStack = new Avalonia.Controls.Grid();
+            rootStack.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(1, Avalonia.Controls.GridUnitType.Star));
+            rootStack.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(Avalonia.Controls.GridLength.Auto));
+            Avalonia.Controls.Grid.SetRow(this.taskBox1, 0);
+            Avalonia.Controls.Grid.SetRow(this.taskBox2, 1);
+            rootStack.Children.Add(this.taskBox1);
+            rootStack.Children.Add(this.taskBox2);
+            this.panel1.Children.Add(rootStack);
+
+            this.Content = this.panel1;
 		}
 		#endregion
 		public Interfaces.Files.IPackageFile Execute(SimPe.Interfaces.Files.IPackageFile simpe_pkg) 		
@@ -406,11 +329,9 @@ namespace SimPe.Plugin
 		private void Select(object sender, System.EventArgs e) // Fuck
 		{
 			if (tbseek.Tag != null) return;
-			btclone.Enabled = false;
-			btclone.Refresh();
+			btclone.IsEnabled = false;
 			if (lbobj.SelectedIndex<0) return;
-			btclone.Enabled = true;
-			btclone.Refresh();
+			btclone.IsEnabled = true;
 
 			IAlias a = (IAlias)lbobj.Items[lbobj.SelectedIndex];
 			tbseek.Tag = true;
@@ -442,7 +363,7 @@ namespace SimPe.Plugin
                 FixObject fo = new FixObject(package, FixVersion.UniversityReady, true);
                 System.Collections.Hashtable map = null;
 
-                if (this.cbfix.Checked)
+                if (this.cbfix.IsChecked == true)
                 {
                     map = fo.GetNameMap(true);
                     if (map == null) return;
@@ -464,13 +385,13 @@ namespace SimPe.Plugin
                     }
                 }
 
-                if ((this.cbgid.Checked) && (package != null))
+                if ((this.cbgid.IsChecked == true) && (package != null))
                 {
                     WaitingScreen.Wait();
                     try
                     {
                         fo.FixGroup();
-                        if (this.cbfix.Checked) package.Save();
+                        if (this.cbfix.IsChecked == true) package.Save();
 
                     }
                     finally { WaitingScreen.Stop(this); }
@@ -678,8 +599,8 @@ namespace SimPe.Plugin
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
             //create a Cloned Object to get all needed Files for the Process
-            bool old = cbgid.Checked;
-            cbgid.Checked = false;
+            bool old = cbgid.IsChecked == true;
+            cbgid.IsChecked = false;
             WaitingScreen.Wait();
             try
             {
@@ -688,7 +609,7 @@ namespace SimPe.Plugin
             }
             finally { WaitingScreen.Stop(this); }
 
-            cbgid.Checked = old;
+            cbgid.IsChecked = old;
             /*
 			SimPe.Packages.GeneratableFile dn_pkg = null;
 			if (System.IO.File.Exists(ScenegraphHelper.GMND_PACKAGE)) dn_pkg = SimPe.Packages.GeneratableFile.LoadFromFile(ScenegraphHelper.GMND_PACKAGE);
@@ -721,7 +642,7 @@ namespace SimPe.Plugin
 			try 
 			{
 				string name = tbseek.Text.TrimStart().ToLower();
-				if (lbobj.SelectionMode != SelectionMode.One) lbobj.ClearSelected();
+				if (lbobj.SelectionMode != Avalonia.Controls.SelectionMode.Single) lbobj.ClearSelected();
 				for (int i=0; i<lbobj.Items.Count; i++)
 				{
 					IAlias a = (IAlias)lbobj.Items[i];

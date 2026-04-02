@@ -26,22 +26,31 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using SimPe.Scenegraph.Compat;
+using Button      = Avalonia.Controls.Button;
+using Label       = SimPe.Scenegraph.Compat.LabelCompat;
+using TextBox     = SimPe.Scenegraph.Compat.TextBoxCompat;
+using CheckBox    = Avalonia.Controls.CheckBox;
+using RadioButton = Avalonia.Controls.RadioButton;
+using Panel       = SimPe.Scenegraph.Compat.PanelCompat;
 
 namespace SimPe.Plugin
 {
 	/// <summary>
 	/// Summary description for Hash.
 	/// </summary>
-	public class Hash : System.Windows.Forms.Form
+	public class Hash : Avalonia.Controls.Window
 	{
-        private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbtext;
-		private System.Windows.Forms.TextBox tbhash;
-		private System.Windows.Forms.RadioButton rb24;
-		private System.Windows.Forms.RadioButton rb32;
-		private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.Panel panel1;
+        private Label label1;
+		private Label label4;
+        private TextBox tbtext;
+		private TextBox tbhash;
+		private RadioButton rb24;
+		private RadioButton rb32;
+		private RadioButton radioButton1;
+        private Panel panel1;
         private Button btcopy;
         private CheckBox cbTrim;
         private Label lbnamer;
@@ -61,7 +70,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected virtual void Dispose( bool disposing )
 		{
 			if( disposing )
 			{
@@ -70,191 +79,71 @@ namespace SimPe.Plugin
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
+		#region Avalonia layout
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Hash));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbtext = new System.Windows.Forms.TextBox();
-            this.tbhash = new System.Windows.Forms.TextBox();
-            this.rb24 = new System.Windows.Forms.RadioButton();
-            this.rb32 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btcopy = new System.Windows.Forms.Button();
-            this.cbTrim = new System.Windows.Forms.CheckBox();
-            this.lbnamer = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(37, 19);
-            this.label1.Name = "label1";
-            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label1.Size = new System.Drawing.Size(50, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "String:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(4, 83);
-            this.label4.Name = "label4";
-            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label4.Size = new System.Drawing.Size(83, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Hash Value:";
-            // 
-            // tbtext
-            // 
-            this.tbtext.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbtext.Location = new System.Drawing.Point(92, 15);
-            this.tbtext.Name = "tbtext";
-            this.tbtext.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tbtext.Size = new System.Drawing.Size(372, 21);
-            this.tbtext.TabIndex = 4;
-            this.tbtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbtext.TextChanged += new System.EventHandler(this.tbtext_TextChanged);
-            // 
-            // tbhash
-            // 
-            this.tbhash.Location = new System.Drawing.Point(92, 79);
-            this.tbhash.Name = "tbhash";
-            this.tbhash.ReadOnly = true;
-            this.tbhash.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tbhash.Size = new System.Drawing.Size(372, 21);
-            this.tbhash.TabIndex = 7;
-            this.tbhash.Text = "0xB00B0069";
-            this.tbhash.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // rb24
-            // 
-            this.rb24.BackColor = System.Drawing.Color.Transparent;
-            this.rb24.Checked = true;
-            this.rb24.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.rb24.Location = new System.Drawing.Point(240, 42);
-            this.rb24.Name = "rb24";
-            this.rb24.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.rb24.Size = new System.Drawing.Size(72, 24);
-            this.rb24.TabIndex = 8;
-            this.rb24.TabStop = true;
-            this.rb24.Text = "CRC 24";
-            this.rb24.UseVisualStyleBackColor = false;
-            this.rb24.Click += new System.EventHandler(this.tbtext_TextChanged);
-            this.rb24.CheckedChanged += new System.EventHandler(this.rb14_CheckedChanged);
-            // 
-            // rb32
-            // 
-            this.rb32.BackColor = System.Drawing.Color.Transparent;
-            this.rb32.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.rb32.Location = new System.Drawing.Point(320, 42);
-            this.rb32.Name = "rb32";
-            this.rb32.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.rb32.Size = new System.Drawing.Size(72, 24);
-            this.rb32.TabIndex = 9;
-            this.rb32.Text = "CRC 32";
-            this.rb32.UseVisualStyleBackColor = false;
-            this.rb32.Click += new System.EventHandler(this.tbtext_TextChanged);
-            this.rb32.CheckedChanged += new System.EventHandler(this.rb32_CheckedChanged);
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.radioButton1.Location = new System.Drawing.Point(400, 42);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radioButton1.Size = new System.Drawing.Size(56, 24);
-            this.radioButton1.TabIndex = 10;
-            this.radioButton1.Text = "GUID";
-            this.radioButton1.UseVisualStyleBackColor = false;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.guid_CheckedChanged);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.lbnamer);
-            this.panel1.Controls.Add(this.cbTrim);
-            this.panel1.Controls.Add(this.btcopy);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.radioButton1);
-            this.panel1.Controls.Add(this.rb32);
-            this.panel1.Controls.Add(this.rb24);
-            this.panel1.Controls.Add(this.tbhash);
-            this.panel1.Controls.Add(this.tbtext);
-            this.panel1.Controls.Add(this.label4);
-            
-            this.panel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            
-            this.panel1.Name = "panel1";
-            this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.panel1.Size = new System.Drawing.Size(496, 146);
-            
-            this.panel1.TabIndex = 11;
-            // 
-            // btcopy
-            // 
-            this.btcopy.Location = new System.Drawing.Point(389, 109);
-            this.btcopy.Name = "btcopy";
-            this.btcopy.Size = new System.Drawing.Size(75, 23);
-            this.btcopy.TabIndex = 11;
-            this.btcopy.Text = "Copy";
-            this.btcopy.UseVisualStyleBackColor = true;
-            this.btcopy.Click += new System.EventHandler(this.btcopy_Click);
-            // 
-            // cbTrim
-            // 
-            this.cbTrim.AutoSize = true;
-            this.cbTrim.Checked = true;
-            this.cbTrim.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTrim.Location = new System.Drawing.Point(40, 46);
-            this.cbTrim.Name = "cbTrim";
-            this.cbTrim.Size = new System.Drawing.Size(148, 17);
-            this.cbTrim.TabIndex = 12;
-            this.cbTrim.Text = "Use Lower Case Only";
-            this.cbTrim.UseVisualStyleBackColor = true;
-            this.cbTrim.CheckedChanged += new System.EventHandler(this.cbTrim_CheckedChanged);
-            // 
-            // lbnamer
-            // 
-            this.lbnamer.AutoSize = true;
-            this.lbnamer.Location = new System.Drawing.Point(4, 114);
-            this.lbnamer.Name = "lbnamer";
-            this.lbnamer.Size = new System.Drawing.Size(59, 13);
-            this.lbnamer.TabIndex = 13;
-            this.lbnamer.Text = "Available";
-            this.lbnamer.Visible = false;
-            // 
-            // Hash
-            // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-            this.ClientSize = new System.Drawing.Size(494, 144);
-            this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Hash";
-            this.Text = "Hash Generator";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.ResumeLayout(false);
+            this.Title  = "Hash Generator";
+            this.Width  = 500;
+            this.Height = 170;
 
+            // ── Labels ────────────────────────────────────────────────────────────
+            this.label1  = new Label { Text = "String:" };
+            this.label4  = new Label { Text = "Hash Value:" };
+            this.lbnamer = new Label { Text = "Available", IsVisible = false };
+
+            // ── Text boxes ────────────────────────────────────────────────────────
+            this.tbtext = new TextBox();
+            this.tbtext.TextChanged += this.tbtext_TextChanged;
+
+            this.tbhash = new TextBox { Text = "0xB00B0069", IsReadOnly = true };
+
+            // ── Radio buttons ─────────────────────────────────────────────────────
+            this.rb24 = new RadioButton { Content = "CRC 24", IsChecked = true, GroupName = "hashtype" };
+            this.rb32 = new RadioButton { Content = "CRC 32", GroupName = "hashtype" };
+            this.radioButton1 = new RadioButton { Content = "GUID", GroupName = "hashtype" };
+            this.rb24.IsCheckedChanged         += (s, e) => rb14_CheckedChanged(s, EventArgs.Empty);
+            this.rb24.IsCheckedChanged         += (s, e) => tbtext_TextChanged(s, EventArgs.Empty);
+            this.rb32.IsCheckedChanged         += (s, e) => rb32_CheckedChanged(s, EventArgs.Empty);
+            this.rb32.IsCheckedChanged         += (s, e) => tbtext_TextChanged(s, EventArgs.Empty);
+            this.radioButton1.IsCheckedChanged += (s, e) => guid_CheckedChanged(s, EventArgs.Empty);
+
+            // ── CheckBox + Copy button ────────────────────────────────────────────
+            this.cbTrim = new CheckBox { Content = "Use Lower Case Only", IsChecked = true };
+            this.cbTrim.IsCheckedChanged += (s, e) => cbTrim_CheckedChanged(s, EventArgs.Empty);
+
+            this.btcopy = new Button { Content = "Copy" };
+            this.btcopy.Click += (s, e) => btcopy_Click(s, e);
+
+            // ── Row 0: String label + tbtext ─────────────────────────────────────
+            var row0 = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            row0.Children.Add(this.label1);
+            row0.Children.Add(this.tbtext);
+
+            // ── Row 1: cbTrim + radio buttons ─────────────────────────────────────
+            var row1 = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
+            row1.Children.Add(this.cbTrim);
+            row1.Children.Add(this.rb24);
+            row1.Children.Add(this.rb32);
+            row1.Children.Add(this.radioButton1);
+
+            // ── Row 2: Hash label + tbhash + btcopy + lbnamer ────────────────────
+            var row2 = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            row2.Children.Add(this.label4);
+            row2.Children.Add(this.tbhash);
+            row2.Children.Add(this.btcopy);
+            row2.Children.Add(this.lbnamer);
+
+            // ── Root ──────────────────────────────────────────────────────────────
+            this.panel1 = new Panel();
+            var root = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 6, Margin = new Avalonia.Thickness(8) };
+            root.Children.Add(row0);
+            root.Children.Add(row1);
+            root.Children.Add(row2);
+            this.panel1.Children.Add(root);
+
+            this.Content = this.panel1;
 		}
         #endregion
 
@@ -278,59 +167,59 @@ namespace SimPe.Plugin
 
         private void tbtext_TextChanged(object sender, System.EventArgs e)
 		{
-			try 
+			try
 			{
 				ulong hash = 0;
-                if (cbTrim.Checked)
+                if (cbTrim.IsChecked == true)
                 {
-                    if (rb24.Checked) hash = Hashes.ToLong(Hashes.Crc24.ComputeHash(Helper.ToBytes(tbtext.Text.ToLower())));
+                    if (rb24.IsChecked == true) hash = Hashes.ToLong(Hashes.Crc24.ComputeHash(Helper.ToBytes(tbtext.Text.ToLower())));
                     else hash = Hashes.ToLong(Hashes.Crc32.ComputeHash(Helper.ToBytes(tbtext.Text.ToLower())));
                 }
                 else
                 {
-                    if (rb24.Checked) hash = Hashes.ToLong(Hashes.Crc24.ComputeHash(Helper.ToBytes(tbtext.Text)));
+                    if (rb24.IsChecked == true) hash = Hashes.ToLong(Hashes.Crc24.ComputeHash(Helper.ToBytes(tbtext.Text)));
                     else hash = Hashes.ToLong(Hashes.Crc32.ComputeHash(Helper.ToBytes(tbtext.Text)));
                 }
 				tbhash.Text = "0x"+Helper.HexString((uint)hash);
                 setupinuse(hash);
-			} 
-			catch (Exception) 
+			}
+			catch (Exception)
 			{
 			}
 		}
 
 		private void rb32_CheckedChanged(object sender, System.EventArgs e)
 		{
-            tbtext.Enabled = cbTrim.Enabled = true;
+            tbtext.IsEnabled = cbTrim.IsEnabled = true;
 		}
 
 		private void guid_CheckedChanged(object sender, System.EventArgs e)
 		{
-            tbtext.Enabled = cbTrim.Enabled = false;
-            lbnamer.Visible = false;
+            tbtext.IsEnabled = cbTrim.IsEnabled = false;
+            lbnamer.IsVisible = false;
 			tbhash.Text = System.Guid.NewGuid().ToString();
 		}
 
 		private void rb14_CheckedChanged(object sender, System.EventArgs e)
 		{
-            tbtext.Enabled = cbTrim.Enabled = true;
+            tbtext.IsEnabled = cbTrim.IsEnabled = true;
 		}
 
         private void btcopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetDataObject(tbhash.Text, true);
+            _ = this.Clipboard?.SetTextAsync(tbhash.Text);
         }
 
         private void cbTrim_CheckedChanged(object sender, EventArgs e)
         {
-            if (!radioButton1.Checked) tbtext_TextChanged(sender, e);
+            if (radioButton1.IsChecked != true) tbtext_TextChanged(sender, e);
         }
 
         private void setupinuse(ulong vid)
         {
-            if (rb32.Checked)
+            if (rb32.IsChecked == true)
             {
-                lbnamer.Visible = true;
+                lbnamer.IsVisible = true;
                 string objName = pjse.GUIDIndex.TheGUIDIndex[Convert.ToUInt32(vid)];
                 if (objName != null && objName.Length > 0)
                     lbnamer.Text = objName;
@@ -338,7 +227,7 @@ namespace SimPe.Plugin
                     lbnamer.Text = "Available";
             }
             else
-                lbnamer.Visible = false;
+                lbnamer.IsVisible = false;
         }
 	}
 }

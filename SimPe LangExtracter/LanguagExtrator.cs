@@ -139,7 +139,7 @@ namespace SimPe.Plugin
         {
             string parf;
             System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-            if (fbd.ShowDialog() != SimPe.DialogResult.OK) return;
+            if (fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             this.Language.IsEnabled = this.btGo.IsEnabled = this.btCome.IsEnabled = this.btclean.IsEnabled = false;
             string floder = fbd.SelectedPath + "\\" + languageString[currentLanguage-1];
             if (!Directory.Exists(floder)) Directory.CreateDirectory(floder);
@@ -188,7 +188,7 @@ namespace SimPe.Plugin
             uint insta;
             string twine;
             System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-            if (fbd.ShowDialog() != SimPe.DialogResult.OK) return;
+            if (fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             string[] textfiles = Directory.GetFiles(fbd.SelectedPath, "*.txt", SearchOption.TopDirectoryOnly);
             if (textfiles.Length < 1)
             {

@@ -34,6 +34,12 @@ using SimPe;
 using SimPe.Data;
 using SimPe.Interfaces;
 using SimPe.PackedFiles.Wrapper;
+using Button = Avalonia.Controls.Button;
+using PictureBox = System.Windows.Forms.PictureBox;
+using TextBox = Avalonia.Controls.TextBox;
+using ComboBox = Avalonia.Controls.ComboBox;
+using GroupBox = SimPe.Scenegraph.Compat.GroupBox;
+using ListViewItem = SimPe.Scenegraph.Compat.ListViewItem;
 
 
 namespace SimPe.Plugin
@@ -1232,7 +1238,7 @@ namespace SimPe.Plugin
             var extrasBottomRow = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 4 };
             extrasBottomRow.Children.Add(lbrewguid);
             extrasBottomRow.Children.Add(btexApply);
-            extrasBottomRow.Children.Add(pictureBox2);
+            // extrasBottomRow.Children.Add(pictureBox2); // TODO: port PictureBox to Avalonia Image
             extrasScroll.Children.Add(extrasBottomRow);
 
             gbExtras.Content = extrasScroll;
@@ -1260,7 +1266,7 @@ namespace SimPe.Plugin
             topBar.Children.Add(label3);  topBar.Children.Add(CareerTitle);
             topBar.Children.Add(label1);  topBar.Children.Add(CareerLvls);
             topBar.Children.Add(label10); topBar.Children.Add(Language);
-            topBar.Children.Add(pictureBox1);
+            // topBar.Children.Add(pictureBox1); // TODO: port PictureBox to Avalonia Image
             topBar.Children.Add(lbcrap);
             topBar.Children.Add(btUgrade);
             Avalonia.Controls.DockPanel.SetDock(topBar, Avalonia.Controls.Dock.Top);

@@ -38,6 +38,9 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using TextBox = Avalonia.Controls.TextBox;
 using Button = Avalonia.Controls.Button;
+using ListBox = Avalonia.Controls.ListBox;
+using DragEventArgs = Avalonia.Input.DragEventArgs;
+using DragDropEffects = Avalonia.Input.DragDropEffects;
 
 namespace SimPe.Plugin
 {

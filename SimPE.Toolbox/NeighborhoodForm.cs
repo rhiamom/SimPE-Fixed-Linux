@@ -598,10 +598,10 @@ namespace SimPe.Plugin
             CloseIfOpened(path);
 
             NgbBackup nb = new NgbBackup();
-            nb.Text += " (";
-            if (selected.Label != "") nb.Text += selected.Label + ": ";
-            nb.Text += selected.Name.Trim() + ")";
-            if (UserVerification.HaveUserId) nb.Text += " " + NeighborhoodIdentifier(path);
+            nb.Title += " (";
+            if (selected.Label != "") nb.Title += selected.Label + ": ";
+            nb.Title += selected.Name.Trim() + ")";
+            if (UserVerification.HaveUserId) nb.Title += " " + NeighborhoodIdentifier(path);
             nb.Execute(path, package, prov, selected.Label);
             UpdateList();
             SetSmilyIcon("none");

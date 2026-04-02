@@ -27,7 +27,6 @@ using System.Collections;
 using System.ComponentModel;
 using Avalonia.Controls;
 using SimPe.Scenegraph.Compat;
-using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
 using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
 using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces.Plugin;
@@ -730,7 +729,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (bcon == null) return;
             if (bcon.Package != wrapper.Package)
             {
-                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
+                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(bcon.FileDescriptor, bcon.Package);
         }

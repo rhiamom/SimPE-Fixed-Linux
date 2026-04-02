@@ -30,7 +30,6 @@ using System.Collections;
 using System.ComponentModel;
 using Avalonia.Controls;
 using SimPe.Scenegraph.Compat;
-using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
 using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
 using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces;
@@ -714,12 +713,12 @@ namespace SimPe.PackedFiles.UserInterface
                 if (tprp != null && tprp.TextOnly)
                 {
                     // if it exists but is unreadable, as if user wants to overwrite
-                    SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
+                    SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_overwriteduff")
                         , btnTPRPMaker.Content?.ToString()
                         , MessageBoxButtons.OKCancel
                         , MessageBoxIcon.Warning).GetAwaiter().GetResult();
-                    if (dr != SimPe.Scenegraph.Compat.DialogResult.OK)
+                    if (dr != SimPe.DialogResult.OK)
                         return;
                     wrapper.Package.Remove(tprp.FileDescriptor);
                     tprp = null;
@@ -727,29 +726,29 @@ namespace SimPe.PackedFiles.UserInterface
                 if (tprp != null)
                 {
                     // if it exists ask if user wants to preserve content
-                    SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
+                    SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_keeplabels")
                         , btnTPRPMaker.Content?.ToString()
                         , MessageBoxButtons.YesNoCancel
                         , MessageBoxIcon.Warning).GetAwaiter().GetResult();
-                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Cancel)
+                    if (dr == SimPe.DialogResult.Cancel)
                         return;
 
                     if (!tprp.Package.Equals(wrapper.Package))
                     {
                         // Clone the original into this package
-                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) Wait.MaxProgress = tprp.Count;
+                        if (dr == SimPe.DialogResult.Yes) Wait.MaxProgress = tprp.Count;
                         SimPe.Interfaces.Files.IPackedFileDescriptor npfd = newPFD(tprp.FileDescriptor);
                         TPRP ntprp = new TPRP();
                         ntprp.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
-                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) foreach (TPRPItem item in tprp) { ntprp.Add(item.Clone()); Wait.Progress++; }
+                        if (dr == SimPe.DialogResult.Yes) foreach (TPRPItem item in tprp) { ntprp.Add(item.Clone()); Wait.Progress++; }
                         tprp = ntprp;
                         tprp.SynchronizeUserData();
                         Wait.MaxProgress = 0;
                     }
 
-                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes)
+                    if (dr == SimPe.DialogResult.Yes)
                     {
                         minArgc = tprp.ParamCount;
                         minLocalC = tprp.LocalCount;
@@ -1678,7 +1677,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (tprp == null) return;
             if (tprp.Package != wrapper.Package)
             {
-                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
+                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
         }
@@ -1690,7 +1689,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (tpfw.Package != wrapper.Package)
             {
-                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
+                if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo).GetAwaiter().GetResult() != SimPe.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(tpfw.FileDescriptor, tpfw.Package);
         }
@@ -2212,7 +2211,7 @@ namespace SimPe.PackedFiles.UserInterface
                     pjse.Localization.GetString("guidAskNoSave"),
                 },
                 new SimPe.DialogResult[] { SimPe.DialogResult.OK, SimPe.DialogResult.Retry, SimPe.DialogResult.Cancel, }).GetAwaiter().GetResult();
-            //SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"), "\r\n" + 
+            //SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"), "\r\n" + 
             //    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (dr == SimPe.DialogResult.OK) defaultFileToolStripMenuItem_Click(this.defaultFileToolStripMenuItem1, null);
             else if (dr == SimPe.DialogResult.Retry) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
@@ -2250,8 +2249,8 @@ namespace SimPe.PackedFiles.UserInterface
                 ? pjse.Localization.GetString("guidLoadIndex")
                 : pjse.Localization.GetString("guidSaveIndex");
             fd.ValidateNames = true;
-            SimPe.Scenegraph.Compat.DialogResult dr = fd.ShowDialog();
-            if (dr == SimPe.Scenegraph.Compat.DialogResult.OK)
+            SimPe.DialogResult dr = fd.ShowDialog();
+            if (dr == SimPe.DialogResult.OK)
             {
                 if (load)
                     pjse.GUIDIndex.TheGUIDIndex.Load(fd.FileName);

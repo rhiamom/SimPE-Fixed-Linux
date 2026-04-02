@@ -25,7 +25,21 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Image = System.Drawing.Image;
+using Avalonia.Layout;
+using SimPe.Scenegraph.Compat;
+using ListView  = SimPe.Scenegraph.Compat.ListView;
+using ImageList = SimPe.Scenegraph.Compat.ImageList;
+using Button    = Avalonia.Controls.Button;
+using Label     = SimPe.Scenegraph.Compat.LabelCompat;
+using GroupBox  = SimPe.Scenegraph.Compat.GroupBox;
+using PictureBox = SimPe.Scenegraph.Compat.PictureBox;
+using LinkLabel = SimPe.Scenegraph.Compat.LinkLabel;
+using ToolTip   = SimPe.Scenegraph.Compat.ToolTip;
+using CheckBox  = Avalonia.Controls.CheckBox;
+using LinkLabelLinkClickedEventArgs = SimPe.Scenegraph.Compat.LinkLabelLinkClickedEventArgs;
+using ColorDepth = SimPe.Scenegraph.Compat.ColorDepth;
 
 namespace SimPe.Plugin
 {
@@ -34,32 +48,32 @@ namespace SimPe.Plugin
 	/// </summary>
 	public class Surgery : Avalonia.Controls.Window
 	{
-		private System.Windows.Forms.ImageList ilist;
-		private System.Windows.Forms.ListView lv;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.PictureBox pbpatient;
-		private System.Windows.Forms.PictureBox pbarche;
-		private System.Windows.Forms.LinkLabel llusepatient;
-		private System.Windows.Forms.LinkLabel llusearche;
-		private System.Windows.Forms.Label lbpatname;
-		private System.Windows.Forms.Label lbpatlife;
-		private System.Windows.Forms.Label lbarchlife;
-		private System.Windows.Forms.Label lbarchname;
-		private System.Windows.Forms.LinkLabel llexport;
-		private System.Windows.Forms.SaveFileDialog sfd;
-		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.CheckBox cbskin;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.ListView lvskin;
-		private System.Windows.Forms.ImageList iskin;
-		private System.Windows.Forms.CheckBox cbface;
-		private System.Windows.Forms.CheckBox cbmakeup;
-		private System.Windows.Forms.CheckBox cbeye;
+		private ImageList ilist;
+		private ListView lv;
+		private Button button1;
+		private Label label1;
+		private GroupBox groupBox1;
+		private GroupBox groupBox2;
+		private Label label2;
+		private Label label3;
+		private PictureBox pbpatient;
+		private PictureBox pbarche;
+		private LinkLabel llusepatient;
+		private LinkLabel llusearche;
+		private Label lbpatname;
+		private Label lbpatlife;
+		private Label lbarchlife;
+		private Label lbarchname;
+		private LinkLabel llexport;
+		private SimPe.Scenegraph.Compat.SaveFileDialogCompat sfd;
+		private ToolTip toolTip1;
+		private CheckBox cbskin;
+		private GroupBox groupBox3;
+		private ListView lvskin;
+		private ImageList iskin;
+		private CheckBox cbface;
+		private CheckBox cbmakeup;
+		private CheckBox cbeye;
 		private System.ComponentModel.IContainer components;
 
 		public Surgery()
@@ -86,255 +100,133 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode f�r die Designerunterst�tzung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor ge�ndert werden.
-		/// </summary>
+		#region Avalonia layout
 		private void InitializeComponent()
 		{
+            this.Title  = "Sims Surgery Tool";
+            this.Width  = 1260;
+            this.Height = 589;
+
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Surgery));
-            this.ilist = new System.Windows.Forms.ImageList(this.components);
-            this.lv = new System.Windows.Forms.ListView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbeye = new System.Windows.Forms.CheckBox();
-            this.cbmakeup = new System.Windows.Forms.CheckBox();
-            this.llexport = new System.Windows.Forms.LinkLabel();
-            this.lbpatlife = new System.Windows.Forms.Label();
-            this.lbpatname = new System.Windows.Forms.Label();
-            this.pbpatient = new System.Windows.Forms.PictureBox();
-            this.llusepatient = new System.Windows.Forms.LinkLabel();
-            this.cbface = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lbarchlife = new System.Windows.Forms.Label();
-            this.lbarchname = new System.Windows.Forms.Label();
-            this.llusearche = new System.Windows.Forms.LinkLabel();
-            this.pbarche = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cbskin = new System.Windows.Forms.CheckBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lvskin = new System.Windows.Forms.ListView();
-            this.iskin = new System.Windows.Forms.ImageList(this.components);
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbpatient)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbarche)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            // 
-            // ilist
-            // 
-            this.ilist.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.ilist, "ilist");
-            this.ilist.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // lv
-            // 
-            resources.ApplyResources(this.lv, "lv");
-            this.lv.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sfd        = new SimPe.Scenegraph.Compat.SaveFileDialogCompat();
+            this.toolTip1   = new ToolTip();
+
+            // ── Image lists ──────────────────────────────────────────────────────
+            this.ilist = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
+            this.ilist.ImageSize = new System.Drawing.Size(64, 64);
+            this.iskin = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
+            this.iskin.ImageSize = new System.Drawing.Size(48, 48);
+
+            // ── Sim pool list view ───────────────────────────────────────────────
+            this.lv = new ListView();
             this.lv.HideSelection = false;
             this.lv.LargeImageList = this.ilist;
             this.lv.MultiSelect = false;
-            this.lv.Name = "lv";
             this.lv.SmallImageList = this.ilist;
-            this.lv.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lv.Sorting = SimPe.SortOrder.Ascending;
             this.lv.StateImageList = this.ilist;
-            this.toolTip1.SetToolTip(this.lv, resources.GetString("lv.ToolTip"));
             this.lv.UseCompatibleStateImageBehavior = false;
-            this.lv.SelectedIndexChanged += new System.EventHandler(this.SelectSim);
-            this.lv.DoubleClick += new System.EventHandler(this.Open);
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.toolTip1.SetToolTip(this.button1, resources.GetString("button1.ToolTip"));
-            this.button1.Click += new System.EventHandler(this.Open);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // groupBox1
-            // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cbeye);
-            this.groupBox1.Controls.Add(this.cbmakeup);
-            this.groupBox1.Controls.Add(this.llexport);
-            this.groupBox1.Controls.Add(this.lbpatlife);
-            this.groupBox1.Controls.Add(this.lbpatname);
-            this.groupBox1.Controls.Add(this.pbpatient);
-            this.groupBox1.Controls.Add(this.llusepatient);
-            this.groupBox1.Controls.Add(this.cbface);
-            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label2.Name = "label2";
-            // 
-            // cbeye
-            // 
-            resources.ApplyResources(this.cbeye, "cbeye");
-            this.cbeye.Name = "cbeye";
-            this.toolTip1.SetToolTip(this.cbeye, resources.GetString("cbeye.ToolTip"));
-            this.cbeye.CheckedChanged += new System.EventHandler(this.cbskin_CheckedChanged);
-            // 
-            // cbmakeup
-            // 
-            resources.ApplyResources(this.cbmakeup, "cbmakeup");
-            this.cbmakeup.Name = "cbmakeup";
-            this.toolTip1.SetToolTip(this.cbmakeup, resources.GetString("cbmakeup.ToolTip"));
-            this.cbmakeup.CheckedChanged += new System.EventHandler(this.cbskin_CheckedChanged);
-            // 
-            // llexport
-            // 
-            resources.ApplyResources(this.llexport, "llexport");
-            this.llexport.Name = "llexport";
-            this.llexport.TabStop = true;
-            this.toolTip1.SetToolTip(this.llexport, resources.GetString("llexport.ToolTip"));
-            this.llexport.UseCompatibleTextRendering = true;
-            this.llexport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Export);
-            // 
-            // lbpatlife
-            // 
-            resources.ApplyResources(this.lbpatlife, "lbpatlife");
-            this.lbpatlife.Name = "lbpatlife";
-            // 
-            // lbpatname
-            // 
-            resources.ApplyResources(this.lbpatname, "lbpatname");
-            this.lbpatname.Name = "lbpatname";
-            // 
-            // pbpatient
-            // 
-            this.pbpatient.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.pbpatient, "pbpatient");
-            this.pbpatient.Name = "pbpatient";
-            this.pbpatient.TabStop = false;
-            // 
-            // llusepatient
-            // 
-            resources.ApplyResources(this.llusepatient, "llusepatient");
-            this.llusepatient.Name = "llusepatient";
-            this.llusepatient.TabStop = true;
-            this.toolTip1.SetToolTip(this.llusepatient, resources.GetString("llusepatient.ToolTip"));
-            this.llusepatient.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.UsePatient);
-            // 
-            // cbface
-            // 
-            resources.ApplyResources(this.cbface, "cbface");
-            this.cbface.Name = "cbface";
-            this.toolTip1.SetToolTip(this.cbface, resources.GetString("cbface.ToolTip"));
-            this.cbface.CheckedChanged += new System.EventHandler(this.cbskin_CheckedChanged);
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.lbarchlife);
-            this.groupBox2.Controls.Add(this.lbarchname);
-            this.groupBox2.Controls.Add(this.llusearche);
-            this.groupBox2.Controls.Add(this.pbarche);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // lbarchlife
-            // 
-            resources.ApplyResources(this.lbarchlife, "lbarchlife");
-            this.lbarchlife.Name = "lbarchlife";
-            // 
-            // lbarchname
-            // 
-            resources.ApplyResources(this.lbarchname, "lbarchname");
-            this.lbarchname.Name = "lbarchname";
-            // 
-            // llusearche
-            // 
-            resources.ApplyResources(this.llusearche, "llusearche");
-            this.llusearche.Name = "llusearche";
-            this.llusearche.TabStop = true;
-            this.toolTip1.SetToolTip(this.llusearche, resources.GetString("llusearche.ToolTip"));
-            this.llusearche.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.UseArchetype);
-            // 
-            // pbarche
-            // 
-            this.pbarche.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.pbarche, "pbarche");
-            this.pbarche.Name = "pbarche";
-            this.pbarche.TabStop = false;
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label3.Name = "label3";
-            // 
-            // sfd
-            // 
-            resources.ApplyResources(this.sfd, "sfd");
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.AutoPopDelay = 30000;
-            this.toolTip1.InitialDelay = 500;
-            this.toolTip1.ReshowDelay = 100;
-            // 
-            // cbskin
-            // 
-            resources.ApplyResources(this.cbskin, "cbskin");
-            this.cbskin.Name = "cbskin";
-            this.toolTip1.SetToolTip(this.cbskin, resources.GetString("cbskin.ToolTip"));
-            this.cbskin.CheckedChanged += new System.EventHandler(this.cbskin_CheckedChanged);
-            // 
-            // groupBox3
-            // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Controls.Add(this.cbskin);
-            this.groupBox3.Controls.Add(this.lvskin);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.TabStop = false;
-            // 
-            // lvskin
-            // 
-            resources.ApplyResources(this.lvskin, "lvskin");
-            this.lvskin.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lv.SelectedIndexChanged += this.SelectSim;
+            this.lv.DoubleClick += this.Open;
+
+            // ── Button ───────────────────────────────────────────────────────────
+            this.button1 = new Button { Content = "Surgery", IsEnabled = false };
+            this.button1.Click += (s, e) => Open(s, e);
+
+            // ── Patient labels + picture ─────────────────────────────────────────
+            this.label1    = new Label { Text = "Sim Pool:" };
+            this.label2    = new Label { Text = "The look of this Sim will be changed." };
+            this.lbpatname = new Label { Text = "Name" };
+            this.lbpatlife = new Label { Text = "Lifestage" };
+            this.pbpatient = new PictureBox { Width = 96, Height = 96 };
+            this.llusepatient = new LinkLabel { Text = "use", IsEnabled = false };
+            this.llusepatient.LinkClicked += (s, e) => UsePatient(s, e);
+            this.llexport = new LinkLabel { Text = "Export (thanks to Pinhead)", IsEnabled = false };
+            this.llexport.LinkClicked += (s, e) => Export(s, e);
+            this.cbface   = new CheckBox { Content = "Face only" };
+            this.cbmakeup = new CheckBox { Content = "Makeup only" };
+            this.cbeye    = new CheckBox { Content = "Eyes only" };
+            this.cbface.IsCheckedChanged   += (s, e) => cbskin_CheckedChanged(s, EventArgs.Empty);
+            this.cbmakeup.IsCheckedChanged += (s, e) => cbskin_CheckedChanged(s, EventArgs.Empty);
+            this.cbeye.IsCheckedChanged    += (s, e) => cbskin_CheckedChanged(s, EventArgs.Empty);
+
+            // ── Archetype labels + picture ────────────────────────────────────────
+            this.label3    = new Label { Text = "That's the way the Sim will look like afterwards." };
+            this.lbarchname = new Label { Text = "Name" };
+            this.lbarchlife = new Label { Text = "Lifestage" };
+            this.pbarche   = new PictureBox { Width = 96, Height = 96 };
+            this.llusearche = new LinkLabel { Text = "use", IsEnabled = false };
+            this.llusearche.LinkClicked += (s, e) => UseArchetype(s, e);
+
+            // ── Skin options ──────────────────────────────────────────────────────
+            this.cbskin = new CheckBox { Content = "Skintone only" };
+            this.cbskin.IsCheckedChanged += (s, e) => cbskin_CheckedChanged(s, EventArgs.Empty);
+            this.lvskin = new ListView();
             this.lvskin.HideSelection = false;
             this.lvskin.LargeImageList = this.iskin;
             this.lvskin.MultiSelect = false;
-            this.lvskin.Name = "lvskin";
             this.lvskin.UseCompatibleStateImageBehavior = false;
-            this.lvskin.SelectedIndexChanged += new System.EventHandler(this.lvskin_SelectedIndexChanged);
-            // 
-            // iskin
-            // 
-            this.iskin.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.iskin, "iskin");
-            this.iskin.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // Surgery
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Name = "Surgery";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbpatient)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbarche)).EndInit();
-            this.groupBox3.ResumeLayout(false);
+            this.lvskin.SelectedIndexChanged += this.lvskin_SelectedIndexChanged;
 
+            // ── GroupBox contents ─────────────────────────────────────────────────
+            this.groupBox1 = new GroupBox { Text = "Patient Sim" };
+            var gb1inner = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            var gb1top = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            gb1top.Children.Add(this.pbpatient);
+            var gb1info = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            gb1info.Children.Add(this.lbpatname);
+            gb1info.Children.Add(this.lbpatlife);
+            gb1info.Children.Add(this.llusepatient);
+            gb1info.Children.Add(this.llexport);
+            gb1top.Children.Add(gb1info);
+            gb1inner.Children.Add(gb1top);
+            gb1inner.Children.Add(this.label2);
+            var gb1checks = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            gb1checks.Children.Add(this.cbface);
+            gb1checks.Children.Add(this.cbmakeup);
+            gb1checks.Children.Add(this.cbeye);
+            gb1inner.Children.Add(gb1checks);
+            this.groupBox1.Content = gb1inner;
+
+            this.groupBox2 = new GroupBox { Text = "Archetype Sim" };
+            var gb2inner = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            var gb2top = new Avalonia.Controls.StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            gb2top.Children.Add(this.pbarche);
+            var gb2info = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            gb2info.Children.Add(this.lbarchname);
+            gb2info.Children.Add(this.lbarchlife);
+            gb2info.Children.Add(this.llusearche);
+            gb2top.Children.Add(gb2info);
+            gb2inner.Children.Add(gb2top);
+            gb2inner.Children.Add(this.label3);
+            this.groupBox2.Content = gb2inner;
+
+            this.groupBox3 = new GroupBox { Text = "Skin Options" };
+            var gb3inner = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            gb3inner.Children.Add(this.cbskin);
+            gb3inner.Children.Add(this.lvskin);
+            this.groupBox3.Content = gb3inner;
+
+            // ── Root layout ───────────────────────────────────────────────────────
+            var rightPanel = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 4 };
+            rightPanel.Children.Add(this.groupBox1);
+            rightPanel.Children.Add(this.groupBox2);
+            rightPanel.Children.Add(this.groupBox3);
+            rightPanel.Children.Add(this.button1);
+
+            var leftPanel = new Avalonia.Controls.StackPanel { Orientation = Orientation.Vertical, Spacing = 2 };
+            leftPanel.Children.Add(this.label1);
+            leftPanel.Children.Add(this.lv);
+
+            var root = new Avalonia.Controls.Grid();
+            root.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(252, Avalonia.Controls.GridUnitType.Pixel));
+            root.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(1, Avalonia.Controls.GridUnitType.Star));
+            Avalonia.Controls.Grid.SetColumn(leftPanel,  0);
+            Avalonia.Controls.Grid.SetColumn(rightPanel, 1);
+            root.Children.Add(leftPanel);
+            root.Children.Add(rightPanel);
+
+            this.Content = root;
 		}
 		#endregion
 
@@ -520,7 +412,7 @@ namespace SimPe.Plugin
 			this.spatient = null;
 			this.sarche = null;
 
-			button1.Enabled = CanDo();
+			button1.IsEnabled = CanDo();
 
 			ilist.Images.Clear();
 			lv.Items.Clear();
@@ -545,7 +437,7 @@ namespace SimPe.Plugin
                 this.llusearche.Enabled = false;
                 this.llusepatient.Enabled = false;
                 this.llexport.Enabled = false;
-                button1.Enabled = false;
+                button1.IsEnabled = false;
                 if (lv.Items.Count > 0) lv.Items[0].Selected = true;
 
 
@@ -571,9 +463,9 @@ namespace SimPe.Plugin
 			SimPe.Packages.GeneratableFile newpackage = null;
 			PlasticSurgery ps = new PlasticSurgery(ngbh, patient, spatient, archetype, sarche);
 
-			if (!this.cbskin.Checked && !this.cbface.Checked && !this.cbmakeup.Checked && !this.cbeye.Checked) newpackage = ps.CloneSim();
+			if (this.cbskin.IsChecked != true && this.cbface.IsChecked != true && this.cbmakeup.IsChecked != true && this.cbeye.IsChecked != true) newpackage = ps.CloneSim();
 
-			if (this.cbskin.Checked) 
+			if (this.cbskin.IsChecked == true)
 			{
 				if (lvskin.SelectedItems.Count==0) return;
 				string skin = (string)lvskin.SelectedItems[0].Tag;
@@ -581,21 +473,21 @@ namespace SimPe.Plugin
 				else newpackage = ps.CloneSkinTone(skin, skinfiles);
 			}
 
-			if (this.cbface.Checked) 
+			if (this.cbface.IsChecked == true)
 			{
-				if (this.cbskin.Checked) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
+				if (this.cbskin.IsChecked == true) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
 				newpackage = ps.CloneFace();
 			}
 
-			if (this.cbmakeup.Checked) 
+			if (this.cbmakeup.IsChecked == true)
 			{
-				if ((this.cbskin.Checked) || (this.cbface.Checked)) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
+				if (this.cbskin.IsChecked == true || this.cbface.IsChecked == true) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
 				newpackage = ps.CloneMakeup(false, true);
 			}
 
-			if (this.cbeye.Checked) 
+			if (this.cbeye.IsChecked == true)
 			{
-				if ((this.cbskin.Checked) || (this.cbface.Checked) || (this.cbmakeup.Checked)) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
+				if (this.cbskin.IsChecked == true || this.cbface.IsChecked == true || this.cbmakeup.IsChecked == true) ps = new PlasticSurgery(ngbh, newpackage, spatient, archetype, sarche);
 				newpackage = ps.CloneMakeup(true, false);
 			}
 			
@@ -621,7 +513,7 @@ namespace SimPe.Plugin
 
 		SimPe.PackedFiles.Wrapper.SDesc spatient = null;
 		SimPe.PackedFiles.Wrapper.SDesc sarche = null;
-		private void UsePatient(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void UsePatient(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			this.llexport.Enabled = (spatient!=null);
 			if (lv.SelectedItems.Count==0) return;
@@ -633,12 +525,12 @@ namespace SimPe.Plugin
 			lbpatlife.Text = spatient.CharacterDescription.LifeSection.ToString();
 			lbpatlife.Text += ", " + spatient.CharacterDescription.Gender.ToString();
 
-			button1.Enabled =  (pbpatient.Image!=null) && (pbarche.Image!=null);
+			button1.IsEnabled = (pbpatient.Image!=null) && (pbarche.Image!=null);
 			pfd = (SimPe.Interfaces.Files.IPackedFileDescriptor)spatient.FileDescriptor;
 			this.llexport.Enabled = (spatient!=null);
 		}
 
-		private void UseArchetype(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void UseArchetype(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			if (lv.SelectedItems.Count==0) return;
 			if (lv.SelectedItems[0].ImageIndex>=0) this.pbarche.Image = ilist.Images[lv.SelectedItems[0].ImageIndex];
@@ -652,7 +544,7 @@ namespace SimPe.Plugin
 			lbarchlife.Text = sarche.CharacterDescription.LifeSection.ToString();
 			lbarchlife.Text += ", " + sarche.CharacterDescription.Gender.ToString();
 
-			button1.Enabled =  (pbpatient.Image!=null) && (pbarche.Image!=null);
+			button1.IsEnabled = (pbpatient.Image!=null) && (pbarche.Image!=null);
 		}
 
 		protected void FaceSurgery()
@@ -694,7 +586,7 @@ namespace SimPe.Plugin
 			}
 		}
 
-		private void Export(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void Export(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			if (spatient==null) return;
 
@@ -785,14 +677,13 @@ namespace SimPe.Plugin
 			if (spatient == null) return false;
 
 			bool ret = true;
-			if (cbskin.Checked)
+			if (cbskin.IsChecked == true)
 			{
 				ret = (lvskin.SelectedItems.Count==1);
 				if (ret) if (lv.Items[0].Selected && (sarche == null)) ret=false;
-				
-			} 
-			
-			if (!cbskin.Checked || cbface.Checked || cbmakeup.Checked || cbeye.Checked)
+			}
+
+			if (cbskin.IsChecked != true || cbface.IsChecked == true || cbmakeup.IsChecked == true || cbeye.IsChecked == true)
 			{
 				ret = ret && (sarche != null);
 			}
@@ -802,14 +693,14 @@ namespace SimPe.Plugin
 
 		private void cbskin_CheckedChanged(object sender, System.EventArgs e)
 		{
-			lvskin.Enabled = this.cbskin.Checked;
+			lvskin.Enabled = this.cbskin.IsChecked == true;
 			lvskin_SelectedIndexChanged(null, null);
-			button1.Enabled = CanDo();
+			button1.IsEnabled = CanDo();
 		}
 
 		private void lvskin_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			button1.Enabled = CanDo();
+			button1.IsEnabled = CanDo();
 		}
 	}
 }

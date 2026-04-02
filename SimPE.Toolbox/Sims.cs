@@ -25,7 +25,21 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Image = System.Drawing.Image;
+using Avalonia.Layout;
+using SimPe.Scenegraph.Compat;
+using ListView  = SimPe.Scenegraph.Compat.ListView;
+using ColumnHeader = SimPe.Scenegraph.Compat.ColumnHeader;
+using ImageList = SimPe.Scenegraph.Compat.ImageList;
+using CheckBox  = Avalonia.Controls.CheckBox;
+using Button    = Avalonia.Controls.Button;
+using Label     = Avalonia.Controls.TextBlock;
+using Panel     = SimPe.Scenegraph.Compat.PanelCompat;
+using SortOrder = SimPe.SortOrder;
+using ColumnClickEventArgs = SimPe.Scenegraph.Compat.ColumnClickEventArgs;
+using FlowLayoutPanel = SimPe.Scenegraph.Compat.FlowLayoutPanel;
+using ToolTip = SimPe.Scenegraph.Compat.ToolTip;
 
 namespace SimPe.Plugin
 {
@@ -34,29 +48,29 @@ namespace SimPe.Plugin
 	/// </summary>
 	public class Sims : Avalonia.Controls.Window
 	{
-		private System.Windows.Forms.ImageList ilist;
-		private System.Windows.Forms.ListView lv;
-		private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ImageList iListSmall;
-		private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
-		private System.Windows.Forms.ColumnHeader columnHeader4;
-		private System.Windows.Forms.ColumnHeader columnHeader5;
-		private System.Windows.Forms.ColumnHeader columnHeader6;
-		private System.Windows.Forms.ColumnHeader columnHeader7;
-		private System.Windows.Forms.ColumnHeader columnHeader8;
-		private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.Label lbUbi;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.ColumnHeader chKind;
-		private System.Windows.Forms.ColumnHeader columnHeader10;
+		private ImageList ilist;
+		private ListView lv;
+		private Button button1;
+        private ToolTip toolTip1;
+        private ImageList iListSmall;
+		private ColumnHeader columnHeader1;
+		private ColumnHeader columnHeader2;
+		private ColumnHeader columnHeader3;
+		private ColumnHeader columnHeader4;
+		private ColumnHeader columnHeader5;
+		private ColumnHeader columnHeader6;
+		private ColumnHeader columnHeader7;
+		private ColumnHeader columnHeader8;
+		private ColumnHeader columnHeader9;
+        private Label lbUbi;
+        private Panel panel1;
+        private Label label1;
+        private Label label2;
+        private Panel panel2;
+        private Label label3;
+        private Panel panel3;
+		private ColumnHeader chKind;
+		private ColumnHeader columnHeader10;
 		private System.ComponentModel.IContainer components;
         private FlowLayoutPanel flowLayoutPanel1;
         internal CheckBox cbNpc;
@@ -81,9 +95,6 @@ namespace SimPe.Plugin
 			reg = new SimsRegistry(this);
             
             if (UseBigIcons) this.ilist.ImageSize = new System.Drawing.Size(96, 96);
-
-                this.panel1.Visible = this.panel2.Visible = this.panel3.Visible = false;
-                this.label1.Visible = this.label2.Visible = this.label3.Visible = false;
 		}
 
 		/// <summary>
@@ -102,260 +113,140 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
+		#region Avalonia layout
 		private void InitializeComponent()
 		{
+            this.Title  = "Sim Browser";
+            this.Width  = 1250;
+            this.Height = 620;
+
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sims));
-            this.ilist = new System.Windows.Forms.ImageList(this.components);
-            this.lv = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.iListSmall = new System.Windows.Forms.ImageList(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lbUbi = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.ckbPlayable = new System.Windows.Forms.CheckBox();
-            this.cbTownie = new System.Windows.Forms.CheckBox();
-            this.cbNpc = new System.Windows.Forms.CheckBox();
-            this.ckbUnEditable = new System.Windows.Forms.CheckBox();
-            this.cbgals = new System.Windows.Forms.CheckBox();
-            this.cbmens = new System.Windows.Forms.CheckBox();
-            this.cbadults = new System.Windows.Forms.CheckBox();
-            this.cbdetail = new System.Windows.Forms.CheckBox();
-            this.flowLayoutPanel1.SuspendLayout();
-            // 
-            // ilist
-            // 
-            this.ilist.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.ilist, "ilist");
-            this.ilist.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // lv
-            // 
-            resources.ApplyResources(this.lv, "lv");
-            this.lv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.chKind,
-            this.columnHeader10,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader9,
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader11});
+
+            // ── Image lists ──────────────────────────────────────────────────────
+            this.ilist      = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
+            this.iListSmall = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
+
+            // ── Column headers ───────────────────────────────────────────────────
+            this.columnHeader1  = new ColumnHeader { Text = "Name",      Width = 250 };
+            this.columnHeader2  = new ColumnHeader { Text = "Household", Width = 150 };
+            this.columnHeader3  = new ColumnHeader { Text = "Lifestage", Width =  70 };
+            this.chKind         = new ColumnHeader { Text = "Kind",      Width =  83 };
+            this.columnHeader10 = new ColumnHeader { Text = "Gender",    Width =  66 };
+            this.columnHeader4  = new ColumnHeader { Text = "Uni",       Width =  42 };
+            this.columnHeader5  = new ColumnHeader { Text = "Instance",  Width =  90 };
+            this.columnHeader6  = new ColumnHeader { Text = "Available", Width =  80 };
+            this.columnHeader9  = new ColumnHeader { Text = "GUID",      Width =  90 };
+            this.columnHeader7  = new ColumnHeader { Text = "Filename",  Width = 134 };
+            this.columnHeader8  = new ColumnHeader { Text = "Filesize",  Width =  90 };
+            this.columnHeader11 = new ColumnHeader { Text = "Species",   Width =  76 };
+
+            // ── ListView ─────────────────────────────────────────────────────────
+            this.lv = new ListView();
+            this.lv.Columns.AddRange(new ColumnHeader[] {
+                this.columnHeader1, this.columnHeader2, this.columnHeader3,
+                this.chKind, this.columnHeader10, this.columnHeader4,
+                this.columnHeader5, this.columnHeader6, this.columnHeader9,
+                this.columnHeader7, this.columnHeader8, this.columnHeader11
+            });
             this.lv.FullRowSelect = true;
             this.lv.HideSelection = false;
             this.lv.LargeImageList = this.ilist;
             this.lv.MultiSelect = false;
-            this.lv.Name = "lv";
             this.lv.SmallImageList = this.iListSmall;
             this.lv.StateImageList = this.iListSmall;
             this.lv.UseCompatibleStateImageBehavior = false;
-            this.lv.View = System.Windows.Forms.View.Details;
-            this.lv.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.SortList);
-            this.lv.DoubleClick += new System.EventHandler(this.Open);
-            // 
-            // columnHeader1
-            // 
-            resources.ApplyResources(this.columnHeader1, "columnHeader1");
-            // 
-            // columnHeader2
-            // 
-            resources.ApplyResources(this.columnHeader2, "columnHeader2");
-            // 
-            // columnHeader3
-            // 
-            resources.ApplyResources(this.columnHeader3, "columnHeader3");
-            // 
-            // chKind
-            // 
-            resources.ApplyResources(this.chKind, "chKind");
-            // 
-            // columnHeader10
-            // 
-            resources.ApplyResources(this.columnHeader10, "columnHeader10");
-            // 
-            // columnHeader4
-            // 
-            resources.ApplyResources(this.columnHeader4, "columnHeader4");
-            // 
-            // columnHeader5
-            // 
-            resources.ApplyResources(this.columnHeader5, "columnHeader5");
-            // 
-            // columnHeader6
-            // 
-            resources.ApplyResources(this.columnHeader6, "columnHeader6");
-            // 
-            // columnHeader9
-            // 
-            resources.ApplyResources(this.columnHeader9, "columnHeader9");
-            // 
-            // columnHeader7
-            // 
-            resources.ApplyResources(this.columnHeader7, "columnHeader7");
-            // 
-            // columnHeader8
-            // 
-            resources.ApplyResources(this.columnHeader8, "columnHeader8");
-            // 
-            // columnHeader11
-            // 
-            resources.ApplyResources(this.columnHeader11, "columnHeader11");
-            // 
-            // iListSmall
-            // 
-            this.iListSmall.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            resources.ApplyResources(this.iListSmall, "iListSmall");
-            this.iListSmall.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.Click += new System.EventHandler(this.Open);
-            // 
-            // lbUbi
-            // 
-            this.lbUbi.BackColor = System.Drawing.SystemColors.Window;
-            resources.ApplyResources(this.lbUbi, "lbUbi");
-            this.lbUbi.ForeColor = System.Drawing.Color.Brown;
-            this.lbUbi.Name = "lbUbi";
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.BackColor = System.Drawing.Color.SteelBlue;
-            this.panel1.Name = "panel1";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // panel2
-            // 
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.BackColor = System.Drawing.Color.LightCoral;
-            this.panel2.Name = "panel2";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // panel3
-            // 
-            resources.ApplyResources(this.panel3, "panel3");
-            this.panel3.BackColor = System.Drawing.Color.YellowGreen;
-            this.panel3.Name = "panel3";
-            // 
-            // flowLayoutPanel1
-            // 
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
-            this.flowLayoutPanel1.Controls.Add(this.ckbPlayable);
-            this.flowLayoutPanel1.Controls.Add(this.cbTownie);
-            this.flowLayoutPanel1.Controls.Add(this.cbNpc);
-            this.flowLayoutPanel1.Controls.Add(this.ckbUnEditable);
-            this.flowLayoutPanel1.Controls.Add(this.cbgals);
-            this.flowLayoutPanel1.Controls.Add(this.cbmens);
-            this.flowLayoutPanel1.Controls.Add(this.cbadults);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
-            // ckbPlayable
-            // 
-            resources.ApplyResources(this.ckbPlayable, "ckbPlayable");
-            this.ckbPlayable.Checked = true;
-            this.ckbPlayable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbPlayable.Name = "ckbPlayable";
-            this.ckbPlayable.UseVisualStyleBackColor = true;
-            this.ckbPlayable.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbTownie
-            // 
-            resources.ApplyResources(this.cbTownie, "cbTownie");
-            this.cbTownie.Name = "cbTownie";
-            this.cbTownie.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbNpc
-            // 
-            resources.ApplyResources(this.cbNpc, "cbNpc");
-            this.cbNpc.Name = "cbNpc";
-            this.cbNpc.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // ckbUnEditable
-            // 
-            resources.ApplyResources(this.ckbUnEditable, "ckbUnEditable");
-            this.ckbUnEditable.Name = "ckbUnEditable";
-            this.ckbUnEditable.UseVisualStyleBackColor = true;
-            this.ckbUnEditable.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbgals
-            // 
-            resources.ApplyResources(this.cbgals, "cbgals");
-            this.cbgals.Name = "cbgals";
-            this.cbgals.UseVisualStyleBackColor = true;
-            this.cbgals.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbmens
-            // 
-            resources.ApplyResources(this.cbmens, "cbmens");
-            this.cbmens.Name = "cbmens";
-            this.cbmens.UseVisualStyleBackColor = true;
-            this.cbmens.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbadults
-            // 
-            resources.ApplyResources(this.cbadults, "cbadults");
-            this.cbadults.Name = "cbadults";
-            this.cbadults.UseVisualStyleBackColor = true;
-            this.cbadults.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbdetail
-            // 
-            resources.ApplyResources(this.cbdetail, "cbdetail");
-            this.cbdetail.Checked = true;
-            this.cbdetail.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbdetail.Name = "cbdetail";
-            this.cbdetail.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // Sims
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Name = "Sims";
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.lv.View = View.Details;
+            this.lv.ColumnClick += this.SortList;
+            this.lv.DoubleClick += this.Open;
 
+            // ── Button ───────────────────────────────────────────────────────────
+            this.button1 = new Button { Content = "Open" };
+            this.button1.Click += (s, e) => Open(s, e);
+
+            // ── ToolTip ──────────────────────────────────────────────────────────
+            this.toolTip1 = new ToolTip();
+
+            // ── lbUbi (special neighbourhood warning) ────────────────────────────
+            this.lbUbi = new Label
+            {
+                Text = "This is a special purpose Neighborhood, please open the main Neighborhood to Edit the Sims that live here.",
+                IsVisible = false,
+                Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Brown)
+            };
+
+            // ── Legend panels + labels (hidden by default) ────────────────────────
+            this.panel1 = new Panel { Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#4682B4")), IsVisible = false };
+            this.label1 = new Label { Text = "Unlinked Character", IsVisible = false };
+            this.panel2 = new Panel { Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#F08080")), IsVisible = false };
+            this.label2 = new Label { Text = "No Character Data",  IsVisible = false };
+            this.panel3 = new Panel { Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#9ACD32")), IsVisible = false };
+            this.label3 = new Label { Text = "NPC Unique",         IsVisible = false };
+
+            // ── Filter checkboxes ─────────────────────────────────────────────────
+            this.ckbPlayable   = new CheckBox { Content = "Playable",         IsChecked = true };
+            this.cbTownie      = new CheckBox { Content = "Townies" };
+            this.cbNpc         = new CheckBox { Content = "Service Sims" };
+            this.ckbUnEditable = new CheckBox { Content = "No Family" };
+            this.cbgals        = new CheckBox { Content = "Just Girls" };
+            this.cbmens        = new CheckBox { Content = "Just Boys" };
+            this.cbadults      = new CheckBox { Content = "Adults Only" };
+
+            this.ckbPlayable.IsCheckedChanged   += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.cbTownie.IsCheckedChanged      += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.cbNpc.IsCheckedChanged         += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.ckbUnEditable.IsCheckedChanged += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.cbgals.IsCheckedChanged        += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.cbmens.IsCheckedChanged        += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+            this.cbadults.IsCheckedChanged      += (s, e) => ckbFilter_CheckedChanged(s, EventArgs.Empty);
+
+            // ── Show Sim Details checkbox ─────────────────────────────────────────
+            this.cbdetail = new CheckBox { Content = "Show Sim Details", IsChecked = true };
+            this.cbdetail.IsCheckedChanged += (s, e) => checkBox1_CheckedChanged(s, EventArgs.Empty);
+
+            // ── Filter bar (horizontal row) ───────────────────────────────────────
+            this.flowLayoutPanel1 = new FlowLayoutPanel { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            this.flowLayoutPanel1.Children.Add(this.ckbPlayable);
+            this.flowLayoutPanel1.Children.Add(this.cbTownie);
+            this.flowLayoutPanel1.Children.Add(this.cbNpc);
+            this.flowLayoutPanel1.Children.Add(this.ckbUnEditable);
+            this.flowLayoutPanel1.Children.Add(this.cbgals);
+            this.flowLayoutPanel1.Children.Add(this.cbmens);
+            this.flowLayoutPanel1.Children.Add(this.cbadults);
+            this.flowLayoutPanel1.Children.Add(this.cbdetail);
+
+            // ── Bottom bar: legend + Open button ─────────────────────────────────
+            var legendBar = new Avalonia.Controls.StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 4 };
+            legendBar.Children.Add(this.panel1);
+            legendBar.Children.Add(this.label1);
+            legendBar.Children.Add(this.panel2);
+            legendBar.Children.Add(this.label2);
+            legendBar.Children.Add(this.panel3);
+            legendBar.Children.Add(this.label3);
+
+            var bottomBar = new Avalonia.Controls.Grid();
+            bottomBar.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(1, Avalonia.Controls.GridUnitType.Star));
+            bottomBar.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(Avalonia.Controls.GridLength.Auto));
+            Avalonia.Controls.Grid.SetColumn(legendBar,     0);
+            Avalonia.Controls.Grid.SetColumn(this.button1, 1);
+            bottomBar.Children.Add(legendBar);
+            bottomBar.Children.Add(this.button1);
+
+            // ── Root layout ───────────────────────────────────────────────────────
+            var root = new Avalonia.Controls.Grid();
+            root.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(1, Avalonia.Controls.GridUnitType.Star));
+            root.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(Avalonia.Controls.GridLength.Auto));
+            root.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(Avalonia.Controls.GridLength.Auto));
+            root.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(Avalonia.Controls.GridLength.Auto));
+            Avalonia.Controls.Grid.SetRow(this.lv,             0);
+            Avalonia.Controls.Grid.SetRow(this.lbUbi,          1);
+            Avalonia.Controls.Grid.SetRow(this.flowLayoutPanel1, 2);
+            Avalonia.Controls.Grid.SetRow(bottomBar,           3);
+            root.Children.Add(this.lv);
+            root.Children.Add(this.lbUbi);
+            root.Children.Add(this.flowLayoutPanel1);
+            root.Children.Add(bottomBar);
+
+            this.Content = root;
 		}
 		#endregion
 
@@ -495,18 +386,17 @@ namespace SimPe.Plugin
             {
                 foreach (Interfaces.Files.IPackedFileDescriptor spfd in pfds)
                 {
-                    Application.DoEvents();
                     PackedFiles.Wrapper.ExtSDesc sdesc = new SimPe.PackedFiles.Wrapper.ExtSDesc();
                     sdesc.ProcessData(spfd, package);
 
                     bool doAdd = false;
-                    doAdd |= (this.cbNpc.Checked && realIsNPC(sdesc));
-                    doAdd |= (this.cbTownie.Checked && realIsTownie(sdesc));
-                    doAdd |= (this.ckbPlayable.Checked && realIsPlayable(sdesc));
-                    doAdd |= (this.ckbUnEditable.Checked && realIsUneditable(sdesc));
-                    doAdd &= (!this.cbmens.Checked || !realIsWoman(sdesc));
-                    doAdd &= (!this.cbgals.Checked || realIsWoman(sdesc));
-                    doAdd &= (!this.cbadults.Checked || realIsAdult(sdesc));
+                    doAdd |= (this.cbNpc.IsChecked == true && realIsNPC(sdesc));
+                    doAdd |= (this.cbTownie.IsChecked == true && realIsTownie(sdesc));
+                    doAdd |= (this.ckbPlayable.IsChecked == true && realIsPlayable(sdesc));
+                    doAdd |= (this.ckbUnEditable.IsChecked == true && realIsUneditable(sdesc));
+                    doAdd &= (this.cbmens.IsChecked != true || !realIsWoman(sdesc));
+                    doAdd &= (this.cbgals.IsChecked != true || realIsWoman(sdesc));
+                    doAdd &= (this.cbadults.IsChecked != true || realIsAdult(sdesc));
 
                     if (doAdd) AddSim(sdesc);
                 }
@@ -562,7 +452,7 @@ namespace SimPe.Plugin
 			this.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
 			
 			SimPe.Plugin.Idno idno = SimPe.Plugin.Idno.FromPackage(package);
-			if (idno!=null) this.lbUbi.Visible = (idno.Type != NeighborhoodType.Normal );
+			if (idno!=null) this.lbUbi.IsVisible = (idno.Type != NeighborhoodType.Normal);
 			this.pfd = null;
 			
 			
@@ -591,23 +481,24 @@ namespace SimPe.Plugin
 
 		private void checkBox1_CheckedChanged(object sender, System.EventArgs e)
 		{
-            if (cbdetail.Checked)
+            if (cbdetail.IsChecked == true)
                 lv.View = View.Details;
             else
                 lv.View = View.LargeIcon;
 		}
 
 		internal ColumnSorter sorter;
-		private void SortList(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+		private void SortList(object sender, EventArgs e)
 		{
-			if (sorter.CurrentColumn == e.Column) 
-			{				
+			int col = (e as ColumnClickEventArgs)?.Column ?? 0;
+			if (sorter.CurrentColumn == col)
+			{
 				if (lv.Sorting == SortOrder.Ascending) lv.Sorting = SortOrder.Descending;
 				else lv.Sorting = SortOrder.Ascending;
-			} 
-			else 
+			}
+			else
 			{
-				sorter.CurrentColumn = e.Column;
+				sorter.CurrentColumn = col;
 				lv.ListViewItemSorter = sorter;
 			}
 			sorter.Sorting = lv.Sorting;
@@ -616,8 +507,8 @@ namespace SimPe.Plugin
 
         private void ckbFilter_CheckedChanged(object sender, System.EventArgs e)
         {
-            this.cbgals.Enabled = !this.cbmens.Checked;
-            this.cbmens.Enabled = !this.cbgals.Checked;
+            this.cbgals.IsEnabled = this.cbmens.IsChecked != true;
+            this.cbmens.IsEnabled = this.cbgals.IsChecked != true;
             if (package != null)
                 this.FillList();
         }

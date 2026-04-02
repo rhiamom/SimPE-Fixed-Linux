@@ -30,6 +30,7 @@ using System.Text;
 using Avalonia.Controls;
 using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Files;
+using DialogResult = SimPe.DialogResult;
 using SimPe.Packages;
 
 namespace pjse

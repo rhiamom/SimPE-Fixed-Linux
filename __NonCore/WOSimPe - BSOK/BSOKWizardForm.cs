@@ -186,7 +186,7 @@ namespace SimPe.Wizards
 
         private void button1_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            if (fbd1.ShowDialog() == SimPe.DialogResult.OK)
+            if (fbd1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string[] stuff = Directory.GetFiles(fbd1.SelectedPath, "*.package");
                 if (stuff.Length > 0)

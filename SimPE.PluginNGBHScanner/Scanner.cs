@@ -74,7 +74,7 @@ namespace SimPe.Plugin
 			AbstractScanner.AddColumn(this.ListView, "Neighbourhood UID", 80);
 		}
 
-		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{
 			this.LoadThumbnail(si, ps);
 			if (si.PackageCacheItem.Type == PackageType.Neighbourhood) 
@@ -105,7 +105,7 @@ namespace SimPe.Plugin
 			UpdateState(si, ps, lvi);
 		}
 
-		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+		public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, SimPe.Scenegraph.Compat.ListViewItem lvi)
 		{		
 			AbstractScanner.SetSubItem(lvi, this.StartColum+1, "");
 			if (si.PackageCacheItem.Type == PackageType.Neighbourhood) 
@@ -130,25 +130,9 @@ namespace SimPe.Plugin
 
 		public void FinishScan() { }
 		
-		protected override System.Windows.Forms.Control CreateOperationControl()
+		protected override Avalonia.Controls.Control CreateOperationControl()
 		{
-            if (SimPe.PathProvider.Global.EPInstalled >= 18)
-            {
-                System.Windows.Forms.Label ll = new System.Windows.Forms.Label();
-                ll.AutoSize = true;
-                ll.Text = "Create Unique ID - Disabled:\r\nChanging Neighbourhood IDs Destroys Neighbourhood Stories\r\nYour game will correctly fix Neighbourhood IDs if needed";
-                ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
-                return ll;
-            }
-            else
-            {
-                System.Windows.Forms.LinkLabel ll = new System.Windows.Forms.LinkLabel();
-                ll.AutoSize = true;
-                ll.Text = "Create Unique ID";
-                ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
-                ll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(MakeUnique);
-                return ll;
-            }
+            return null; // TODO: rebuild as Avalonia Control
 		}
 
 		ScannerItem[] selection;
@@ -157,7 +141,7 @@ namespace SimPe.Plugin
 			selection = items;
             if (!active) 
 			{
-				this.OperationControl.Enabled = false;
+				this.OperationControl.IsEnabled = false;
 				return;
 			}
 
@@ -170,7 +154,7 @@ namespace SimPe.Plugin
 					break;
 				}
 			}
-			OperationControl.Enabled = en;
+			OperationControl.IsEnabled = en;
 		}
 
 

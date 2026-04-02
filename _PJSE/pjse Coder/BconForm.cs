@@ -32,7 +32,6 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using SimPe.Scenegraph.Compat;
-using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
 using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
 using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces.Plugin;
@@ -359,12 +358,12 @@ namespace SimPe.PackedFiles.UserInterface
 
                 if (trcn != null && trcn.TextOnly)
                 {
-                    SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(
+                    SimPe.DialogResult dr = await MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_overwriteduff")
                         , btnTRCNMaker.Content?.ToString()
                         , MessageBoxButtons.OKCancel
                         , MessageBoxIcon.Warning);
-                    if (dr != SimPe.Scenegraph.Compat.DialogResult.OK)
+                    if (dr != SimPe.DialogResult.OK)
                         return;
                     wrapper.Package.Remove(trcn.FileDescriptor);
                     trcn = null;
@@ -372,30 +371,30 @@ namespace SimPe.PackedFiles.UserInterface
                 if (trcn != null)
                 {
                     uint vers = trcn.Version;
-                    SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(
+                    SimPe.DialogResult dr = await MessageBox.ShowAsync(
                         pjse.Localization.GetString("ml_keeplabels")
                         , btnTRCNMaker.Content?.ToString()
                         , MessageBoxButtons.YesNoCancel
                         , MessageBoxIcon.Warning);
-                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Cancel)
+                    if (dr == SimPe.DialogResult.Cancel)
                         return;
 
                     if (!trcn.Package.Equals(wrapper.Package))
                     {
-                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) Wait.MaxProgress = trcn.Count;
+                        if (dr == SimPe.DialogResult.Yes) Wait.MaxProgress = trcn.Count;
                         SimPe.Interfaces.Files.IPackedFileDescriptor npfd = trcn.FileDescriptor.Clone();
                         Trcn ntrcn = new Trcn();
                         ntrcn.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
                         ntrcn.ProcessData(npfd, wrapper.Package);
-                        if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes) foreach (TrcnItem item in trcn) { ntrcn.Add(item); Wait.Progress++; }
+                        if (dr == SimPe.DialogResult.Yes) foreach (TrcnItem item in trcn) { ntrcn.Add(item); Wait.Progress++; }
                         trcn = ntrcn;
                         trcn.SynchronizeUserData();
                         trcn.Version = vers;
                         Wait.MaxProgress = 0;
                     }
 
-                    if (dr == SimPe.Scenegraph.Compat.DialogResult.Yes)
+                    if (dr == SimPe.DialogResult.Yes)
                         minArgc = trcn.Count;
                     else
                         trcn.Clear();
@@ -593,8 +592,8 @@ namespace SimPe.PackedFiles.UserInterface
             if (trcn == null) return;
             if (trcn.Package != wrapper.Package)
             {
-                SimPe.Scenegraph.Compat.DialogResult dr = await MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
-                if (dr != SimPe.Scenegraph.Compat.DialogResult.Yes) return;
+                SimPe.DialogResult dr = await MessageBox.ShowAsync(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != SimPe.DialogResult.Yes) return;
             }
             SimPe.RemoteControl.OpenPackedFile(trcn.FileDescriptor, trcn.Package);
         }

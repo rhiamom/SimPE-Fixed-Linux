@@ -32,7 +32,6 @@ using System.Collections;
 using System.ComponentModel;
 using Avalonia.Controls;
 using SimPe.Scenegraph.Compat;
-using DialogResult = SimPe.Scenegraph.Compat.DialogResult;
 using MessageBoxButtons = SimPe.Scenegraph.Compat.MessageBoxButtons;
 using MessageBoxIcon = SimPe.Scenegraph.Compat.MessageBoxIcon;
 using SimPe.Interfaces.Plugin;
@@ -438,7 +437,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (wrapper.Format < 0x44 && previousFormat >= 0x44)
             {
-                SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_Single"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
+                SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_Single"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else
@@ -446,7 +445,7 @@ namespace SimPe.PackedFiles.UserInterface
             }
             else if (wrapper.Format >= 0x44 && wrapper.Format < 0x54 && (previousFormat < 0x44 || previousFormat >= 0x54))
             {
-                SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_MultipleFixed"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
+                SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_MultipleFixed"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else
@@ -454,7 +453,7 @@ namespace SimPe.PackedFiles.UserInterface
             }
             else if (wrapper.Format >= 0x54 && previousFormat < 0x54)
             {
-                SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_MultipleVaries"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
+                SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(pjse.Localization.GetString("ttabForm_Sure"), pjse.Localization.GetString("ttabForm_MultipleVaries"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation).GetAwaiter().GetResult();
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else

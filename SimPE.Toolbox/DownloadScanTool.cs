@@ -64,7 +64,7 @@ namespace SimPe.Plugin
 
 		public Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
 		{
-			ds.ShowDialog();
+			ds.Show();
 
 			if (ds.FileName==null) return new ToolResult(false, false);
 			else 
