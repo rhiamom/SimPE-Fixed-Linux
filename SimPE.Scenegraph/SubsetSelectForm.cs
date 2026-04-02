@@ -37,9 +37,9 @@ namespace SimPe.Plugin
 	public class SubsetSelectForm : Avalonia.Controls.Window
 	{
 		private Avalonia.Controls.Panel panel1;
-		public Avalonia.Controls.Panel pnselect;
-		public Avalonia.Controls.Button button1;
-		public Avalonia.Controls.CheckBox cbauto;
+		public PanelCompat pnselect;
+		public ButtonCompat button1;
+		public CheckBoxCompat2 cbauto;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -63,9 +63,9 @@ namespace SimPe.Plugin
 		{
 			// TODO: Avalonia AXAML layout
 			panel1 = new Avalonia.Controls.Panel();
-			cbauto = new Avalonia.Controls.CheckBox();
-			button1 = new Avalonia.Controls.Button();
-			pnselect = new Avalonia.Controls.Panel();
+			cbauto = new CheckBoxCompat2();
+			button1 = new ButtonCompat();
+			pnselect = new PanelCompat();
 		}
 		#endregion
 

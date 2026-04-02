@@ -28,20 +28,28 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Input;
+using SimPe.Scenegraph.Compat;
+using DragEventArgs = Avalonia.Input.DragEventArgs;
+using Label    = SimPe.Scenegraph.Compat.LabelCompat;
+using ComboBox = Avalonia.Controls.ComboBox;
+using TextBox  = SimPe.Scenegraph.Compat.TextBoxCompat;
+using LinkLabel = SimPe.Scenegraph.Compat.LinkLabel;
+using Image    = System.Drawing.Image;
 
 namespace SimPe.Plugin
 {
 	/// <summary>
 	/// Summary description for InstallerControl.
 	/// </summary>
-	public class InstallerControl : System.Windows.Forms.UserControl
+	public class InstallerControl : Avalonia.Controls.UserControl
 	{
-		private System.Windows.Forms.Panel pndrop;
-		private System.Windows.Forms.PictureBox pb;
+		private PanelCompat pndrop;
+		private PictureBox pb;
         private XPTaskBoxSimple tbs;
         private ComboBox cb;
-        private RichTextBox rtb;
+        private TextBox rtb;
         private Label lbCat;
         private Label label1;
         private Label lbFace;
@@ -50,225 +58,97 @@ namespace SimPe.Plugin
         private Label label5;
         private Label lbPrice;
         private Label label3;
-		private System.Windows.Forms.Label lbGuid;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.LinkLabel llOptions;
-		/// <summary> 
+		private Label lbGuid;
+		private Label label4;
+		private Label label6;
+		private Label lbType;
+		private LinkLabel llOptions;
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private System.ComponentModel.IContainer components = null;
 
 		public InstallerControl()
 		{
-			// Required designer variable.
 			InitializeComponent();
-
             Clear();
 		}
 
-		/// <summary> 
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public void Dispose()
 		{
-			if( disposing )
+			if (components != null)
 			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
+				components.Dispose();
 			}
-			base.Dispose( disposing );
 		}
 
-		#region Windows Form Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
+		#region InitializeComponent
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallerControl));
-            this.pndrop = new System.Windows.Forms.Panel();
-            this.pb = new System.Windows.Forms.PictureBox();
-            this.tbs = new XPTaskBoxSimple();
-            this.lbType = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbGuid = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lbVert = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbCat = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.rtb = new System.Windows.Forms.RichTextBox();
-            this.cb = new System.Windows.Forms.ComboBox();
-            this.lbPrice = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbFace = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.llOptions = new System.Windows.Forms.LinkLabel();
-            this.pndrop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
-            this.tbs.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // pndrop
-            // 
-            this.pndrop.AllowDrop = true;
-            this.pndrop.BackColor = System.Drawing.Color.Transparent;
-            this.pndrop.Controls.Add(this.pb);
-            resources.ApplyResources(this.pndrop, "pndrop");
-            this.pndrop.Name = "pndrop";
-            this.pndrop.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropFile);
-            this.pndrop.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterFile);
-            // 
-            // pb
-            // 
-            resources.ApplyResources(this.pb, "pb");
-            this.pb.Name = "pb";
-            this.pb.TabStop = false;
-            // 
-            // tbs
-            // 
-            resources.ApplyResources(this.tbs, "tbs");
-            this.tbs.BackColor = System.Drawing.Color.Transparent;
-            this.tbs.BodyColor = System.Drawing.SystemColors.Window;
-            this.tbs.BorderColor = System.Drawing.SystemColors.Window;
-            this.tbs.Controls.Add(this.lbType);
-            this.tbs.Controls.Add(this.label6);
-            this.tbs.Controls.Add(this.lbGuid);
-            this.tbs.Controls.Add(this.label4);
-            this.tbs.Controls.Add(this.lbVert);
-            this.tbs.Controls.Add(this.label5);
-            this.tbs.Controls.Add(this.lbCat);
-            this.tbs.Controls.Add(this.label1);
-            this.tbs.Controls.Add(this.rtb);
-            this.tbs.Controls.Add(this.cb);
-            this.tbs.Controls.Add(this.lbPrice);
-            this.tbs.Controls.Add(this.label3);
-            this.tbs.Controls.Add(this.lbFace);
-            this.tbs.Controls.Add(this.label7);
-            this.tbs.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold);
-            this.tbs.HeaderTextColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.tbs.IconLocation = new System.Drawing.Point(4, 12);
-            this.tbs.IconSize = new System.Drawing.Size(32, 32);
-            this.tbs.LeftHeaderColor = System.Drawing.Color.Transparent;
-            this.tbs.Name = "tbs";
-            this.tbs.RightHeaderColor = System.Drawing.Color.Transparent;
-            // 
-            // lbType
-            // 
-            this.lbType.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbType, "lbType");
-            this.lbType.Name = "lbType";
-            // 
-            // label6
-            // 
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // lbGuid
-            // 
-            this.lbGuid.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbGuid, "lbGuid");
-            this.lbGuid.Name = "lbGuid";
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // lbVert
-            // 
-            this.lbVert.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbVert, "lbVert");
-            this.lbVert.Name = "lbVert";
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // lbCat
-            // 
-            this.lbCat.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbCat, "lbCat");
-            this.lbCat.Name = "lbCat";
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // rtb
-            // 
-            resources.ApplyResources(this.rtb, "rtb");
-            this.rtb.BackColor = System.Drawing.SystemColors.Window;
-            this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb.Name = "rtb";
-            this.rtb.ReadOnly = true;
-            // 
-            // cb
-            // 
-            resources.ApplyResources(this.cb, "cb");
-            this.cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb.Name = "cb";
-            this.cb.SelectedIndexChanged += new System.EventHandler(this.SelectedInfo);
-            // 
-            // lbPrice
-            // 
-            this.lbPrice.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbPrice, "lbPrice");
-            this.lbPrice.Name = "lbPrice";
-            // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // lbFace
-            // 
-            this.lbFace.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.lbFace, "lbFace");
-            this.lbFace.Name = "lbFace";
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // llOptions
-            // 
-            this.llOptions.ActiveLinkColor = System.Drawing.Color.LightCoral;
-            resources.ApplyResources(this.llOptions, "llOptions");
-            this.llOptions.BackColor = System.Drawing.Color.Transparent;
-            this.llOptions.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.llOptions.Name = "llOptions";
-            this.llOptions.TabStop = true;
-            this.llOptions.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.llOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ShowOptions);
-            // 
-            // InstallerControl
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.llOptions);
-            this.Controls.Add(this.pndrop);
-            this.Controls.Add(this.tbs);
-            this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "InstallerControl";
-            this.pndrop.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
-            this.tbs.ResumeLayout(false);
-            this.ResumeLayout(false);
+            this.pndrop   = new PanelCompat();
+            this.pb       = new PictureBox();
+            this.tbs      = new XPTaskBoxSimple();
+            this.lbType   = new Label();
+            this.label6   = new Label();
+            this.lbGuid   = new Label();
+            this.label4   = new Label();
+            this.lbVert   = new Label();
+            this.label5   = new Label();
+            this.lbCat    = new Label();
+            this.label1   = new Label();
+            this.rtb      = new TextBox { IsReadOnly = true };
+            this.cb       = new ComboBox();
+            this.lbPrice  = new Label();
+            this.label3   = new Label();
+            this.lbFace   = new Label();
+            this.label7   = new Label();
+            this.llOptions = new LinkLabel();
 
+            this.cb.SelectionChanged += (s, e) => this.SelectedInfo(this, EventArgs.Empty);
+            this.llOptions.LinkClicked += (s, e) => this.ShowOptions(s, e);
+
+            pndrop.AddHandler(DragDrop.DropEvent,     new EventHandler<DragEventArgs>(this.DragDropFile));
+            pndrop.AddHandler(DragDrop.DragOverEvent, new EventHandler<DragEventArgs>(this.DragEnterFile));
+            DragDrop.SetAllowDrop(pndrop, true);
+
+            label1.Text  = "Category:";
+            label3.Text  = "Price:";
+            label4.Text  = "GUID:";
+            label5.Text  = "Verts:";
+            label6.Text  = "Type:";
+            label7.Text  = "Faces:";
+            llOptions.Text = "Options";
+
+            var infoGrid = new Grid();
+            infoGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            infoGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            int row = 0;
+            void AddRow(Avalonia.Controls.Control lbl, Avalonia.Controls.Control val)
+            {
+                infoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                Grid.SetRow(lbl, row); Grid.SetColumn(lbl, 0);
+                Grid.SetRow(val, row); Grid.SetColumn(val, 1);
+                infoGrid.Children.Add(lbl);
+                infoGrid.Children.Add(val);
+                row++;
+            }
+            AddRow(label1,  lbCat);
+            AddRow(label3,  lbPrice);
+            AddRow(label4,  lbGuid);
+            AddRow(label5,  lbVert);
+            AddRow(label6,  lbType);
+            AddRow(label7,  lbFace);
+
+            pndrop.Children.Add(pb);
+
+            var mainStack = new StackPanel();
+            mainStack.Children.Add(pndrop);
+            mainStack.Children.Add(cb);
+            mainStack.Children.Add(rtb);
+            mainStack.Children.Add(infoGrid);
+            mainStack.Children.Add(llOptions);
+
+            this.Content = mainStack;
 		}
 		#endregion
 
@@ -279,13 +159,13 @@ namespace SimPe.Plugin
 		}
 
         public void LoadFiles(string[] files)
-        {			
+        {
 			Wait.Start(files.Length);
             foreach (Downloads.IPackageInfo nfo in cb.Items)
                 nfo.Dispose();
             this.cb.Items.Clear();
 			Cleanup();
-			
+
 
 			int ct = 0;
             foreach (string file in files)
@@ -297,11 +177,11 @@ namespace SimPe.Plugin
                     foreach (Downloads.IPackageInfo nfo in hnd.Objects)
                         cb.Items.Add(nfo);
                 }
-				hnd.FreeResources();                
+				hnd.FreeResources();
             }
 			if (cb.Items.Count > 0) cb.SelectedIndex = 0;
 
-			Wait.Stop();			
+			Wait.Stop();
         }
 
 		#region Drag&Drop
@@ -309,68 +189,57 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Returns the Names of the Dropped Files
 		/// </summary>
-		/// <param name="e"></param>
-		/// <returns></returns>
-		string[] DragDropNames(System.Windows.Forms.DragEventArgs e) 
+		string[] DragDropNames(DragEventArgs e)
 		{
-			Array a = (Array)e.Data.GetData(DataFormats.FileDrop);
-
-			if ( a != null )
+			var data = e.Data.Get(DataFormats.Files);
+			if (data is System.Collections.Generic.IEnumerable<string> paths)
 			{
-				string[] res = new string[a.Length];				
-				for (int i=0; i<a.Length; i++) res[i] = a.GetValue(i).ToString();
-				return res;
+				var list = new System.Collections.Generic.List<string>(paths);
+				return list.ToArray();
 			}
-
 			return new string[0];
 		}
 
 		/// <summary>
 		/// Returns the Effect that should be displayed based on the Files
 		/// </summary>
-		/// <param name="flname"></param>
-		/// <returns></returns>
 		DragDropEffects DragDropEffect(string[] names)
 		{
-            foreach (string name in names)			
+            foreach (string name in names)
 			{
 				if (Downloads.HandlerRegistry.Global.HasFileHandler(name))
 					return DragDropEffects.Copy;
 			}
-			
-			return DragDropEffects.None;		
+
+			return DragDropEffects.None;
 		}
 
 		/// <summary>
 		/// Someone tries to throw a File
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void DragEnterFile(object sender, System.Windows.Forms.DragEventArgs e)
+		private void DragEnterFile(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) 
+			if (e.Data.Contains(DataFormats.Files))
 			{
 				try
 				{
-					e.Effect = DragDropEffect(DragDropNames(e));					
-				} 
+					e.DragEffects = DragDropEffect(DragDropNames(e));
+				}
 				catch (Exception)
 				{
 				}
-				
+
 			}
-			else 
+			else
 			{
-				e.Effect = DragDropEffects.None;
+				e.DragEffects = DragDropEffects.None;
 			}
 		}
 
 		/// <summary>
 		/// A File has been dropped
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void DragDropFile(object sender, System.Windows.Forms.DragEventArgs e)
+		private void DragDropFile(object sender, DragEventArgs e)
 		{
 			try
 			{
@@ -407,7 +276,7 @@ namespace SimPe.Plugin
             SelectedInfo(SelectedPackageInfo);
         }
 
-		private void ShowOptions(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void ShowOptions(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			SimPe.RemoteControl.ShowCustomSettings(SimPe.Plugin.DownloadsToolFactory.Settings);
 		}

@@ -491,13 +491,13 @@ namespace pjOBJDTool
         private bool SaveAbandonCancel()
         {
             if (wrapper == null || !wrapper.Changed) return true;
-            SimPe.Scenegraph.Compat.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
+            SimPe.DialogResult dr = SimPe.Scenegraph.Compat.MessageBox.ShowAsync(
                 "You have uncommitted changes to the Object Definition you are editing. Do you want to save these changes?",
                 "PJ OBJD Tool", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question).GetAwaiter().GetResult();
             switch (dr)
             {
-                case SimPe.Scenegraph.Compat.DialogResult.Yes: SaveOBJD(); return true;
-                case SimPe.Scenegraph.Compat.DialogResult.No: wrapper.Changed = false; return true;
+                case SimPe.DialogResult.Yes: SaveOBJD(); return true;
+                case SimPe.DialogResult.No: wrapper.Changed = false; return true;
                 default: return false;
             }
         }

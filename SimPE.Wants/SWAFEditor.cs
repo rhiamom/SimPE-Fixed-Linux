@@ -28,15 +28,28 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 using System.Xml;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
 using SimPe.Plugin;
+using Button          = SimPe.Scenegraph.Compat.ButtonCompat;
+using Image           = System.Drawing.Image;
+using CheckBox        = SimPe.Scenegraph.Compat.CheckBoxCompat2;
+using ComboBox        = SimPe.Scenegraph.Compat.ComboBoxCompat;
+using TextBox         = SimPe.Scenegraph.Compat.TextBoxCompat;
+using Label           = SimPe.Scenegraph.Compat.LabelCompat;
+using Panel           = SimPe.Scenegraph.Compat.PanelCompat;
+using ListView        = SimPe.Scenegraph.Compat.ListView;
+using ColumnHeader    = SimPe.Scenegraph.Compat.ColumnHeader;
+using FlowLayoutPanel = SimPe.Scenegraph.Compat.FlowLayoutPanel;
+using LinkLabel       = SimPe.Scenegraph.Compat.LinkLabel;
+using SplitContainer  = SimPe.Scenegraph.Compat.SplitContainer;
 
 namespace SimPe.Wants
 {
-    public partial class SWAFEditor : Form, IPackedFileUI
+    public partial class SWAFEditor : Avalonia.Controls.Window, IPackedFileUI
     {
         public SWAFEditor()
         {
@@ -127,7 +140,7 @@ namespace SimPe.Wants
                 {
                     try
                     {
-                        Application.DoEvents();
+                        // Application.DoEvents() removed - no equivalent in Avalonia
 
                         XWNTWrapper xwnt = e.Wrapper as XWNTWrapper;
                         if (xwnt == null) continue;
@@ -306,13 +319,12 @@ namespace SimPe.Wants
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing && (components != null))
+            if (components != null)
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
             if (setHandler && wrapper != null)
             {
                 //wrapper.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
@@ -349,8 +361,8 @@ namespace SimPe.Wants
         static List<uint> careerIDs = null;
 
 
-        // Determine whether Windows XP or a later operating system is present.
-        private bool isRunningXPOrLater = OSFeature.Feature.IsPresent(OSFeature.Themes);
+        // Always true on supported platforms (OSFeature.IsPresent removed — WinForms-only API)
+        private bool isRunningXPOrLater = true;
         // Declare a Hashtable array in which to store the groups.
         private Hashtable[] groupTables;
         // Declare a variable to store the current grouping column.
@@ -478,12 +490,12 @@ namespace SimPe.Wants
                 case SWAFItem.ArgTypes.None:
                     pnArg.Visible = false;
                     gbSelectedItem.Height = 346;
-                    gcSIObject.Visible = gcSICategory.Visible = cbSISkill.Visible = gcSIBadge.Visible = gcSICareer.Visible = false;
+                    gcSIObject.IsVisible = gcSICategory.IsVisible = cbSISkill.Visible = gcSIBadge.IsVisible = gcSICareer.IsVisible = false;
                     break;
                 case SWAFItem.ArgTypes.Sim:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
                     llSimName2.Visible = llSREL.Visible = tbSISimID2.Visible = btnSim2.Visible = true;
-                    gcSIObject.Visible = gcSICategory.Visible = cbSISkill.Visible = gcSIBadge.Visible = gcSICareer.Visible = false;
+                    gcSIObject.IsVisible = gcSICategory.IsVisible = cbSISkill.Visible = gcSIBadge.IsVisible = gcSICareer.IsVisible = false;
                     if (i.Version < 0x08)
                     {
                         tbSISimID2.Text = llSimName2.Text = ""; llSREL.Visible = false;
@@ -497,32 +509,32 @@ namespace SimPe.Wants
                     break;
                 case SWAFItem.ArgTypes.Guid:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
-                    gcSIObject.Visible = true;
-                    gcSICategory.Visible = cbSISkill.Visible = gcSIBadge.Visible = gcSICareer.Visible = false;
+                    gcSIObject.IsVisible = true;
+                    gcSICategory.IsVisible = cbSISkill.Visible = gcSIBadge.IsVisible = gcSICareer.IsVisible = false;
                     gcSIObject.Value = i.Guid;
                     break;
                 case SWAFItem.ArgTypes.Category:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
-                    gcSICategory.Visible = true;
-                    gcSIObject.Visible = cbSISkill.Visible = gcSIBadge.Visible = gcSICareer.Visible = false;
+                    gcSICategory.IsVisible = true;
+                    gcSIObject.IsVisible = cbSISkill.Visible = gcSIBadge.IsVisible = gcSICareer.IsVisible = false;
                     gcSICategory.Value = i.Category;
                     break;
                 case SWAFItem.ArgTypes.Skill:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
                     cbSISkill.Visible = true;
-                    gcSIObject.Visible = gcSICategory.Visible = gcSIBadge.Visible = gcSICareer.Visible = false;
+                    gcSIObject.IsVisible = gcSICategory.IsVisible = gcSIBadge.IsVisible = gcSICareer.IsVisible = false;
                     cbSISkill.SelectedIndex = findSkill(i.Skill);
                     break;
                 case SWAFItem.ArgTypes.Badge:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
-                    gcSIBadge.Visible = true;
-                    gcSIObject.Visible = gcSICategory.Visible = cbSISkill.Visible = gcSICareer.Visible = false;
+                    gcSIBadge.IsVisible = true;
+                    gcSIObject.IsVisible = gcSICategory.IsVisible = cbSISkill.Visible = gcSICareer.IsVisible = false;
                     gcSIBadge.Value = i.Badge;
                     break;
                 case SWAFItem.ArgTypes.Career:
                     pnArg.Visible = true; gbSelectedItem.Height = 451;
-                    gcSICareer.Visible = true;
-                    gcSIObject.Visible = gcSICategory.Visible = cbSISkill.Visible = gcSIBadge.Visible = false;
+                    gcSICareer.IsVisible = true;
+                    gcSIObject.IsVisible = gcSICategory.IsVisible = cbSISkill.Visible = gcSIBadge.IsVisible = false;
                     gcSICareer.Value = i.Career;
                     break;
             }
@@ -731,7 +743,7 @@ namespace SimPe.Wants
                 Hashtable liveGroups = new Hashtable();
                 foreach (string header in headers)
                 {
-                    ListViewGroup ng = new ListViewGroup(header, HorizontalAlignment.Left);
+                    ListViewGroup ng = new ListViewGroup(header);
                     lvItems.Groups.Add(ng);
                     liveGroups[header] = ng;
                 }
@@ -844,7 +856,7 @@ namespace SimPe.Wants
             XWNTWrapper xwnt = new XWNTWrapper();
             xwnt.ProcessData(xwnts[i.WantId][0] as SimPe.Interfaces.Files.IPackedFileDescriptor, xwnts[i.WantId][1] as SimPe.Interfaces.Files.IPackageFile);
 
-            Form xwntForm = xwnt.UIHandler as Form;
+            Avalonia.Controls.Window xwntForm = xwnt.UIHandler as Avalonia.Controls.Window;
             if (xwntForm == null) return;
             xwnt.RefreshUI();
             xwntForm.Show();
@@ -963,7 +975,7 @@ namespace SimPe.Wants
                     lbSIItemType.Text = tbSISimID.Text = llSimName.Text = tbSIArg2.Text = tbSICounter.Text = tbSIScore.Text = tbSIInfluence.Text = "";
                     cbSIArgType.SelectedIndex = cbSIVersion.SelectedIndex = -1;
                     gcSIWant.Value = 0;
-                    gcSICareer.Visible = lbXWNTIntOp.Visible = label13.Visible = tbSIArg2.Visible = lbTimes.Visible = lbXWNTIntMult.Visible = false;
+                    gcSICareer.IsVisible = lbXWNTIntOp.Visible = label13.Visible = tbSIArg2.Visible = lbTimes.Visible = lbXWNTIntMult.Visible = false;
                     foreach (CheckBox ckb in lflags) ckb.CheckState = CheckState.Indeterminate;
                     foreach (CheckBox ckb in lincs) ckb.Enabled = !ckb.Checked;//false;
                     

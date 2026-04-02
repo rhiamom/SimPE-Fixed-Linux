@@ -25,7 +25,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Forms;
+// using System.Windows.Forms; — removed for Avalonia port
 
 
 namespace SimPe.Plugin.Tool.Window
@@ -43,7 +43,7 @@ namespace SimPe.Plugin.Tool.Window
 		public void Execute(object sender, SimPe.Events.ResourceEventArgs e)
 		{
 			InstallerForm f = new InstallerForm();
-			f.ShowDialog();
+			f.Show();
 		}
 
 		public bool ChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs e)

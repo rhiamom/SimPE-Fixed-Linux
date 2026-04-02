@@ -55,8 +55,8 @@ namespace pj
             ofd.ShowHelp = ofd.ShowReadOnly = false;
             ofd.Title = L.Get("selectPkgMesh");
             ofd.ValidateNames = true;
-            SimPe.Scenegraph.Compat.DialogResult dr = ofd.ShowDialog();
-            if (SimPe.Scenegraph.Compat.DialogResult.OK.Equals(dr))
+            SimPe.DialogResult dr = ofd.ShowDialog();
+            if (SimPe.DialogResult.OK.Equals(dr))
                 return ofd.FileName;
             return null;
         }
@@ -65,7 +65,7 @@ namespace pj
         {
             if (!SimPe.Scenegraph.Compat.MessageBox.ShowAsync(L.Get("pjSMLbegin"),
                 L.Get("pjSML"), MessageBoxButtons.OKCancel, MessageBoxIcon.Information).GetAwaiter().GetResult()
-                .Equals(SimPe.Scenegraph.Compat.DialogResult.OK))
+                .Equals(SimPe.DialogResult.OK))
                 return;
 
             SimPe.Plugin.RefFile refFile = new SimPe.Plugin.RefFile();

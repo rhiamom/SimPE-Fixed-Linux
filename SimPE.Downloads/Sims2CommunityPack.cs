@@ -576,7 +576,7 @@ namespace SimPe.Packages
 		/// <param name="selmode">Selection Mode for the Listview</param>
 		/// <returns>All Packages that were selected in the Dialog by the User or null 
 		/// if the User Cancled the Dialog</returns>
-		public static S2CPDescriptor[] ShowSimpleOpenDialog(string filename, System.Windows.Forms.SelectionMode selmode) 
+		public static S2CPDescriptor[] ShowSimpleOpenDialog(string filename, Avalonia.Controls.SelectionMode selmode)
 		{
 			SaveSims2Pack form = new SaveSims2Pack();
 			return form.Execute(Open(filename), selmode);

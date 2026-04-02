@@ -71,11 +71,14 @@ namespace SimPe.Scenegraph.Compat
         public ListView ListView { get; set; }
         public int GroupIndex { get; set; } = -1;
         public bool UseItemStyleForSubItems { get; set; } = true;
+        public ListViewGroup Group { get; set; }
     }
 
     // ── ListView ─────────────────────────────────────────────────────────────
 
     /// <summary>Minimal ListView — replaces System.Windows.Forms.ListView.</summary>
+    public enum CheckState { Unchecked = 0, Checked = 1, Indeterminate = 2 }
+
     public class ListViewGroup
     {
         public string Header { get; set; }
@@ -107,6 +110,8 @@ namespace SimPe.Scenegraph.Compat
             public void AddRange(ListViewItem[] items) { foreach (var item in items) Add(item); }
             public void Clear() => _items.Clear();
             public void Remove(ListViewItem item) => _items.Remove(item);
+            public void RemoveAt(int index) => _items.RemoveAt(index);
+            public bool Contains(ListViewItem item) => _items.Contains(item);
             public IEnumerator GetEnumerator() => _items.GetEnumerator();
         }
 
@@ -200,7 +205,7 @@ namespace SimPe.Scenegraph.Compat
         public new Avalonia.Controls.Control Parent { get; set; }
         public bool Visible { get => IsVisible; set => IsVisible = value; }
         public bool IsVisible { get; set; } = true;
-        public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
+        public object Anchor { get; set; }
         public ListViewItem FocusedItem => Items.Count > 0 ? Items[0] : null;
 
         public event EventHandler SelectedIndexChanged;
@@ -225,6 +230,7 @@ namespace SimPe.Scenegraph.Compat
 
         public bool DoubleBuffering { get; set; }
         public bool ShowGroups { get; set; }
+        public BorderStyle BorderStyle { get; set; }
         public int[] TileColumns { get; set; } = new int[0];
         public ListViewGroupCollection Groups { get; } = new ListViewGroupCollection();
 
@@ -324,8 +330,19 @@ namespace SimPe.Scenegraph.Compat
         public new int Width { get; set; }
         public new int Height { get; set; }
         public bool Visible { get; set; } = true;
+        public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
         public new Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public Control ParentControl { get; set; }
+        public new Avalonia.Controls.Control Parent { get; set; }
+        public class ControlCollection : System.Collections.IEnumerable
+        {
+            private readonly List<object> _items = new List<object>();
+            public void Add(object c) => _items.Add(c);
+            public void Clear() => _items.Clear();
+            public int Count => _items.Count;
+            public System.Collections.IEnumerator GetEnumerator() => _items.GetEnumerator();
+        }
+        public ControlCollection Controls { get; } = new ControlCollection();
     }
 
     // ── GroupBox compat ───────────────────────────────────────────────────────
@@ -472,6 +489,12 @@ namespace SimPe.Scenegraph.Compat
         public bool Visible { get; set; } = true;
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public System.Drawing.Color BackColor { get; set; }
+        public object Parent { get; set; }
+        public new object Tag { get; set; }
+        public new object Cursor { get; set; }
+        public event EventHandler MouseEnter;
+        public event EventHandler MouseLeave;
+        public event EventHandler Click;
     }
 
     // ── SortableComboBox ─────────────────────────────────────────────────────
@@ -836,6 +859,21 @@ namespace SimPe.Scenegraph.Compat
         public ColumnClickEventArgs(int column) { Column = column; }
     }
 
+    /// <summary>WinForms ColumnWidthChangedEventArgs stub.</summary>
+    public class ColumnWidthChangedEventArgs : System.EventArgs
+    {
+        public int ColumnIndex { get; }
+        public ColumnWidthChangedEventArgs(int columnIndex) { ColumnIndex = columnIndex; }
+    }
+
+    /// <summary>WinForms SplitterEventArgs stub.</summary>
+    public class SplitterEventArgs : System.EventArgs
+    {
+        public int SplitX { get; }
+        public int SplitY { get; }
+        public SplitterEventArgs(int splitX, int splitY) { SplitX = splitX; SplitY = splitY; }
+    }
+
     /// <summary>WinForms ToolTip stub — Avalonia uses attached ToolTip.Tip property instead.</summary>
     public class ToolTip
     {
@@ -855,6 +893,7 @@ namespace SimPe.Scenegraph.Compat
     {
         public bool ReadOnly { get => IsReadOnly; set => IsReadOnly = value; }
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
         public string Content { get => Text; set => Text = value; }
         public System.Drawing.Point Location { get; set; }
         public new System.Drawing.Size Size { get; set; }
@@ -911,7 +950,9 @@ namespace SimPe.Scenegraph.Compat
     public class ButtonCompat : Avalonia.Controls.Button
     {
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
         public string Text { get => Content?.ToString() ?? ""; set => Content = value; }
+        public System.Drawing.Image Image { get; set; }
         public System.Drawing.Point Location { get; set; }
         public new System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
@@ -950,6 +991,19 @@ namespace SimPe.Scenegraph.Compat
         public object CheckAlign { get; set; }
         public new System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
+        public CheckState CheckState
+        {
+            get
+            {
+                if (IsChecked == null) return CheckState.Indeterminate;
+                return IsChecked == true ? CheckState.Checked : CheckState.Unchecked;
+            }
+            set
+            {
+                if (value == CheckState.Indeterminate) IsChecked = null;
+                else IsChecked = value == CheckState.Checked;
+            }
+        }
         public event EventHandler CheckedChanged;
         public CheckBoxCompat2() { IsCheckedChanged += (s, e) => CheckedChanged?.Invoke(this, EventArgs.Empty); }
     }
@@ -958,6 +1012,7 @@ namespace SimPe.Scenegraph.Compat
     public class ComboBoxCompat : Avalonia.Controls.ComboBox
     {
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
         public string Text
         {
             get => SelectedItem?.ToString() ?? "";
@@ -1089,6 +1144,20 @@ namespace SimPe.Scenegraph.Compat
         public TabPageCollection TabPages { get; }
         public TabControlCompat() { TabPages = new TabPageCollection(this); }
         public new string Name { get => base.Name; set => base.Name = value; }
+    }
+
+    [Flags]
+    public enum AnchorStyles { None = 0, Top = 1, Bottom = 2, Left = 4, Right = 8 }
+
+    public static class Cursors
+    {
+        public static object Default { get; } = null;
+        public static object Hand { get; } = null;
+        public static object Arrow { get; } = null;
+        public static object WaitCursor { get; } = null;
+        public static object IBeam { get; } = null;
+        public static object Cross { get; } = null;
+        public static object SizeAll { get; } = null;
     }
 
     /// <summary>Extension methods for Avalonia types that need WinForms-compatible APIs.</summary>

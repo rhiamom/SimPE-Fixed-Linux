@@ -27,12 +27,19 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
+using CheckBox    = SimPe.Scenegraph.Compat.CheckBoxCompat2;
 
 namespace pjHoodTool
 {
-    public partial class Settims : Form
+    public partial class Settims : Avalonia.Controls.Window
     {
+        /// <summary>WinForms compat: maps to Avalonia Window.Title.</summary>
+        public new string Text { get => Title; set => Title = value; }
+        /// <summary>WinForms compat: no-arg ShowDialog stub.</summary>
+        public void ShowDialog() { }
+
         internal SimPe.XmlRegistryKey xrk = SimPe.Helper.XmlRegistry.PluginRegistryKey;
         string[] noo = new string[13] { "1", ",1", ",1", ",1", ",1", ",1", ",1", ",1", ",1", ",1", ",1", ",1", ",.txt" }; //default values
         bool dun = true; // dummy variable, never actually used - always true
@@ -55,7 +62,7 @@ namespace pjHoodTool
             cbshowpets.Checked = cHoodTool.incpet;
             cbshowbusi.Checked = cHoodTool.incbus;
             cbExcludeLots.Checked = !cHoodTool.inclot;
-            rbcsv.Checked = (cHoodTool.outptype == ".csv");
+            rbcsv.IsChecked = (cHoodTool.outptype == ".csv");
         }
 
         private void btdoned_Click(object sender, EventArgs e)
@@ -72,7 +79,7 @@ namespace pjHoodTool
             cHoodTool.incpet = cbshowpets.Checked;
             cHoodTool.incbus = cbshowbusi.Checked;
             cHoodTool.inclot = !cbExcludeLots.Checked;
-            if (rbcsv.Checked) cHoodTool.outptype = ".csv"; else cHoodTool.outptype = ".txt";
+            if (rbcsv.IsChecked == true) cHoodTool.outptype = ".csv"; else cHoodTool.outptype = ".txt";
             Settings = dun; // Save settings
             this.Close();
         }
@@ -123,7 +130,7 @@ namespace pjHoodTool
                 if (cbshowpets.Checked) temp += ",1"; else temp += ",0";
                 if (cbshowbusi.Checked) temp += ",1"; else temp += ",0";
                 if (cbExcludeLots.Checked) temp += ",0"; else temp += ",1"; // checking switches off
-                if (rbcsv.Checked) temp += ",.csv"; else temp += ",.txt";
+                if (rbcsv.IsChecked == true) temp += ",.csv"; else temp += ",.txt";
                 SimPe.XmlRegistryKey rkf = SimPe.Helper.XmlRegistry.PluginRegistryKey.CreateSubKey("PJSE\\HoodTool");
                 rkf.SetValue("SavedValue", temp);
             }

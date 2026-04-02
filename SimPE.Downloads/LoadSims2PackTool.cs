@@ -24,6 +24,7 @@
 using System;
 using SimPe.Interfaces;
 using SimPe.Events;
+using Avalonia.Controls;
 
 namespace SimPe.Plugin.Tool
 {
@@ -48,11 +49,11 @@ namespace SimPe.Plugin.Tool
         {
             if (!ChangeEnabledStateEventHandler(sender, es)) return;
 
-            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            SimPe.Scenegraph.Compat.OpenFileDialogCompat ofd = new SimPe.Scenegraph.Compat.OpenFileDialogCompat();
             ofd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] { ExtensionType.Sim2Pack, ExtensionType.AllFiles });
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (ofd.ShowDialog() == SimPe.DialogResult.OK)
             {
-                SimPe.Packages.S2CPDescriptor[] ds = SimPe.Packages.Sims2CommunityPack.ShowSimpleOpenDialog(ofd.FileName, System.Windows.Forms.SelectionMode.One);
+                SimPe.Packages.S2CPDescriptor[] ds = SimPe.Packages.Sims2CommunityPack.ShowSimpleOpenDialog(ofd.FileName, Avalonia.Controls.SelectionMode.Single);
                 if (ds != null)
                     foreach (SimPe.Packages.S2CPDescriptor d in ds)
                         SimPe.RemoteControl.OpenMemoryPackage(d.Package);

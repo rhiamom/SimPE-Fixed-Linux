@@ -86,8 +86,8 @@ namespace pj
             ofd.ShowHelp = ofd.ShowReadOnly = false;
             ofd.Title = L.Get("selectPkgTexture");
             ofd.ValidateNames = true;
-            SimPe.Scenegraph.Compat.DialogResult dr = ofd.ShowDialog();
-            if (SimPe.Scenegraph.Compat.DialogResult.OK.Equals(dr))
+            SimPe.DialogResult dr = ofd.ShowDialog();
+            if (SimPe.DialogResult.OK.Equals(dr))
                 return ofd.FileName;
             return null;
         }
@@ -329,7 +329,7 @@ namespace pj
                             {
                                 if (SimPe.Scenegraph.Compat.MessageBox.ShowAsync(L.Get("multipleMeshes"),
                                     L.Get("pjSME"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning).GetAwaiter().GetResult()
-                                    != SimPe.Scenegraph.Compat.DialogResult.Yes)
+                                    != SimPe.DialogResult.Yes)
                                     return;
                                 prompted = true;
                             }

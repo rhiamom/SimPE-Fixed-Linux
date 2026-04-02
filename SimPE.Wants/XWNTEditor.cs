@@ -27,12 +27,21 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using Avalonia.Controls;
+using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Plugin;
+using Button          = SimPe.Scenegraph.Compat.ButtonCompat;
+using ComboBox        = SimPe.Scenegraph.Compat.ComboBoxCompat;
+using TextBox         = SimPe.Scenegraph.Compat.TextBoxCompat;
+using Label           = SimPe.Scenegraph.Compat.LabelCompat;
+using Panel           = SimPe.Scenegraph.Compat.PanelCompat;
+using ListView        = SimPe.Scenegraph.Compat.ListView;
+using ColumnHeader    = SimPe.Scenegraph.Compat.ColumnHeader;
+using FlowLayoutPanel = SimPe.Scenegraph.Compat.FlowLayoutPanel;
 
 namespace SimPe.Wants
 {
-    public partial class XWNTEditor : Form, IPackedFileUI
+    public partial class XWNTEditor : Avalonia.Controls.Window, IPackedFileUI
     {
         public XWNTEditor()
         {
@@ -48,13 +57,12 @@ namespace SimPe.Wants
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing && (components != null))
+            if (components != null)
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
             if (setHandler && wrapper != null)
             {
                 //wrapper.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);

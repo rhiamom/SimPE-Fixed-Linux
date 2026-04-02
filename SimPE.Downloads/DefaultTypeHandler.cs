@@ -301,9 +301,9 @@ namespace SimPe.Plugin.Downloads
 				bool first = !nfo.HasThumbnail;
 
 				Wait.SubStart();
-				System.Windows.Forms.Application.DoEvents();
+				// Application.DoEvents() removed — no Avalonia equivalent
 				Wait.Message = "Counting Vertices";
-				System.Windows.Forms.Application.DoEvents();
+				// Application.DoEvents() removed — no Avalonia equivalent
 				foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
 				{
 					SimPe.Plugin.Rcol rcol = new GenericRcol();
