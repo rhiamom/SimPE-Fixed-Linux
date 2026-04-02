@@ -28,7 +28,7 @@ namespace SimPe
 {
     public partial class WaitControl : Avalonia.Controls.UserControl, IWaitingBarControl
     {
-        public new bool Visible { get => IsVisible; set => IsVisible = value; }
+        public bool Visible { get => IsVisible; set => IsVisible = value; }
         Avalonia.Controls.ProgressBar pb;
         Avalonia.Controls.TextBlock tbPercent;
         Avalonia.Controls.TextBlock tbInfo;

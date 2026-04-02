@@ -71,7 +71,7 @@ namespace SimPe.Plugin.Tool.Dockable
         }
 
         [Browsable(false)]
-        public virtual bool Loaded
+        public virtual new bool Loaded
         {
             get { return objd != null; }
         }

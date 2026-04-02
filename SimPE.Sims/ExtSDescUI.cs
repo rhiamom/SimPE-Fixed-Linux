@@ -97,9 +97,9 @@ namespace SimPe.PackedFiles.UserInterface
 
             intern = true;
             if (System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == "en")
-                ; // pbLastGrade.DisplayOffset: WinForms-only custom property; no-op in Avalonia
+            { /* pbLastGrade.DisplayOffset: WinForms-only custom property; no-op in Avalonia */ }
             else
-                ; // pbLastGrade.DisplayOffset: WinForms-only custom property; no-op in Avalonia
+            { /* pbLastGrade.DisplayOffset: WinForms-only custom property; no-op in Avalonia */ }
             intern = false;
 
             lv.SimDetails = true;

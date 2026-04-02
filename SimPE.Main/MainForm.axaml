@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rc="using:SimPe.Windows.Forms"
+        x:Class="SimPe.MainForm"
+        Title="SimPE - Sims Package Editor"
+        Width="1200" Height="800"
+        MinWidth="800" MinHeight="600">
+
+    <DockPanel>
+
+        <!-- ── Menu bar ── -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New"              />
+                <MenuItem Header="_Open..."          />
+                <MenuItem Header="Open _In">
+                    <MenuItem Header="Sims 2 Resources..." />
+                    <MenuItem Header="_Downloads..."       />
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Save"             />
+                <MenuItem Header="Save _As..."       />
+                <MenuItem Header="Save _Copy As..."  />
+                <Separator/>
+                <MenuItem Header="_Close"            />
+                <Separator/>
+                <MenuItem Header="E_xit"             />
+            </MenuItem>
+            <MenuItem Header="_Tools"     />
+            <MenuItem Header="_Settings">
+                <MenuItem Header="Preferences..."    />
+                <MenuItem Header="Game Root..."      />
+                <Separator/>
+                <MenuItem Header="Load Meta Info"    />
+                <MenuItem Header="Decode Filenames"  />
+                <Separator/>
+                <MenuItem Header="Save Profile..."   />
+                <MenuItem Header="Save Preferences..." />
+                <Separator/>
+                <MenuItem Header="Stop Waiting"      />
+            </MenuItem>
+            <MenuItem Header="_Window"    />
+            <MenuItem Header="_Help">
+                <MenuItem Header="Welcome..."        />
+                <MenuItem Header="About SimPE..."    />
+                <Separator/>
+                <MenuItem Header="Knowledge Base"    />
+            </MenuItem>
+        </Menu>
+
+        <!-- ── DIAGNOSTIC: replace custom controls with plain boxes to test AXAML loading ── -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"  MinHeight="100" />
+                <RowDefinition Height="5"               />
+                <RowDefinition Height="*"   MinHeight="80"  />
+            </Grid.RowDefinitions>
+
+            <!-- Upper panel -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"    MinWidth="120" />
+                    <ColumnDefinition Width="5"                   />
+                    <ColumnDefinition Width="2.5*" MinWidth="200" />
+                    <ColumnDefinition Width="5"                   />
+                    <ColumnDefinition Width="1.5*" MinWidth="180" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Tree placeholder -->
+                <Border Grid.Column="0" Background="#EEF" BorderBrush="#888" BorderThickness="1">
+                    <TextBlock Text="Resource Tree" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Border>
+
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns"
+                              HorizontalAlignment="Stretch" Background="#888" />
+
+                <!-- List placeholder -->
+                <Border Grid.Column="2" Background="#EFE" BorderBrush="#888" BorderThickness="1">
+                    <TextBlock Text="Resource List" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Border>
+
+                <GridSplitter Grid.Column="3" ResizeDirection="Columns"
+                              HorizontalAlignment="Stretch" Background="#888" />
+
+                <!-- Right panel -->
+                <TabControl Grid.Column="4" TabStripPlacement="Right">
+                    <TabItem Header="Object Workshop"  />
+                    <TabItem Header="Filter Resources" />
+                </TabControl>
+            </Grid>
+
+            <!-- Horizontal splitter -->
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows"
+                          HorizontalAlignment="Stretch" Background="#888" />
+
+            <!-- Lower panel -->
+            <Border Grid.Row="2" Background="#FEE" BorderBrush="#888" BorderThickness="1">
+                <TextBlock Text="Plugin View" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Border>
+
+        </Grid>
+    </DockPanel>
+</Window>

@@ -148,7 +148,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                if (cbOperation.SelectedIndex != null)
+                if (cbOperation.SelectedIndex >= 0)
                     ops1[0x01] = (byte)(cbOperation.SelectedIndex);
                 ops1[0x02] = (byte)(rb1My.IsChecked == true ? 0x00 : 0x02); // Not sure why "0x02" at the game treats as 0 / !0
 

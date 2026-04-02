@@ -39,7 +39,7 @@ namespace SimPe.PackedFiles.UserInterface
 	{
         // WinForms layout compat
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }

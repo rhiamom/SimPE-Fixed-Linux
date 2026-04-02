@@ -32,6 +32,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
+#nullable enable
+#pragma warning disable CS8603, CS8618, CS8622, CS8625, CS8601, CS8600, CS8602, CS8604
 namespace Ambertation.Windows.Forms;
 
 /// <summary>

@@ -36,7 +36,7 @@ namespace pjHoodTool
     public partial class Settims : Avalonia.Controls.Window
     {
         /// <summary>WinForms compat: maps to Avalonia Window.Title.</summary>
-        public new string Text { get => Title; set => Title = value; }
+        public string Text { get => Title; set => Title = value; }
         /// <summary>WinForms compat: no-arg ShowDialog stub.</summary>
         public void ShowDialog() { }
 
@@ -47,7 +47,9 @@ namespace pjHoodTool
         {
             InitializeComponent();
 
-            this.simLogo.Image = SystemIcons.Application.ToBitmap();
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                    System.Runtime.InteropServices.OSPlatform.Windows))
+                this.simLogo.Image = SystemIcons.Application.ToBitmap();
 
             dun = Settings; // Load settings
             cbshowbasic.Checked = cHoodTool.incbas;

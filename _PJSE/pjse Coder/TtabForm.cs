@@ -496,7 +496,7 @@ namespace SimPe.PackedFiles.UserInterface
                     lcb.Content = ((String)lcb.Tag).Split('/')[index];
             }
 
-            if (wrapper.Count > 0 && lbttab.Items.Count > siWas && lbttab.SelectedIndex == null)
+            if (wrapper.Count > 0 && lbttab.Items.Count > siWas)
                 lbttab.SelectedIndex = siWas;
         }
 
@@ -617,7 +617,7 @@ namespace SimPe.PackedFiles.UserInterface
             }
             else if (sender is List<TtabItem>)
                 populateLbttab();
-            else if (lbttab.SelectedIndex != null && sender == wrapper[(lbttab.SelectedIndex)])
+            else if (sender == wrapper[(lbttab.SelectedIndex)])
                 TtabSelect(null, null);
 
             internalchg = false;
@@ -1317,7 +1317,7 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
             internalchg = true;
-            wrapper.Add((lbttab.SelectedIndex == null) ? new TtabItem(wrapper) : wrapper[(lbttab.SelectedIndex)].Clone());
+            wrapper.Add(wrapper[(lbttab.SelectedIndex)].Clone());
             addItem(wrapper.Count - 1);
             internalchg = false;
             lbttab.SelectedIndex = wrapper.Count - 1;
@@ -1349,7 +1349,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnMoveUp.IsEnabled = this.btnStrPrev.IsEnabled = (lbttab.SelectedIndex > 0);
             this.btnMoveDown.IsEnabled = this.btnStrNext.IsEnabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
 
-            if (lbttab.SelectedIndex != null)
+            if (lbttab.SelectedIndex >= 0)
 			{
                 lbTTABEntry.Content = "0x" + lbttab.SelectedIndex.ToString("X");
                 tabControl1.IsEnabled = btnDelete.IsEnabled = true;

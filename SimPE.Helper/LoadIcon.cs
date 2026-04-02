@@ -66,7 +66,10 @@ namespace SimPe
                 }
             }
 
-            // Last resort: return a blank 16x16 image so callers never get null
+            // Last resort: return null on non-Windows (GDI+ not supported on macOS)
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                    System.Runtime.InteropServices.OSPlatform.Windows))
+                return null;
             return new Bitmap(16, 16);
         }
 

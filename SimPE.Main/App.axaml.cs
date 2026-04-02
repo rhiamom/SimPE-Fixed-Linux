@@ -54,7 +54,6 @@ namespace SimPe
                 foreach (string file in files)
                 {
                     try { LoadFileWrappersExt.LoadWrapperFactory(file, wloader); } catch { }
-                    // Tool factories are WinForms UI panels — not loaded on this platform
                 }
             }
         }

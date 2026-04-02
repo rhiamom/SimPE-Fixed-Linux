@@ -46,7 +46,12 @@ namespace Ambertation.Windows.Forms
             rhc             = System.Drawing.SystemColors.Highlight;
             bodc            = System.Drawing.SystemColors.InactiveCaptionText;
             htc             = System.Drawing.SystemColors.ActiveCaptionText;
-            font            = new Font("Arial", 9f, System.Drawing.FontStyle.Bold, GraphicsUnit.Point);
+            // System.Drawing.Font requires GDI+ which is Windows-only in .NET 8+.
+            // On macOS this control is never rendered (not in the Avalonia visual tree), so null is safe.
+            font            = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                                  System.Runtime.InteropServices.OSPlatform.Windows)
+                              ? new Font("Arial", 9f, System.Drawing.FontStyle.Bold, GraphicsUnit.Point)
+                              : null;
             icsz            = new GdiSize(32, 32);
             icpt            = new GdiPoint(4, 12);
         }
@@ -218,7 +223,7 @@ namespace Ambertation.Windows.Forms
         private string mstrHeaderText;
 
         // ── WinForms-compat stubs used by Wizards of SimPe/Option.cs ──────────
-        public new System.Drawing.Color BackColor { get; set; }
+        public System.Drawing.Color BackColor { get; set; }
         public System.Drawing.Size  Size       { get; set; }
         public System.Drawing.Point Location   { get; set; }
         // Padding accepts any WinForms-compat Padding struct via object to avoid cross-assembly type dependency
@@ -228,8 +233,8 @@ namespace Ambertation.Windows.Forms
         public XPTaskBoxDockPaddingEdges DockPadding { get; } = new XPTaskBoxDockPaddingEdges();
         public bool Visible { get; set; } = true;
         public XPTaskBoxControlCollection Controls { get; } = new XPTaskBoxControlCollection();
-        public new void SuspendLayout() { }
-        public new void ResumeLayout(bool b = false) { }
+        public void SuspendLayout() { }
+        public void ResumeLayout(bool b = false) { }
         public void PerformLayout() { }
         public event EventHandler Resize;
     }

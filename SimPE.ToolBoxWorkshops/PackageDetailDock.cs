@@ -71,32 +71,31 @@ namespace SimPe.Plugin.Tool.Dockable
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(dcPackageDetails));
             this.xpGradientPanel1 = new Avalonia.Controls.StackPanel();
             this.np = new SimPe.Plugin.Tool.Dockable.NeighborhoodPreview();
             this.op = new SimPe.Plugin.Tool.Dockable.ObjectPreview();
-            // 
+            //
             // xpGradientPanel1
-            // 
-            
+            //
+
             this.xpGradientPanel1.Children.Add(this.np);
             this.xpGradientPanel1.Children.Add(this.op);
-            // 
+            //
             // np
-            // 
-            // 
+            //
+            //
             // op
-            // 
+            //
             this.op.LoadCustomImage = true;
             this.op.SelectedObject = null;
             this.op.SelectedXObject = null;
-            // 
+            //
             // dcPackageDetails
-            // 
+            //
             this.Controls.Add(this.xpGradientPanel1);
             this.FloatingSize = new System.Drawing.Size(592, 376);
-            this.Image = ((System.Drawing.Image)(resources.GetObject("$this.Image")));
-            this.TabImage = ((System.Drawing.Image)(resources.GetObject("$this.TabImage")));
+            this.Image = null;
+            this.TabImage = null;
             this.TabText = "Details";
             this.VisibleChanged += new System.EventHandler(this.dcPackageDetails_VisibleChanged);
 		}

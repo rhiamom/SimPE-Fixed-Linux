@@ -55,7 +55,7 @@ namespace Ambertation.Windows.Forms
         public object DropDownStyle { get; set; }
         public System.Drawing.Point Location { get; set; }
         public System.Drawing.Size  Size     { get; set; }
-        public new event System.EventHandler SelectedIndexChanged;
+        public event System.EventHandler SelectedIndexChanged;
 
         #region public Properties
         Type myenum;

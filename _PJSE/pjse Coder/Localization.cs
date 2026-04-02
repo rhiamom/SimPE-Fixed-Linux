@@ -41,7 +41,11 @@ namespace pjse
         /// <summary>
         /// Initializes the ResourceManager
         /// </summary>
-        private static void Initialize() { resource = new ResourceManager(typeof(pjse.Localization)); }
+        private static void Initialize()
+        {
+            try { resource = new ResourceManager(typeof(pjse.Localization)); }
+            catch { resource = null; }
+        }
 
         /// <summary>
         /// Returns the current Resource Manager
@@ -63,9 +67,16 @@ namespace pjse
         /// <remarks>If there is no Translation, the passsed string will be returned</remarks>
         public static string GetString(string name)
         {
-            string res = pjse.Localization.Manager.GetString(name);
-            if (res == null) res = name;
-            return res;
+            try
+            {
+                if (Manager != null)
+                {
+                    string res = Manager.GetString(name);
+                    if (res != null) return res;
+                }
+            }
+            catch { }
+            return name;
         }
 
         /// <summary>
@@ -76,11 +87,9 @@ namespace pjse
         /// <remarks>If there is no Translation, the passsed string will be returned</remarks>
         public static string GetString(string name, params object[] args)
         {
-            string res = pjse.Localization.Manager.GetString(name);
-            if (res == null) res = name;
+            string res = GetString(name);
             for (int i = 0; i < args.Length; i++)
                 res = res.Replace("{" + i.ToString() + "}", args[i].ToString());
-
             return res;
         }
     }

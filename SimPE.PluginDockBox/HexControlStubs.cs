@@ -55,7 +55,7 @@ namespace Ambertation.Windows.Forms
         public event System.EventHandler SelectionChanged;
 
         public void Highlight(byte[] data) { }
-        public new void Refresh(bool force = false) { }
+        public void Refresh(bool force = false) { }
 
         public static string SetLength(string s, int len, char pad)
         {

@@ -70,23 +70,24 @@ namespace SimPe.Plugin.Tool.Dockable
         {
             get
             {
-                IToolPlugin[] tools =
+                var tools = new System.Collections.Generic.List<IToolPlugin>();
+                if (rd != null)
                 {
-                    new PackageDockTool(rd),
-                    new ResourceDockTool(rd),
-                    new WrapperDockTool(rd),
-                    new HexDecConverterTool(rd),
-                    new ActionReloadFiletable(),
-                    new ActionUniqueInstance(),
-                    new CreateListFromPackageTool(),
-                    new CreateListFromSelectionTool(),
-                    new HexDockTool(rd),
-                    new FinderDock(),
-                    new ActionCheckFiletable(),
-                    new ActionBuildPhpGuidList(),
-                    new DebugDock()
-                 };
-                return tools;
+                    tools.Add(new PackageDockTool(rd));
+                    tools.Add(new ResourceDockTool(rd));
+                    tools.Add(new WrapperDockTool(rd));
+                    tools.Add(new HexDecConverterTool(rd));
+                    tools.Add(new HexDockTool(rd));
+                }
+                tools.Add(new ActionReloadFiletable());
+                tools.Add(new ActionUniqueInstance());
+                tools.Add(new CreateListFromPackageTool());
+                tools.Add(new CreateListFromSelectionTool());
+                tools.Add(new FinderDock());
+                tools.Add(new ActionCheckFiletable());
+                tools.Add(new ActionBuildPhpGuidList());
+                tools.Add(new DebugDock());
+                return tools.ToArray();
             }
         }
         #endregion

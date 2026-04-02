@@ -145,14 +145,14 @@ namespace pjse.BhavOperandWizards
 		private void cbDataOwner_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-			if (cbDataOwner.SelectedIndex != null)
+			if (cbDataOwner.SelectedIndex >= 0)
 				SetDataOwner();
 		}
 
 		private void cbPicker_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-            if (cbPicker.SelectedIndex != null)
+            if (cbPicker.SelectedIndex >= 0)
             {
                 SetValue((ushort)(cbPicker.SelectedIndex));
                 tbValue.Text = tbValueConverter(instance);

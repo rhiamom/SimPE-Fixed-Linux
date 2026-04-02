@@ -578,7 +578,7 @@ namespace SimPe
 
         // WinForms-compat stub: shows the window and always returns Cancel.
         // TODO: wire Closed event to detect whether user confirmed.
-        public new System.Windows.Forms.DialogResult ShowDialog()
+        public System.Windows.Forms.DialogResult ShowDialog()
         {
             this.Show();
             return System.Windows.Forms.DialogResult.Cancel;

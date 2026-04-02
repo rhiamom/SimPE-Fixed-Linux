@@ -940,6 +940,6 @@ namespace SimPe
         public new int Height { get => (int)base.Height; set => base.Height = value; }
 
         // WinForms Controls compat — wraps Avalonia Children collection.
-        public new Avalonia.Controls.Controls Controls => Children;
+        public Avalonia.Controls.Controls Controls => Children;
     }
 }

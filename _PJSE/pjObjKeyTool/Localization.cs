@@ -22,25 +22,28 @@
  ***************************************************************************/
 
 using System;
-using System.Resources;
+using System.Collections.Generic;
 
 namespace pj
 {
     public class L
     {
-        private static ResourceManager resource = null;
-
-        static L() { resource = new ResourceManager(typeof(L)); }
+        private static readonly Dictionary<string, string> strings = new Dictionary<string, string>
+        {
+            { "pjObjKeyHelp",  "PJ ObjKey Tool" },
+            { "pjCObjKeyTool", @"PJSE\ObjKey Tool" },
+            { "missing3IDR",   "The 3IDR file for this CPF resource has disappeared!" },
+            { "missingCPF",    "The CPF resource for this 3IDR has disappeared!" },
+        };
 
         public static string Get(string name)
         {
-            string res = resource.GetString(name);
+            if (strings.TryGetValue(name, out string res)) return res;
 #if DEBUG
-            if (res == null) res = "<<" + name + ">>";
+            return "<<" + name + ">>";
 #else
-            if (res == null) res = name;
+            return name;
 #endif
-            return res;
         }
     }
 }

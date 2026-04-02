@@ -516,7 +516,7 @@ namespace SimPe.PackedFiles.Wrapper
 			this.cbhousehold.SelectedIndex = index;
 		}
 
-		public new void Refresh()
+		public void Refresh()
 		{
 			Refresh(true);
 		}

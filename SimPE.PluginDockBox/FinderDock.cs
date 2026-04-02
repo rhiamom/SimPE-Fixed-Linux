@@ -57,8 +57,7 @@ namespace SimPe.Plugin.Tool.Dockable
             tm.AddControl(this.xpGradientPanel1);
             tm.AddControl(this.tbResult);
             tm.AddControl(this.toolBar1);
-            if (Helper.XmlRegistry.UseBigIcons)
-                // toolBar1.ImageScalingSize = new System.Drawing.Size(32, 32); // n/a in Avalonia
+            // toolBar1.ImageScalingSize = new System.Drawing.Size(32, 32); // n/a in Avalonia
 
             sorter = new ColumnSorter();
             sorter.CurrentColumn = 0;

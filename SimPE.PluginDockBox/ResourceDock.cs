@@ -456,7 +456,7 @@ namespace SimPe.Plugin.Tool.Dockable
         #endregion
 
         internal SimPe.Interfaces.Files.IPackedFileDescriptor hexpfd;
-        private new void TextChanged(object sender, System.EventArgs e)
+        private void TextChanged(object sender, System.EventArgs e)
         {
             if (items == null) return;
             ((TextBox)sender).Tag = true;

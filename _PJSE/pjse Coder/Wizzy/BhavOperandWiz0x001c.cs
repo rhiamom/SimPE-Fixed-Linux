@@ -196,7 +196,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
                 ops1[0x04] = (byte)(doidTree.Value & 0xff);
 
-                if (this.cbRTBNType.SelectedIndex != null)
+                if (this.cbRTBNType.SelectedIndex >= 0)
                     ops1[0x05] = (byte)this.cbRTBNType.SelectedIndex;
 
                 byte[] lohi = { 0, 0 };

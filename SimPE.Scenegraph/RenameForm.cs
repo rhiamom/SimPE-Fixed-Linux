@@ -60,7 +60,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected new void Dispose(bool disposing)
+		protected void Dispose(bool disposing)
 		{
 			// base.Dispose(disposing); // Avalonia Window does not have Dispose(bool)
 		}

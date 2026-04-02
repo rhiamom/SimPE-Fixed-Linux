@@ -76,7 +76,9 @@ namespace SimPe
 			// XPLinkedLabelIcon.Icon not available on standard LinkLabel — icon displayed via menu item instead
 			ll.Text = SimPe.Localization.GetString(tool.ToString());
 			ll.LinkArea = new System.Windows.Forms.LinkArea(0, ll.Text.Length);
-			ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
+			if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+			        System.Runtime.InteropServices.OSPlatform.Windows))
+			    ll.Font = new System.Drawing.Font("Verdana", ll.Font?.Size ?? 8f, System.Drawing.FontStyle.Bold);
 			ll.Height = 16;
 			ll.AutoSize = true;
 

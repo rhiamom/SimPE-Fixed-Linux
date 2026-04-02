@@ -90,7 +90,7 @@ namespace SimPe
 
         public void Dispose() { }
 
-        public new System.Windows.Forms.DialogResult ShowDialog()
+        public System.Windows.Forms.DialogResult ShowDialog()
         {
             this.Show();
             return System.Windows.Forms.DialogResult.Cancel;

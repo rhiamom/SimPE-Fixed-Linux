@@ -88,7 +88,7 @@ namespace SimPe.Plugin
 				form.lblist.Items.Add(pfd);
 			}
             // form.pb.Source — TODO: convert System.Drawing.Image to Avalonia bitmap
-            form.imge = form.imge; // retain imge reference; display requires async conversion
+            // retain imge reference; display requires async conversion
 		}		
 
 		#endregion

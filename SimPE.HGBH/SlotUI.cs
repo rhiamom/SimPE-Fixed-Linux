@@ -213,7 +213,7 @@ namespace SimPe.Plugin
             lvfam.Slot = Slut;
 		}
 
-		public new void Refresh()
+		public void Refresh()
         {
 			lv.Refresh();
             lvint.Refresh();

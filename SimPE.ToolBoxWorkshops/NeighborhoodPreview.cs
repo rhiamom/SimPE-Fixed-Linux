@@ -111,7 +111,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		bool loaded;
 		[Browsable(false)]
-		public bool Loaded
+		public new bool Loaded
 		{
 			get { return loaded; }
 		}

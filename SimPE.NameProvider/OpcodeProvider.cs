@@ -30,6 +30,8 @@ using SimPe.Interfaces.Plugin.Internal;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 
+#nullable enable
+#pragma warning disable CS8603, CS8618, CS8622, CS8625, CS8601, CS8600, CS8602, CS8604
 namespace SimPe.Providers
 {
 	/// <summary>

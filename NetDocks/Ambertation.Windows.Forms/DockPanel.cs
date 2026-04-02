@@ -35,6 +35,8 @@ using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 
+#nullable enable
+#pragma warning disable CS8603, CS8618, CS8622, CS8625, CS8601, CS8600, CS8602, CS8604
 namespace Ambertation.Windows.Forms;
 
 /// <summary>
@@ -81,7 +83,7 @@ public class DockPanel : NCUserControl
     }
 
     /// <summary>Caption text shown in the dock panel header.</summary>
-    public new string Text
+    public string Text
     {
         get => _text;
         set { if (_text != value) { _text = value; if (_btext == "") _btext = _text; NCRefresh(); } }
@@ -164,7 +166,7 @@ public class DockPanel : NCUserControl
     public bool AllowFloat       { get; set; } = true;
 
     // Visible: WinForms compat; Avalonia uses IsVisible
-    public new bool Visible
+    public bool Visible
     {
         get => IsVisible;
         set => IsVisible = value;
@@ -236,7 +238,7 @@ public class DockPanel : NCUserControl
     // ── Operations ────────────────────────────────────────────────────────
 
     public void Open()            { IsOpen    = true;  }
-    public new void Close()       { IsOpen    = false; }
+    public void Close()       { IsOpen    = false; }
     public void Expand()            { Collapsed = false; }
     public void Expand(bool show)   { Collapsed = !show; }
     public void Collapse()          { Collapsed = true; }
@@ -281,7 +283,7 @@ public class DockPanel : NCUserControl
 
     // ── Events ────────────────────────────────────────────────────────────
 
-    public new event EventHandler VisibleChanged;
+    public event EventHandler VisibleChanged;
     public event ClosingHandler   Closing;
     public event EventHandler     OpenedStateChanged;
 

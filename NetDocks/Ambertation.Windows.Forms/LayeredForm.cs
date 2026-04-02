@@ -76,21 +76,21 @@ public class LayeredForm : Window
     public new int Height { get => (int)base.Height; set => base.Height = value; }
 
     /// <summary>Window size as System.Drawing.Size (WinForms Form.Size compat).</summary>
-    public new System.Drawing.Size Size
+    public System.Drawing.Size Size
     {
         get => new System.Drawing.Size((int)Width, (int)Height);
         set { Width = value.Width; Height = value.Height; }
     }
 
     /// <summary>Window title text (WinForms Form.Text compat).</summary>
-    public new string Text
+    public string Text
     {
         get => Title;
         set => Title = value ?? "";
     }
 
     /// <summary>Visibility (WinForms Form.Visible compat).</summary>
-    public new bool Visible
+    public bool Visible
     {
         get => IsVisible;
         set { if (value) Show(); else Hide(); }

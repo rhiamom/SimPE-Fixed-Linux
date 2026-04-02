@@ -22,25 +22,42 @@
  ***************************************************************************/
 
 using System;
-using System.Resources;
+using System.Collections.Generic;
 
 namespace pj
 {
     public class L
     {
-        private static ResourceManager resource = null;
-
-        static L() { resource = new ResourceManager(typeof(L)); }
+        private static readonly Dictionary<string, string> strings = new Dictionary<string, string>
+        {
+            { "badMeshPackage", "Could not use this package.  Either zero or multiple CRES or SHPE resources were found." },
+            { "didNotOpen", "Chosen package did not open." },
+            { "multipleMeshes", "Multiple meshes found (did you pick the right package?).\nImport resources for them all?" },
+            { "noCRESSHPE", "3IDR file has incorrect format" },
+            { "noGZPSXMOL", "No Property Set or Mesh Overlay XML files in package." },
+            { "noMeshName", "No mesh name entered." },
+            { "noMeshPkg", "No meshes in package." },
+            { "notAllPartsFound", "Not all parts could be found for mesh: " },
+            { "pjBMTExtract", @"PJSE\Body Mesh Tool\Extracting stage" },
+            { "pjBMTHelp", "PJ Body Mesh Tool" },
+            { "pjBMTLink", @"PJSE\Body Mesh Tool\Linking stage" },
+            { "pjSME", "Sim Mesh Extractor" },
+            { "pjSML", "Sim Mesh Linker" },
+            { "pjSMLbegin", "After beginning linking, you will be asked to close your 3IDR resource without committing; so if you have changes to save, please click Cancel and do so first.   Otherwise click OK to browse to your mesh file." },
+            { "pjSMLdone", "Now close your 3IDR resource, without committing, by opening a different resource.  After that you can continue as normal.   Remember to save." },
+            { "pkgFilter", "Package file|*.package|All files|*.*" },
+            { "selectPkgMesh", "Select Custom Mesh Package" },
+            { "selectPkgTexture", "Select Exported Texture Package" },
+        };
 
         public static string Get(string name)
         {
-            string res = resource.GetString(name);
+            if (strings.TryGetValue(name, out string res)) return res;
 #if DEBUG
-            if (res == null) res = "<<" + name + ">>";
+            return "<<" + name + ">>";
 #else
-            if (res == null) res = name;
+            return name;
 #endif
-            return res;
         }
     }
 }

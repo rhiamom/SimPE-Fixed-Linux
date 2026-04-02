@@ -252,7 +252,7 @@ namespace SimPe.Plugin
 			this.Content = tbResource;
 		}
 
-		public void Dispose()
+		public new void Dispose()
 		{
 			// no-op
 		}

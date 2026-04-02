@@ -252,7 +252,7 @@ namespace SimPe.PackedFiles.UserInterface
             internalchg = true;
             if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
             internalchg = false;
-            this.btnLngFirst.IsEnabled = this.btnLngPrev.IsEnabled = (this.cbLngSelect.SelectedIndex != null && cbLngSelect.SelectedIndex > 0);
+            this.btnLngFirst.IsEnabled = this.btnLngPrev.IsEnabled = (cbLngSelect.SelectedIndex > 0);
             this.btnLngNext.IsEnabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
             this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
@@ -1028,8 +1028,7 @@ this.Name = "StrForm";
         private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             if (internalchg) return;
-            if (this.cbLngSelect.SelectedIndex != null)
-                setLid((byte)((this.cbLngSelect.SelectedIndex) + 1));
+            setLid((byte)((this.cbLngSelect.SelectedIndex) + 1));
         }
 
         private void lvStrItems_ItemActivate(object sender, System.EventArgs e)

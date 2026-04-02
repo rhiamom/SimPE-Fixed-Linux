@@ -289,7 +289,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             try
             {
                 cbAnimType.SelectedIndex = cbAnimType.Items.IndexOf(((GS.GlobalStr)doidAnimType.Value).ToString());
-                tbAnimType.Text = (cbAnimType.SelectedIndex != null) ? this.cbAnimType.SelectedItem.ToString() : "---";
+                tbAnimType.Text = (cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
             }
             finally
             {
@@ -314,12 +314,12 @@ namespace pjse.BhavOperandWizards.WizAnimate
 
         private byte getScope(byte scope)
         {
-            return (byte)((cbEventScope.SelectedIndex != null) ? cbEventScope.SelectedIndex : scope);
+            return (byte)((cbEventScope.SelectedIndex >= 0) ? cbEventScope.SelectedIndex : scope);
         }
 
         private byte getPriority(byte priority)
         {
-            return (byte)((cbPriority.SelectedIndex != null) ? cbPriority.SelectedIndex : priority);
+            return (byte)((cbPriority.SelectedIndex >= 0) ? cbPriority.SelectedIndex : priority);
         }
 
         private byte getOptions(List<CheckBoxCompat2> lckbOptions, Boolset options)
@@ -810,7 +810,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
 
             try
             {
-                if (this.cbAnimType.SelectedIndex != null)
+                if (this.cbAnimType.SelectedIndex >= 0)
                 {
                     GS.GlobalStr gs = (GS.GlobalStr)Enum.Parse(typeof(GS.GlobalStr), this.cbAnimType.SelectedItem.ToString());
                     tbValAnimType.Text = "0x" + ((ushort)gs).ToString("X");
@@ -818,7 +818,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             }
             finally
             {
-                tbAnimType.Text = (this.cbAnimType.SelectedIndex != null) ? this.cbAnimType.SelectedItem.ToString() : "---";
+                tbAnimType.Text = (this.cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
             }
             doStrValue(doidAnim.Value, tbAnim);
             tbValAnimType.Focus();

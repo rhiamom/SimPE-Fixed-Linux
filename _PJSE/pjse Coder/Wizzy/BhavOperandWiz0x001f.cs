@@ -188,7 +188,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
                 ops1[0x01] = (byte)(val >> 8 & 0xff);
                 ops1[0x02] = (byte)(val >> 16 & 0xff);
                 ops1[0x03] = (byte)(val >> 24 & 0xff);
-                if (this.cbToNext.SelectedIndex != null)
+                if (this.cbToNext.SelectedIndex >= 0)
                     ops1[0x04] = (byte)(this.cbToNext.SelectedIndex & 0x7f);
                 ops1[0x04] |= (byte)(!this.ckbStackObj.IsChecked == true ? 0x80 : 0x00);
                 ops1[0x05] = doid1.DataOwner;
@@ -198,7 +198,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
                 ops2[0x00] &= 0xfc;
                 ops2[0x00] |= (byte)(this.ckbDisabled.IsChecked == true ? 0x01 : 0x00);
                 ops2[0x00] |= (byte)(this.ckbWhere.IsChecked == true ? 0x02 : 0x00);
-                if (this.cbWhere.SelectedIndex != null)
+                if (this.cbWhere.SelectedIndex >= 0)
                     BhavWiz.FromShort(ref ops2, 1, (ushort)this.cbWhere.SelectedIndex);
                 BhavWiz.FromShort(ref ops2, 3, (ushort)Convert.ToUInt32(this.tbWhereVal.Text, 16));
             }

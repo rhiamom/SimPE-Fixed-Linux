@@ -36,7 +36,7 @@ public class ViewPortSetup : Window
 
 	private static bool visible;
 
-	public new static bool Visible => visible;
+	public static bool Visible => visible;
 
 	private ViewPortSetup()
 	{

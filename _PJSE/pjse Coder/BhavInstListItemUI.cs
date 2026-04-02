@@ -151,7 +151,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
         private static string fmt = "0x{0} ({1}): {2}";
-        private static string Content(int index, pjse.BhavWiz inst)
+        private static new string Content(int index, pjse.BhavWiz inst)
         {
             return Format(fmt, index.ToString("X"), index.ToString(), cleanup(inst.ShortName));
         }

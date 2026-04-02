@@ -54,8 +54,8 @@ namespace SimPe.Windows.Forms
         // ── WinForms layout stub properties (ignored at runtime) ──────────────
         public System.Drawing.Point  Location  { get; set; }
         public System.Drawing.Size   Size      { get; set; }
-        public int                   TabIndex  { get; set; }
-        public System.Windows.Forms.Padding Margin { get; set; }
+        public new int                   TabIndex  { get; set; }
+        public new System.Windows.Forms.Padding Margin { get; set; }
         public System.Windows.Forms.AnchorStyles Anchor { get; set; }
         public WFControlCollection   Controls  { get; } = new WFControlCollection();
         public System.Drawing.Image  BackgroundImage { get; set; }

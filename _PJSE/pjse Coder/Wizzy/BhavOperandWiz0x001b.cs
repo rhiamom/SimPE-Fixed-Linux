@@ -105,8 +105,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001b
                 wrappedByteArray ops2 = inst.Reserved1;
                 Boolset ops16 = ops1[6];
 
-                if (cbLocation.SelectedIndex != null) ops1[2] = ((byte)(cbLocation.SelectedIndex - 2));
-                if (cbDirection.SelectedIndex != null) ops1[3] = ((byte)(cbDirection.SelectedIndex - 2));
+                if (cbLocation.SelectedIndex >= 0) ops1[2] = ((byte)(cbLocation.SelectedIndex - 2));
+                if (cbDirection.SelectedIndex >= 0) ops1[3] = ((byte)(cbDirection.SelectedIndex - 2));
 
                 ops16[1] = ckbNoFailureTrees.IsChecked == true;
                 ops16[2] = ckbDifferentAltitudes.IsChecked == true;

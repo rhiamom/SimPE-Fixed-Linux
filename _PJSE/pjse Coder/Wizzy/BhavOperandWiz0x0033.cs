@@ -368,7 +368,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
                 Boolset option1 = ops1[0];
                 if (inst.NodeVersion < 1)
                 {
-                    if (cbTargetInv.SelectedIndex != null)
+                    if (cbTargetInv.SelectedIndex >= 0)
                         option1 = (byte)((option1 & 0xfc) | (cbTargetInv.SelectedIndex & 0x03));
 
                     option1[2] = rb1Counted.IsChecked == true;
@@ -377,7 +377,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
                 }
                 else
                 {
-                    if (cbTargetInv.SelectedIndex != null)
+                    if (cbTargetInv.SelectedIndex >= 0)
                         option1 = (byte)((option1 & 0xf8) | (cbTargetInv.SelectedIndex & 0x07));
 
                     option1[3] = rb1Counted.IsChecked == true;
@@ -766,7 +766,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             bool origstate = internalchg;
             internalchg = true;
 
-            if (cbInventory.SelectedIndex != null && (cbInventory.SelectedIndex) <= 7)
+            if (cbInventory.SelectedIndex >= 0 && (cbInventory.SelectedIndex) <= 7)
                 o5678[1] = (byte)((o5678[1] & 0xf8) + cbInventory.SelectedIndex);
             refreshDoid1();
 

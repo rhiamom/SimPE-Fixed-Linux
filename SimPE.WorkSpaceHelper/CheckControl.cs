@@ -47,10 +47,10 @@ namespace SimPe
     {
         // ── WinForms-compat stubs (CheckControl is Avalonia but callers treat it like WinForms) ──
         public System.Windows.Forms.DockStyle Dock { get; set; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public System.Drawing.Point Location { get; set; }
         public System.Drawing.Size Size { get; set; }
-        public int TabIndex { get; set; }
+        public new int TabIndex { get; set; }
 
         // ── Static status images (loaded from embedded resources) ─────────
         static GdiImage LoadFromResource(string name)

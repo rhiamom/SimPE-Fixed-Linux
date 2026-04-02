@@ -239,7 +239,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                 {
                     ops2[0x01] = 0;
 
-                    if (this.cbScope.SelectedIndex != null)
+                    if (this.cbScope.SelectedIndex >= 0)
                     {
                         ops1[0x02] &= 0xf3;
                         if (this.cbScope.SelectedIndex == 2) ops1[0x02] |= 0x04;

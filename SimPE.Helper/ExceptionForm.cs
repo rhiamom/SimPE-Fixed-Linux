@@ -229,7 +229,7 @@ namespace SimPe
             string details = sb.ToString();
 
             // Post to UI thread — fire-and-forget, does not block caller
-            Dispatcher.UIThread.Post(async () =>
+            Dispatcher.UIThread.Post(() =>
             {
                 var frm = new ExceptionForm(message.Trim(), details, isWarning, supportUrl);
                 frm.Show();

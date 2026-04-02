@@ -369,7 +369,9 @@ namespace SimPe
         {
             foreach (SimPe.Interfaces.IDockableTool idt in FileTable.ToolRegistry.Docks)
             {
-                Ambertation.Windows.Forms.DockPanel dctrl = idt.GetDockableControl();
+                Ambertation.Windows.Forms.DockPanel dctrl = null;
+                try { dctrl = idt.GetDockableControl(); }
+                catch (Exception ex) { System.Diagnostics.Debug.WriteLine("GetDockableControl error on " + idt.GetType().Name + ": " + ex.Message); }
                 System.Diagnostics.Debug.WriteLine("DOCK: " + idt.GetType().Name + " dctrl=" + (dctrl == null ? "NULL" : "OK"));
 
                 if (dctrl != null)

@@ -31,6 +31,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using SimPe.Events;
 
 namespace SimPe
@@ -40,27 +41,22 @@ namespace SimPe
         // All field declarations are in SimPE.Main.Stubs.cs — do NOT re-declare them here.
 
         /// <summary>
-        /// Minimal Avalonia InitializeComponent substitute.
-        /// Sets the window title and minimum size; actual layout is built at runtime
-        /// by SetupMainForm() / LoadForm() in Main.Setup.cs.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            Title   = "SimPE - Sims Package Editor";
-            Width   = 1200;
-            Height  = 800;
-            MinWidth  = 800;
-            MinHeight = 600;
-        }
-
-        /// <summary>
         /// Public constructor — called by App.axaml.cs.
-        /// Runs InitializeComponent then calls SetupMainForm (business logic).
+        /// AvaloniaXamlLoader.Load(this) explicitly loads MainForm.axaml from the embedded
+        /// resource — bypassing the source generator (which generates an empty stub when no
+        /// MainForm.axaml.cs code-behind exists).
         /// </summary>
         public MainForm()
         {
-            InitializeComponent();
+            throw new System.InvalidOperationException("CONSTRUCTOR_BODY_REACHED");
+            System.IO.File.AppendAllText("/tmp/simpe.log", "1: constructor body started\n");
+            try { AvaloniaXamlLoader.Load(this); }
+            catch (Exception ex) { System.IO.File.AppendAllText("/tmp/simpe.log", "AXAML LOAD FAILED:\n" + ex + "\n"); throw; }
+            System.IO.File.AppendAllText("/tmp/simpe.log", "2: AXAML loaded. Title=" + Title + "\n");
+
             SetupMainForm();
+            System.IO.File.AppendAllText("/tmp/simpe.log", "3: SetupMainForm done\n");
+            this.Opened += LoadForm;
         }
     }
 }

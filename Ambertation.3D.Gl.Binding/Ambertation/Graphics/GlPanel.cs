@@ -34,6 +34,8 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 
+#nullable enable
+#pragma warning disable CS8603, CS8618, CS8622, CS8625, CS8601, CS8600, CS8602, CS8604
 namespace Ambertation.Graphics;
 
 /// <summary>Simple matrix stack for hierarchical transforms.</summary>
@@ -149,7 +151,7 @@ void main() {
     public MeshList Meshes => meshes;
     // Device property kept for API compat â€” returns null (callers should not use it)
     public object Device => null;
-    public object Effect { get; set; }
+    public new object Effect { get; set; }
     public ViewportSetting Settings => vp;
     public Color BackColor
     {

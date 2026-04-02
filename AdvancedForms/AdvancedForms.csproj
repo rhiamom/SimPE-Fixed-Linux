@@ -9,6 +9,7 @@
   <PropertyGroup>
     <LangVersion>12.0</LangVersion>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>CS2008</NoWarn>
   </PropertyGroup>
   <PropertyGroup />
   <!-- All source excluded — WinForms extension of NetDocks, will be replaced with Avalonia docking -->

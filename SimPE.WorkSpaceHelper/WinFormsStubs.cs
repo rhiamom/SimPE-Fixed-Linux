@@ -125,7 +125,7 @@ namespace System.Windows.Forms
         public event EventHandler AvailableChanged;
         public event EventHandler CheckedChanged;
         protected virtual void OnCheckedChanged(EventArgs e) => CheckedChanged?.Invoke(this, e);
-        protected virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
+        protected new virtual void OnClick(EventArgs e) => Click?.Invoke(this, e);
         public new event EventHandler Click;
     }
 
@@ -175,7 +175,7 @@ namespace System.Windows.Forms
         public ToolStripItem this[int i] => _items[i];
         public void Add(ToolStripItem item) { _items.Add(item); }
         public void Add(string text) { _items.Add(new ToolStripMenuItem(text)); }
-        public void Insert(int index, ToolStripItem item) { _items.Insert(index, item); }
+        public void Insert(int index, ToolStripItem item) { _items.Insert(Math.Clamp(index, 0, _items.Count), item); }
         public void Remove(ToolStripItem item) { _items.Remove(item); }
         public void Clear() { _items.Clear(); }
         public System.Collections.IEnumerator GetEnumerator() => _items.GetEnumerator();

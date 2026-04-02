@@ -866,4 +866,19 @@
     </ItemGroup>
   </Target>
 
+  <!-- Deploy data files to ~/Library/Application Support/SimPe/Data/ on Mac -->
+  <Target Name="DeploySimPeDataFiles" AfterTargets="Build"
+          Condition="'$(OS)' != 'Windows_NT'">
+    <PropertyGroup>
+      <SimPeAppDataDir>$([System.Environment]::GetFolderPath(SpecialFolder.ApplicationData))/SimPe/Data</SimPeAppDataDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(SimPeAppDataDir)" />
+    <ItemGroup>
+      <SimPeDataFile Include="$(MSBuildThisFileDirectory)..\Resources\*.xml" />
+      <SimPeDataFile Include="$(MSBuildThisFileDirectory)..\Resources\*.xsd" />
+      <SimPeDataFile Include="$(MSBuildThisFileDirectory)..\Resources\*.xreg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SimPeDataFile)" DestinationFolder="$(SimPeAppDataDir)" SkipUnchangedFiles="true" />
+  </Target>
+
 </Project>

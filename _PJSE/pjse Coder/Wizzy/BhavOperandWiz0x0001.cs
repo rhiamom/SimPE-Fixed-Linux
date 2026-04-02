@@ -81,7 +81,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		public Instruction Write(Instruction inst)
 		{
-			if (this.cbGenericSimsCall.SelectedIndex != null)
+			if (this.cbGenericSimsCall.SelectedIndex >= 0)
 				inst.Operands[0] = (byte)this.cbGenericSimsCall.SelectedIndex;
 			return inst;
 		}
@@ -114,7 +114,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
-			lbGenericSimsCallparms.Content = (cbGenericSimsCall.SelectedIndex != null)
+			lbGenericSimsCallparms.Content = (cbGenericSimsCall.SelectedIndex >= 0)
 				? genericSimsCallparamText(cbGenericSimsCall.SelectedIndex)
 				: "";
 		}

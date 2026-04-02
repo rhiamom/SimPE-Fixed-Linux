@@ -44,8 +44,12 @@ namespace SimPe
 
     partial class MainForm
     {
-        private System.ComponentModel.IContainer components = null;
-        private void InitializeComponent() { }
+        // InitializeComponent() is generated from MainForm.axaml — do NOT declare it here.
+        // lv, tv: declared by AXAML code-gen when x:Name is active; stubbed here for diagnostic build.
+        // dc: same — stub allows SetupMainForm() to compile when x:Name="dc" is not in AXAML.
+        internal SimPe.Windows.Forms.ResourceListViewExt lv = new SimPe.Windows.Forms.ResourceListViewExt();
+        internal SimPe.Windows.Forms.ResourceTreeViewExt tv = new SimPe.Windows.Forms.ResourceTreeViewExt();
+        internal Avalonia.Controls.TabControl dc           = new Avalonia.Controls.TabControl();
         private Ambertation.Windows.Forms.DockPanel tbContainer = new Ambertation.Windows.Forms.DockPanel();
         private System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
         private Menu menuBar1 = new Menu();
@@ -103,7 +107,7 @@ namespace SimPe
         private System.Windows.Forms.ToolStrip tbWindow = new System.Windows.Forms.ToolStrip();
         private ComboBox cbsemig = new ComboBox();
         private LinkLabel xpLinkedLabelIcon3 = new LinkLabel();
-        private Avalonia.Controls.TabControl dc = new Avalonia.Controls.TabControl();
+        // dc is declared by MainForm.axaml code-gen (x:Name="dc").
         private System.Windows.Forms.ToolStripMenuItem miSaveCopyAs = new System.Windows.Forms.ToolStripMenuItem();
         private Button biReset = new Button();
         private System.Windows.Forms.ToolStripMenuItem mbiTopics = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,8 +125,7 @@ namespace SimPe
         private Ambertation.Windows.Forms.DockContainer dockBottom = new Ambertation.Windows.Forms.DockContainer();
         private Ambertation.Windows.Forms.DockContainer dockCenter = new Ambertation.Windows.Forms.DockContainer();
         private Ambertation.Windows.Forms.DockPanel dcResourceList = new Ambertation.Windows.Forms.DockPanel();
-        private SimPe.Windows.Forms.ResourceListViewExt lv = new SimPe.Windows.Forms.ResourceListViewExt();
-        private SimPe.Windows.Forms.ResourceTreeViewExt tv = new SimPe.Windows.Forms.ResourceTreeViewExt();
+        // lv and tv are declared by MainForm.axaml code-gen (x:Name="lv", x:Name="tv").
         private SimPe.Windows.Forms.ResourceViewManager resourceViewManager1 = new SimPe.Windows.Forms.ResourceViewManager();
         private TextBlock label3 = new TextBlock();
         private TextBlock label2 = new TextBlock();

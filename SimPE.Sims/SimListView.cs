@@ -42,10 +42,10 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public void BeginUpdate() { /* no-op: batch update not needed for Avalonia ListBox */ }
 		public void EndUpdate() { /* no-op */ }
-		public new void Refresh() { base.InvalidateVisual(); }
+		public void Refresh() { base.InvalidateVisual(); }
 		public void EnsureVisible(int index) { /* no-op in Avalonia */ }
 
-		public new void Clear()
+		public void Clear()
 		{
 			Items.Clear();
 		}

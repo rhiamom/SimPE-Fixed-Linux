@@ -1488,7 +1488,7 @@ namespace SimPe.Plugin
             p.StartInfo.FileName = SimPe.PathProvider.Global.SimsApplication;
             p.StartInfo.Arguments = wrapper.appendage;
             p.Start();
-            System.Threading.Thread.CurrentThread.Abort();
+            Environment.Exit(0);
         }
     }
 }

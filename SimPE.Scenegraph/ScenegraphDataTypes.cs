@@ -181,7 +181,7 @@ namespace SimPe.Scenegraph.Compat
         public CheckedListViewItemCollection CheckedItems { get; }
         public ColumnHeaderCollection Columns { get; } = new ColumnHeaderCollection();
         public object HeaderStyle { get; set; }
-        public object Tag { get; set; }
+        public new object Tag { get; set; }
         public bool Focused { get; set; }
         public bool Enabled { get; set; } = true;
         public bool MultiSelect { get; set; } = true;
@@ -200,11 +200,11 @@ namespace SimPe.Scenegraph.Compat
         // Layout/position properties (no-ops in Avalonia port)
         public int Left { get; set; }
         public int Top { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public new int Width { get; set; }
+        public new int Height { get; set; }
         public new Avalonia.Controls.Control Parent { get; set; }
         public bool Visible { get => IsVisible; set => IsVisible = value; }
-        public bool IsVisible { get; set; } = true;
+        public new bool IsVisible { get; set; } = true;
         public object Anchor { get; set; }
         public ListViewItem FocusedItem => Items.Count > 0 ? Items[0] : null;
 
@@ -217,7 +217,7 @@ namespace SimPe.Scenegraph.Compat
         public event EventHandler Resize;
         public object Activation { get; set; }
 
-        public string Name { get; set; } = "";
+        public new string Name { get; set; } = "";
         public object ListViewItemSorter { get; set; }
         public SimPe.SortOrder Sorting { get; set; } = SimPe.SortOrder.None;
         public void SelectAll() { foreach (object o in Items) ((ListViewItem)o).Selected = true; }
@@ -281,7 +281,7 @@ namespace SimPe.Scenegraph.Compat
     /// </summary>
     public class CheckBoxCompat : Avalonia.Controls.CheckBox
     {
-        public bool Checked
+        public new bool Checked
         {
             get => IsChecked == true;
             set => IsChecked = value;
@@ -331,7 +331,7 @@ namespace SimPe.Scenegraph.Compat
         public new int Height { get; set; }
         public bool Visible { get; set; } = true;
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
-        public new Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
+        public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public Control ParentControl { get; set; }
         public new Avalonia.Controls.Control Parent { get; set; }
         public class ControlCollection : System.Collections.IEnumerable
@@ -478,7 +478,7 @@ namespace SimPe.Scenegraph.Compat
     public class PictureBox : Avalonia.Controls.Control
     {
         public System.Drawing.Image Image { get; set; }
-        public new System.Drawing.Size Size { get; set; } = new System.Drawing.Size(100, 100);
+        public System.Drawing.Size Size { get; set; } = new System.Drawing.Size(100, 100);
         public object SizeMode { get; set; }
         public object BorderStyle { get; set; }
         public System.Drawing.Point Location { get; set; }
@@ -489,7 +489,7 @@ namespace SimPe.Scenegraph.Compat
         public bool Visible { get; set; } = true;
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public System.Drawing.Color BackColor { get; set; }
-        public object Parent { get; set; }
+        public new object Parent { get; set; }
         public new object Tag { get; set; }
         public new object Cursor { get; set; }
         public event EventHandler MouseEnter;
@@ -562,14 +562,14 @@ namespace SimPe.Scenegraph.Compat
         public int Right { get; set; }
         public int Top { get; set; }
         public int Bottom { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public new int Width { get; set; }
         public new int Height { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public bool AutoSize { get; set; }
         public System.Drawing.Font Font { get; set; }
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
-        public object Parent { get; set; }
+        public new object Parent { get; set; }
 
         public event LinkLabelLinkClickedEventHandler LinkClicked;
 
@@ -767,8 +767,8 @@ namespace SimPe.Scenegraph.Compat
     public class FlowLayoutPanel : Avalonia.Controls.StackPanel
     {
         public bool AutoSize { get; set; }
-        public int FlowDirection { get; set; }
-        public new Avalonia.Controls.Controls Controls => Children;
+        public new int FlowDirection { get; set; }
+        public Avalonia.Controls.Controls Controls => Children;
         public int Left { get; set; }
         public int Top { get; set; }
         public int Right { get; set; }
@@ -776,7 +776,7 @@ namespace SimPe.Scenegraph.Compat
         public new int Width { get; set; }
         public new int Height { get; set; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
     }
 
@@ -786,7 +786,7 @@ namespace SimPe.Scenegraph.Compat
         public bool AutoSize { get; set; }
         public int ColumnCount { get; set; }
         public int RowCount { get; set; }
-        public new Avalonia.Controls.Controls Controls => Children;
+        public Avalonia.Controls.Controls Controls => Children;
     }
 
     /// <summary>WinForms SplitContainer → minimal stub.</summary>
@@ -802,13 +802,13 @@ namespace SimPe.Scenegraph.Compat
     public class TabPage : Avalonia.Controls.TabItem
     {
         public string Text { get => Header?.ToString() ?? ""; set => Header = value; }
-        public new Avalonia.Controls.Controls Controls { get; } = new Avalonia.Controls.Controls();
+        public Avalonia.Controls.Controls Controls { get; } = new Avalonia.Controls.Controls();
     }
 
     /// <summary>WinForms ContextMenuStrip → Avalonia ContextMenu.</summary>
     public class ContextMenuStrip : Avalonia.Controls.ContextMenu
     {
-        public event System.EventHandler Opening;
+        public new event System.EventHandler Opening;
         // Items inherited from ContextMenu
         public void Show(Avalonia.Controls.Control control, System.Drawing.Point position)
             => Open(control);
@@ -819,7 +819,7 @@ namespace SimPe.Scenegraph.Compat
     /// <summary>WinForms ToolStripMenuItem → Avalonia MenuItem.</summary>
     public class ToolStripMenuItem : Avalonia.Controls.MenuItem
     {
-        public new string Text { get => Header?.ToString() ?? ""; set => Header = value; }
+        public string Text { get => Header?.ToString() ?? ""; set => Header = value; }
         public Avalonia.Controls.ItemCollection DropDownItems => Items;
     }
 
@@ -896,7 +896,7 @@ namespace SimPe.Scenegraph.Compat
         public bool Visible { get => IsVisible; set => IsVisible = value; }
         public string Content { get => Text; set => Text = value; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
@@ -909,11 +909,11 @@ namespace SimPe.Scenegraph.Compat
         public bool AutoSize { get; set; }
         public object TextAlign { get; set; }
         public bool AutoScrollPosition { get; set; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public void SuspendLayout() { }
         public void ResumeLayout(bool performLayout = false) { }
-        public void SelectAll() => SelectionStart = 0;
+        public new void SelectAll() => SelectionStart = 0;
         public int SelectionLength
         {
             get => SelectionEnd - SelectionStart;
@@ -928,7 +928,7 @@ namespace SimPe.Scenegraph.Compat
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
         public bool Visible { get => IsVisible; set => IsVisible = value; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
@@ -940,7 +940,7 @@ namespace SimPe.Scenegraph.Compat
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public bool AutoSize { get; set; }
         public object TextAlign { get; set; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public event EventHandler Click;
         public LabelCompat() { PointerPressed += (s, e) => Click?.Invoke(this, EventArgs.Empty); }
@@ -954,7 +954,7 @@ namespace SimPe.Scenegraph.Compat
         public string Text { get => Content?.ToString() ?? ""; set => Content = value; }
         public System.Drawing.Image Image { get; set; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
@@ -965,19 +965,19 @@ namespace SimPe.Scenegraph.Compat
         public System.Drawing.Color ForeColor { get; set; }
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public bool AutoSize { get; set; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
     }
 
     /// <summary>WinForms-compat CheckBox — extends Avalonia CheckBox with WinForms API.</summary>
     public class CheckBoxCompat2 : Avalonia.Controls.CheckBox
     {
-        public bool Checked { get => IsChecked == true; set => IsChecked = value; }
+        public new bool Checked { get => IsChecked == true; set => IsChecked = value; }
         public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
         public bool Visible { get => IsVisible; set => IsVisible = value; }
         public string Text { get => Content?.ToString() ?? ""; set => Content = value; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
@@ -989,7 +989,7 @@ namespace SimPe.Scenegraph.Compat
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public bool AutoSize { get; set; }
         public object CheckAlign { get; set; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public CheckState CheckState
         {
@@ -1018,11 +1018,11 @@ namespace SimPe.Scenegraph.Compat
             get => SelectedItem?.ToString() ?? "";
             set { /* no-op for compat */ }
         }
-        public new object Content { get => SelectedItem; set => SelectedItem = value; }
+        public object Content { get => SelectedItem; set => SelectedItem = value; }
         public bool FormattingEnabled { get; set; }
         public bool Sorted { get; set; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
@@ -1039,10 +1039,10 @@ namespace SimPe.Scenegraph.Compat
         public object DisplayMember { get; set; }
         public object ValueMember { get; set; }
         public object DataSource { get => ItemsSource; set => ItemsSource = (System.Collections.IEnumerable)value; }
-        public new System.Drawing.Font Font { get; set; }
+        public System.Drawing.Font Font { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public void Select(int start, int length) { /* no-op in Avalonia ComboBox */ }
-        public new event EventHandler TextChanged;
+        public event EventHandler TextChanged;
         public new event EventHandler SelectionChanged;
         public event EventHandler DragDrop;
         public event EventHandler DragEnter;
@@ -1056,12 +1056,12 @@ namespace SimPe.Scenegraph.Compat
     public class ListBoxCompat : Avalonia.Controls.ListBox
     {
         public bool Sorted { get; set; }            // no-op: Avalonia has no built-in sort
-        public new bool Enabled { get => IsEnabled; set => IsEnabled = value; }
+        public bool Enabled { get => IsEnabled; set => IsEnabled = value; }
         public bool IntegralHeight { get; set; }
         public int ItemHeight { get; set; }
         public Avalonia.Layout.HorizontalAlignment Anchor { get; set; }
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public new string Name { get => base.Name; set => base.Name = value; }
         public void BeginUpdate() { }
         public void EndUpdate() { }
@@ -1113,7 +1113,7 @@ namespace SimPe.Scenegraph.Compat
     public class StackPanelCompat : Avalonia.Controls.StackPanel
     {
         public System.Drawing.Point Location { get; set; }
-        public new System.Drawing.Size Size { get; set; }
+        public System.Drawing.Size Size { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }

@@ -96,7 +96,7 @@ namespace SimPe.Plugin
 			}
 		}
 
-		public new void Refresh()
+		public void Refresh()
 		{
 			SetContent();
 			InvalidateVisual();

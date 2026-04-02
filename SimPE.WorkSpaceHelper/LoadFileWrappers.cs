@@ -177,6 +177,8 @@ namespace SimPe
             ignore.Add("theos.simsurgery.plugin.dll");
             ignore.Add("theo.meshscanner.plugin.dll");
             //ignore.Add("simpe.ngbh.plugin.dll");
+            // WorkSpaceHelper defines the plugin interfaces themselves — never scan it as a plugin
+            ignore.Add("simpe.workspace.plugin.dll");
 		}
 
 		/// <summary>
@@ -247,56 +249,47 @@ namespace SimPe
 			}
 			
 			Assembly a;
-			try { a = System.Reflection.Assembly.LoadFrom(file); }
+			try
+			{
+                // If the assembly is already loaded under the same identity, reuse it.
+                // Loading the same identity from a different file path creates duplicate types
+                // and causes ReflectionTypeLoadException in GetTypes().
+                Assembly already = Array.Find(AppDomain.CurrentDomain.GetAssemblies(),
+                    x => string.Equals(x.GetName().Name, myAssemblyName.Name, StringComparison.OrdinalIgnoreCase));
+                a = already ?? System.Reflection.Assembly.LoadFrom(file);
+            }
 			catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine("LoadPlugin LoadFrom failed: " + file + " -- " + ex.Message);
 				Console.WriteLine("LoadPlugin LoadFrom failed: " + file + " -- " + ex.Message);
 				return null;
 			}
+			Type[] mytypes;
 			try
 			{
-				Type[] mytypes = a.GetTypes();
-
-				foreach(Type t in mytypes)
-				{
-					Type mit = t.GetInterface(interfaceType.FullName);
-					if (mit != null)
-
-                    {
-						object obj = Activator.CreateInstance(t);
-						return obj;
-					}
-				}
+				mytypes = a.GetTypes();
 			}
             catch (System.Reflection.ReflectionTypeLoadException ex)
             {
-                System.Diagnostics.Debug.WriteLine("LoadPlugin ReflectionTypeLoadException: " + file);
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
+                // Some types failed to load — use the partial list (nulls mark the failures).
+                // This is the standard pattern for plugin scanners: don't abort the whole
+                // assembly just because a few internal/UI types have unresolved dependencies.
+                mytypes = Array.FindAll(ex.Types, t => t != null);
                 if (ex.LoaderExceptions != null)
                 {
                     foreach (Exception lex in ex.LoaderExceptions)
-                    {
-                        System.Diagnostics.Debug.WriteLine("  LOADER: " + lex.ToString());
-                    }
-                }
-
-                // Also write to console in case you *do* have one
-                Console.WriteLine("LoadPlugin ReflectionTypeLoadException: " + file);
-                Console.WriteLine(ex.ToString());
-                if (ex.LoaderExceptions != null)
-                {
-                    foreach (Exception lex in ex.LoaderExceptions)
-                        Console.WriteLine("  LOADER: " + lex.ToString());
+                        System.Diagnostics.Debug.WriteLine("  LOADER: " + lex?.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("LoadPlugin Exception: " + file);
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Console.WriteLine(ex);
-            }
+			foreach (Type t in mytypes)
+			{
+				Type mit = t.GetInterface(interfaceType.FullName);
+				if (mit != null)
+				{
+					object obj = Activator.CreateInstance(t);
+					return obj;
+				}
+			}
 
 
             return null;

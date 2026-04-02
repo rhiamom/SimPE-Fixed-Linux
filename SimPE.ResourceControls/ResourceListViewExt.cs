@@ -211,7 +211,7 @@ namespace SimPe.Windows.Forms
             Avalonia.Threading.Dispatcher.UIThread.Post(OnResourceSelectionChanged);
         }
 
-        public new void Refresh()
+        public void Refresh()
         {
             Avalonia.Threading.Dispatcher.UIThread.Post(() => lv.InvalidateArrange());
         }
