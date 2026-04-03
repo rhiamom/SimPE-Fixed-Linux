@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ShpeLod : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.TextBox tbunk;
 		internal Avalonia.Controls.ListBox lbunk;
 		private Avalonia.Controls.TextBlock label1;
@@ -41,11 +42,12 @@ namespace SimPe.Plugin.TabPage
 		public ShpeLod()
 		{
 			this.Header = "Level of Detail Listing";
+			this.FontSize = 11;
 
 			lbunk = new Avalonia.Controls.ListBox();
 			lbunk.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectUnknown);
 			label1 = new Avalonia.Controls.TextBlock { Text = "Value:" };
-			tbunk = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbunk = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbunk.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeUnknown);
 			linkLabel3 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel3.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.linkLabel3_LinkClicked);

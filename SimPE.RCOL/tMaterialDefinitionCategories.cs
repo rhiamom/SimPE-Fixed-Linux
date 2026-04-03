@@ -33,11 +33,13 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class MaterialDefinitionCategories : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private SimPe.Plugin.TabPage.PropertyGridStub pg;
 
 		public MaterialDefinitionCategories()
 		{
 			this.Header = "Categorized Properties";
+			this.FontSize = 11;
 
 			pg = new SimPe.Plugin.TabPage.PropertyGridStub();
 

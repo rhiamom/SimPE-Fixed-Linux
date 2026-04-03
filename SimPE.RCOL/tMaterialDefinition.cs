@@ -33,6 +33,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class MaterialDefinition : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.TextBox tbdsc;
 		internal Avalonia.Controls.TextBox tbtype;
 		private Avalonia.Controls.TextBlock label4;
@@ -43,15 +44,16 @@ namespace SimPe.Plugin.TabPage
 		public MaterialDefinition()
 		{
 			this.Header = "cMeterialDefinition";
+			this.FontSize = 11;
 
 			label5 = new Avalonia.Controls.TextBlock { Text = "Type:" };
 			label4 = new Avalonia.Controls.TextBlock { Text = "Description:" };
-			tbtype = new Avalonia.Controls.TextBox { Text = "" };
+			tbtype = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbtype.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.FileNameChanged);
-			tbdsc = new Avalonia.Controls.TextBox { Text = "" };
+			tbdsc = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbdsc.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.FileNameChanged);
 			label28 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.FileNameChanged);
 
 			Content = new Avalonia.Controls.StackPanel { Children = { label28, tb_ver, label4, tbdsc, label5, tbtype } };

@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class GenericRcol : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.Border groupBox10;
 		internal Avalonia.Controls.TextBox tb_ver;
 		private Avalonia.Controls.TextBlock label28;
@@ -40,8 +41,9 @@ namespace SimPe.Plugin.TabPage
 		public GenericRcol()
 		{
 			this.Header = "GenericRcol";
+			this.FontSize = 11;
 
-			tb_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GNSettingsChange);
 			label28 = new Avalonia.Controls.TextBlock { Text = "Version:" };
 			gen_pg = new SimPe.Plugin.TabPage.PropertyGridStub();

@@ -1184,7 +1184,7 @@ namespace SimPe
 		}
 		public bool SimpleResourceSelect
 		{
-			get { XmlRegistryKey rkf = xrk.CreateSubKey("Settings"); return Convert.ToBoolean(rkf.GetValue("SimpleResourceSelect", false)); }
+			get { XmlRegistryKey rkf = xrk.CreateSubKey("Settings"); return Convert.ToBoolean(rkf.GetValue("SimpleResourceSelect", true)); }
 			set { XmlRegistryKey rkf = xrk.CreateSubKey("Settings"); rkf.SetValue("SimpleResourceSelect", value); }
 		}
 		public int SortProcessCount

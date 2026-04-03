@@ -81,6 +81,7 @@ namespace SimPe.Plugin
 			if (form.cbitem.Items.Count > 0) form.cbitem.SelectedIndex = 0;
 			else form.BuildChildTabControl(null);
 
+
 			form.lbref.Items.Clear();
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in wrp.ReferencedFiles) form.lbref.Items.Add(pfd);
 			if (form.lbref.Items.Count > 0) form.lbref.SelectedIndex = 0;

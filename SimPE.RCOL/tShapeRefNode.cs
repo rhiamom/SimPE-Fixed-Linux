@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ShapeRefNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.ListBox lb_srn_b;
 		internal Avalonia.Controls.ListBox lb_srn_a;
 		private Avalonia.Controls.TextBlock label1;
@@ -68,32 +69,33 @@ namespace SimPe.Plugin.TabPage
 		public ShapeRefNode()
 		{
 			this.Header = "ShapeRefNode";
+			this.FontSize = 11;
 
-			tb_srn_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label24 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_srn_uk1 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_srn_uk1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_srn_uk1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label6 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_srn_uk2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_uk2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_uk2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label5 = new Avalonia.Controls.TextBlock { Text = "Unknown 2:" };
-			tb_srn_uk3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_uk3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_uk3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label8 = new Avalonia.Controls.TextBlock { Text = "Unknown 3:" };
-			tb_srn_uk4 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_srn_uk4 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_srn_uk4.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label7 = new Avalonia.Controls.TextBlock { Text = "Unknown 4:" };
-			tb_srn_uk5 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_uk5 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_uk5.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label10 = new Avalonia.Controls.TextBlock { Text = "Unknown 5:" };
-			tb_srn_uk6 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_uk6 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_uk6.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label9 = new Avalonia.Controls.TextBlock { Text = "Unknown 6:" };
-			tb_srn_kind = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_srn_kind = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_srn_kind.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label11 = new Avalonia.Controls.TextBlock { Text = "Kind:" };
-			tb_srn_data = new Avalonia.Controls.TextBox { Text = "" };
+			tb_srn_data = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tb_srn_data.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangeSettings);
 			label12 = new Avalonia.Controls.TextBlock { Text = "Data:" };
 
@@ -101,10 +103,10 @@ namespace SimPe.Plugin.TabPage
 			lb_srn_a = new Avalonia.Controls.ListBox();
 			lb_srn_a.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SRNSelectA);
 			label1 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_srn_a_1 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_srn_a_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_srn_a_1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangedItemsA);
 			label2 = new Avalonia.Controls.TextBlock { Text = "Child Index:" };
-			tb_srn_a_2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_a_2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_srn_a_2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.SRNChangedItemsA);
 			linkLabel3 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel3.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.SRNItemsAAdd);
@@ -114,9 +116,9 @@ namespace SimPe.Plugin.TabPage
 			// List B (Unknown List B)
 			lb_srn_b = new Avalonia.Controls.ListBox();
 			label3 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_srn_b_1 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_srn_b_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			label4 = new Avalonia.Controls.TextBlock { Text = "Name:" };
-			tb_srn_b_name = new Avalonia.Controls.TextBox { Text = "" };
+			tb_srn_b_name = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			linkLabel4 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel4.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.SRNItemsBAdd);
 			ll_srn_delb = new Avalonia.Controls.Button { Content = "delete" };

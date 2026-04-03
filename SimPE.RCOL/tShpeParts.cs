@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ShpeParts : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.TextBlock label5;
 		internal Avalonia.Controls.ListBox lbpart;
 		private Avalonia.Controls.TextBox tbparttype;
@@ -45,17 +46,18 @@ namespace SimPe.Plugin.TabPage
 		public ShpeParts()
 		{
 			this.Header = "Parts";
+			this.FontSize = 11;
 
 			lbpart = new Avalonia.Controls.ListBox();
 			lbpart.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectPart);
 			label5 = new Avalonia.Controls.TextBlock { Text = "Subset Name:" };
-			tbparttype = new Avalonia.Controls.TextBox { Text = "" };
+			tbparttype = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbparttype.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangedPart);
 			label6 = new Avalonia.Controls.TextBlock { Text = "Material Definition File:" };
-			tbpartdsc = new Avalonia.Controls.TextBox { Text = "" };
+			tbpartdsc = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbpartdsc.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangedPart);
 			label7 = new Avalonia.Controls.TextBlock { Text = "Data:" };
-			tbpartdata = new Avalonia.Controls.TextBox { Text = "" };
+			tbpartdata = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbpartdata.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangedPart);
 			linkLabel8 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel8.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.linkLabel8_LinkClicked);

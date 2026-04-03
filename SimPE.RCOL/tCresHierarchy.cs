@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class Cres : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.TreeView cres_tv;
 		private Avalonia.Controls.TextBlock label58;
 		internal Avalonia.Controls.TextBox tbfjoint;
@@ -39,8 +40,9 @@ namespace SimPe.Plugin.TabPage
 		public Cres()
 		{
 			this.Header = SimPe.Localization.GetString("CRES Hierarchie");
+			this.FontSize = 11;
 
-			tbfjoint = new Avalonia.Controls.TextBox { Text = "" };
+			tbfjoint = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbfjoint.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.tbfjoint_TextChanged);
 			label58 = new Avalonia.Controls.TextBlock { Text = "Find Joint:" };
 			cres_tv = new Avalonia.Controls.TreeView();

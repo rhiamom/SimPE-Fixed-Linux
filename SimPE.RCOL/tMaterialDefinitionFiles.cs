@@ -33,6 +33,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class MaterialDefinitionFiles : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.ListBox lbfl;
 		private Avalonia.Controls.TextBox tblistfile;
 		private Avalonia.Controls.TextBlock label6;
@@ -42,12 +43,13 @@ namespace SimPe.Plugin.TabPage
 		public MaterialDefinitionFiles()
 		{
 			this.Header = "File List";
+			this.FontSize = 11;
 
 			linkLabel4 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel4.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.Add);
 			linkLabel3 = new Avalonia.Controls.Button { Content = "delete" };
 			linkLabel3.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.Delete);
-			tblistfile = new Avalonia.Controls.TextBox { Text = "" };
+			tblistfile = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tblistfile.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeListFile);
 			label6 = new Avalonia.Controls.TextBlock { Text = "Filename:" };
 			lbfl = new Avalonia.Controls.ListBox();

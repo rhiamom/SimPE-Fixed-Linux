@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class GeometryNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.TextBox tb_gn_ver;
 		private Avalonia.Controls.TextBlock label29;
 		internal Avalonia.Controls.TextBox tb_gn_uk3;
@@ -48,19 +49,20 @@ namespace SimPe.Plugin.TabPage
 		public GeometryNode()
 		{
 			this.Header = "GeometryNode";
+			this.FontSize = 11;
 
-			tb_gn_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_gn_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_gn_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GrNSettingsChange);
 			label29 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_gn_uk3 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_gn_uk3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_gn_uk3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GrNSettingsChange);
 			label33 = new Avalonia.Controls.TextBlock { Text = "Unknown 3:" };
-			tb_gn_uk2 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_gn_uk2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_gn_uk2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GrNSettingsChange);
 			label35 = new Avalonia.Controls.TextBlock { Text = "Unknown 2:" };
-			tb_gn_count = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_gn_count = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			label36 = new Avalonia.Controls.TextBlock { Text = "Count:" };
-			tb_gn_uk1 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_gn_uk1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_gn_uk1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GrNSettingsChange);
 			label37 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
 			tc_gn = new Avalonia.Controls.TabControl();

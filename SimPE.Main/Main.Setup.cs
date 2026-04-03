@@ -117,6 +117,31 @@ namespace SimPe
 
 
 
+            // Populate the bottom tab strip with each registered IDockableTool panel.
+            // LoadDocks (called inside PluginManager constructor) added each DockPanel to
+            // dockBottom.Controls with its TabText set.  We turn each into a TabItem here.
+            foreach (object item in dockBottom.Controls)
+            {
+                if (item is Ambertation.Windows.Forms.DockPanel dp)
+                {
+                    string label = dp.TabText?.ToString() ?? "";
+                    if (string.IsNullOrWhiteSpace(label)) continue;
+
+                    var tabItem = new Avalonia.Controls.TabItem { Header = label };
+
+                    // Use the first Avalonia Control child as content, or fall back to the
+                    // DockPanel itself (visible but empty until panel layouts are fully ported).
+                    Avalonia.Controls.Control content = null;
+                    foreach (object child in dp.Controls)
+                    {
+                        if (child is Avalonia.Controls.Control ac) { content = ac; break; }
+                    }
+                    tabItem.Content = (object)content ?? dp;
+
+                    bottomViewTabs.Items.Add(tabItem);
+                }
+            }
+
             InitMenuItems();
             this.dcPlugin.Open();
             // TODO: Ambertation.Windows.Forms.ToolStripRuntimeDesigner.Add(tbContainer);

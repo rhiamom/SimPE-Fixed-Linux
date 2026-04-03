@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ShpeGraphNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.TextBox tbnodeflname;
 		private Avalonia.Controls.TextBlock label8;
 		internal Avalonia.Controls.ListBox lbnode;
@@ -47,17 +48,18 @@ namespace SimPe.Plugin.TabPage
 		public ShpeGraphNode()
 		{
 			this.Header = "Graph Node";
+			this.FontSize = 11;
 
 			label8 = new Avalonia.Controls.TextBlock { Text = "Filename:" };
-			tbnodeflname = new Avalonia.Controls.TextBox { Text = "" };
+			tbnodeflname = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			lbnode = new Avalonia.Controls.ListBox();
 			lbnode.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectNode);
 			label9 = new Avalonia.Controls.TextBlock { Text = "Enabled?:" };
-			tbnode1 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tbnode1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			label20 = new Avalonia.Controls.TextBlock { Text = "Dependant:" };
-			tbnode2 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tbnode2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			label11 = new Avalonia.Controls.TextBlock { Text = "Index:" };
-			tbnode3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbnode3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			linkLabel10 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel10.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.linkLabel10_LinkClicked);
 			linkLabel9 = new Avalonia.Controls.Button { Content = "delete" };

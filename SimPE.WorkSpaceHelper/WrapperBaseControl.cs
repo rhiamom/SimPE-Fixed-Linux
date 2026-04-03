@@ -22,12 +22,11 @@
  ***************************************************************************/
 
 // Ported from WinForms UserControl to Avalonia UserControl.
-// GDI+ painting is preserved via offscreen System.Drawing.Bitmap bridge.
+// Rendering uses pure Avalonia APIs — System.Drawing.Common (GDI+) is not available on macOS.
 
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using GdiLinearGradientBrush = System.Drawing.Drawing2D.LinearGradientBrush;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -66,10 +65,14 @@ namespace SimPe.Windows.Forms
         public class WFControlCollection { public void Add(object c) { } public void SetChildIndex(object c, int index) { } }
 
         // ── Avalonia Commit button ──────────────────────────────────────────
-        private Button btCommit;
+        protected Button btCommit;
 
         public WrapperBaseControl()
         {
+            // Commit button must be created unconditionally — subclasses reference it in BuildLayout().
+            btCommit = new Button { Content = "Commit", IsVisible = true };
+            btCommit.Click += (s, e) => { Commited?.Invoke(this, EventArgs.Empty); OnCommit(); };
+
             try
             {
                 headfont = new System.Drawing.Font("Tahoma", 9.75f, System.Drawing.FontStyle.Bold);
@@ -93,12 +96,6 @@ namespace SimPe.Windows.Forms
                 txt = "";
                 cc  = true;
 
-                // Commit button (docked to bottom-right)
-                btCommit = new Button { Content = "Commit", IsVisible = true };
-                btCommit.Click += (s, e) => { Commited?.Invoke(this, EventArgs.Empty); OnCommit(); };
-
-                Content = btCommit;
-
                 SimPe.ThemeManager.Global.AddControl(this);
             }
             catch { }
@@ -110,11 +107,22 @@ namespace SimPe.Windows.Forms
         }
 
         // ── Public properties ───────────────────────────────────────────────
+        // Subclasses may assign this so HeaderText changes update the visible label.
+        protected TextBlock headerLabel;
+
         string txt;
         public string HeaderText
         {
             get => txt;
-            set { if (txt != value) { txt = value; InvalidateVisual(); } }
+            set
+            {
+                if (txt != value)
+                {
+                    txt = value;
+                    if (headerLabel != null) headerLabel.Text = value ?? "";
+                    InvalidateVisual();
+                }
+            }
         }
 
         System.Drawing.Color headcol, headend, headforecol;
@@ -199,52 +207,8 @@ namespace SimPe.Windows.Forms
         public ImageLayout BackgroundImageAnchor { get => bklayout; set { bklayout = value; InvalidateVisual(); } }
         public float BackgroundImageOpacity { get => mPicOpacity; set { mPicOpacity = value; InvalidateVisual(); } }
 
-        // ── Rendering (GDI+ offscreen bridge) ──────────────────────────────
-        public override void Render(DrawingContext context)
-        {
-            int w = (int)Bounds.Width;
-            int h = (int)Bounds.Height;
-            if (w <= 0 || h <= 0) { base.Render(context); return; }
-
-            using var bmp = new System.Drawing.Bitmap(w, h);
-            using var g = System.Drawing.Graphics.FromImage(bmp);
-
-            if (h - HeaderHeight > 0)
-            {
-                float centre = Math.Max(0.02f, Math.Min(0.98f, GradCentre));
-                var rec = new System.Drawing.Rectangle(0, HeaderHeight, w, h - HeaderHeight);
-                using var b = new GdiLinearGradientBrush(rec, _backColor, midcol, mGradient);
-                var cb = new ColorBlend(3);
-                cb.Colors    = new[] { _backColor, midcol, gradcol };
-                cb.Positions = new[] { 0f, centre, 1f };
-                b.InterpolationColors = cb;
-                g.FillRectangle(b, rec);
-            }
-
-            // Gradient header bar
-            var hrec = new System.Drawing.Rectangle(0, 0, w, HeaderHeight);
-            if (HeaderHeight > 0)
-            {
-                using var bg = new GdiLinearGradientBrush(hrec, headcol, headend, LinearGradientMode.Horizontal);
-                g.FillRectangle(bg, hrec);
-                if (!string.IsNullOrEmpty(txt))
-                {
-                    using var fb = new System.Drawing.SolidBrush(headforecol);
-                    var sz  = g.MeasureString(txt, headfont);
-                    int dist = (int)((HeaderHeight - sz.Height) / 2);
-                    g.DrawString(txt, headfont, fb, dist, dist);
-                }
-            }
-
-            // Write to Avalonia bitmap
-            using var ms = new System.IO.MemoryStream();
-            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            ms.Seek(0, System.IO.SeekOrigin.Begin);
-            using var avBmp = new Avalonia.Media.Imaging.Bitmap(ms);
-            context.DrawImage(avBmp, new Avalonia.Rect(0, 0, w, h));
-
-            base.Render(context);
-        }
+        // No Render() override — the header bar is a real Border child built by subclasses.
+        // Background gradient relied on System.Drawing colors that are unavailable on macOS.
 
         // ── Events ──────────────────────────────────────────────────────────
         public event EventHandler Commited;

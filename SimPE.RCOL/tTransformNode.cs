@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class TransformNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.Button ll_tn_add;
 		private Avalonia.Controls.TextBox tb_tn_2;
 		private Avalonia.Controls.TextBlock label16;
@@ -79,73 +80,74 @@ namespace SimPe.Plugin.TabPage
 		public TransformNode()
 		{
 			this.Header = "TransformNode";
+			this.FontSize = 11;
 
 			// Settings group
 			label26 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_tn_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label19 = new Avalonia.Controls.TextBlock { Text = "GMDC joint index:" };
-			tb_tn_ukn = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_ukn = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_ukn.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 
 			// Translation
 			label49 = new Avalonia.Controls.TextBlock { Text = "X:" };
-			tb_tn_tx = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_tx = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_tx.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label50 = new Avalonia.Controls.TextBlock { Text = "Y:" };
-			tb_tn_ty = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_ty = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_ty.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label51 = new Avalonia.Controls.TextBlock { Text = "Z:" };
-			tb_tn_tz = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_tz = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_tz.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 
 			// Quaternion
 			label54 = new Avalonia.Controls.TextBlock { Text = "X:" };
-			tb_tn_rx = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_rx = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_rx.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label53 = new Avalonia.Controls.TextBlock { Text = "Y:" };
-			tb_tn_ry = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_ry = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_ry.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label52 = new Avalonia.Controls.TextBlock { Text = "Z:" };
-			tb_tn_rz = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_rz = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_rz.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 			label55 = new Avalonia.Controls.TextBlock { Text = "W:" };
-			tb_tn_rw = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_rw = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_rw.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangeSettings);
 
 			// Axis-angle rotation
 			label57 = new Avalonia.Controls.TextBlock { Text = "X:" };
-			tb_tn_ax = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_ax = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_ax.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedQuaternion);
 			label56 = new Avalonia.Controls.TextBlock { Text = "Y:" };
-			tb_tn_ay = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_ay = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_ay.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedQuaternion);
 			label31 = new Avalonia.Controls.TextBlock { Text = "Z:" };
-			tb_tn_az = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_az = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_az.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedQuaternion);
 			label30 = new Avalonia.Controls.TextBlock { Text = "Angle:" };
-			tb_tn_a = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_a = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_a.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedQuaternion);
 
 			// Euler rotation
 			label62 = new Avalonia.Controls.TextBlock { Text = "Y:" };
-			tb_tn_ey = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_ey = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_ey.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedEulerQuaternion);
 			label61 = new Avalonia.Controls.TextBlock { Text = "P:" };
-			tb_tn_ep = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_ep = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_ep.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedEulerQuaternion);
 			label60 = new Avalonia.Controls.TextBlock { Text = "R:" };
-			tb_tn_er = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_tn_er = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_tn_er.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedEulerQuaternion);
 
 			// Child nodes list
 			lb_tn = new Avalonia.Controls.ListBox();
 			lb_tn.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.TNSelect);
 			label17 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_tn_1 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_tn_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_tn_1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedItems);
 			label16 = new Avalonia.Controls.TextBlock { Text = "Child Index:" };
-			tb_tn_2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_tn_2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_tn_2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TNChangedItems);
 			ll_tn_add = new Avalonia.Controls.Button { Content = "add" };
 			ll_tn_add.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.TNItemsAdd);

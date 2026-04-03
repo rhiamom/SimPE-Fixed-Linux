@@ -79,16 +79,9 @@ namespace SimPe.Plugin
 
 		public RcolForm() : base()
 		{
+			this.HeaderText = "Generic Rcol Editor";
+			this.FontSize = 11;   // cascade to all child tabs and controls
 			BuildLayout();
-
-			if (SimPe.Helper.XmlRegistry.UseBigIcons)
-			{
-				// Avalonia FontSize instead of System.Drawing.Font
-				lbblocks.FontSize = 11;
-				lbref.FontSize    = 11;
-				tv.FontSize       = 11;
-				tbflname.FontSize = 12;
-			}
 
 			foreach (Interfaces.IAlias alias in SimPe.Helper.TGILoader.FileTypes)
 				cbtypes.Items.Add(alias);
@@ -102,9 +95,9 @@ namespace SimPe.Plugin
 			label3    = new Avalonia.Controls.TextBlock { Text = "Group:" };
 			label4    = new Avalonia.Controls.TextBlock { Text = "Instance:" };
 			label5    = new Avalonia.Controls.TextBlock { Text = "File:" };
-			tbrefgroup = new Avalonia.Controls.TextBox { Text = "0x00000000", IsReadOnly = true };
-			tbrefinst  = new Avalonia.Controls.TextBox { Text = "0x00000000", IsReadOnly = true };
-			tbfile     = new Avalonia.Controls.TextBox { IsReadOnly = true };
+			tbrefgroup = new Avalonia.Controls.TextBox { Text = "0x00000000", IsReadOnly = true, Background = Avalonia.Media.Brushes.White };
+			tbrefinst  = new Avalonia.Controls.TextBox { Text = "0x00000000", IsReadOnly = true, Background = Avalonia.Media.Brushes.White };
+			tbfile     = new Avalonia.Controls.TextBox { IsReadOnly = true, Background = Avalonia.Media.Brushes.White };
 			linkLabel1 = new Avalonia.Controls.Button { Content = "reload" };
 			linkLabel1.Click += linkLabel1_LinkClicked;
 
@@ -136,9 +129,17 @@ namespace SimPe.Plugin
 			label1   = new Avalonia.Controls.TextBlock { Text = "Filename:" };
 			cbitem   = new Avalonia.Controls.ComboBox();
 			cbitem.SelectionChanged += SelectRcolItem;
+			cbitem.MinHeight = 0;
+			cbitem.Padding   = new Avalonia.Thickness(6, 2);
+			cbitem.Height    = 24;
+			cbitem.Background = Avalonia.Media.Brushes.White;
 
 			tbflname = new Avalonia.Controls.TextBox();
 			tbflname.TextChanged += ChangeFileName;
+			tbflname.MinHeight  = 0;
+			tbflname.Padding    = new Avalonia.Thickness(6, 2);
+			tbflname.Height     = 24;
+			tbflname.Background = Avalonia.Media.Brushes.White;
 
 			llhash = new Avalonia.Controls.Button { Content = "assign Hash", IsVisible = false };
 			llhash.Click += BuildFilename;
@@ -146,18 +147,46 @@ namespace SimPe.Plugin
 			llfix.Click  += FixTGI;
 
 			childtc = new Avalonia.Controls.TabControl();
+			childtc.FontSize = 11;
 			childtc.SelectionChanged += ChildTabPageChanged;
 
-			var fnRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
-			fnRow.Children.Add(label1);
-			fnRow.Children.Add(tbflname);
-			fnRow.Children.Add(llhash);
-			fnRow.Children.Add(llfix);
+			// Header grid: row 0 = "Blocklist:" | cbitem
+			//              row 1 = "Filename:"  | tbflname | [llhash] [llfix]
+			//              row 2 = childtc (star — gives it a bounded height for scrolling)
+			var contentPanel = new Grid();
+			contentPanel.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+			contentPanel.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+			contentPanel.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+			contentPanel.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+			contentPanel.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			contentPanel.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
 
-			var contentPanel = new StackPanel { Orientation = Orientation.Vertical, Spacing = 4 };
+			// Row 0 — Blocklist label + ComboBox (spans all 3 columns so the dropdown uses full width)
+			label2.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+			label2.Margin = new Avalonia.Thickness(0, 0, 4, 0);
+			Grid.SetRow(label2, 0); Grid.SetColumn(label2, 0);
+			Grid.SetRow(cbitem, 0); Grid.SetColumn(cbitem, 1); Grid.SetColumnSpan(cbitem, 2);
 			contentPanel.Children.Add(label2);
 			contentPanel.Children.Add(cbitem);
-			contentPanel.Children.Add(fnRow);
+
+			// Row 1 — Filename label + TextBox + buttons
+			label1.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+			label1.Margin = new Avalonia.Thickness(0, 2, 4, 2);
+			tbflname.Margin = new Avalonia.Thickness(0, 2, 0, 2);
+			Grid.SetRow(label1,   1); Grid.SetColumn(label1,   0);
+			Grid.SetRow(tbflname, 1); Grid.SetColumn(tbflname, 1);
+			contentPanel.Children.Add(label1);
+			contentPanel.Children.Add(tbflname);
+
+			var fnButtons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4,
+				Margin = new Avalonia.Thickness(4, 2, 0, 2) };
+			fnButtons.Children.Add(llhash);
+			fnButtons.Children.Add(llfix);
+			Grid.SetRow(fnButtons, 1); Grid.SetColumn(fnButtons, 2);
+			contentPanel.Children.Add(fnButtons);
+
+			// Row 2 — inner TabControl (gets all remaining height)
+			Grid.SetRow(childtc, 2); Grid.SetColumnSpan(childtc, 3);
 			contentPanel.Children.Add(childtc);
 
 			tabPage1 = new Avalonia.Controls.TabItem { Header = "Content", Content = contentPanel };
@@ -173,15 +202,15 @@ namespace SimPe.Plugin
 			label9  = new Avalonia.Controls.TextBlock { Text = "Group:" };
 			label10 = new Avalonia.Controls.TextBlock { Text = "Sub Typ:" };
 			label11 = new Avalonia.Controls.TextBlock { Text = "Instance:" };
-			tbtype     = new Avalonia.Controls.TextBox();
+			tbtype     = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbtype.TextChanged += tbtype_TextChanged;
-			tbsubtype  = new Avalonia.Controls.TextBox();
+			tbsubtype  = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbsubtype.TextChanged += AutoChangeReference;
-			tbgroup    = new Avalonia.Controls.TextBox();
+			tbgroup    = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbgroup.TextChanged += AutoChangeReference;
-			tbinstance = new Avalonia.Controls.TextBox();
+			tbinstance = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbinstance.TextChanged += AutoChangeReference;
-			cbtypes    = new Avalonia.Controls.ComboBox();
+			cbtypes    = new Avalonia.Controls.ComboBox { Background = Avalonia.Media.Brushes.White };
 			cbtypes.SelectionChanged += SelectType;
 			lladd      = new Avalonia.Controls.Button { Content = "add" };
 			lladd.Click    += SRNItemsAAdd;
@@ -243,13 +272,84 @@ namespace SimPe.Plugin
 
 			// ── Main TabControl ────────────────────────────────────────────
 			tbResource = new Avalonia.Controls.TabControl();
+			tbResource.FontSize = 11;
 			tbResource.Items.Add(tabPage1);
 			tbResource.Items.Add(tabPage2);
 			tbResource.Items.Add(tabPage3);
 			// tpref is added/removed dynamically by RcolUI
 			tbResource.SelectionChanged += tabControl1_SelectedIndexChanged;
 
-			this.Content = tbResource;
+			// ── Root layout: real header bar + main TabControl ───────────────
+			// Row 0 (HeaderHeight px): Border with dark gradient, white label left,
+			//   Commit button right.
+			// Row 1 (*): tbResource fills remaining height.
+			btCommit.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right;
+			btCommit.VerticalAlignment   = Avalonia.Layout.VerticalAlignment.Center;
+			btCommit.Margin     = new Avalonia.Thickness(0, 0, 6, 0);
+			btCommit.Padding    = new Avalonia.Thickness(8, 2);
+			btCommit.FontSize   = 11;
+			btCommit.Background = Avalonia.Media.Brushes.White;
+			btCommit.Foreground = Avalonia.Media.Brushes.Black;
+
+			headerLabel = new Avalonia.Controls.TextBlock
+			{
+				Foreground          = Avalonia.Media.Brushes.White,
+				FontSize            = 11,
+				FontWeight          = Avalonia.Media.FontWeight.SemiBold,
+				VerticalAlignment   = Avalonia.Layout.VerticalAlignment.Center,
+				Margin              = new Avalonia.Thickness(6, 0, 0, 0),
+				Text                = HeaderText ?? ""
+			};
+
+			var headerInner = new Avalonia.Controls.Grid();
+			headerInner.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(
+				new Avalonia.Controls.GridLength(1, Avalonia.Controls.GridUnitType.Star)));
+			headerInner.ColumnDefinitions.Add(new Avalonia.Controls.ColumnDefinition(
+				Avalonia.Controls.GridLength.Auto));
+			Avalonia.Controls.Grid.SetColumn(headerLabel, 0);
+			Avalonia.Controls.Grid.SetColumn(btCommit,    1);
+			headerInner.Children.Add(headerLabel);
+			headerInner.Children.Add(btCommit);
+
+			var headerBorder = new Avalonia.Controls.Border
+			{
+				Height     = HeaderHeight,
+				Background = new Avalonia.Media.LinearGradientBrush
+				{
+					StartPoint = new Avalonia.RelativePoint(0, 0.5, Avalonia.RelativeUnit.Relative),
+					EndPoint   = new Avalonia.RelativePoint(1, 0.5, Avalonia.RelativeUnit.Relative),
+					GradientStops =
+					{
+						new Avalonia.Media.GradientStop(Avalonia.Media.Color.FromArgb(220, 60, 60, 80), 0.0),
+						new Avalonia.Media.GradientStop(Avalonia.Media.Color.FromArgb(200, 80, 80, 110), 1.0),
+					}
+				},
+				Child = headerInner
+			};
+
+			// Wrap tbResource in a light-gray groupbox border
+			var contentBorder = new Avalonia.Controls.Border
+			{
+				Background      = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(220, 228, 238)),
+				BorderBrush     = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(170, 185, 205)),
+				BorderThickness = new Avalonia.Thickness(1),
+				CornerRadius    = new Avalonia.CornerRadius(3),
+				Margin          = new Avalonia.Thickness(4),
+				Child           = tbResource
+			};
+
+			var rootGrid = new Avalonia.Controls.Grid();
+			rootGrid.Background = Avalonia.Media.Brushes.White;
+			rootGrid.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(
+				Avalonia.Controls.GridLength.Auto));
+			rootGrid.RowDefinitions.Add(new Avalonia.Controls.RowDefinition(
+				new Avalonia.Controls.GridLength(1, Avalonia.Controls.GridUnitType.Star)));
+			Avalonia.Controls.Grid.SetRow(headerBorder,  0);
+			Avalonia.Controls.Grid.SetRow(contentBorder, 1);
+			rootGrid.Children.Add(headerBorder);
+			rootGrid.Children.Add(contentBorder);
+
+			this.Content = rootGrid;
 		}
 
 		public new void Dispose()
@@ -532,6 +632,10 @@ namespace SimPe.Plugin
 
 		private void tabControl1_SelectedIndexChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
 		{
+			// Ignore events that bubbled up from child controls (e.g. cbblocks, lbblocks).
+			// In Avalonia, SelectionChanged is a routed event that bubbles; WinForms never did this.
+			if (!ReferenceEquals(e.Source, tbResource)) return;
+
 			// Display the Block Editor when tabPage3 is selected
 			if (tbResource.SelectedIndex >= 0 && tbResource.Items[tbResource.SelectedIndex] == this.tabPage3)
 			{

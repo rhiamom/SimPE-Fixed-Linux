@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class LightT : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.TextBlock label47;
 		internal Avalonia.Controls.TextBox tb_lt_ver;
 		private Avalonia.Controls.TextBlock label48;
@@ -40,12 +41,13 @@ namespace SimPe.Plugin.TabPage
 		public LightT()
 		{
 			this.Header = "LightT";
+			this.FontSize = 11;
 
 			label47 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_lt_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_lt_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_lt_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LTSettingsChanged);
 			label48 = new Avalonia.Controls.TextBlock { Text = "Name:" };
-			tb_lt_name = new Avalonia.Controls.TextBox { Text = "" };
+			tb_lt_name = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tb_lt_name.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LTSettingsChanged);
 
 			Content = new Avalonia.Controls.StackPanel { Children = { label47, tb_lt_ver, label48, tb_lt_name } };

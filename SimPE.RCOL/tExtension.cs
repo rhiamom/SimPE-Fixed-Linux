@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class Extension : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.Border groupBox10;
 		internal Avalonia.Controls.TextBox tb_ver;
 		private Avalonia.Controls.TextBlock label28;
@@ -72,16 +73,17 @@ namespace SimPe.Plugin.TabPage
 		public Extension()
 		{
 			this.Header = "Extension";
+			this.FontSize = 11;
 
 			// Settings group
 			label28 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GNSettingsChange);
 			label1 = new Avalonia.Controls.TextBlock { Text = "Typecode:" };
-			tb_type = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_type = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_type.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GNSettingsChange);
 			label2 = new Avalonia.Controls.TextBlock { Text = "Name" };
-			tb_name = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_name = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_name.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.GNSettingsChange);
 			groupBox10 = new Avalonia.Controls.Border();
 
@@ -89,7 +91,7 @@ namespace SimPe.Plugin.TabPage
 			lb_items = new Avalonia.Controls.ListBox();
 			lb_items.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectItem);
 			label3 = new Avalonia.Controls.TextBlock { Text = "Name:" };
-			tb_itemname = new Avalonia.Controls.TextBox();
+			tb_itemname = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tb_itemname.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeName);
 			cbtype = new Avalonia.Controls.ComboBox();
 			linkLabel1 = new Avalonia.Controls.Button { Content = "add" };
@@ -98,37 +100,37 @@ namespace SimPe.Plugin.TabPage
 			lldel.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.DeleteItem);
 
 			// Value sub-panels (shown/hidden based on selected item type)
-			tbval = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbval = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbval.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ValChange);
 			gbval = new Avalonia.Controls.Border { Child = tbval };
 
-			tbfloat = new Avalonia.Controls.TextBox { Text = "0" };
+			tbfloat = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tbfloat.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.FloatChange);
 			gbfloat = new Avalonia.Controls.Border { Child = tbfloat };
 
-			tbtrans1 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbtrans1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbtrans1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TransChange);
-			tbtrans2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbtrans2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbtrans2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TransChange);
-			tbtrans3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbtrans3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbtrans3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.TransChange);
 			gbtrans = new Avalonia.Controls.Border { Child = new Avalonia.Controls.StackPanel { Children = { tbtrans1, tbtrans2, tbtrans3 } } };
 
-			tbrot1 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbrot1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbrot1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RotChange);
-			tbrot2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbrot2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbrot2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RotChange);
-			tbrot3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbrot3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbrot3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RotChange);
-			tbrot4 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbrot4 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbrot4.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RotChange);
 			gbrot = new Avalonia.Controls.Border { Child = new Avalonia.Controls.StackPanel { Children = { tbrot1, tbrot2, tbrot3, tbrot4 } } };
 
-			tbstr = new Avalonia.Controls.TextBox();
+			tbstr = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbstr.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.StrChange);
 			gbstr = new Avalonia.Controls.Border { Child = tbstr };
 
-			tbbin = new Avalonia.Controls.TextBox();
+			tbbin = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbbin.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.BinChange);
 			gbbin = new Avalonia.Controls.Border { Child = tbbin };
 
@@ -138,7 +140,7 @@ namespace SimPe.Plugin.TabPage
 
 			btfootprintedit = new Avalonia.Controls.Button { Content = "Draw" };
 			btfootprintedit.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.OpenFootprintEditor);
-			tbFootprint = new Avalonia.Controls.TextBox();
+			tbFootprint = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			gfootprintbar = new Avalonia.Controls.Border { Child = new Avalonia.Controls.StackPanel { Children = { btfootprintedit, tbFootprint } } };
 
 			gbIems = new Avalonia.Controls.Border { Child = new Avalonia.Controls.StackPanel { Children = {

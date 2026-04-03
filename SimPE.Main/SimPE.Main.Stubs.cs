@@ -48,7 +48,8 @@ namespace SimPe
         // lv, tv, dc, tbInst, tbGrp, cbsemig, waitControl1 are declared by the AXAML source
         // generator from x:Name attributes in MainForm.axaml — do NOT re-declare them here.
         private Ambertation.Windows.Forms.DockPanel tbContainer = new Ambertation.Windows.Forms.DockPanel();
-        private System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+        private string ofdInitialDirectory = "";
+        private string ofdFileName = "";
         private Menu menuBar1 = new Menu();
         private System.Windows.Forms.ToolStripMenuItem menuBarItem1 = new System.Windows.Forms.ToolStripMenuItem();
         private System.Windows.Forms.ToolStripMenuItem menuBarItem5 = new System.Windows.Forms.ToolStripMenuItem();

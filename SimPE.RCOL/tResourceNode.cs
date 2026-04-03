@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ResourceNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.Button ll_rn_add;
 		private Avalonia.Controls.TextBox tb_rn_2;
 		private Avalonia.Controls.TextBlock label13;
@@ -49,24 +50,25 @@ namespace SimPe.Plugin.TabPage
 		public ResourceNode()
 		{
 			this.Header = "ResourceNode";
+			this.FontSize = 11;
 
-			tb_rn_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_rn_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_rn_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RNChangeSettings);
 			label25 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_rn_uk1 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_rn_uk1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_rn_uk1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RNChangeSettings);
 			label22 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_rn_uk2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_rn_uk2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_rn_uk2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RNChangeSettings);
 			label15 = new Avalonia.Controls.TextBlock { Text = "Unknown 2:" };
 			lb_rn = new Avalonia.Controls.ListBox();
 			lb_rn.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.RNSelect);
 			ll_rn_add = new Avalonia.Controls.Button { Content = "add" };
 			ll_rn_add.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.RNItemsAdd);
-			tb_rn_1 = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_rn_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_rn_1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RNChangedItems);
 			label14 = new Avalonia.Controls.TextBlock { Text = "Unknown 1:" };
-			tb_rn_2 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_rn_2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_rn_2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.RNChangedItems);
 			label13 = new Avalonia.Controls.TextBlock { Text = "Unknown 2:" };
 			ll_rn_delete = new Avalonia.Controls.Button { Content = "delete" };

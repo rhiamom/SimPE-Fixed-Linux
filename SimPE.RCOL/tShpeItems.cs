@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ShpeItems : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.TextBox tbitemunk4;
 		private Avalonia.Controls.TextBox tbitemunk3;
 		private Avalonia.Controls.TextBox tbitemunk2;
@@ -46,20 +47,21 @@ namespace SimPe.Plugin.TabPage
 		public ShpeItems()
 		{
 			this.Header = "Items";
+			this.FontSize = 11;
 
 			lbitem = new Avalonia.Controls.ListBox();
 			lbitem.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectItems);
 			label3 = new Avalonia.Controls.TextBlock { Text = "Filename:" };
-			tbitemflname = new Avalonia.Controls.TextBox { Text = "" };
+			tbitemflname = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tbitemflname.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangedItemFilename);
 			label4 = new Avalonia.Controls.TextBlock { Text = "Unknown:" };
-			tbitemunk1 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbitemunk1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbitemunk1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeItemUnknown);
-			tbitemunk2 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tbitemunk2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tbitemunk2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeItemUnknown);
-			tbitemunk3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tbitemunk3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tbitemunk3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeItemUnknown);
-			tbitemunk4 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tbitemunk4 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tbitemunk4.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.ChangeItemUnknown);
 			linkLabel6 = new Avalonia.Controls.Button { Content = "add" };
 			linkLabel6.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.linkLabel6_LinkClicked);

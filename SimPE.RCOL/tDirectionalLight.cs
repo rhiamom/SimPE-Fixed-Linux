@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class DirectionalLight : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		internal Avalonia.Controls.TextBox tb_l_ver;
 		private Avalonia.Controls.TextBlock label32;
 		internal Avalonia.Controls.TextBox tb_l_name;
@@ -58,39 +59,40 @@ namespace SimPe.Plugin.TabPage
 		public DirectionalLight()
 		{
 			this.Header = "DirectionalLight";
+			this.FontSize = 11;
 
-			tb_l_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_l_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_l_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label32 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_l_name = new Avalonia.Controls.TextBox { Text = "" };
+			tb_l_name = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "" };
 			tb_l_name.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label34 = new Avalonia.Controls.TextBlock { Text = "Name:" };
 			label38 = new Avalonia.Controls.TextBlock { Text = "Val1:" };
-			tb_l_1 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label39 = new Avalonia.Controls.TextBlock { Text = "Val6:" };
-			tb_l_6 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_6 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_6.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label40 = new Avalonia.Controls.TextBlock { Text = "Val2:" };
-			tb_l_2 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label41 = new Avalonia.Controls.TextBlock { Text = "Red:" };
-			tb_l_3 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label42 = new Avalonia.Controls.TextBlock { Text = "Green:" };
-			tb_l_4 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_4 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_4.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label43 = new Avalonia.Controls.TextBlock { Text = "Blue:" };
-			tb_l_5 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_5 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_5.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label44 = new Avalonia.Controls.TextBlock { Text = "Val7:" };
-			tb_l_7 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_7 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_7.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label45 = new Avalonia.Controls.TextBlock { Text = "Val8:" };
-			tb_l_8 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_8 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_8.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 			label46 = new Avalonia.Controls.TextBlock { Text = "Val9:" };
-			tb_l_9 = new Avalonia.Controls.TextBox { Text = "0" };
+			tb_l_9 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0" };
 			tb_l_9.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.LSettingsChanged);
 
 			Content = new Avalonia.Controls.StackPanel { Children = {

@@ -166,8 +166,15 @@
             <GridSplitter Grid.Row="1" ResizeDirection="Rows"
                           HorizontalAlignment="Stretch" Background="#888" />
 
-            <!-- Plugin view -->
-            <TabControl x:Name="dc" Grid.Row="2" />
+            <!-- Bottom view tabs: Plugin View | Package | Resource | Wrapper | Converter | Hex | Finder | Details -->
+            <!-- Tab strip is at the bottom (matches original SimPE layout). -->
+            <!-- "Plugin View" is hardcoded here; the other tabs are added in code-behind after plugins load. -->
+            <TabControl x:Name="bottomViewTabs" Grid.Row="2" TabStripPlacement="Bottom" FontSize="11">
+                <TabItem Header="Plugin View">
+                    <!-- dc holds the per-resource editor tabs (one tab per open resource) -->
+                    <TabControl x:Name="dc" FontSize="11" />
+                </TabItem>
+            </TabControl>
 
         </Grid>
     </DockPanel>

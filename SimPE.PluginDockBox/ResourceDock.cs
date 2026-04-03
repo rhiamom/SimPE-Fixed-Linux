@@ -182,6 +182,13 @@ namespace SimPe.Plugin.Tool.Dockable
             this.cbtypes.SelectionChanged += (s, e) => cbtypes_SelectedIndexChanged(s, e);
             this.cbComp.SelectionChanged += (s, e) => cbComp_SelectedIndexChanged(s, e);
             this.dcHex.VisibleChanged += new System.EventHandler(this.dcHex_VisibleChanged);
+
+            // Tab labels — match the original SimPE bottom tab strip.
+            this.dcHex.TabText      = "Hex";
+            this.dcPackage.TabText  = "Package";
+            this.dcWrapper.TabText  = "Wrapper";
+            this.dcResource.TabText = "Resource";
+            this.dcConvert.TabText  = "Converter";
             // this.Load removed: Avalonia.Controls.Window does not have Load event
         }
         #endregion

@@ -32,6 +32,7 @@ namespace SimPe.Plugin.TabPage
 	/// </summary>
 	public class ObjectGraphNode : Avalonia.Controls.TabItem
 	{
+		protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
 		private Avalonia.Controls.Button ll_ogn_add;
 		private Avalonia.Controls.TextBox tb_ogn_2;
 		private Avalonia.Controls.TextBlock label20;
@@ -49,22 +50,23 @@ namespace SimPe.Plugin.TabPage
 		public ObjectGraphNode()
 		{
 			this.Header = "ObjectGraphNode";
+			this.FontSize = 11;
 
-			tb_ogn_ver = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_ogn_ver = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_ogn_ver.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.OGNChangeSettings);
 			label27 = new Avalonia.Controls.TextBlock { Text = "Version:" };
-			tb_ogn_file = new Avalonia.Controls.TextBox { Text = "0x0000" };
+			tb_ogn_file = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x0000" };
 			tb_ogn_file.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.OGNChangeSettings);
 			label18 = new Avalonia.Controls.TextBlock { Text = "Filename:" };
-			tb_ogn_3 = new Avalonia.Controls.TextBox { Text = "0x00000000" };
+			tb_ogn_3 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00000000" };
 			tb_ogn_3.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.OGNChangedItems);
 			label23 = new Avalonia.Controls.TextBlock { Text = "Index:" };
 			ll_ogn_add = new Avalonia.Controls.Button { Content = "add" };
 			ll_ogn_add.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.OGNItemsAdd);
-			tb_ogn_2 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_ogn_2 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_ogn_2.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.OGNChangedItems);
 			label20 = new Avalonia.Controls.TextBlock { Text = "Dependant:" };
-			tb_ogn_1 = new Avalonia.Controls.TextBox { Text = "0x00" };
+			tb_ogn_1 = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White, Text = "0x00" };
 			tb_ogn_1.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.OGNChangedItems);
 			label21 = new Avalonia.Controls.TextBlock { Text = "Enabled:" };
 			lb_ogn = new Avalonia.Controls.ListBox();

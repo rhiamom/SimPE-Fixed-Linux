@@ -254,19 +254,39 @@ namespace SimPe
 		
 		
 
-		void Activate_miOpen(object sender, System.EventArgs e)
+		async void Activate_miOpen(object sender, System.EventArgs e)
 		{
-			ofd.Filter = ExtensionProvider.BuildFilterString(
-				new SimPe.ExtensionType[] {
-											  SimPe.ExtensionType.Package,
-											  SimPe.ExtensionType.DisabledPackage,
-											  SimPe.ExtensionType.AllFiles
-										  }
-				);
-			if (ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK) 
-			{
-				package.LoadFromFile(ofd.FileName);
-			}
+            var packageType = new Avalonia.Platform.Storage.FilePickerFileType("Sims 2 Package")
+            {
+                Patterns = new[] { "*.package", "*.disabled" },
+            };
+            var allFiles = new Avalonia.Platform.Storage.FilePickerFileType("All Files")
+            {
+                Patterns = new[] { "*" },
+            };
+
+            Avalonia.Platform.Storage.IStorageFolder startFolder = null;
+            if (!string.IsNullOrEmpty(ofdInitialDirectory) && System.IO.Directory.Exists(ofdInitialDirectory))
+                startFolder = await this.StorageProvider.TryGetFolderFromPathAsync(new Uri(ofdInitialDirectory));
+
+            var files = await this.StorageProvider.OpenFilePickerAsync(
+                new Avalonia.Platform.Storage.FilePickerOpenOptions
+                {
+                    Title = "Open Package",
+                    AllowMultiple = false,
+                    FileTypeFilter = new[] { packageType, allFiles },
+                    SuggestedStartLocation = startFolder,
+                });
+
+            ofdInitialDirectory = "";
+            ofdFileName = "";
+
+            if (files.Count > 0)
+            {
+                string path = files[0].Path.LocalPath;
+                if (!string.IsNullOrEmpty(path))
+                    package.LoadFromFile(path);
+            }
 		}		
 
 		private void SetFilter(object sender, System.EventArgs e)
@@ -357,6 +377,7 @@ namespace SimPe
 
         private void lv_SelectResource(SimPe.Windows.Forms.ResourceListViewExt sender, SimPe.Windows.Forms.ResourceListViewExt.SelectResourceEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"[lv_SelectResource] SelectedItem={lv.SelectedItem?.FileDescriptor?.Type.ToString("X") ?? "null"}");
             if (lv.SelectedItem!=null) resloader.AddResource(lv.SelectedItem, !e.CtrlDown);
             lv.Focus();
         }
@@ -527,26 +548,24 @@ namespace SimPe
                 ExpansionItem ei = mi.Tag as ExpansionItem;
                 if (ei != null)
                 {
-                    ofd.InitialDirectory = Path.Combine(ei.InstallFolder, @"TSData\Res");
-                    ofd.FileName = "";
+                    ofdInitialDirectory = Path.Combine(ei.InstallFolder, @"TSData\Res");
+                    ofdFileName = "";
                     this.Activate_miOpen(sender, e);
                 }
             }
-            
-            
         }
 
 		private void Activate_miOpenSimsRes(object sender, System.EventArgs e)
 		{
-			ofd.InitialDirectory = Path.Combine(SimPe.PathProvider.Global[Expansions.BaseGame].InstallFolder, @"TSData\Res");
-			ofd.FileName = "";
+			ofdInitialDirectory = Path.Combine(SimPe.PathProvider.Global[Expansions.BaseGame].InstallFolder, @"TSData\Res");
+			ofdFileName = "";
 			this.Activate_miOpen(sender, e);
 		}
 
 		private void Activate_miOpenDownloads(object sender, System.EventArgs e)
 		{
-            ofd.InitialDirectory = Path.Combine(PathProvider.SimSavegameFolder, "Downloads");
-			ofd.FileName = "";
+            ofdInitialDirectory = Path.Combine(PathProvider.SimSavegameFolder, "Downloads");
+			ofdFileName = "";
 			this.Activate_miOpen(sender, e);
 		}
 

@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using System.Windows.Forms;
 using Avalonia.Controls;
 
@@ -34,6 +35,12 @@ namespace SimPe
     /// </summary>
     public class PluginTab : TabItem
     {
+        // Use TabItem's built-in Avalonia style, not the HeaderedContentControl fallback.
+        // Without this, Avalonia can't find a "SimPe.PluginTab" style and falls back to
+        // HeaderedContentControl's template (which includes PART_ContentPresenter), causing
+        // a dual-parent crash when PART_SelectedContentHost also tries to host the same panel.
+        protected override Type StyleKeyOverride => typeof(TabItem);
+
         public bool CloseButton { get; set; } = true;
 
         public bool IsOpen => Parent != null;
@@ -57,7 +64,12 @@ namespace SimPe
             var args = new FormClosingEventArgs();
             FormClosing?.Invoke(this, args);
             if (!args.Cancel)
+            {
+                // Null Content before removal so Avalonia releases the visual parent
+                // before we try to re-parent the same control into a new tab.
+                Content = null;
                 tc.Items.Remove(this);
+            }
         }
     }
 
@@ -228,10 +240,11 @@ namespace SimPe
         /// <returns>true, if the Resource was Presented successfully</returns>
         bool Present(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii, SimPe.Interfaces.Plugin.IFileWrapper wrapper, bool overload)
         {
+            System.Diagnostics.Debug.WriteLine($"[Present] wrapper={wrapper?.GetType().Name ?? "null"} overload={overload}");
             if (wrapper != null)
             {
-                if (wrapper.FileDescriptor == null) return false;
-                if (wrapper.Package == null) return false;
+                if (wrapper.FileDescriptor == null) { System.Diagnostics.Debug.WriteLine("[Present] abort: FileDescriptor null"); return false; }
+                if (wrapper.Package == null) { System.Diagnostics.Debug.WriteLine("[Present] abort: Package null"); return false; }
 
                 if (wrapper.FileDescriptor != null) if (wrapper.FileDescriptor.MarkForDelete) return false;
 
@@ -255,18 +268,31 @@ namespace SimPe
                 doc.Header = wrapper.ResourceName;
 
                 SimPe.Interfaces.Plugin.IPackedFileUI uiHandler = wrapper.UIHandler;
+                System.Diagnostics.Debug.WriteLine($"[Present] uiHandler={uiHandler?.GetType().Name ?? "null"}");
 
                 Avalonia.Controls.Control pan = (uiHandler == null) ? null : uiHandler.GUIHandle;
+                System.Diagnostics.Debug.WriteLine($"[Present] pan={pan?.GetType().Name ?? "null"}");
 
                 if (pan != null)
                 {
+                    // Detach pan from any existing tab before re-parenting — Avalonia disallows two visual parents.
+                    foreach (var existing in dc.Items.OfType<PluginTab>().ToList())
+                    {
+                        if (ReferenceEquals(existing.Content, pan) && existing != doc)
+                        {
+                            existing.Content = null;
+                            break;
+                        }
+                    }
+
+                    doc.Content = pan;
+                    System.Diagnostics.Debug.WriteLine($"[Present] doc.Content set, calling Show(dc), dc.Items.Count={dc.Items.Count}");
+
                     if (add)
                     {
                         doc.FormClosing += new FormClosingEventHandler(CloseResourceDocument);
                         doc.Show(dc);
                     }
-
-                    // Avalonia layout — WinForms-style parent/dock assignment not used here.
 
                     doc.Activate(dc);
 
@@ -513,12 +539,7 @@ namespace SimPe
 				SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = this.GetResourceFromDocument(doc);
 				RemoveResource(fii, wrapper);
 
-				if (multi)
-				{
-					DisposeSubControls(doc.Content);
-					ClearControls(doc);
-				}
-				else doc.Content = null;
+				doc.Content = null;
 
 				this.UnlinkWrapper(wrapper);
 			}

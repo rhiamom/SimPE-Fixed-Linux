@@ -801,6 +801,7 @@ namespace SimPe.Scenegraph.Compat
     /// <summary>WinForms TabPage → Avalonia TabItem.</summary>
     public class TabPage : Avalonia.Controls.TabItem
     {
+        protected override Type StyleKeyOverride => typeof(Avalonia.Controls.TabItem);
         public string Text { get => Header?.ToString() ?? ""; set => Header = value; }
         public Avalonia.Controls.Controls Controls { get; } = new Avalonia.Controls.Controls();
     }
