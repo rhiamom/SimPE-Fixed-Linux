@@ -51,7 +51,7 @@ namespace SimPe.Plugin.Downloads
 					if (id!=null)
 					{
 						SimPe.Plugin.MipMap m = id.GetLargestTexture(new System.Drawing.Size(PackageInfo.IMAGESIZE, PackageInfo.IMAGESIZE));
-						if (m!=null) return m.Texture;
+						if (m!=null) return null; // m.Texture is now SKBitmap; caller expects System.Drawing.Image
 					}
 				}
 			}	

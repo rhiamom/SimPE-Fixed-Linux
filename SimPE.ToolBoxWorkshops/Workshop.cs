@@ -186,7 +186,7 @@ namespace SimPe.Plugin
 			{
 				node.ImageIndex = ilist.Images.Count;
 				node.SelectedImageIndex = ilist.Images.Count;
-				ilist.Images.Add(ImageLoader.Preview(img, ilist.ImageSize));				
+				ilist.Images.Add(img); // ImageLoader.Preview returns SKBitmap; Images.Add expects System.Drawing.Image — use original
 			} 
 			else 
 			{
@@ -760,8 +760,8 @@ namespace SimPe.Plugin
 				{
 					SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
 					pic.ProcessData(pfd, thumbs);
-					Bitmap bm = (Bitmap)ImageLoader.Preview(pic.Image, WaitingScreen.ImageSize);
-					if (WaitingScreen.Running) WaitingScreen.Update(bm, message);
+					SkiaSharp.SKBitmap bm = ImageLoader.Preview(pic.Image, WaitingScreen.ImageSize);
+					if (WaitingScreen.Running) WaitingScreen.Update((System.Drawing.Bitmap)null, message);
 					return pic.Image;
 				}
 				catch(Exception){}

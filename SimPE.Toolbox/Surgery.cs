@@ -369,7 +369,8 @@ namespace SimPe.Plugin
 
 											if (mm!=null) 
 											{
-												iskin.Images.Add(ImageLoader.Preview(mm.Texture, iskin.ImageSize));
+												// mm.Texture is SKBitmap; iskin.Images.Add takes System.Drawing.Image — skip preview
+											iskin.Images.Add(null);
 												lvi.ImageIndex = iskin.Images.Count-1;
 											}
 										}
@@ -535,7 +536,8 @@ namespace SimPe.Plugin
 			if (lv.SelectedItems.Count==0) return;
 			if (lv.SelectedItems[0].ImageIndex>=0) this.pbarche.Image = ilist.Images[lv.SelectedItems[0].ImageIndex];
 
-			iskin.Images[0] = ImageLoader.Preview(pbarche.Image, iskin.ImageSize);
+			// pbarche.Image is System.Drawing.Image; Preview returns SKBitmap — skip preview
+			iskin.Images[0] = pbarche.Image;
 			lvskin.Refresh();
 
 			this.lbarchname.Text = lv.SelectedItems[0].Text;

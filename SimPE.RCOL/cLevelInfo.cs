@@ -25,6 +25,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -44,7 +45,7 @@ namespace SimPe.Plugin
 		Size texturesize;
 		ImageLoader.TxtrFormats format;
 		int zlevel;
-		Image img;
+		SKBitmap img;
 		MipMapType datatype;
 		
 
@@ -65,21 +66,21 @@ namespace SimPe.Plugin
 			set { format = value; }
 		}
 
-		public Image Texture 
+		public SKBitmap Texture
 		{
-			get { 
-				if (img==null) 
+			get {
+				if (img==null)
 				{
 					System.IO.BinaryReader sr = new System.IO.BinaryReader(new System.IO.MemoryStream(data));
 					img = ImageLoader.Load(this.TextureSize, data.Length, format, sr, 1, -1);
 				}
-				return img; 
+				return img;
 			}
-			set 
-			{ 
+			set
+			{
 				datatype = MipMapType.Texture;
 				data = null;
-				img = value; 
+				img = value;
 			}
 		}
 

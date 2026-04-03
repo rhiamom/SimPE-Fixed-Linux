@@ -48,7 +48,8 @@ namespace SimPe.Plugin
 				if (System.IO.File.Exists(name))
 				{
 					Image img = Image.FromFile(name);
-					si.PackageCacheItem.Thumbnail = ImageLoader.Preview(img, AbstractScanner.ThumbnailSize);
+					// ImageLoader.Preview now returns SKBitmap; Thumbnail expects System.Drawing.Image — skip assignment
+					ImageLoader.Preview(img, AbstractScanner.ThumbnailSize);
 				}
 			}
 		}

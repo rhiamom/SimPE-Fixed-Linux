@@ -36,6 +36,7 @@ using SimPe.Interfaces.Scenegraph;
 using SimPe.Windows.Forms;
 using Avalonia.Platform.Storage;
 using SimPe.Scenegraph.Compat;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -403,7 +404,7 @@ namespace SimPe.Plugin
 			var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
 				Title = "Export Texture",
-				SuggestedFileName = tbflname.Text + "_" + pb.Image.Size.Width + "x" + pb.Image.Size.Height + ".png",
+				SuggestedFileName = tbflname.Text + "_" + pb.Image.Width + "x" + pb.Image.Height + ".png",
 				FileTypeChoices = new[] { new FilePickerFileType("PNG Image") { Patterns = new[] { "*.png" } } }
 			});
 			if (file != null)
@@ -411,7 +412,11 @@ namespace SimPe.Plugin
 				try
 				{
 					string path = file.Path.LocalPath;
-					pb.Image.Save(path, ImageLoader.GetImageFormat(path));
+					using var image = SKImage.FromBitmap(pb.Image);
+					var fmt = path.ToLower().EndsWith(".png") ? SKEncodedImageFormat.Png : SKEncodedImageFormat.Jpeg;
+					using var encoded = image.Encode(fmt, 100);
+					using var fs = System.IO.File.OpenWrite(path);
+					encoded.SaveTo(fs);
 				}
 				catch (Exception ex)
 				{
@@ -438,7 +443,7 @@ namespace SimPe.Plugin
 				{
 					ImageData id = (ImageData)cbitem.Items[cbitem.SelectedIndex];
 					System.IO.Stream s = System.IO.File.OpenRead(files[0].Path.LocalPath);
-					System.Drawing.Image img = Helper.LoadImage(s);
+					SKBitmap img = Helper.LoadSKBitmap(s);
 					s.Close();
 					s.Dispose();
 					s = null;
@@ -622,7 +627,7 @@ namespace SimPe.Plugin
 		{
 			MipMap mm = new MipMap(SelectedImageData());
 			mm.LifoFile = null;
-			mm.Texture = new Bitmap(512, 256);
+			mm.Texture = new SKBitmap(512, 256);
 			lbimg.Items.Add(mm);
 			UpdateMimMaps();
 		}
@@ -713,9 +718,9 @@ namespace SimPe.Plugin
 
 					if (mm.Texture!=null)
 					{
-						if (mm.Texture.Size.Width > sz.Width)
+						if (mm.Texture.Width > sz.Width)
 						{
-							sz = mm.Texture.Size;
+							sz = new GdiSize(mm.Texture.Width, mm.Texture.Height);
 							map = mm;
 						}
 					}
@@ -733,12 +738,11 @@ namespace SimPe.Plugin
 						//don't change the original Picture
 						if (mm != map)
 						{
-							Bitmap bm = new Bitmap(mm.Texture.Size.Width, mm.Texture.Size.Height);
-							Graphics gr = Graphics.FromImage(bm);
-
-							gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-							gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-							gr.DrawImage(map.Texture, new Rectangle(new GdiPoint(0,0), bm.Size), new Rectangle(new GdiPoint(0,0), map.Texture.Size), GraphicsUnit.Pixel);
+							SKBitmap bm = new SKBitmap(mm.Texture.Width, mm.Texture.Height);
+							using var gr = new SKCanvas(bm);
+							var destRect = new SKRect(0, 0, mm.Texture.Width, mm.Texture.Height);
+							using var scalePaint = new SKPaint { FilterQuality = SKFilterQuality.High };
+							gr.DrawBitmap(map.Texture, destRect, scalePaint);
 							mm.Texture = bm;
 						}
 					}
@@ -750,43 +754,40 @@ namespace SimPe.Plugin
 			}
 		}
 
-		protected System.Drawing.Image GetAlpha(System.Drawing.Image img)
+		protected SKBitmap GetAlpha(SKBitmap img)
 		{
-			Bitmap bm = new Bitmap(pb.Image.Size.Width, pb.Image.Size.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+			SKBitmap bm = new SKBitmap(pb.Image.Width, pb.Image.Height);
 
-			Bitmap src = (Bitmap)img;
-			for (int y=0; y<bm.Size.Height; y++)
+			for (int y=0; y<bm.Height; y++)
 			{
-				for (int x=0; x<bm.Size.Width; x++)
+				for (int x=0; x<bm.Width; x++)
 				{
-					byte a = src.GetPixel(x, y).A;
-					bm.SetPixel(x, y, Color.FromArgb(a, a, a));
+					byte a = img.GetPixel(x, y).Alpha;
+					bm.SetPixel(x, y, new SKColor(a, a, a));
 				} // for x
 			} //for y
 
 			return bm;
 		}
 
-		protected System.Drawing.Image ChangeAlpha(System.Drawing.Image img, System.Drawing.Image alpha)
+		protected SKBitmap ChangeAlpha(SKBitmap img, SKBitmap alpha)
 		{
-			Bitmap bm = new Bitmap(pb.Image.Size.Width, pb.Image.Size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			SKBitmap bm = new SKBitmap(pb.Image.Width, pb.Image.Height, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 
-			Bitmap src = (Bitmap)img;
-			Bitmap asrc = (Bitmap)alpha;
-			for (int y=0; y<bm.Size.Height; y++)
+			for (int y=0; y<bm.Height; y++)
 			{
-				for (int x=0; x<bm.Size.Width; x++)
+				for (int x=0; x<bm.Width; x++)
 				{
-					byte a = asrc.GetPixel(x, y).R;
-					Color cl = src.GetPixel(x, y);
-					bm.SetPixel(x, y, Color.FromArgb(a, cl));
+					byte a = alpha.GetPixel(x, y).Red;
+					SKColor cl = img.GetPixel(x, y);
+					bm.SetPixel(x, y, new SKColor(cl.Red, cl.Green, cl.Blue, a));
 				} // for x
 			} //for y
 
 			return bm;
 		}
 
-		protected System.Drawing.Image CropImage(ImageData id, System.Drawing.Image img)
+		protected SKBitmap CropImage(ImageData id, SKBitmap img)
 		{
 			double ratio = (double)id.TextureSize.Width / (double)id.TextureSize.Height;
 			double newratio = (double)img.Width / (double)img.Height;
@@ -803,18 +804,15 @@ namespace SimPe.Plugin
 						h = Convert.ToInt32(img.Width / ratio);
 					}
 
-					System.Drawing.Image img2 = new Bitmap(w, h);
-					Graphics gr = Graphics.FromImage(img2);
-					gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-					gr.DrawImageUnscaled(img, 0, 0);
+					SKBitmap img2 = new SKBitmap(w, h);
+					using var canvas = new SKCanvas(img2);
+					canvas.DrawBitmap(img, 0, 0);
 					img = img2;
 				}
 				else
 				{
 					return null;
 				}
-
 			}
 
 			return img;
@@ -829,7 +827,7 @@ namespace SimPe.Plugin
 			var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
 				Title = "Export Alpha Channel",
-				SuggestedFileName = tbflname.Text + "_alpha_" + pb.Image.Size.Width + "x" + pb.Image.Size.Height + ".png",
+				SuggestedFileName = tbflname.Text + "_alpha_" + pb.Image.Width + "x" + pb.Image.Height + ".png",
 				FileTypeChoices = new[] { new FilePickerFileType("PNG Image") { Patterns = new[] { "*.png" } } }
 			});
 			if (file != null)
@@ -837,8 +835,12 @@ namespace SimPe.Plugin
 				try
 				{
 					string path = file.Path.LocalPath;
-					System.Drawing.Image bm = GetAlpha(pb.Image);
-					bm.Save(path, ImageLoader.GetImageFormat(path));
+					SKBitmap bm = GetAlpha(pb.Image);
+					using var image = SKImage.FromBitmap(bm);
+					var fmt = path.ToLower().EndsWith(".png") ? SKEncodedImageFormat.Png : SKEncodedImageFormat.Jpeg;
+					using var encoded = image.Encode(fmt, 100);
+					using var fs = System.IO.File.OpenWrite(path);
+					encoded.SaveTo(fs);
 				}
 				catch (Exception ex)
 				{
@@ -865,7 +867,7 @@ namespace SimPe.Plugin
 				{
 					ImageData id = (ImageData)cbitem.Items[cbitem.SelectedIndex];
 					System.IO.Stream s = System.IO.File.OpenRead(files[0].Path.LocalPath);
-					System.Drawing.Image img = Helper.LoadImage(s);
+					SKBitmap img = Helper.LoadSKBitmap(s);
 					s.Close();
 					s.Dispose();
 					s = null;
@@ -1005,7 +1007,7 @@ namespace SimPe.Plugin
 				for (int i=0; i<levels; i++)
 				{
 					MipMap mm = new MipMap(SelectedImageData());
-					mm.Texture = new Bitmap(wd, hg);
+					mm.Texture = new SKBitmap(wd, hg);
 
 					if (i==levels-1)
 					{

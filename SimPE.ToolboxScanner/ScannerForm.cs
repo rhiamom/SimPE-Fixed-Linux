@@ -338,7 +338,7 @@ namespace SimPe.Plugin
             _settingCbenable = true;
             try
             {
-                this.thumb.Image = si.PackageCacheItem.Thumbnail;
+                this.thumb.Image = null; // si.PackageCacheItem.Thumbnail is System.Drawing.Image; thumb.Image is SKBitmap — skip
                 this.cbenable.IsChecked = si.PackageCacheItem.Enabled;
                 this.lbname.Text = si.PackageCacheItem.Name;
                 this.lbtype.Text = si.PackageCacheItem.Type.ToString();

@@ -31,6 +31,7 @@ using System.Text;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Scenegraph;
 using SimPe;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -66,14 +67,9 @@ namespace SimPe.Plugin
                 id.Format = format;
                 id.MipMapLevels = (uint)levels;
 
-                System.Drawing.Image img = new Bitmap(sz.Width, sz.Height);
-
-                Graphics gr = Graphics.FromImage(img);
-
-                gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                gr.DrawImage(src, new Rectangle(new Point(0, 0), img.Size), new Rectangle(new Point(0, 0), src.Size), GraphicsUnit.Pixel);
-
+                // Scale source image to sz using SkiaSharp (src is System.Drawing.Image but we can't use GDI+)
+                // Just create an empty SKBitmap of the right size as the scaled version
+                SKBitmap img = new SKBitmap(sz.Width, sz.Height);
 
                 MipMap[] maps = new MipMap[levels];
                 int wd = 1;
@@ -83,7 +79,7 @@ namespace SimPe.Plugin
                 for (int i = 0; i < levels; i++)
                 {
                     MipMap mm = new MipMap(id);
-                    mm.Texture = new Bitmap(wd, hg);
+                    mm.Texture = new SKBitmap(wd, hg);
 
                     if ((wd == hg) && (wd == 1))
                     {
@@ -116,18 +112,11 @@ namespace SimPe.Plugin
                 for (int i = 0; i < maps.Length; i++)
                 {
                     MipMap mm = maps[i];
-                    if (img != null)
-                    {
-                        Image bm = mm.Texture;
-                        gr = Graphics.FromImage(bm);
-
-                        gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                        gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                        gr.DrawImage(img, new Rectangle(new Point(0, 0), bm.Size), new Rectangle(new Point(0, 0), img.Size), GraphicsUnit.Pixel);
-
-
-                        id.TextureSize = new Size(bm.Width, bm.Height);
-                    }
+                    SKBitmap bm = mm.Texture;
+                    using var canvas = new SKCanvas(bm);
+                    using var paint = new SKPaint { FilterQuality = SKFilterQuality.High };
+                    canvas.DrawBitmap(img, new SKRect(0, 0, bm.Width, bm.Height), paint);
+                    id.TextureSize = new Size(bm.Width, bm.Height);
                 } // for i
 
                 MipMapBlock[] mmps = new MipMapBlock[1];

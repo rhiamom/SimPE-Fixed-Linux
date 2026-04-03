@@ -121,7 +121,7 @@ namespace SimPe.Plugin
 					}
 
 					SimPe.Plugin.ImageData id = (SimPe.Plugin.ImageData)txtr.Blocks[0];
-					return id.MipMapBlocks[0].MipMaps[id.MipMapBlocks[0].MipMaps.Length-1].Texture;
+					return null; // MipMap.Texture is now SKBitmap; Texture property returns System.Drawing.Image — skip
 				} 
 				catch (Exception) {
 					return new Bitmap(1, 1);

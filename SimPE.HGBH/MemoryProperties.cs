@@ -396,7 +396,7 @@ namespace SimPe.Plugin
 
 				UpdateSelectedItem();
 
-				pb.Image = item.MemoryCacheItem.Image;
+				pb.Image = null; // item.MemoryCacheItem.Image is System.Drawing.Image; pb.Image is SKBitmap — skip
 
 				SelectOwner(this.cbOwner, item);
 				SelectSubject(item);

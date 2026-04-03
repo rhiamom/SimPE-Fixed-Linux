@@ -59,7 +59,7 @@ namespace SimPe.Plugin.Tool.Dockable
 							rd.lbAuthor.Text = wrp.WrapperDescription.Author;
 							rd.lbVersion.Text = wrp.WrapperDescription.Version.ToString();
 							rd.lbDesc.Text = wrp.WrapperDescription.Description;
-							rd.pb.Image = wrp.WrapperDescription.Icon;
+							rd.pb.Image = null; // wrp.WrapperDescription.Icon is System.Drawing.Image; pb.Image is SKBitmap — skip
 							// if (rd.pb.Image!=null) rd.lbName.Left = rd.pb.Right+4; // layout n/a in Avalonia
 							// else rd.lbName.Left = rd.pb.Left; // layout n/a in Avalonia
 							return;

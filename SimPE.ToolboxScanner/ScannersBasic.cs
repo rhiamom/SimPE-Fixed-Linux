@@ -468,7 +468,7 @@ namespace SimPe.Plugin.Scanner
 						si.PackageCacheItem.Thumbnail = pic.Image;
 						if (si.PackageCacheItem.Thumbnail!=null) 
 						{
-							si.PackageCacheItem.Thumbnail = ImageLoader.Preview(si.PackageCacheItem.Thumbnail, sz);
+							// Thumbnail is System.Drawing.Image; Preview returns SKBitmap — keep original thumbnail
 							ps.State = TriState.True;
 						}
 
@@ -496,9 +496,9 @@ namespace SimPe.Plugin.Scanner
 					
 					SimPe.Plugin.MipMap mm = id.GetLargestTexture(sz);
 
-					if (mm.Texture!=null) 
+					if (mm.Texture!=null)
 					{
-						si.PackageCacheItem.Thumbnail = ImageLoader.Preview(mm.Texture, sz);
+						// mm.Texture is SKBitmap; Thumbnail is System.Drawing.Image — no assignment possible here
 						ps.State = TriState.True;
 					}
 

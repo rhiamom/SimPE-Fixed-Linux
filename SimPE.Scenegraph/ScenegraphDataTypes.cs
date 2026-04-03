@@ -312,8 +312,8 @@ namespace SimPe.Scenegraph.Compat
             VerticalAlignment   = Avalonia.Layout.VerticalAlignment.Stretch,
         };
 
-        private System.Drawing.Image _image;
-        public System.Drawing.Image Image
+        private SkiaSharp.SKBitmap _image;
+        public SkiaSharp.SKBitmap Image
         {
             get => _image;
             set

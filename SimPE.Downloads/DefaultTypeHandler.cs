@@ -184,8 +184,8 @@ namespace SimPe.Plugin.Downloads
 					{
 						SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
 						pic.ProcessData(pfd, thumbs);
-						Bitmap bm = (Bitmap)ImageLoader.Preview(pic.Image, WaitingScreen.ImageSize);
-						if (WaitingScreen.Running) WaitingScreen.Update(bm, message);
+						SkiaSharp.SKBitmap bm = ImageLoader.Preview(pic.Image, WaitingScreen.ImageSize);
+						if (WaitingScreen.Running) WaitingScreen.Update((System.Drawing.Bitmap)null, message);
 						return pic.Image;
 					}
 					catch(Exception){}

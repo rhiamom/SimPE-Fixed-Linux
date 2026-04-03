@@ -235,8 +235,8 @@ namespace SimPe.Plugin
 				ImageData id = (ImageData)rcol.Blocks[0];
 
 				id.GetReferencedLifos();
-				System.Drawing.Image img = id.LargestTexture.Texture;//null;
-				/*foreach (MipMapBlock mmp in id.MipMapBlocks) 
+				SkiaSharp.SKBitmap img = id.LargestTexture.Texture;//null;
+				/*foreach (MipMapBlock mmp in id.MipMapBlocks)
 				{
 					foreach (MipMap mm in mmp.MipMaps)
 					{
@@ -244,12 +244,12 @@ namespace SimPe.Plugin
 					}
 				}*/
 
-				
-				if (img!=null) 
+				if (img!=null)
 				{
-					//img.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipX);
 					System.IO.MemoryStream ms = new System.IO.MemoryStream();
-					img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+					using var skImg = SkiaSharp.SKImage.FromBitmap(img);
+					using var encoded = skImg.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100);
+					encoded.SaveTo(ms);
 					ms.Seek(0, System.IO.SeekOrigin.Begin);
 					list.Add(s, ms);
 				}

@@ -205,6 +205,21 @@ namespace SimPe.Plugin
 			catch { return null; }
 		}
 
+		private static Avalonia.Media.Imaging.Bitmap ToAvaloniaBitmap(SkiaSharp.SKBitmap bm)
+		{
+			if (bm == null) return null;
+			try
+			{
+				using var skImg = SkiaSharp.SKImage.FromBitmap(bm);
+				using var encoded = skImg.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100);
+				using var ms = new System.IO.MemoryStream();
+				encoded.SaveTo(ms);
+				ms.Position = 0;
+				return new Avalonia.Media.Imaging.Bitmap(ms);
+			}
+			catch { return null; }
+		}
+
 		System.Drawing.Image img;
 		string imgname;
 		DDSData[] dds;

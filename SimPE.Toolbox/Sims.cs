@@ -256,14 +256,15 @@ namespace SimPe.Plugin
 
                 img = Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail(img, this.ilist.ImageSize, 12, Color.FromArgb(90, Color.Black), SimPe.PackedFiles.Wrapper.SimPoolControl.GetImagePanelColor(sdesc), Color.White, Color.FromArgb(80, Color.White), true, 4, 0);
                 this.ilist.Images.Add(img);
-                this.iListSmall.Images.Add(ImageLoader.Preview(img, iListSmall.ImageSize));
-            
+                this.iListSmall.Images.Add(img); // ImageLoader.Preview returns SKBitmap; use original
+
                 if (sdesc.Unlinked != 0x00 || !sdesc.AvailableCharacterData || sdesc.IsNPC)
                 {
                 if (sdesc.HasImage)
-                    img = ImageLoader.Preview(sdesc.Image, this.ilist.ImageSize);
+                    img = sdesc.Image; // ImageLoader.Preview returns SKBitmap; img is System.Drawing.Image — use original
                 else
-                    img = ImageLoader.Preview(SimPe.GetImage.NoOne, this.ilist.ImageSize);System.Drawing.Graphics g = Graphics.FromImage(img);
+                    img = new Bitmap(SimPe.GetImage.NoOne); // same
+                System.Drawing.Graphics g = Graphics.FromImage(img);
                     g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                     g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                     //Pen pen = new Pen(Data.MetaData.SpecialSimColor, 3);
@@ -285,17 +286,17 @@ namespace SimPe.Plugin
                         pos += 22;
                     }
                     this.ilist.Images.Add(img);
-                    this.iListSmall.Images.Add(ImageLoader.Preview(img, iListSmall.ImageSize));
+                    this.iListSmall.Images.Add(img); // Preview returns SKBitmap — use original
                 }
                 else if (sdesc.HasImage) // if (sdesc.Image != null) -Chris H
                 {
                     this.ilist.Images.Add(sdesc.Image);
-                    this.iListSmall.Images.Add(ImageLoader.Preview(sdesc.Image, iListSmall.ImageSize));
+                    this.iListSmall.Images.Add(sdesc.Image); // Preview returns SKBitmap — use original
                 }
                 else
                 {
                     this.ilist.Images.Add(new Bitmap(SimPe.GetImage.NoOne));
-                    this.iListSmall.Images.Add(ImageLoader.Preview(new Bitmap(SimPe.GetImage.NoOne), iListSmall.ImageSize));
+                    this.iListSmall.Images.Add(new Bitmap(SimPe.GetImage.NoOne)); // Preview returns SKBitmap — use original
                 }
             }
 

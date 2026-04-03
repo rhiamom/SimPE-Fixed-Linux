@@ -32,6 +32,7 @@ using SimPe.Interfaces.Plugin;
 using SimPe.Scenegraph.Compat;
 using SimPe.Interfaces.Scenegraph;
 using GdiImage = System.Drawing.Image;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -159,7 +160,11 @@ namespace SimPe.Plugin
 			{
 				try
 				{
-					pb.Image.Save(file.Path.LocalPath);
+					string savePath = file.Path.LocalPath;
+					using var skImage = SKImage.FromBitmap(pb.Image);
+					using var encoded = skImage.Encode(SKEncodedImageFormat.Png, 100);
+					using var fs = System.IO.File.OpenWrite(savePath);
+					encoded.SaveTo(fs);
 				}
 				catch (Exception ex)
 				{
@@ -183,7 +188,7 @@ namespace SimPe.Plugin
 				try
 				{
 					LevelInfo id = (LevelInfo)cbitem.Items[cbitem.SelectedIndex];
-					System.Drawing.Image img = System.Drawing.Image.FromFile(files[0].Path.LocalPath);
+					SKBitmap img = Helper.LoadSKBitmap(System.IO.File.OpenRead(files[0].Path.LocalPath));
 					img = this.CropImage(id, img);
 					if (img==null) return;
 
@@ -318,43 +323,40 @@ namespace SimPe.Plugin
 			}
 		}
 
-		protected System.Drawing.Image GetAlpha(System.Drawing.Image img)
+		protected SKBitmap GetAlpha(SKBitmap img)
 		{
-			Bitmap bm = new Bitmap(pb.Image.Size.Width, pb.Image.Size.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+			SKBitmap bm = new SKBitmap(pb.Image.Width, pb.Image.Height);
 
-			Bitmap src = (Bitmap)img;
-			for (int y=0; y<bm.Size.Height; y++)
+			for (int y=0; y<bm.Height; y++)
 			{
-				for (int x=0; x<bm.Size.Width; x++)
+				for (int x=0; x<bm.Width; x++)
 				{
-					byte a = src.GetPixel(x, y).A;
-					bm.SetPixel(x, y, Color.FromArgb(a, a, a));
+					byte a = img.GetPixel(x, y).Alpha;
+					bm.SetPixel(x, y, new SKColor(a, a, a));
 				} // for x
 			} //for y
 
 			return bm;
 		}
 
-		protected System.Drawing.Image ChangeAlpha(System.Drawing.Image img, System.Drawing.Image alpha)
+		protected SKBitmap ChangeAlpha(SKBitmap img, SKBitmap alpha)
 		{
-			Bitmap bm = new Bitmap(pb.Image.Size.Width, pb.Image.Size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			SKBitmap bm = new SKBitmap(pb.Image.Width, pb.Image.Height, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 
-			Bitmap src = (Bitmap)img;
-			Bitmap asrc = (Bitmap)alpha;
-			for (int y=0; y<bm.Size.Height; y++)
+			for (int y=0; y<bm.Height; y++)
 			{
-				for (int x=0; x<bm.Size.Width; x++)
+				for (int x=0; x<bm.Width; x++)
 				{
-					byte a = asrc.GetPixel(x, y).R;
-					Color cl = src.GetPixel(x, y);
-					bm.SetPixel(x, y, Color.FromArgb(a, cl));
+					byte a = alpha.GetPixel(x, y).Red;
+					SKColor cl = img.GetPixel(x, y);
+					bm.SetPixel(x, y, new SKColor(cl.Red, cl.Green, cl.Blue, a));
 				} // for x
 			} //for y
 
 			return bm;
 		}
 
-		protected System.Drawing.Image CropImage(LevelInfo id, System.Drawing.Image img)
+		protected SKBitmap CropImage(LevelInfo id, SKBitmap img)
 		{
 			double ratio = (double)id.TextureSize.Width / (double)id.TextureSize.Height;
 			double newratio = (double)img.Width / (double)img.Height;
@@ -371,17 +373,15 @@ namespace SimPe.Plugin
 						h = Convert.ToInt32(img.Width / ratio);
 					}
 
-					System.Drawing.Image img2 = new Bitmap(w, h);
-					Graphics gr = Graphics.FromImage(img2);
-
-					gr.DrawImageUnscaled(img, 0, 0);
+					SKBitmap img2 = new SKBitmap(w, h);
+					using var canvas = new SKCanvas(img2);
+					canvas.DrawBitmap(img, 0, 0);
 					img = img2;
 				}
 				else
 				{
 					return null;
 				}
-
 			}
 
 			return img;
@@ -396,15 +396,18 @@ namespace SimPe.Plugin
 			var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
 				Title = "Export Alpha Channel",
-				SuggestedFileName = tbflname.Text + "_alpha_" + pb.Image.Size.Width + "x" + pb.Image.Size.Height + ".png",
+				SuggestedFileName = tbflname.Text + "_alpha_" + pb.Image.Width + "x" + pb.Image.Height + ".png",
 				FileTypeChoices = new[] { new FilePickerFileType("PNG Image") { Patterns = new[] { "*.png" } } }
 			});
 			if (file != null)
 			{
 				try
 				{
-					System.Drawing.Image bm = GetAlpha(pb.Image);
-					bm.Save(file.Path.LocalPath);
+					SKBitmap bm = GetAlpha(pb.Image);
+					using var skImg = SKImage.FromBitmap(bm);
+					using var encoded = skImg.Encode(SKEncodedImageFormat.Png, 100);
+					using var saveFs = System.IO.File.OpenWrite(file.Path.LocalPath);
+					encoded.SaveTo(saveFs);
 				}
 				catch (Exception ex)
 				{
@@ -428,7 +431,7 @@ namespace SimPe.Plugin
 				try
 				{
 					LevelInfo id = (LevelInfo)cbitem.Items[cbitem.SelectedIndex];
-					System.Drawing.Image img = System.Drawing.Image.FromFile(files[0].Path.LocalPath);
+					SKBitmap img = Helper.LoadSKBitmap(System.IO.File.OpenRead(files[0].Path.LocalPath));
 					img = this.CropImage(id, img);
 					if (img==null) return;
 

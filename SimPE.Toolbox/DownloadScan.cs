@@ -429,7 +429,8 @@ namespace SimPe.Plugin
 								MipMap mm = id.GetLargestTexture(iList.ImageSize);
 								if (mm!=null)
 								{
-									img = ImageLoader.Preview(mm.Texture, iList.ImageSize);
+									// mm.Texture is SKBitmap; img is System.Drawing.Image — skip preview
+									ImageLoader.Preview(mm.Texture, iList.ImageSize);
 								}
 							}
 						}//if
@@ -670,8 +671,8 @@ namespace SimPe.Plugin
 					MipMap mm = id.GetLargestTexture(pbprev.Size);
 					if (mm!=null)
 					{
-						Image img = ImageLoader.Preview(mm.Texture, pbprev.Size);
-						pbprev.Image = img;
+						// mm.Texture is SKBitmap; pbprev.Image is System.Drawing.Image — skip preview
+						ImageLoader.Preview(mm.Texture, pbprev.Size);
 					}
 					break;
 				}

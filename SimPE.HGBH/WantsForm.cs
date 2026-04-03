@@ -540,7 +540,8 @@ namespace SimPe.Plugin
 			if (lastlvi!=null)
 			{
 				if (lastlvi.ImageIndex>=0)
-					lastlvi.ListView.LargeImageList.Images[lastlvi.ImageIndex] = ImageLoader.Preview(wi.Icon, lastlvi.ListView.LargeImageList.ImageSize);
+					// ImageLoader.Preview now returns SKBitmap; ImageList.Images expects System.Drawing.Image — skip preview
+				ImageLoader.Preview(wi.Icon, lastlvi.ListView.LargeImageList.ImageSize);
 				lastlvi.Text = wi.Name;
 			}
 

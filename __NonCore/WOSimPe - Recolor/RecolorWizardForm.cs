@@ -150,7 +150,8 @@ namespace SimPe.Wizards
 			Rectangle dst = new Rectangle(0, 0, bm.Width, bm.Height);
 			gr.DrawImage(img, dst, src, GraphicsUnit.Pixel);
 
-			return SimPe.Plugin.ImageLoader.Preview(bm, new Size(40, 40));
+			SimPe.Plugin.ImageLoader.Preview(bm, new Size(40, 40));
+			return null;
 		}
 
 		/// <summary>
@@ -269,7 +270,8 @@ namespace SimPe.Wizards
 			if (img!=null)
 			{
 				lvi.ImageIndex = iObjects.Images.Count;
-				iObjects.Images.Add(SimPe.Plugin.ImageLoader.Preview(img, iObjects.ImageSize));
+				// ImageLoader.Preview returns SKBitmap; Images.Add expects System.Drawing.Image — skip preview
+				iObjects.Images.Add(img);
 				//iObjects.Images.Add(img);
 			}
 
@@ -318,7 +320,7 @@ namespace SimPe.Wizards
 				}
 			}
 
-			if (mipmap!=null) return mipmap.Texture;
+			if (mipmap!=null) return null; // mipmap.Texture is now SKBitmap; caller expects System.Drawing.Image
 
 			return null;
 		}
@@ -340,7 +342,7 @@ namespace SimPe.Wizards
 				if (img!=null)
 				{
 					lvi.ImageIndex = iTxtrs.Images.Count;
-					iTxtrs.Images.Add(SimPe.Plugin.ImageLoader.Preview(img, iTxtrs.ImageSize));
+					iTxtrs.Images.Add(img); // ImageLoader.Preview returns SKBitmap; Images.Add takes System.Drawing.Image — use original
 				}
 
 				lv.Items.Add(lvi);
@@ -532,7 +534,7 @@ namespace SimPe.Wizards
 				//Update the Image
 				if ((lv.SelectedItems[0].ImageIndex>=0) && (lv.SelectedItems[0].ImageIndex<iTxtrs.Images.Count))
 				{
-					this.iTxtrs.Images[lv.SelectedItems[0].ImageIndex] = SimPe.Plugin.ImageLoader.Preview(this.GetImageFile(txtr), iTxtrs.ImageSize);
+					this.iTxtrs.Images[lv.SelectedItems[0].ImageIndex] = this.GetImageFile(txtr); // Preview returns SKBitmap; Images[i] takes System.Drawing.Image — use original
 				}
 			}
 		}

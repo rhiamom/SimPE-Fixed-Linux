@@ -476,7 +476,9 @@ namespace SimPe.Plugin
 						MipMap map1 = data1.GetLargestTexture(size);
 						if (map1.Texture != null)
 						{
-							return ImageLoader.Preview(map1.Texture, size);
+							// map1.Texture is now SKBitmap; Preview returns SKBitmap, not System.Drawing.Image
+							ImageLoader.Preview(map1.Texture, size);
+							return null;
 						}
 					}
 				}

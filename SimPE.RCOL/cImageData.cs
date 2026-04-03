@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces.Scenegraph;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -47,7 +48,7 @@ namespace SimPe.Plugin
 		
 		#region Attributes
 		byte[] data = null;
-		Image img = null;
+		SKBitmap img = null;
 		MipMapType datatype;
 		string lifofile;
 
@@ -68,16 +69,16 @@ namespace SimPe.Plugin
 			}
 		}
 
-		public Image Texture 
+		public SKBitmap Texture
 		{
-			get { 				
-				if (img==null) 
+			get {
+				if (img==null)
 				{
 					ReloadTexture();
 				}
-				return img; 
+				return img;
 			}
-			set 
+			set
 			{
 				if (value!=null) datatype = MipMapType.Texture;
 				img = value;
@@ -236,7 +237,7 @@ namespace SimPe.Plugin
 
 			string name;
 			if (img==null) name = "";
-			else name = "Image "+img.Size.Width.ToString()+"x"+img.Size.Height.ToString() + " - ";
+			else name = "Image "+img.Width.ToString()+"x"+img.Height.ToString() + " - ";
 
 			name += parent.NameResource.FileName;
 			return name;
@@ -444,17 +445,17 @@ namespace SimPe.Plugin
 		/// </summary>
 		public MipMap LargestTexture
 		{
-			get 
-			{		
+			get
+			{
 				MipMap large = null;
-				foreach (MipMap mm in this.MipMaps) 
+				foreach (MipMap mm in this.MipMaps)
 				{
-					if (mm.DataType != MipMapType.LifoReference) 
+					if (mm.DataType != MipMapType.LifoReference)
 					{
-						Image img = mm.Texture;
-						if (large!=null) 
+						SKBitmap img = mm.Texture;
+						if (large!=null)
 						{
-							if (large.Texture.Size.Width<img.Size.Width)
+							if (large.Texture.Width<img.Width)
 								large = mm;
 						} else large = mm;
 					}
@@ -471,24 +472,23 @@ namespace SimPe.Plugin
 		public MipMap GetLargestTexture(Size zs)
 		{
 			MipMap large = null;
-				foreach (MipMap mm in this.MipMaps) 
+			foreach (MipMap mm in this.MipMaps)
+			{
+				if (mm.DataType != MipMapType.LifoReference)
 				{
-					if (mm.DataType != MipMapType.LifoReference) 
+					SKBitmap img = mm.Texture;
+					if (large!=null)
 					{
-						Image img = mm.Texture;
-						if (large!=null) 
-						{
-							if (large.Texture.Size.Width<img.Size.Width)
-								large = mm;
-						} 
-						else large = mm;
-
-						if ((img.Size.Width>zs.Width) || (img.Size.Height>zs.Height)) break;
+						if (large.Texture.Width<img.Width)
+							large = mm;
 					}
-				}
+					else large = mm;
 
-				return large;
-			
+					if ((img.Width>zs.Width) || (img.Height>zs.Height)) break;
+				}
+			}
+
+			return large;
 		}
 
 		/// <summary>
@@ -564,15 +564,15 @@ namespace SimPe.Plugin
 		{
 			get { return format; }
 			set { 
-				if (format!=value) 
+				if (format!=value)
 				{
 					//when the Format changes we need to get the Picturedta FIRST
 					foreach (MipMapBlock mmp in this.MipMapBlocks)
 						foreach (MipMap mm in mmp.MipMaps)
 						{
-							Image img = mm.Texture;
+							SKBitmap img = mm.Texture;
 							mm.Texture = img;
-						}					
+						}
 				}
 				format = value; 
 			}

@@ -480,11 +480,17 @@ namespace SimPe
 		/// Returns the Path SimPe is located in
 		/// </summary>
 		/// <summary>
-		/// Cross-platform safe image loader. Returns null on non-Windows where System.Drawing is unavailable.
+		/// Cross-platform safe image loader. Returns null (legacy System.Drawing.Image callers remain safe).
 		/// </summary>
 		public static System.Drawing.Image LoadImage(System.IO.Stream stream) => null;
 
 		public static System.Drawing.Image LoadImage(System.IO.Stream stream, bool useEmbeddedColorManagement, bool validateImageData) => null;
+
+		/// <summary>
+		/// Cross-platform image loader returning SkiaSharp.SKBitmap.
+		/// </summary>
+		public static SkiaSharp.SKBitmap LoadSKBitmap(System.IO.Stream stream)
+			=> SkiaSharp.SKBitmap.Decode(stream);
 
 				public static string SimPePath 
 		{
@@ -1593,17 +1599,22 @@ namespace SimPe
         // }
 
         /// <summary>
-        /// Converts a System.Drawing.Image to an Avalonia Bitmap for use in Avalonia Image controls.
+        /// Converts a System.Drawing.Image to an Avalonia Bitmap. Returns null (stub — callers using old GDI+ images won't crash).
         /// </summary>
-        public static Avalonia.Media.Imaging.Bitmap ToAvaloniaBitmap(System.Drawing.Image img)
+        public static Avalonia.Media.Imaging.Bitmap ToAvaloniaBitmap(System.Drawing.Image img) => null;
+
+        /// <summary>
+        /// Converts a SkiaSharp.SKBitmap to an Avalonia Bitmap for use in Avalonia Image controls.
+        /// </summary>
+        public static Avalonia.Media.Imaging.Bitmap ToAvaloniaBitmap(SkiaSharp.SKBitmap bm)
         {
-            if (img == null) return null;
-            using (var ms = new System.IO.MemoryStream())
-            {
-                img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                ms.Position = 0;
-                return new Avalonia.Media.Imaging.Bitmap(ms);
-            }
+            if (bm == null) return null;
+            using var image = SkiaSharp.SKImage.FromBitmap(bm);
+            using var encoded = image.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100);
+            using var ms = new System.IO.MemoryStream();
+            encoded.SaveTo(ms);
+            ms.Position = 0;
+            return new Avalonia.Media.Imaging.Bitmap(ms);
         }
 
 	}

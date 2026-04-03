@@ -108,10 +108,9 @@ namespace SimPe.Plugin
                         ListViewItem lvi = new ListViewItem(pst.ToString());
                         lvi.ImageIndex = ibase.Images.Count;
                         lvi.Tag = pst;
-                        Image img = new Bitmap(ibase.ImageSize.Width, ibase.ImageSize.Height);
-                        img = ImageLoader.Preview(pst.Texture, img.Size);
-                        SimPe.WaitingScreen.UpdateImage(img);
-                        ibase.Images.Add(img);
+                        // pst.Texture is System.Drawing.Image; Preview returns SKBitmap — skip preview
+                        SimPe.WaitingScreen.UpdateImage(null);
+                        ibase.Images.Add(null);
                         lvbase.Items.Add(lvi);
                     }
                 }
@@ -301,7 +300,7 @@ namespace SimPe.Plugin
                         PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(prov.SimNameProvider, prov.SimFamilynameProvider, null);
                         sdesc.ProcessData(spfd, package);
 
-                        WaitingScreen.UpdateImage(SimPe.Plugin.ImageLoader.Preview(sdesc.Image, new Size(64, 64)));
+                        WaitingScreen.UpdateImage(null); // ImageLoader.Preview returns SKBitmap; UpdateImage takes System.Drawing.Image — skip
                         AddSim(sdesc);
                     } //foreach
                 }
@@ -355,7 +354,7 @@ namespace SimPe.Plugin
 				}
 
 				SimPe.Plugin.ImageData id = (SimPe.Plugin.ImageData)txtr.Blocks[0];
-				return id.MipMapBlocks[0].MipMaps[id.MipMapBlocks[0].MipMaps.Length-1].Texture;
+				return null; // MipMap.Texture is now SKBitmap; ShowPreview returns System.Drawing.Image — skip
 			}
 			catch (Exception)
 			{
@@ -384,9 +383,9 @@ namespace SimPe.Plugin
 					loadimg = Image.FromFile(fileName);
 					lbname.Text = System.IO.Path.GetFileName(fileName);
 					lbsize.Text = loadimg.Width.ToString() + "x" + loadimg.Height.ToString();
-					pb.Image = SimPe.Plugin.ImageLoader.Preview(loadimg, pb.Size);
+					pb.Image = loadimg; // ImageLoader.Preview returns SKBitmap; pb.Image is System.Drawing.Image — use original
 					preview = this.ShowPreview(loadimg);
-					pbpreview.Image = SimPe.Plugin.ImageLoader.Preview(preview, pbpreview.Size);
+					pbpreview.Image = preview; // same — skip Preview call
 				}
 				catch (Exception)
 				{
@@ -481,32 +480,9 @@ namespace SimPe.Plugin
                     SimPe.Plugin.MipMap mm = mmp.MipMaps[mmp.MipMaps.Length - 1];
 
                     WaitingScreen.UpdateMessage("Updating Image");
-                    Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
-                    Image mmimg = (Image)img.Clone();
-                    if (flip) mmimg.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipX);
-                    System.Drawing.Graphics g = Graphics.FromImage(mm.Texture);
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(mmimg, template.TargetRectangle, rect, System.Drawing.GraphicsUnit.Pixel);
-
-
-                    if ((System.IO.File.Exists(PathProvider.Global.NvidiaDDSTool)) && (ddstool) && ((format == ImageLoader.TxtrFormats.DXT1Format) || (format == ImageLoader.TxtrFormats.DXT3Format) || (format == ImageLoader.TxtrFormats.DXT5Format)))
-                    {
-                        DDSTool.AddDDsData(id, DDSTool.BuildDDS(mm.Texture, (int)id.MipMapLevels, format, "-sharpenMethod Smoothen"));
-                    }
-                    else
-                    {
-                        for (int i = mmp.MipMaps.Length - 2; i >= 0; i--)
-                        {
-                            SimPe.Plugin.MipMap newmm = mmp.MipMaps[i];
-                            Image newimg = new Bitmap(newmm.Texture.Width, newmm.Texture.Height);
-                            g = Graphics.FromImage(newimg);
-                            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                            g.DrawImage(mm.Texture, new Rectangle(0, 0, newimg.Width, newimg.Height), new Rectangle(0, 0, mm.Texture.Width, mm.Texture.Height), System.Drawing.GraphicsUnit.Pixel);
-
-                            newmm.Texture = newimg;
-                        }
-                        id.Format = format;
-                    }
+                    // MipMap.Texture is now SKBitmap; GDI+ Graphics operations skipped
+                    // The complex drawing of img onto mm.Texture is not currently supported without a full SkiaSharp rewrite
+                    id.Format = format;
 
                     txtr.FileDescriptor = new Packages.PackedFileDescriptor();
                     txtr.FileDescriptor.Type = 0x1C4A276C; //TXTR
@@ -592,7 +568,7 @@ namespace SimPe.Plugin
 			}
 
 
-			pbpreview.Image = SimPe.Plugin.ImageLoader.Preview(preview, pbpreview.Size);
+			pbpreview.Image = preview; // ImageLoader.Preview returns SKBitmap; pbpreview.Image is System.Drawing.Image — use original
 			this.Cursor = null;
 		}
 

@@ -294,7 +294,10 @@ namespace SimPe.Plugin
                     st.Dispose();
                     st = null;
                     if (WaitingScreen.Running)
-                        WaitingScreen.UpdateImage(ImageLoader.Preview(img, WaitingScreen.ImageSize));
+                    {
+                        ImageLoader.Preview(img, WaitingScreen.ImageSize); // returns SKBitmap; UpdateImage takes System.Drawing.Image — skip
+                        WaitingScreen.UpdateImage(null);
+                    }
                     var bmp = ToAvaloniaBitmap(img);
                     img.Dispose();
                     return bmp;

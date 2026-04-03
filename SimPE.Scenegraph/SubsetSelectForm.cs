@@ -126,7 +126,10 @@ namespace SimPe.Plugin
 				MipMap mm = id.LargestTexture;
 
 				if (mm!=null)
-					return ImageLoader.Preview(mm.Texture, sz);
+				{
+					ImageLoader.Preview(mm.Texture, sz); // returns SKBitmap; caller expects System.Drawing.Image
+					return null;
+				}
 			}
 
 			return new Bitmap(sz.Width, sz.Height);

@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
+using SkiaSharp;
 
 namespace SimPe.Plugin
 {
@@ -91,15 +92,15 @@ namespace SimPe.Plugin
 			set { data = value; }
 		}
 
-		Image img;
+		SKBitmap img;
 		/// <summary>
 		/// This will generate the Image
 		/// </summary>
-		public Image Texture 
+		public SKBitmap Texture
 		{
-			get 
+			get
 			{
-				if (img == null) 
+				if (img == null)
 					img = ImageLoader.Load(size, data.Length, format, new System.IO.BinaryReader(new System.IO.MemoryStream(data)), -1, count);
 				return img;
 			}
@@ -198,9 +199,9 @@ namespace SimPe.Plugin
 		/// <param name="level">The index of the Texture in the current MipMap use -1 if you don't want to specify an Level</param>
 		/// <param name="levelcount">Number of Levels stored in the MipMap</param>
 		/// <returns>null or a valid Image</returns>
-		public static Image Load(Size imgDimension, int datasize, TxtrFormats format, System.IO.BinaryReader reader, int level, int levelcount) 
+		public static SKBitmap Load(Size imgDimension, int datasize, TxtrFormats format, System.IO.BinaryReader reader, int level, int levelcount)
 		{
-			Image img = null;
+			SKBitmap img = null;
 			
 			int wd = imgDimension.Width;
 			int hg = imgDimension.Height;
@@ -243,20 +244,20 @@ namespace SimPe.Plugin
 		/// <param name="format">The Format you want to store the Image in</param>
 		/// <param name="img">The Image</param>
 		/// <returns>A Byte array containing the Image Data</returns>
-		public static byte[] Save(TxtrFormats format, Image img)
+		public static byte[] Save(TxtrFormats format, SKBitmap img)
 		{
 			byte[] data = new byte[0];
 
-			if (img!=null) 
+			if (img!=null)
 			{
 				if ((format==ImageLoader.TxtrFormats.DXT1Format)  || (format==ImageLoader.TxtrFormats.DXT3Format)|| (format==ImageLoader.TxtrFormats.DXT5Format))
 				{
 					data = ImageLoader.DXT3Writer(img, format);
-				} 
-				else if ((format == ImageLoader.TxtrFormats.ExtRaw8Bit) || (format==ImageLoader.TxtrFormats.Raw8Bit)  || (format==ImageLoader.TxtrFormats.Raw24Bit)  ||(format==ImageLoader.TxtrFormats.Raw32Bit) || (format==ImageLoader.TxtrFormats.ExtRaw24Bit)) 
+				}
+				else if ((format == ImageLoader.TxtrFormats.ExtRaw8Bit) || (format==ImageLoader.TxtrFormats.Raw8Bit)  || (format==ImageLoader.TxtrFormats.Raw24Bit)  ||(format==ImageLoader.TxtrFormats.Raw32Bit) || (format==ImageLoader.TxtrFormats.ExtRaw24Bit))
 				{
 					data = ImageLoader.RAWWriter(img, format);
-				} 
+				}
 			}
 
 			return data;
@@ -264,85 +265,62 @@ namespace SimPe.Plugin
 
 		
 
-		public static Image RAWParser(Size parentsize, TxtrFormats format, int imgsize, System.IO.BinaryReader reader, int w, int h)
+		public static SKBitmap RAWParser(Size parentsize, TxtrFormats format, int imgsize, System.IO.BinaryReader reader, int w, int h)
 		{
 			double scale = ((double)parentsize.Width / (double)parentsize.Height);
-
-			/*int w = 0;
-			int h = 0;
-			if ( (format == TxtrFormats.Raw24Bit)  || (format == TxtrFormats.ExtRaw24Bit))
-			{
-				h = Convert.ToInt32(Math.Sqrt((imgsize/3) / scale));
-				w = Convert.ToInt32(h * scale);
-			} 
-			else if ( format == TxtrFormats.Raw32Bit)
-			{
-				h = Convert.ToInt32(Math.Sqrt((imgsize/4) / scale));
-				w = Convert.ToInt32(h * scale);
-			}
-			else 
-			{
-				h = Convert.ToInt32(Math.Sqrt((imgsize) / scale));
-				w = Convert.ToInt32(h * scale);
-			}
-			if ((w==0) || (h==0)) return new Bitmap(1, 1);*/
 
 			w = Math.Max(1, w);
 			h = Math.Max(1, h);
 
-			
-			Bitmap bmp = new Bitmap(w, h, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			SKBitmap bmp = new SKBitmap(w, h, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 
-			for (int y=0; y<bmp.Height; y++) 
+			for (int y=0; y<bmp.Height; y++)
 			{
-				for (int x=0; x<bmp.Width; x++) 
+				for (int x=0; x<bmp.Width; x++)
 				{
 					byte a = 0xff;
 					byte r = 0;
 					byte g = 0;
 					byte b = 0;
-					
-					
+
 					b = reader.ReadByte();
-					if ((format != TxtrFormats.Raw8Bit) && (format != TxtrFormats.ExtRaw8Bit) )
+					if ((format != TxtrFormats.Raw8Bit) && (format != TxtrFormats.ExtRaw8Bit))
 					{
 						g = reader.ReadByte();
 						r = reader.ReadByte();
-						
-						if ( (format == TxtrFormats.Raw32Bit)) a=reader.ReadByte();
-						bmp.SetPixel(x, y, Color.FromArgb(a, r, g, b));
-					} 
-					else 
+
+						if ((format == TxtrFormats.Raw32Bit)) a=reader.ReadByte();
+						bmp.SetPixel(x, y, new SKColor(r, g, b, a));
+					}
+					else
 					{
-						
-						bmp.SetPixel(x, y, Color.FromArgb(a, b, b, b));
-					}	
+						bmp.SetPixel(x, y, new SKColor(b, b, b, a));
+					}
 				}
 			}
 
 			return bmp;
 		}
 
-		public static byte[] RAWWriter(Image img, TxtrFormats format)
+		public static byte[] RAWWriter(SKBitmap bmp, TxtrFormats format)
 		{
-			if (img==null) return new byte[0];
-			
+			if (bmp==null) return new byte[0];
+
 			System.IO.BinaryWriter writer = new System.IO.BinaryWriter(new System.IO.MemoryStream());
 
-			Bitmap bmp = (Bitmap)img;
-			for (int y=0; y<bmp.Height; y++) 
+			for (int y=0; y<bmp.Height; y++)
 			{
-				for (int x=0; x<bmp.Width; x++) 
+				for (int x=0; x<bmp.Width; x++)
 				{
-					Color c = bmp.GetPixel(x, y);
-					
-					writer.Write((byte)c.B);
+					SKColor c = bmp.GetPixel(x, y);
+
+					writer.Write(c.Blue);
 					if ((format != TxtrFormats.Raw8Bit) && (format != TxtrFormats.ExtRaw8Bit))
 					{
-						writer.Write((byte)c.G);
-						writer.Write((byte)c.R);
-						if ( (format == TxtrFormats.Raw32Bit)) writer.Write((byte)c.A);
-					}	
+						writer.Write(c.Green);
+						writer.Write(c.Red);
+						if ((format == TxtrFormats.Raw32Bit)) writer.Write(c.Alpha);
+					}
 				}
 			}
 
@@ -356,37 +334,33 @@ namespace SimPe.Plugin
 		// DXT1 RGBA ist nicht behandelt weil nicht bekannt ist welchen Wert
 		// 	format hat. Code ist auskommentiert!
 		//
-		public static Image DXT3Parser(Size parentsize, TxtrFormats format, int imgsize, System.IO.BinaryReader reader, int wd, int hg)
-		{						
-			Bitmap bm = null;			
-			try 
+		public static SKBitmap DXT3Parser(Size parentsize, TxtrFormats format, int imgsize, System.IO.BinaryReader reader, int wd, int hg)
+		{
+			SKBitmap bm = null;
+			try
 			{
-				double ration =	((double) parentsize.Width) / 
+				double ration = ((double) parentsize.Width) /
 					((double) parentsize.Height);
 
 				if ((format == TxtrFormats.DXT3Format) || (format == TxtrFormats.DXT5Format) /* || (format == DXT1 RGBA) */)
 				{
-					//hg = Convert.ToInt32(Math.Sqrt(((double) imgsize) / ration));
-					//wd = Convert.ToInt32((double) (hg * ration));
 					if ((wd == 0) || (hg == 0))
 					{
-						return new Bitmap(Math.Max(1, wd), Math.Max(1, hg));
+						return new SKBitmap(Math.Max(1, wd), Math.Max(1, hg));
 					}
-					bm = new Bitmap(wd, hg, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+					bm = new SKBitmap(wd, hg, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 				}
 				else
 				{
-					//hg = Convert.ToInt32(Math.Sqrt(((double) (2 * imgsize)) / ration));
-					//wd = Convert.ToInt32((double) (hg * ration));
 					if ((wd == 0) || (hg == 0))
 					{
-						return new Bitmap(Math.Max(1, wd), Math.Max(1, hg));
+						return new SKBitmap(Math.Max(1, wd), Math.Max(1, hg));
 					}
-					bm = new Bitmap(wd, hg, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+					bm = new SKBitmap(wd, hg, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 				}
 			
 				//
-				int[] Alpha = new int[16]; // FH: für Alpha reicht hier [4 * 4] !!!!
+				int[] Alpha = new int[16]; // FH: fï¿½r Alpha reicht hier [4 * 4] !!!!
 				for (int y = 0; y < bm.Height; y += 4) // DXT encodes 4x4 blocks of pixel
 				{
 					for (int x = 0; x < bm.Width; x += 4)
@@ -495,7 +469,7 @@ namespace SimPe.Plugin
 										uint code = (cbits >> (((by << 2) + bx) << 1)) & 3;
 										if ((format == TxtrFormats.DXT3Format) || (format == TxtrFormats.DXT5Format))
 										{
-											bm.SetPixel(x + bx, y + by, Color.FromArgb(Alpha[(by << 2) + bx], colors[code]));
+											bm.SetPixel(x + bx, y + by, new SKColor(colors[code].R, colors[code].G, colors[code].B, (byte)Alpha[(by << 2) + bx]));
 										}
 										else
 										{
@@ -508,7 +482,7 @@ namespace SimPe.Plugin
 											//		bm.SetPixel(x + bx, y + by, Color.FromArgb(255, colors[code]);
 											//	}
 											// } else {
-											bm.SetPixel(x + bx, y + by, colors[code]);
+											bm.SetPixel(x + bx, y + by, new SKColor(colors[code].R, colors[code].G, colors[code].B));
 											// }
 										}
 									}
@@ -594,7 +568,7 @@ namespace SimPe.Plugin
 		}
 
 		/// <summary>
-		/// Calculates the §D Distance of two Colors
+		/// Calculates the ï¿½D Distance of two Colors
 		/// </summary>
 		/// <param name="table">First Color</param>
 		/// <param name="test">Second Color</param>
@@ -727,12 +701,10 @@ namespace SimPe.Plugin
 			}
 		}
 
-		public static byte[] DXT3Writer(Image img, TxtrFormats format)
+		public static byte[] DXT3Writer(SKBitmap bmp, TxtrFormats format)
 		{
-			if (img==null) return new byte[0];
+			if (bmp==null) return new byte[0];
 			System.IO.BinaryWriter writer = new System.IO.BinaryWriter(new System.IO.MemoryStream());
-
-			Bitmap bmp = (Bitmap)img;
 
 			int[] imageSourceAlpha = new int[bmp.Width * bmp.Height];
 
@@ -751,12 +723,12 @@ namespace SimPe.Plugin
 						{
 							for (int bx=0;bx<4;++bx)
 							{
-
-								if ((x+bx<bmp.Width) && (y+by<bmp.Height)) 
+								if ((x+bx<bmp.Width) && (y+by<bmp.Height))
 								{
-									alphas[bx] = bmp.GetPixel(x+bx, y+by);
-								} 
-								else 
+									SKColor c = bmp.GetPixel(x+bx, y+by);
+									alphas[bx] = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+								}
+								else
 								{
 									alphas[bx] = Color.Black;
 								}
@@ -764,20 +736,20 @@ namespace SimPe.Plugin
 
 							DXT3WriteTransparencyBlock(writer, alphas);
 						}
-					} 
-					else if (format == TxtrFormats.DXT5Format) 
+					}
+					else if (format == TxtrFormats.DXT5Format)
 					{
 						Color[] alphas = new Color[16];
 						for (int by=0;by<4;++by)
 						{
 							for (int bx=0;bx<4;++bx)
 							{
-
-								if ((x+bx<bmp.Width) && (y+by<bmp.Height)) 
+								if ((x+bx<bmp.Width) && (y+by<bmp.Height))
 								{
-									alphas[by*4 + bx] = bmp.GetPixel(x+bx, y+by);
-								} 
-								else 
+									SKColor c = bmp.GetPixel(x+bx, y+by);
+									alphas[by*4 + bx] = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+								}
+								else
 								{
 									alphas[by*4 + bx] = Color.Black;
 								}
@@ -791,18 +763,19 @@ namespace SimPe.Plugin
 					{
 						for (int bx=0;bx<4;++bx)
 						{
-							try 
+							try
 							{
-								if ((x+bx<bmp.Width) && (y+by<bmp.Height)) 
+								if ((x+bx<bmp.Width) && (y+by<bmp.Height))
 								{
-									colors[bx,by] = bmp.GetPixel(x+bx, y+by);
-								} 
-								else 
+									SKColor c = bmp.GetPixel(x+bx, y+by);
+									colors[bx,by] = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+								}
+								else
 								{
 									colors[bx,by] = Color.Black;
 								}
-							} 
-							catch (Exception ex) 
+							}
+							catch (Exception ex)
 							{
 								Helper.ExceptionMessage("", ex);
 							}
@@ -812,40 +785,54 @@ namespace SimPe.Plugin
 					DXT3WriteTexel(writer, colors, format);
 				} // for x
 			}// for y
-			
+
 			System.IO.BinaryReader reader = new System.IO.BinaryReader(writer.BaseStream);
 			reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
 			return reader.ReadBytes((int)reader.BaseStream.Length);
 		}
 
 		/// <summary>
-		/// Creates a Preview with the correct Aspect Ration
+		/// Creates a Preview with the correct Aspect Ratio (SKBitmap overload).
 		/// </summary>
-		/// <param name="img">The Image you want to preview</param>
-		/// <param name="sz">Size of te Preview Image</param>
-		/// <returns>The Preview image</returns>
-		public static Image Preview(Image img, Size sz)
+		/// <param name="img">The SKBitmap you want to preview</param>
+		/// <param name="sz">Size of the Preview Image</param>
+		/// <returns>The Preview image as SKBitmap</returns>
+		public static SKBitmap Preview(SKBitmap img, Size sz)
 		{
-			Image prev = new Bitmap(sz.Width, sz.Height);
+			SKBitmap prev = new SKBitmap(Math.Max(1, sz.Width), Math.Max(1, sz.Height));
 
-			if (img==null) return prev;
-			Graphics g = Graphics.FromImage(prev);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			if (img == null) return prev;
 
 			double ratio = (double)img.Height / (double)img.Width;
 			int wd = sz.Width;
 			int hg = (int)Math.Round(wd * ratio);
 
-			if (hg>sz.Height) 
+			if (hg > sz.Height)
 			{
 				hg = sz.Height;
 				wd = (int)Math.Round(hg / ratio);
 			}
 
-			//g.FillRectangle(new Pen(Color.Black).Brush, 0, 0, sz.Width, sz.Height);
-			g.DrawImage(img, new Rectangle((sz.Width - wd) / 2, (sz.Height - hg) / 2, wd, hg), new Rectangle(0, 0, img.Width, img.Height), System.Drawing.GraphicsUnit.Pixel);
-				
+			int destX = (sz.Width - wd) / 2;
+			int destY = (sz.Height - hg) / 2;
+
+			using (var canvas = new SKCanvas(prev))
+			{
+				canvas.Clear(SKColors.Transparent);
+				var destRect = new SKRect(destX, destY, destX + wd, destY + hg);
+				using var paint = new SKPaint { FilterQuality = SKFilterQuality.High };
+				canvas.DrawBitmap(img, destRect, paint);
+			}
+
 			return prev;
+		}
+
+		/// <summary>
+		/// Stub overload for System.Drawing.Image callers (WinForms-era). Returns an empty SKBitmap.
+		/// </summary>
+		public static SKBitmap Preview(System.Drawing.Image img, Size sz)
+		{
+			return new SKBitmap(Math.Max(1, sz.Width), Math.Max(1, sz.Height));
 		}
 
 		#region OldCode

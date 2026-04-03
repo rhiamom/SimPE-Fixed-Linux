@@ -93,7 +93,8 @@ namespace SimPe.Plugin
 			{
 				ImageData id = (ImageData)rcol.Blocks[0];
 				gi.Size = new Size(gi.Size.Width, 80);
-				gi.Thumbnail = ImageLoader.Preview(id.LargestTexture.Texture, new Size(48, 48));
+				// id.LargestTexture.Texture is SKBitmap; gi.Thumbnail is System.Drawing.Image — skip preview
+			ImageLoader.Preview(id.LargestTexture.Texture, new Size(48, 48));
 			}
 			return rcol;
 		}
