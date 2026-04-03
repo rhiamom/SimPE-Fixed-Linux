@@ -42,7 +42,12 @@ namespace SimPe.Plugin.TabPage
 			this.FontSize = 11;
 
 			pg = new SimPe.Plugin.TabPage.PropertyGridControl();
-			Content = pg;
+			Content = new Avalonia.Controls.ScrollViewer
+			{
+				VerticalScrollBarVisibility   = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto,
+				HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Disabled,
+				Content = pg
+			};
 		}
 
 		Ambertation.PropertyObjectBuilderExt pob;
@@ -59,7 +64,25 @@ namespace SimPe.Plugin.TabPage
 				{
 					Ambertation.PropertyDescription pd = ((Ambertation.PropertyDescription)SimPe.Plugin.MaterialDefinition.PropertyParser.Properties[mdp.Name]).Clone();
 					pd.Property = mdp.Value;
-					ht[mdp.Name] = pd;
+
+					// Normalise types bodong's PropertyGrid can't display usefully:
+					//   bool      → "True"/"False" string  (unchecked checkbox looks blank)
+					//   FloatColor → "R, G, B" string       (color swatch shows no numeric value)
+					// Guard: pd.Property getter throws if mdp.Value was null (prop stays null after setter)
+					try
+					{
+						object val = pd.Property;
+						if (val is bool bv)
+							ht[mdp.Name] = new Ambertation.PropertyDescription(pd.Category, pd.Description, bv ? "True" : "False", pd.ReadOnly);
+						else if (val is Ambertation.FloatColor fc)
+							ht[mdp.Name] = new Ambertation.PropertyDescription(pd.Category, pd.Description, $"{fc.Color.R}, {fc.Color.G}, {fc.Color.B}", pd.ReadOnly);
+						else
+							ht[mdp.Name] = pd;
+					}
+					catch
+					{
+						ht[mdp.Name] = pd;
+					}
 				}
 				else
 				{
