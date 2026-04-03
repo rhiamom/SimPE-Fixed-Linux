@@ -300,14 +300,33 @@ namespace SimPe.Scenegraph.Compat
     // ── PictureBoxCompat ─────────────────────────────────────────────────────
 
     /// <summary>
-    /// Minimal PictureBox compat — replaces System.Windows.Forms.PictureBox.
-    /// Holds a System.Drawing.Image; Avalonia rendering is a separate concern.
+    /// Avalonia UserControl that renders a System.Drawing.Image using an inner
+    /// Avalonia.Controls.Image (converted on assignment via Helper.ToAvaloniaBitmap).
     /// </summary>
-    public class PictureBoxCompat : Avalonia.Controls.Control
+    public class PictureBoxCompat : Avalonia.Controls.UserControl
     {
-        /// <summary>The current image (System.Drawing.Image).</summary>
-        public System.Drawing.Image Image { get; set; }
-        public System.Drawing.Size Size { get; set; } = new System.Drawing.Size(100, 100);
+        private readonly Avalonia.Controls.Image _imgCtrl = new Avalonia.Controls.Image
+        {
+            Stretch = Avalonia.Media.Stretch.Uniform,
+            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+            VerticalAlignment   = Avalonia.Layout.VerticalAlignment.Stretch,
+        };
+
+        private System.Drawing.Image _image;
+        public System.Drawing.Image Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                _imgCtrl.Source = (value != null) ? SimPe.Helper.ToAvaloniaBitmap(value) : null;
+            }
+        }
+
+        public PictureBoxCompat()
+        {
+            Content = _imgCtrl;
+        }
     }
 
     // ── PropertyGridStub ─────────────────────────────────────────────────────

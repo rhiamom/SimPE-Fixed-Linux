@@ -25,9 +25,13 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using SimPe.Interfaces.Plugin;
+using GdiSize  = System.Drawing.Size;
+using GdiPoint = System.Drawing.Point;
 using SimPe.Interfaces.Scenegraph;
 using SimPe.Windows.Forms;
 using Avalonia.Platform.Storage;
@@ -67,48 +71,248 @@ namespace SimPe.Plugin
 			base.OnClosed(e);
 		}
 
-		#region Avalonia AXAML layout placeholder
+		#region Avalonia layout
+
+		static Button MakeHyperlink(string text) => new Button
+		{
+			Content = text,
+			Background = Avalonia.Media.Brushes.Transparent,
+			BorderThickness = new Thickness(0),
+			Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 102, 204)),
+			FontSize = 11,
+			Padding = new Thickness(0),
+			Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand),
+		};
+
+		static Button MakeHeaderButton(string text) => new Button
+		{
+			Content = text,
+			FontSize = 11,
+			Padding = new Thickness(8, 2),
+			Margin = new Thickness(2, 0),
+		};
+
 		private void InitializeComponent()
 		{
-			// TODO: Avalonia AXAML layout
-			txtrPanel = new Avalonia.Controls.Panel();
-			linkLabel4 = new Avalonia.Controls.Button();
-			linkLabel3 = new Avalonia.Controls.Button();
-			linkLabel1 = new Avalonia.Controls.Button();
-			tblevel = new Avalonia.Controls.TextBox();
-			label8 = new Avalonia.Controls.TextBlock();
-			linkLabel2 = new Avalonia.Controls.Button();
-			lldel = new Avalonia.Controls.Button();
-			tblifo = new Avalonia.Controls.TextBox();
-			label6 = new Avalonia.Controls.TextBlock();
-			label5 = new Avalonia.Controls.TextBlock();
-			tbheight = new Avalonia.Controls.TextBox();
-			tbwidth = new Avalonia.Controls.TextBox();
-			label4 = new Avalonia.Controls.TextBlock();
-			label3 = new Avalonia.Controls.TextBlock();
-			cbformats = new Avalonia.Controls.ComboBox();
-			tbflname = new Avalonia.Controls.TextBox();
-			label2 = new Avalonia.Controls.TextBlock();
-			cbitem = new Avalonia.Controls.ComboBox();
-			cbmipmaps = new Avalonia.Controls.ComboBox();
-			panel1 = new Avalonia.Controls.Panel();
-			label7 = new Avalonia.Controls.TextBlock();
-			pb = new PictureBoxCompat();
-			contextMenu1 = new Avalonia.Controls.ContextMenu();
-			menuItem1 = new Avalonia.Controls.MenuItem();
-			milifo = new Avalonia.Controls.MenuItem();
-			menuItem4 = new Avalonia.Controls.MenuItem();
-			menuItem6 = new Avalonia.Controls.MenuItem();
-			menuItem7 = new Avalonia.Controls.MenuItem();
-			mibuild = new Avalonia.Controls.MenuItem();
-			menuItem3 = new Avalonia.Controls.MenuItem();
-			menuItem2 = new Avalonia.Controls.MenuItem();
-			menuItem5 = new Avalonia.Controls.MenuItem();
-			lbimg = new Avalonia.Controls.ListBox();
-			panel2 = new SimPe.Windows.Forms.WrapperBaseControl();
-			btex = new Avalonia.Controls.Button();
-			btim = new Avalonia.Controls.Button();
-			label1 = new Avalonia.Controls.TextBlock();
+			// ── field instantiation ─────────────────────────────────────────
+			txtrPanel  = new Panel();
+			cbitem     = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch, FontSize = 11 };
+			tbflname   = new TextBox  { Background = Avalonia.Media.Brushes.White, FontSize = 11 };
+			cbformats  = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch, FontSize = 11 };
+			tbwidth    = new TextBox  { Width = 52, Background = Avalonia.Media.Brushes.White, FontSize = 11 };
+			tbheight   = new TextBox  { Width = 52, Background = Avalonia.Media.Brushes.White, FontSize = 11 };
+			tblevel    = new TextBox  { Width = 44, Background = Avalonia.Media.Brushes.White, FontSize = 11 };
+			cbmipmaps  = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch, FontSize = 11 };
+			lbimg      = new ListBox  { FontSize = 11 };
+			tblifo     = new TextBox  { Background = Avalonia.Media.Brushes.White, FontSize = 11 };
+			pb         = new PictureBoxCompat();
+			panel1     = new Panel();
+			panel2     = new WrapperBaseControl();
+
+			label1 = new TextBlock { Text = "Filename:",     VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0,0,4,0) };
+			label2 = new TextBlock { Text = "Format:",       VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0,0,4,0) };
+			label3 = new TextBlock { Text = "Size:",         VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0,0,4,0) };
+			label4 = new TextBlock { Text = "x",             VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(4,0) };
+			label5 = new TextBlock { Text = "MipMap Level:", VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(8,0,4,0) };
+			label6 = new TextBlock { Text = "LIFO Reference:", VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0,0,4,0) };
+			label7 = new TextBlock { Text = "Blocks:",       VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0,0,4,0) };
+			label8 = new TextBlock { Text = "" };
+
+			linkLabel1 = MakeHyperlink("add");
+			linkLabel2 = MakeHyperlink("fix TGI");
+			linkLabel3 = MakeHyperlink("build default MipMap");
+			linkLabel4 = MakeHyperlink("build filename");
+			lldel      = MakeHyperlink("delete");
+
+			btim = MakeHeaderButton("Import...");
+			btex = MakeHeaderButton("Export...");
+			var btcommit = MakeHeaderButton("Commit");
+
+			// context menu on the image preview
+			menuItem1 = new MenuItem { Header = "Import..." };
+			menuItem2 = new MenuItem { Header = "Export Texture" };
+			menuItem3 = new MenuItem { Header = "Import Alpha..." };
+			menuItem4 = new MenuItem { Header = "Export Alpha..." };
+			menuItem5 = new MenuItem { Header = "Import DDS..." };
+			menuItem6 = new MenuItem { Header = "Update All Sizes" };
+			menuItem7 = new MenuItem { Header = "-" };
+			milifo    = new MenuItem { Header = "Import from LIFO" };
+			mibuild   = new MenuItem { Header = "Build DXT" };
+			contextMenu1 = new ContextMenu();
+			contextMenu1.Items.Add(menuItem1);
+			contextMenu1.Items.Add(menuItem2);
+			contextMenu1.Items.Add(new MenuItem { Header = "-" });
+			contextMenu1.Items.Add(menuItem3);
+			contextMenu1.Items.Add(menuItem4);
+			contextMenu1.Items.Add(new MenuItem { Header = "-" });
+			contextMenu1.Items.Add(menuItem5);
+			contextMenu1.Items.Add(menuItem6);
+			contextMenu1.Items.Add(menuItem7);
+			contextMenu1.Items.Add(milifo);
+			contextMenu1.Items.Add(mibuild);
+
+			// ── event wiring ────────────────────────────────────────────────
+			// Use lambdas where handler signatures use base EventArgs but Avalonia
+			// events supply a derived type (SelectionChangedEventArgs, etc.)
+			cbitem.SelectionChanged    += (s, e) => SelectItem(s, e);
+			cbmipmaps.SelectionChanged += (s, e) => SelectMipMapBlock(s, e);
+			lbimg.SelectionChanged     += (s, e) => PictureSelect(s, e);
+			cbformats.SelectionChanged += (s, e) => ChangeFormat(s, e);
+			tbflname.TextChanged       += (s, e) => FileNameChanged(s, e);
+			tblevel.LostFocus          += (s, e) => Changedlevel(s, e);
+			tblifo.LostFocus           += (s, e) => SetLifo(s, e);
+			btim.Click     += (s, e) => btim_Click(s, e);
+			btex.Click     += (s, e) => btex_Click(s, e);
+			btcommit.Click += (s, e) => btcommit_Click(s, e);
+			linkLabel1.Click += (s, e) => Add(s, e);
+			linkLabel2.Click += (s, e) => FixTGI(s, e);
+			linkLabel3.Click += (s, e) => BuildMipMap(s, e);
+			lldel.Click      += (s, e) => Delete(s, e);
+			menuItem1.Click  += (s, e) => btim_Click(s, e);
+			menuItem2.Click  += (s, e) => btex_Click(s, e);
+			menuItem3.Click  += (s, e) => ImportAlpha(s, e);
+			menuItem4.Click  += (s, e) => ExportAlpha(s, e);
+			menuItem5.Click  += (s, e) => ImportDDS(s, e);
+			menuItem6.Click  += (s, e) => UpdateAllSizes(s, e);
+			milifo.Click     += (s, e) => ImportLifo(s, e);
+			mibuild.Click    += (s, e) => BuildDXT(s, e);
+			contextMenu1.Opening += ContextPopUp;
+			pb.ContextMenu = contextMenu1;
+
+			// ── layout ──────────────────────────────────────────────────────
+
+			// Header bar
+			var headerLabel = new TextBlock
+			{
+				Text = "TXTR Editor",
+				Foreground = Avalonia.Media.Brushes.White,
+				FontSize = 11,
+				FontWeight = Avalonia.Media.FontWeight.SemiBold,
+				VerticalAlignment = VerticalAlignment.Center,
+				Margin = new Thickness(8, 0),
+			};
+			var headerButtons = new StackPanel
+			{
+				Orientation = Orientation.Horizontal,
+				VerticalAlignment = VerticalAlignment.Center,
+				Margin = new Thickness(4, 3),
+				Spacing = 2,
+			};
+			headerButtons.Children.Add(btim);
+			headerButtons.Children.Add(btex);
+			headerButtons.Children.Add(btcommit);
+			var headerContent = new DockPanel { LastChildFill = true };
+			DockPanel.SetDock(headerButtons, Dock.Right);
+			headerContent.Children.Add(headerButtons);
+			headerContent.Children.Add(headerLabel);
+			var headerBar = new Border
+			{
+				Background = new Avalonia.Media.LinearGradientBrush
+				{
+					StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+					EndPoint   = new RelativePoint(0, 1, RelativeUnit.Relative),
+					GradientStops =
+					{
+						new Avalonia.Media.GradientStop(Avalonia.Media.Color.FromRgb(74, 84, 100), 0.0),
+						new Avalonia.Media.GradientStop(Avalonia.Media.Color.FromRgb(54, 64,  80), 1.0),
+					},
+				},
+				MinHeight = 28,
+				Child = headerContent,
+			};
+
+			// ── Left column ────────────────────────────────────────────────
+			// Filename row
+			var filenameRow = new Grid { Margin = new Thickness(0, 2) };
+			filenameRow.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+			filenameRow.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			Grid.SetColumn(label1, 0); filenameRow.Children.Add(label1);
+			Grid.SetColumn(cbitem,  1); filenameRow.Children.Add(cbitem);
+
+			// Filename text (second row) + fix TGI
+			tbflname.Margin = new Thickness(0, 2);
+			var fixTgiRow = new DockPanel { Margin = new Thickness(0, 0, 0, 4) };
+			DockPanel.SetDock(linkLabel2, Dock.Right);
+			fixTgiRow.Children.Add(linkLabel2);
+
+			// Format row
+			var formatRow = new Grid { Margin = new Thickness(0, 2) };
+			formatRow.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+			formatRow.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			Grid.SetColumn(label2,    0); formatRow.Children.Add(label2);
+			Grid.SetColumn(cbformats, 1); formatRow.Children.Add(cbformats);
+
+			// Size row
+			var sizeRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 2), Spacing = 0 };
+			sizeRow.Children.Add(label3);
+			sizeRow.Children.Add(tbwidth);
+			sizeRow.Children.Add(label4);
+			sizeRow.Children.Add(tbheight);
+			sizeRow.Children.Add(label5);
+			sizeRow.Children.Add(tblevel);
+
+			// Blocks row
+			var blocksRow = new Grid { Margin = new Thickness(0, 2) };
+			blocksRow.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+			blocksRow.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			Grid.SetColumn(label7,    0); blocksRow.Children.Add(label7);
+			Grid.SetColumn(cbmipmaps, 1); blocksRow.Children.Add(cbmipmaps);
+
+			// Fields stack
+			var fieldsStack = new StackPanel { Margin = new Thickness(4, 4, 4, 0) };
+			fieldsStack.Children.Add(filenameRow);
+			fieldsStack.Children.Add(tbflname);
+			fieldsStack.Children.Add(fixTgiRow);
+			fieldsStack.Children.Add(formatRow);
+			fieldsStack.Children.Add(sizeRow);
+			fieldsStack.Children.Add(blocksRow);
+
+			// Links row at bottom of left column
+			var linksRow = new StackPanel
+			{
+				Orientation = Orientation.Horizontal,
+				Margin = new Thickness(4, 2),
+				Spacing = 8,
+			};
+			linksRow.Children.Add(linkLabel3);
+			linksRow.Children.Add(linkLabel1);
+			linksRow.Children.Add(lldel);
+
+			// Left DockPanel: fields on top, links on bottom, listbox fills rest
+			var leftDock = new DockPanel { LastChildFill = true, Margin = new Thickness(0, 0, 4, 0) };
+			DockPanel.SetDock(fieldsStack, Dock.Top);
+			DockPanel.SetDock(linksRow,    Dock.Bottom);
+			leftDock.Children.Add(fieldsStack);
+			leftDock.Children.Add(linksRow);
+			leftDock.Children.Add(lbimg);
+
+			// ── Right column ───────────────────────────────────────────────
+			// LIFO reference row at bottom
+			var lifoRow = new Grid { Margin = new Thickness(0, 4, 0, 0) };
+			lifoRow.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+			lifoRow.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			Grid.SetColumn(label6, 0); lifoRow.Children.Add(label6);
+			Grid.SetColumn(tblifo, 1); lifoRow.Children.Add(tblifo);
+
+			// Image fills remaining space; LIFO docked to bottom
+			var rightDock = new DockPanel { LastChildFill = true, Margin = new Thickness(0, 4) };
+			DockPanel.SetDock(lifoRow, Dock.Bottom);
+			rightDock.Children.Add(lifoRow);
+			rightDock.Children.Add(pb);
+
+			// ── Main 2-column grid ─────────────────────────────────────────
+			var mainGrid = new Grid { Margin = new Thickness(4) };
+			mainGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(380)));
+			mainGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+			Grid.SetColumn(leftDock,  0); mainGrid.Children.Add(leftDock);
+			Grid.SetColumn(rightDock, 1); mainGrid.Children.Add(rightDock);
+
+			// ── Outer DockPanel ────────────────────────────────────────────
+			var outerDock = new DockPanel { LastChildFill = true };
+			DockPanel.SetDock(headerBar, Dock.Top);
+			outerDock.Children.Add(headerBar);
+			outerDock.Children.Add(mainGrid);
+			txtrPanel.Children.Add(outerDock);
 		}
 		#endregion
 
@@ -194,7 +398,7 @@ namespace SimPe.Plugin
 		{
 			if (pb.Image == null) return;
 
-			var topLevel = TopLevel.GetTopLevel(this);
+			var topLevel = TopLevel.GetTopLevel(txtrPanel);
 			if (topLevel == null) return;
 			var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
@@ -220,7 +424,7 @@ namespace SimPe.Plugin
 		{
 			if (lbimg.SelectedIndex<0) return;
 
-			var topLevel = TopLevel.GetTopLevel(this);
+			var topLevel = TopLevel.GetTopLevel(txtrPanel);
 			if (topLevel == null) return;
 			var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -500,7 +704,7 @@ namespace SimPe.Plugin
 			{
 				lbimg.Tag = true;
 				MipMap map = null;
-				Size sz = new Size(0, 0);
+				GdiSize sz = new GdiSize(0, 0);
 
 				//Find biggest Texture
 				for (int i=0; i< lbimg.Items.Count; i++)
@@ -534,7 +738,7 @@ namespace SimPe.Plugin
 
 							gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 							gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-							gr.DrawImage(map.Texture, new Rectangle(new Point(0,0), bm.Size), new Rectangle(new Point(0,0), map.Texture.Size), GraphicsUnit.Pixel);
+							gr.DrawImage(map.Texture, new Rectangle(new GdiPoint(0,0), bm.Size), new Rectangle(new GdiPoint(0,0), map.Texture.Size), GraphicsUnit.Pixel);
 							mm.Texture = bm;
 						}
 					}
@@ -620,7 +824,7 @@ namespace SimPe.Plugin
 		{
 			if (pb.Image == null) return;
 
-			var topLevel = TopLevel.GetTopLevel(this);
+			var topLevel = TopLevel.GetTopLevel(txtrPanel);
 			if (topLevel == null) return;
 			var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
@@ -647,7 +851,7 @@ namespace SimPe.Plugin
 		{
 			if (lbimg.SelectedIndex<0) return;
 
-			var topLevel = TopLevel.GetTopLevel(this);
+			var topLevel = TopLevel.GetTopLevel(txtrPanel);
 			if (topLevel == null) return;
 			var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -791,7 +995,7 @@ namespace SimPe.Plugin
 		{
 			try
 			{
-				Size sz = await SimPe.Plugin.ImageSize.Execute(SelectedImageData().TextureSize);
+				GdiSize sz = await SimPe.Plugin.ImageSize.Execute(SelectedImageData().TextureSize);
 				cbitem.Tag = true;
 				lbimg.Items.Clear();
 				int wd = 1;
@@ -805,7 +1009,7 @@ namespace SimPe.Plugin
 
 					if (i==levels-1)
 					{
-						SelectedImageData().TextureSize = new Size(wd, hg);
+						SelectedImageData().TextureSize = new GdiSize(wd, hg);
 					}
 
 					if ((wd==hg) && (wd==1))
@@ -894,7 +1098,7 @@ namespace SimPe.Plugin
 
 		private async void ImportDDS(object sender, System.EventArgs e)
 		{
-			var topLevel = TopLevel.GetTopLevel(this);
+			var topLevel = TopLevel.GetTopLevel(txtrPanel);
 			if (topLevel == null) return;
 			var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -931,7 +1135,7 @@ namespace SimPe.Plugin
 			{
 				cbitem.Tag = true;
 				ImageData id = (ImageData)cbitem.Items[cbitem.SelectedIndex];
-				id.TextureSize = new Size(Convert.ToInt32(tbwidth.Text), Convert.ToInt32(tbheight.Text));
+				id.TextureSize = new GdiSize(Convert.ToInt32(tbwidth.Text), Convert.ToInt32(tbheight.Text));
 
 				BuildMipMap(null, null);
 			}
