@@ -55,9 +55,9 @@ namespace SimPe.Plugin.TabPage
 			lbprop = new Avalonia.Controls.ListBox();
 			lbprop.SelectionChanged += new EventHandler<Avalonia.Controls.SelectionChangedEventArgs>(this.SelectItem);
 			gbprop = new Avalonia.Controls.Border();
-			lldel = new Avalonia.Controls.Button { Content = "delete" };
+			lldel = new Avalonia.Controls.Button { Content = "delete", Padding = new Avalonia.Thickness(0), Background = Avalonia.Media.Brushes.Transparent, BorderThickness = new Avalonia.Thickness(0), Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 80, 180)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
 			lldel.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.DeletItem);
-			lladd = new Avalonia.Controls.Button { Content = "add" };
+			lladd = new Avalonia.Controls.Button { Content = "add", Padding = new Avalonia.Thickness(0), Background = Avalonia.Media.Brushes.Transparent, BorderThickness = new Avalonia.Thickness(0), Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 80, 180)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
 			lladd.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.AddItem);
 			tbval = new Avalonia.Controls.TextBox { Background = Avalonia.Media.Brushes.White };
 			tbval.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.AutoChange);
@@ -65,7 +65,7 @@ namespace SimPe.Plugin.TabPage
 			tbname.TextChanged += new EventHandler<Avalonia.Controls.TextChangedEventArgs>(this.AutoChange);
 			label2 = new Avalonia.Controls.TextBlock { Text = "Value:" };
 			label1 = new Avalonia.Controls.TextBlock { Text = "Name:" };
-			linkLabel1 = new Avalonia.Controls.Button { Content = "sort List" };
+			linkLabel1 = new Avalonia.Controls.Button { Content = "sort List", Padding = new Avalonia.Thickness(0), Background = Avalonia.Media.Brushes.Transparent, BorderThickness = new Avalonia.Thickness(0), Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 80, 180)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand), HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left };
 			linkLabel1.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.linkLabel1_LinkClicked);
 			btnImport = new Avalonia.Controls.Button { Content = "Import..." };
 			btnImport.Click += new EventHandler<Avalonia.Interactivity.RoutedEventArgs>(this.btnImport_Click);
@@ -103,7 +103,8 @@ namespace SimPe.Plugin.TabPage
 			tbname.Margin = new Avalonia.Thickness(0, 0, 0, 3);
 			tbval.Margin  = new Avalonia.Thickness(0, 3, 0, 3);
 			var addDel = new Avalonia.Controls.StackPanel {
-				Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 4
+				Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 8,
+				HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right
 			};
 			addDel.Children.Add(lladd);
 			addDel.Children.Add(lldel);

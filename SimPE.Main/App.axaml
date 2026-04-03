@@ -2,6 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimPe.App"
              RequestedThemeVariant="Default">
+    <Application.Resources>
+        <SolidColorBrush x:Key="TreeViewItemBackgroundSelected"             Color="#5580C4" />
+        <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver"  Color="#7099D4" />
+        <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPressed"      Color="#4470B4" />
+    </Application.Resources>
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
@@ -10,6 +15,13 @@
         <Style Selector="TabItem">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="Padding"  Value="8,4" />
+        </Style>
+        <!-- TreeView selection — match DataGrid row selection colour -->
+        <Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="#5580C4" />
+        </Style>
+        <Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot:pointerover">
+            <Setter Property="Background" Value="#7099D4" />
         </Style>
         <!-- Muted steel-blue DataGrid row selection instead of garish accent blue -->
         <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">

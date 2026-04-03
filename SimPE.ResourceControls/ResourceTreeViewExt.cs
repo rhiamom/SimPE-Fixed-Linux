@@ -167,7 +167,12 @@ namespace SimPe.Windows.Forms
             this.Clear();
             firstnode = builder.BuildNodes(maps);
             tv.ItemsSource = new[] { firstnode };
-            firstnode.Expand();
+            // Expand the root node after Avalonia creates the container
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                var root = tv.ContainerFromItem(firstnode) as Avalonia.Controls.TreeViewItem;
+                if (root != null) root.IsExpanded = true;
+            }, Avalonia.Threading.DispatcherPriority.Loaded);
 
             allowselectevent = selectevent;
             if (!dontselect && (maps.Everything.Count <= Helper.XmlRegistry.BigPackageResourceCount || Helper.XmlRegistry.ResoruceTreeAllwaysAutoselect))
