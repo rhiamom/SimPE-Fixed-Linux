@@ -23,6 +23,7 @@
 
  using System;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Ambertation.Scenes;
 using Ambertation.Scenes.Collections;
 
@@ -85,26 +86,31 @@ public class RenderSelection : UserControl
 		lb.SelectionChanged += lb_SelectionChanged;
 	}
 
+	private Joint GetJointFromItem(object item)
+	{
+		if (item is Joint j) return j;
+		if (item is Avalonia.Controls.Border b && b.Tag is Joint bj) return bj;
+		return null;
+	}
+
 	private void dx_ResetDevice(object sender, EventArgs e)
 	{
 		if (!(sender is DirectXPanel directXPanel))
 		{
 			return;
 		}
+		if (stm == null) return;
 		try
 		{
 			directXPanel.Meshes.Clear(dispose: true);
-			if (lb.SelectedItem == null)
-			{
-				directXPanel.Meshes.AddRange(stm.ConvertToDx());
-			}
-			else if (!(lb.SelectedItem is Joint))
+			var selectedJoint = GetJointFromItem(lb.SelectedItem);
+			if (selectedJoint == null)
 			{
 				directXPanel.Meshes.AddRange(stm.ConvertToDx());
 			}
 			else if (lb.SelectedItems != null && lb.SelectedItems.Count == 1)
 			{
-				directXPanel.Meshes.AddRange(stm.ConvertToDx(lb.SelectedItem as Joint));
+				directXPanel.Meshes.AddRange(stm.ConvertToDx(selectedJoint));
 			}
 			else
 			{
@@ -113,10 +119,8 @@ public class RenderSelection : UserControl
 				{
 					foreach (object selectedItem in lb.SelectedItems)
 					{
-						if (selectedItem is Joint)
-						{
-							jointCollection.Add(selectedItem as Joint);
-						}
+						var joint = GetJointFromItem(selectedItem);
+						if (joint != null) jointCollection.Add(joint);
 					}
 				}
 				directXPanel.Meshes.AddRange(stm.ConvertToDx(jointCollection));
@@ -138,10 +142,26 @@ public class RenderSelection : UserControl
 		stm = new SceneToMesh(scn, dx);
 		dx.Reset();
 		dx.ResetDefaultViewport();
-		lb.Items.Add("--- [Display Mesh] ---");
+		lb.Items.Add(new TextBlock { Text = "--- [Display Mesh] ---", FontWeight = FontWeight.Bold });
 		foreach (Joint item in scn.JointCollection)
 		{
-			lb.Items.Add(item);
+			var color = stm.GetJointColor(item);
+			var avColor = Color.FromRgb(color.R, color.G, color.B);
+			var tb = new Avalonia.Controls.Border
+			{
+				Background = new SolidColorBrush(avColor),
+				CornerRadius = new Avalonia.CornerRadius(4),
+				Padding = new Avalonia.Thickness(6, 2),
+				Margin = new Avalonia.Thickness(2),
+				Child = new TextBlock
+				{
+					Text = item.ToString(),
+					FontWeight = FontWeight.Bold,
+					Foreground = Brushes.Black
+				},
+				Tag = item
+			};
+			lb.Items.Add(tb);
 		}
 	}
 

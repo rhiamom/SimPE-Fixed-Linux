@@ -243,7 +243,8 @@ namespace SimPe.Plugin
 		/// </summary>
 		protected override void InitTabPage() 
 		{
-			if (form==null) form = new fGeometryDataContainer(); 
+			if (form==null) form = new fGeometryDataContainer();
+			form.tMesh.Tag = this;
 			form.ResetPreview();
 			form.tb_ver.Text = "0x"+Helper.HexString(this.version);
 

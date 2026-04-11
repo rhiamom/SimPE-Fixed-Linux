@@ -27,6 +27,7 @@ using System.Drawing;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Ambertation.Scenes;
 using OpenTK.Graphics.OpenGL4;
@@ -109,7 +110,7 @@ void main() {
     vec4 baseColor = uUseVertexColor ? vColor : uMatDiffuse;
     if (uUseTexture) baseColor = texture(uTexture, vTexCoord) * baseColor;
     if (!uEnableLighting) { fragColor = clamp(baseColor + uMatEmissive, 0.0, 1.0); return; }
-    vec3 normal = normalize(vNormal);
+    vec3 normal = gl_FrontFacing ? normalize(vNormal) : -normalize(vNormal);
     vec3 viewDir = normalize(uCamPos - vFragPos);
     vec4 ambient = vec4(uAmbient, 1.0) * uMatAmbient;
     vec4 light = CalcLight(-normalize(uLightDir0), uLightDiff0, uLightSpec0, normal, viewDir, baseColor)
@@ -134,6 +135,11 @@ void main() {
 
     private OpenTK.Windowing.Desktop.GameWindow? _gameWindow;
     private OpenTK.Windowing.Common.IGraphicsContext? _context;
+
+    // FBO for offscreen rendering
+    private int _fbo, _fboColor, _fboDepth;
+    private int _fboW, _fboH;
+    private WriteableBitmap _avBitmap;
 
     private ViewportSetting vp;
     private MeshList meshes;
@@ -164,6 +170,7 @@ void main() {
         get
         {
             float fov = vp.FoV, aspect = vp.Aspect, near = vp.NearPlane, far = vp.FarPlane;
+            if (aspect <= 0) aspect = 1f;
             return Matrix4.CreatePerspectiveFieldOfView(fov, aspect, near, far);
         }
     }
@@ -202,7 +209,7 @@ void main() {
         meshes = new MeshList();
         Width = 400;
         Height = 300;
-        BackColor = Color.Gray;
+        BackColor = Color.FromArgb(140, 140, 200); // periwinkle, matching original SimPE
         ResetView();
         Settings.EndUpdate(fireattr: false, firestat: false);
     }
@@ -246,9 +253,87 @@ void main() {
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.Disable(EnableCap.CullFace); // disable face culling for preview compatibility
             _glReady = true;
         }
         catch (Exception ex) { Console.WriteLine("GL init failed: " + ex.Message); }
+    }
+
+    private void EnsureFBO(int w, int h)
+    {
+        if (w < 1) w = 1;
+        if (h < 1) h = 1;
+        if (_fbo != 0 && _fboW == w && _fboH == h) return;
+
+        // Delete old FBO
+        if (_fbo != 0) { GL.DeleteFramebuffer(_fbo); GL.DeleteTexture(_fboColor); GL.DeleteRenderbuffer(_fboDepth); }
+
+        _fboW = w; _fboH = h;
+        _fbo = GL.GenFramebuffer();
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, _fbo);
+
+        _fboColor = GL.GenTexture();
+        GL.BindTexture(TextureTarget.Texture2D, _fboColor);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0,
+            OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+        GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _fboColor, 0);
+
+        _fboDepth = GL.GenRenderbuffer();
+        GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, _fboDepth);
+        GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.Depth24Stencil8, w, h);
+        GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, RenderbufferTarget.Renderbuffer, _fboDepth);
+
+        var status = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+        if (status != FramebufferErrorCode.FramebufferComplete)
+            System.Diagnostics.Debug.WriteLine($"[FBO] INCOMPLETE: {status}");
+
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+    }
+
+    public override void Render(Avalonia.Media.DrawingContext context)
+    {
+        base.Render(context);
+        if (!_glReady || _avBitmap == null) return;
+
+        var rect = new Avalonia.Rect(0, 0, Bounds.Width, Bounds.Height);
+        context.DrawImage(_avBitmap, rect);
+    }
+
+    /// <summary>Reads the FBO pixels into the Avalonia WriteableBitmap for display.</summary>
+    private void TransferToAvalonia()
+    {
+        if (_fboW < 1 || _fboH < 1) return;
+
+        if (_avBitmap == null || (int)_avBitmap.Size.Width != _fboW || (int)_avBitmap.Size.Height != _fboH)
+            _avBitmap = new WriteableBitmap(new Avalonia.PixelSize(_fboW, _fboH), new Avalonia.Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888);
+
+        using (var buf = _avBitmap.Lock())
+        {
+            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, _fbo);
+            GL.ReadPixels(0, 0, _fboW, _fboH, OpenTK.Graphics.OpenGL4.PixelFormat.Bgra, PixelType.UnsignedByte, buf.Address);
+            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, 0);
+        }
+
+        // Flip vertically (GL is bottom-up, Avalonia is top-down)
+        FlipBitmapVertically();
+    }
+
+    private unsafe void FlipBitmapVertically()
+    {
+        if (_avBitmap == null) return;
+        using var buf = _avBitmap.Lock();
+        int stride = buf.RowBytes;
+        byte* ptr = (byte*)buf.Address;
+        byte[] tmp = new byte[stride];
+        for (int y = 0; y < _fboH / 2; y++)
+        {
+            int topOff = y * stride;
+            int botOff = (_fboH - 1 - y) * stride;
+            System.Runtime.InteropServices.Marshal.Copy((IntPtr)(ptr + topOff), tmp, 0, stride);
+            System.Buffer.MemoryCopy(ptr + botOff, ptr + topOff, stride, stride);
+            System.Runtime.InteropServices.Marshal.Copy(tmp, 0, (IntPtr)(ptr + botOff), stride);
+        }
     }
 
     private void CacheUniforms()
@@ -307,35 +392,49 @@ void main() {
     // -----------------------------------------------------------------------
     // Rendering
     // -----------------------------------------------------------------------
-    public void Render()
+    public new void Render()
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            Dispatcher.UIThread.InvokeAsync(Render);
+            Dispatcher.UIThread.InvokeAsync((Action)Render);
             return;
         }
-        
+
         EnsureGLInit();
         if (!_glReady || Settings.Paused) return;
-        
+
         _context?.MakeCurrent();
-        
+
+        int w = Math.Max(1, (int)Bounds.Width);
+        int h = Math.Max(1, (int)Bounds.Height);
+        if (w <= 1 || h <= 1) { w = 400; h = 300; } // fallback before layout
+        EnsureFBO(w, h);
+        vp.Aspect = (float)w / h;
+
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, _fbo);
+        GL.Viewport(0, 0, _fboW, _fboH);
+
         var bg = BackColor;
         GL.ClearColor(bg.R / 255f, bg.G / 255f, bg.B / 255f, 1f);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         GL.UseProgram(_prog);
-        
+
         if (sortedlist == null) sortedlist = new MeshList();
         else sortedlist.Clear(dispose: false);
-        
+
         SetupLights();
         SetupMatrices();
         SetLastCameraPos();
+        int jointCount = 0, meshCount = 0;
+        foreach (MeshBox mb in (System.Collections.IEnumerable)Meshes) { if (mb.JointMesh) jointCount++; else meshCount++; }
+        System.Diagnostics.Debug.WriteLine($"[GL Render] FBO={_fboW}x{_fboH} totalMeshes={Meshes.Count} joints={jointCount} meshes={meshCount} RenderJoints={Settings.RenderJoints}");
         RenderMeshList(Meshes, alphapass: false, sorted: false);
         if (Settings.EnableAlphaBlendPass) RenderMeshList(Meshes, alphapass: true, sorted: false);
         RenderMeshList(sortedlist, alphapass: true, sorted: true);
-        
-        _context?.SwapBuffers();
+
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+        TransferToAvalonia();
         InvalidateVisual();
     }
 
@@ -373,7 +472,7 @@ void main() {
             mstack.MultiplyMatrixLocal(box.Transform);
             if (box.Billboard) mstack.MultiplyMatrixLocal(BillboardMatrix);
             var top = mstack.Top;
-            GL.UniformMatrix4(_uModel, true, ref top);
+            GL.UniformMatrix4(_uModel, false, ref top);
             if (box.Sort)
             {
                 box.SetupSortWorld(top, lastcampos);
@@ -383,10 +482,10 @@ void main() {
         else
         {
             var w = box.World;
-            GL.UniformMatrix4(_uModel, true, ref w);
+            GL.UniformMatrix4(_uModel, false, ref w);
         }
 
-        if ((!box.JointMesh || Settings.RenderJoints) && (sorted || !box.Sort))
+        if ((!box.JointMesh || Settings.RenderJoints) && !box.IgnoreDuringCameraReset && (sorted || !box.Sort))
             DoRenderMeshBox(box, cull, 0);
 
         RenderMeshList(box, alphapass, sorted: false);
@@ -403,17 +502,8 @@ void main() {
             fillMode == ViewportSettingBasic.FillModes.Wireframe ? PolygonMode.Line :
             fillMode == ViewportSettingBasic.FillModes.Point ? PolygonMode.Point : PolygonMode.Fill);
 
-        // Culling
-        var effectiveCull = box.GetCullMode(cull);
-        if (effectiveCull == GlCullMode.None)
-        {
-            GL.Disable(EnableCap.CullFace);
-        }
-        else
-        {
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(effectiveCull == GlCullMode.Clockwise ? CullFaceMode.Back : CullFaceMode.Front);
-        }
+        // Culling disabled for preview compatibility
+        GL.Disable(EnableCap.CullFace);
 
         // Material
         GlMaterial mat;
@@ -514,10 +604,10 @@ void main() {
     {
         var view = ViewMatrix;
         var proj = ProjectionMatrix;
-        GL.UniformMatrix4(_uView, true, ref view);
-        GL.UniformMatrix4(_uProj, true, ref proj);
+        GL.UniformMatrix4(_uView, false, ref view);
+        GL.UniformMatrix4(_uProj, false, ref proj);
         var w = world;
-        GL.UniformMatrix4(_uModel, true, ref w);
+        GL.UniformMatrix4(_uModel, false, ref w);
         if (mstack == null) mstack = new MatrixStack();
         mstack.LoadMatrix(world);
     }
@@ -608,18 +698,17 @@ void main() {
         {
             try
             {
-                // MakeCurrent();
                 OnResetDevice(this, null);
             }
             catch (Exception ex) { Console.WriteLine(ex); }
         }
-        // Render();
+        Render();
     }
 
     public void ResetDefaultViewport()
     {
-        ResetView();
-        OnResetDevice(this, null);
+        OnResetDevice(this, null);  // load meshes first
+        ResetView();                // then position camera from bounding box
         Render();
     }
 
@@ -636,11 +725,17 @@ void main() {
         BoundingBox boundingBox = new BoundingBox();
         try
         {
+            int count = 0;
             foreach (MeshBox item in (IEnumerable)Meshes)
-                if (!item.SpecialMesh) boundingBox += item.GetBoundingBox(rec: true, all: false);
-            ResetView(Converter.ToDx(boundingBox.Min), Converter.ToDx(boundingBox.Max));
+            {
+                if (!item.SpecialMesh && !item.JointMesh) { boundingBox += item.GetBoundingBox(rec: true, all: false); count++; }
+            }
+            var min = Converter.ToDx(boundingBox.Min);
+            var max = Converter.ToDx(boundingBox.Max);
+            System.Diagnostics.Debug.WriteLine($"[ResetView] meshCount={Meshes.Count} usedForBBox={count} min={min} max={max}");
+            ResetView(min, max);
         }
-        catch (Exception ex) { Console.WriteLine($"Error resetting view: {ex.Message}\n{ex.StackTrace}"); }
+        catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[ResetView] ERROR: {ex}"); }
     }
 
     protected void ResetView(Vector3 min, Vector3 max)
@@ -660,11 +755,16 @@ void main() {
                 vp.CameraPosition = Settings.UseLefthandedCoordinates
                     ? new Vector3(0f, 0f, (float)num2 * Settings.InitialCameraOffsetScale)
                     : new Vector3(0f, 0f, -(float)num2 * Settings.InitialCameraOffsetScale);
-                vp.NearPlane = 1f; vp.FarPlane = 10000f;
+                vp.NearPlane = 0.01f; vp.FarPlane = 10000f;
                 vp.BoundingSphereRadius = (float)num;
+                System.Diagnostics.Debug.WriteLine($"[ResetView] center={objectCenter} radius={num:F3} camDist={num2:F3} camPos={vp.CameraPosition} offset=({vp.X:F3},{vp.Y:F3},{vp.Z:F3})");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[ResetView] SKIPPED: min.X({min.X}) > max.X({max.X})");
             }
         }
-        catch (Exception ex) { Console.WriteLine($"Error resetting view: {ex.Message}\n{ex.StackTrace}"); }
+        catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[ResetView] ERROR: {ex}"); }
         finally { Settings.EndUpdate(); ignorechangeevent = false; }
     }
 
