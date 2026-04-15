@@ -132,27 +132,37 @@ namespace SimPe.Wizards
 
 		public bool JumpToStep(int nr)
 		{
-			if (nr < 0) return false;
-			if (nr >= Children.Count) return false;
+			System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep({nr}): Children.Count={Children.Count}, cur={cur}");
+			if (nr < 0) { System.Diagnostics.Debug.WriteLine("[Wizard] JumpToStep: nr<0, returning false"); return false; }
+			if (nr >= Children.Count) { System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep: nr={nr} >= Children.Count={Children.Count}, returning false"); return false; }
 
 			int lastnr = cur;
-			if (nr >= cur)
+			try
 			{
-				for (int i = cur + 1; i <= nr; i++)
+				if (nr >= cur)
 				{
-					((WizardStepPanel)Children[i]).OnPrepare(this, nr);
-					PrepareStep?.Invoke(this, (WizardStepPanel)Children[i], nr);
+					for (int i = cur + 1; i <= nr; i++)
+					{
+						System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep: OnPrepare step {i}");
+						((WizardStepPanel)Children[i]).OnPrepare(this, nr);
+						PrepareStep?.Invoke(this, (WizardStepPanel)Children[i], nr);
+					}
+				}
+				else
+				{
+					for (int i = cur; i > nr; i--)
+					{
+						((WizardStepPanel)Children[i]).OnRollback(this, nr);
+						RollbackStep?.Invoke(this, (WizardStepPanel)Children[i], nr);
+					}
+					((WizardStepPanel)Children[nr]).OnPrepare(this, nr);
+					PrepareStep?.Invoke(this, (WizardStepPanel)Children[nr], nr);
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				for (int i = cur; i > nr; i--)
-				{
-					((WizardStepPanel)Children[i]).OnRollback(this, nr);
-					RollbackStep?.Invoke(this, (WizardStepPanel)Children[i], nr);
-				}
-				((WizardStepPanel)Children[nr]).OnPrepare(this, nr);
-				PrepareStep?.Invoke(this, (WizardStepPanel)Children[nr], nr);
+				System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep EXCEPTION during Prepare: {ex}");
+				throw;
 			}
 
 			WizardEventArgs e = new WizardEventArgs(
@@ -160,11 +170,30 @@ namespace SimPe.Wizards
 				!((WizardStepPanel)Children[nr]).Last,
 				!((WizardStepPanel)Children[nr]).First,
 				((WizardStepPanel)Children[nr]).Last);
-			((WizardStepPanel)Children[nr]).OnShow(this, e);
 
-			if (e.Cancel) return false;
-			ShowStep?.Invoke(this, e);
-			if (e.Cancel) return false;
+			try
+			{
+				((WizardStepPanel)Children[nr]).OnShow(this, e);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep EXCEPTION during OnShow: {ex}");
+				throw;
+			}
+
+			if (e.Cancel) { System.Diagnostics.Debug.WriteLine("[Wizard] JumpToStep: e.Cancel after OnShow, returning false"); return false; }
+
+			try
+			{
+				ShowStep?.Invoke(this, e);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep EXCEPTION during ShowStep: {ex}");
+				throw;
+			}
+
+			if (e.Cancel) { System.Diagnostics.Debug.WriteLine("[Wizard] JumpToStep: e.Cancel after ShowStep, returning false"); return false; }
 
 			foreach (Control c in Children) c.IsVisible = false;
 			this.CurrentStep.Client.IsVisible = false;
@@ -174,6 +203,7 @@ namespace SimPe.Wizards
 			this.PrevEnabled = e.EnablePrev;
 			this.FinishEnabled = e.CanFinish;
 
+			System.Diagnostics.Debug.WriteLine($"[Wizard] JumpToStep({nr}): success, visibility updated");
 			((WizardStepPanel)Children[nr]).OnShowed(this);
 			ShowedStep?.Invoke(this, lastnr);
 			return true;

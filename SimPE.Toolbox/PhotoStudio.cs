@@ -110,7 +110,7 @@ namespace SimPe.Plugin
                         lvi.Tag = pst;
                         // pst.Texture is System.Drawing.Image; Preview returns SKBitmap — skip preview
                         SimPe.WaitingScreen.UpdateImage(null);
-                        ibase.Images.Add(null);
+                        ibase.Images.Add((System.Drawing.Image)null);
                         lvbase.Items.Add(lvi);
                     }
                 }

@@ -370,7 +370,7 @@ namespace SimPe.Plugin
 											if (mm!=null) 
 											{
 												// mm.Texture is SKBitmap; iskin.Images.Add takes System.Drawing.Image — skip preview
-											iskin.Images.Add(null);
+											iskin.Images.Add((System.Drawing.Image)null);
 												lvi.ImageIndex = iskin.Images.Count-1;
 											}
 										}

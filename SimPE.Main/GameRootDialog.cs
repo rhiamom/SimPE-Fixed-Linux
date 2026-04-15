@@ -337,6 +337,14 @@ namespace SimPe
         {
             string suggested = null;
 
+            // On non-Windows, all C:\ paths are meaningless — leave blank so the user browses.
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                    System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                txtGameRoot.Text = string.Empty;
+                return;
+            }
+
             if (rbLegacy.IsChecked == true)
             {
                 // Legacy can end up in Program Files or Program Files (x86),

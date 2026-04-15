@@ -267,9 +267,9 @@ namespace SimPe.Plugin.Tool.Dockable
 				{			
 					lastselected = null;
 					this.ilist.Images.Clear();
-					this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.subitems.png")));
-					this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.nothumb.png")));
-					this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.custom.png")));
+					this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.subitems.png")));
+					this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.nothumb.png")));
+					this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.custom.png")));
 
 					lb.Items.Clear();
 					tv.Nodes.Clear();
@@ -329,17 +329,8 @@ namespace SimPe.Plugin.Tool.Dockable
 				{
 					tn.ImageIndex = 2;
 				}
-				else if (oci.Thumbnail!=null) 
-				{
-					Image img = oci.Thumbnail;
-					//if (Helper.XmlRegistry.GraphQuality) img = Ambertation.Drawing.GraphicRoutines.KnockoutImage(img, new System.Drawing.Point(0,0), System.Drawing.Color.Magenta);
-					img = Ambertation.Drawing.GraphicRoutines.ScaleImage(img, ilist.ImageSize.Width, ilist.ImageSize.Height, Helper.XmlRegistry.GraphQuality);
-
-					ilist.Images.Add(img);
-					tn.ImageIndex = ilist.Images.Count-1;					
-				}
 				else
-					tn.ImageIndex = 1;
+					tn.ImageIndex = 1; // thumbnails require GDI+ (unavailable on non-Windows)
 				tn.SelectedImageIndex = tn.ImageIndex;
 				ret.Nodes.Add(tn);
 			}

@@ -458,11 +458,24 @@ namespace SimPe.Scenegraph.Compat
     {
         public class ImageCollection
         {
-            private readonly List<System.Drawing.Image> _images = new List<System.Drawing.Image>();
+            // Store Avalonia bitmaps — GDI+ (System.Drawing) is unavailable on Linux/macOS.
+            private readonly List<Avalonia.Media.Imaging.Bitmap> _images = new List<Avalonia.Media.Imaging.Bitmap>();
             public int Count => _images.Count;
-            public void Add(System.Drawing.Image img) => _images.Add(img);
+
+            /// <summary>Legacy overload: System.Drawing.Image callers compile, but no image is stored (GDI+ unavailable).</summary>
+            public void Add(System.Drawing.Image img) => _images.Add(null);
+
+            /// <summary>Cross-platform overload: stores the Avalonia bitmap directly.</summary>
+            public void Add(Avalonia.Media.Imaging.Bitmap bmp) => _images.Add(bmp);
+
             public void Clear() => _images.Clear();
-            public System.Drawing.Image this[int index] { get => _images[index]; set => _images[index] = value; }
+
+            /// <summary>Legacy indexer — always returns null; use <see cref="GetAvaloniaBitmap"/> instead.</summary>
+            public System.Drawing.Image this[int index] { get => null; set { /* no-op: GDI+ unavailable */ } }
+
+            /// <summary>Returns the cross-platform Avalonia bitmap at the given index, or null.</summary>
+            public Avalonia.Media.Imaging.Bitmap GetAvaloniaBitmap(int index)
+                => (index >= 0 && index < _images.Count) ? _images[index] : null;
         }
 
         public System.Drawing.Size ImageSize { get; set; } = new System.Drawing.Size(16, 16);

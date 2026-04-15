@@ -341,7 +341,6 @@ namespace System.Windows.Forms
             {
                 // Already on UI thread — use a ManualResetEventSlim + Post to avoid deadlock.
                 // We run a blocking wait that pumps dispatcher jobs via MainLoop.
-                DialogResult result = DialogResult.Cancel;
                 var tcs = new System.Threading.Tasks.TaskCompletionSource<DialogResult>();
 
                 async void RunDialog()

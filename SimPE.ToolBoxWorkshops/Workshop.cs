@@ -164,9 +164,9 @@ namespace SimPe.Plugin
             this.tvigarden.Nodes.Clear();
 
 			this.ilist.Images.Clear();
-            this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.subitems.png")));
-            this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.nothumb.png")));
-            this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.custom.png")));
+            this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.subitems.png")));
+            this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.nothumb.png")));
+            this.ilist.Images.Add(new Avalonia.Media.Imaging.Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.custom.png")));
 		}
 
 		/// <summary>

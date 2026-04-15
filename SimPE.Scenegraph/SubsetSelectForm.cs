@@ -385,7 +385,7 @@ namespace SimPe.Plugin
 					if (item.ImageIndex >= 0 && lv.LargeImageList != null
 						&& item.ImageIndex < lv.LargeImageList.Images.Count)
 					{
-						var avBmp = SimPe.Helper.ToAvaloniaBitmap(lv.LargeImageList.Images[item.ImageIndex]);
+						var avBmp = lv.LargeImageList.Images.GetAvaloniaBitmap(item.ImageIndex);
 						if (avBmp != null)
 						{
 							var img = new Avalonia.Controls.Image

@@ -392,7 +392,7 @@ void main() {
     // -----------------------------------------------------------------------
     // Rendering
     // -----------------------------------------------------------------------
-    public new void Render()
+    public void Render()
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {

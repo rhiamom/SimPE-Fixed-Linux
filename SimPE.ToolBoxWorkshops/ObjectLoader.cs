@@ -156,7 +156,9 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		protected override void Produce()
 		{
+			System.Diagnostics.Debug.WriteLine("[OW:Producer] Produce() starting");
 			FileTable.FileIndex.Load();
+			System.Diagnostics.Debug.WriteLine("[OW:Producer] FileIndex.Load() completed");
 			LoadCachIndex();
 			changedcache = false;
 
@@ -165,6 +167,7 @@ namespace SimPe.Plugin.Tool.Dockable
 			int ct = 0;
 			//this is the first part loading by objd Resources
 			Interfaces.Scenegraph.IScenegraphFileIndexItem[] nrefitems = FileTable.FileIndex.Sort(FileTable.FileIndex.FindFile(Data.MetaData.OBJD_FILE, true));
+			System.Diagnostics.Debug.WriteLine($"[OW:Producer] FindFile(OBJD_FILE) returned {nrefitems.Length} items");
 
 			string len = " / " + nrefitems.Length.ToString();
 
@@ -579,17 +582,8 @@ namespace SimPe.Plugin.Tool.Dockable
 				{
 					tn.ImageIndex = 2;
 				}
-				else if (oci.Thumbnail!=null) 
-				{
-					Image img = oci.Thumbnail;
-					//if (Helper.XmlRegistry.GraphQuality) img = Ambertation.Drawing.GraphicRoutines.KnockoutImage(img, new System.Drawing.Point(0,0), System.Drawing.Color.Magenta);
-					img = Ambertation.Drawing.GraphicRoutines.ScaleImage(img, ilist.ImageSize.Width, ilist.ImageSize.Height, Helper.XmlRegistry.GraphQuality);
-
-					ilist.Images.Add(img);
-					tn.ImageIndex = ilist.Images.Count-1;					
-				}
 				else
-					tn.ImageIndex = 1;
+					tn.ImageIndex = 1; // thumbnails require GDI+ (unavailable on non-Windows)
 				tn.SelectedImageIndex = tn.ImageIndex;
 				ret.Nodes.Add(tn);
 			}
