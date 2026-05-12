@@ -201,7 +201,16 @@ namespace SimPe.Plugin
 			lv.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom;
 			lv.HideSelection = false;
 			lv.MultiSelect = false;
+			// Wine compat: default LargeIcon view drops mouse events on item clicks
+			// under Wine — Tile view keeps thumbnails visible AND fires events.
+			lv.View = View.Tile;
+			lv.TileSize = new Size(ImageSize.Width + 8, ImageSize.Height + 8);
 			lv.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
+			// Wine compat: even with Tile view, SelectedIndices is not always
+			// updated on click — force it explicitly via HitTest. Idempotent on
+			// Windows (the if-check skips when the item is already selected).
+			lv.MouseDown += new MouseEventHandler(SubsetLv_MouseDown);
+			lv.MouseUp += new MouseEventHandler(SubsetLv_MouseUp);
 			cb.Tag = lv;
 
 			ImageList il = new ImageList();
@@ -440,6 +449,38 @@ namespace SimPe.Plugin
 
 			lv.Enabled = cb.Checked;
 			button1.Enabled = CanContinue;
+		}
+
+		// Wine compat: force ListView selection on left-click via HitTest, because
+		// Wine does not reliably update SelectedIndices when an item is clicked
+		// in icon/tile view. Without this, Finish() returns the auto-selected
+		// default for any subset the user clicked but Wine "didn't notice".
+		private void ForceSelect(ListView lv, int x, int y)
+		{
+			ListViewHitTestInfo hit = lv.HitTest(x, y);
+			if (hit.Item == null || hit.Item.Selected) return;
+			lv.BeginUpdate();
+			try
+			{
+				foreach (ListViewItem item in lv.SelectedItems) item.Selected = false;
+				hit.Item.Selected = true;
+				hit.Item.Focused = true;
+				hit.Item.EnsureVisible();
+			}
+			finally
+			{
+				lv.EndUpdate();
+			}
+		}
+
+		private void SubsetLv_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left) ForceSelect((ListView)sender, e.X, e.Y);
+		}
+
+		private void SubsetLv_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left) ForceSelect((ListView)sender, e.X, e.Y);
 		}
 
 		bool internalupdate = false;

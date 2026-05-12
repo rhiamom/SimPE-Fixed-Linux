@@ -380,15 +380,26 @@ namespace SimPe
         private void lv_SelectionChanged(object sender, EventArgs e)
         {
             //plugger.ChangedGuiResourceEventHandler(this, new SimPe.Events.ResourceEventArgs(package));
-            
 
             SimPe.Events.ResourceEventArgs res = new SimPe.Events.ResourceEventArgs(package);
             try
             {
-                if (lv.SelectedItems.Count == 0)
-                    resloader.Clear();
-                else foreach (SimPe.Windows.Forms.NamedPackedFileDescriptor lvi in lv.SelectedItems)                
-                    res.Items.Add(new SimPe.Events.ResourceContainer(lvi.Resource));                
+                // Wine fires a spurious SelectionChanged with Count=0 between selections
+                // (and on every tree-view category click). Calling resloader.Clear() here
+                // would close every open resource editor on every click. The wizard /
+                // package-load paths still call Clear() explicitly when needed.
+                if (lv.SelectedItems.Count > 0)
+                {
+                    foreach (SimPe.Windows.Forms.NamedPackedFileDescriptor lvi in lv.SelectedItems)
+                        res.Items.Add(new SimPe.Events.ResourceContainer(lvi.Resource));
+
+                    // Wine: ListView.Click doesn't fire reliably, so SimpleResourceSelect
+                    // single-click-to-open never triggers via lv_Click -> OnSelectResource.
+                    // Mirror it here on the selection-changed path. Idempotent on Windows
+                    // (FocusResource short-circuits the second call).
+                    if (Helper.WindowsRegistry.SimpleResourceSelect && lv.SelectedItem != null)
+                        resloader.AddResource(lv.SelectedItem, true);
+                }
             }
             catch (Exception ex)
             {
