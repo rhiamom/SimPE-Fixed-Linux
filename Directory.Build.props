@@ -5,6 +5,10 @@
     <Prefer32Bit>false</Prefer32Bit>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <!-- Projects target net8.0-windows (WinForms) but are built here on Linux
+         for execution under Wine — the SDK otherwise refuses to restore/build
+         Windows-targeted TFMs on a non-Windows host. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <!-- Release-only: strip absolute source paths from PDB (no leaked username /

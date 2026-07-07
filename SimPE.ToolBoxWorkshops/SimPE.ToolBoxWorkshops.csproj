@@ -54,7 +54,7 @@
     <ProjectReference Include="..\SimPE.Clst\SimPE.Clst.csproj" />
     <ProjectReference Include="..\SimPE.Filehandlers\SimPE.Filehandlers.csproj" />
     <ProjectReference Include="..\SimPE.Geometry\SimPE.Geometry.csproj" />
-    <ProjectReference Include="..\SimPE.GMDCExporterbase\SimPE.GMDCExporterBase.csproj" />
+    <ProjectReference Include="..\SimPE.GMDCExporterbase\SimPE.GMDCExporterbase.csproj" />
     <ProjectReference Include="..\SimPE.GraphControl\SimPE.GraphControl.csproj" />
     <ProjectReference Include="..\SimPE.Helper\SimPE.Helper.csproj" />
     <ProjectReference Include="..\SimPE.HGBH\SimPE.HGBH.csproj" />

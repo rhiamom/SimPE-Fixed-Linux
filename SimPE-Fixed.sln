@@ -97,7 +97,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPE.Commandline", "SimPE.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPE.Scenegraph", "SimPE.Scenegraph\SimPE.Scenegraph.csproj", "{F4145736-97ED-417A-81EA-5635769ABE35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPE.GMDCExporterBase", "SimPE.GMDCExporterbase\SimPE.GMDCExporterBase.csproj", "{2FE03D2C-FC55-4E27-A460-6B7F574F26E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPE.GMDCExporterBase", "SimPE.GMDCExporterbase\SimPE.GMDCExporterbase.csproj", "{2FE03D2C-FC55-4E27-A460-6B7F574F26E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPE.ToolboxScanner", "SimPE.ToolboxScanner\SimPE.ToolboxScanner.csproj", "{B842CE3C-A049-46FA-A5CB-C0A4ADB903D7}"
 EndProject
@@ -129,7 +129,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.3D", "Ambertati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.utilities", "Ambertation.Utilities\ambertation.utilities.csproj", "{CC2130EB-EFB6-4A72-94FA-F5B4A6CA302C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.3D.gl.binding", "Ambertation.3D.Gl.Binding\ambertation.3D.gl.binding.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ambertation.3D.gl.binding", "Ambertation.3D.Gl.Binding\ambertation.3D.Gl.Binding.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedForms", "AdvancedForms\AdvancedForms.csproj", "{B1C2D3E4-F5A6-7890-BCDE-F01234567891}"
 EndProject
