@@ -549,22 +549,27 @@ namespace SimPe
 		/// <summary>
 		/// Returns the Path SimPe is located in
 		/// </summary>
-		public static string SimPePath 
+		public static string SimPePath
 		{
 			get
 			{
-				return Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+				// AppContext.BaseDirectory (not Application.ExecutablePath) so this
+				// still resolves correctly when launched as `dotnet SimPE.Main.dll`
+				// instead of the native apphost .exe — Application.ExecutablePath
+				// reflects the host process (e.g. dotnet.exe) in that case, not
+				// this assembly's own location.
+				return AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 			}
 		}
 
 		/// <summary>
 		/// Returns the Path SimPe Plugins are located in
 		/// </summary>
-		public static string SimPePluginPath 
+		public static string SimPePluginPath
 		{
 			get
 			{
-				return Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "Plugins");
+				return Path.Combine(AppContext.BaseDirectory, "Plugins");
 			}
 		}
 

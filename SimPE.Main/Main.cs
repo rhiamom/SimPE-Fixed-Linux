@@ -524,7 +524,7 @@ namespace SimPe
 
 		private void LaunchWizards(object sender, System.EventArgs e)
 		{
-			string wosExe = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Wizards of SimPe.exe");
+			string wosExe = Path.Combine(AppContext.BaseDirectory, "Wizards of SimPe.exe");
 			if (File.Exists(wosExe))
 			{
 				System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(wosExe) { UseShellExecute = true });
