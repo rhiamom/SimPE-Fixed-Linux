@@ -10,6 +10,15 @@
     <Configurations>Debug;Release;x86</Configurations>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>..\Resources\SimPE.ico</ApplicationIcon>
+    <!-- Self-contained so the apphost never consults DOTNET_ROOT / the global
+         install registry to find the .NET runtime — under Wine, a leaked
+         host-side DOTNET_ROOT env var (extremely common on any dev machine
+         with the .NET SDK installed) hijacks that lookup and makes SimPE
+         falsely report the runtime isn't installed, even when it is. A
+         self-contained apphost loads hostfxr.dll from its own directory
+         unconditionally, sidestepping the whole resolution chain. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>

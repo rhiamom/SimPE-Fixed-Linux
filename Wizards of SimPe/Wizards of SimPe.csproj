@@ -25,6 +25,11 @@
     <Product>[DEBUG]</Product>
     <AssemblyVersion>0.77.69.17</AssemblyVersion>
     <Configurations>Debug;Release;x86</Configurations>
+    <!-- Self-contained for the same reason as SimPE.Main.csproj: launched as
+         its own process under Wine, so it needs its own immunity to the
+         DOTNET_ROOT-leak / apphost runtime-discovery bug, not just SimPE.Main's. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <BaseAddress>285212672</BaseAddress>
