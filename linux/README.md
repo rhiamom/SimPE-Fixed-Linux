@@ -19,30 +19,41 @@ Output lands at `bin/Release/SimPE.Main.exe`.
   crash on any menu click — WinForms' `ToolStripManager` unconditionally
   calls Win32 DPI-awareness-context APIs that older Wine doesn't implement.
 
-## Run it in the same prefix as your Sims 2 install
+## It does not need to share a prefix with Sims 2
 
-SimPE needs to share a Wine prefix with your Sims 2 install (whichever
-edition/launcher — Steam, Lutris, GOG, a manual prefix) so it can see the
-same drive mappings and registry entries the game uses. SimPE's own
-Settings dialog is where you point it at your actual game/Downloads
-folders once it's running.
+Unlike the game itself, SimPE doesn't rely on the Windows registry to find
+your game files. It ships its own Game Root scanner
+(`GameRootAutoScanner.cs`) that walks a folder you point it at on disk,
+looking for `TSData` subfolders to identify the base game and each
+installed expansion/stuff pack, and remembers the result in its own
+`GameRoot.cfg` — no registry involved. (There's a legacy registry lookup
+for auto-detecting installed EPs, used only as an optional shortcut; it
+already falls back to the Game Root scanner when that registry key isn't
+present, which is the norm for Origin/Ultimate Collection installs and any
+other prefix that doesn't match your game's.)
 
-**Manual / any prefix:**
+Since every Wine prefix maps the whole host filesystem under `Z:` by
+default, SimPE can browse to and read/write wherever your Sims 2 files
+actually live on disk — inside the game's own prefix, or anywhere else —
+regardless of which prefix SimPE itself runs in. So the simplest setup is
+a plain, dedicated Wine prefix just for SimPE:
 
 ```
-WINEPREFIX=/path/to/your/prefix wine "bin/Release/SimPE.Main.exe"
+WINEPREFIX=~/.simpe wine "bin/Release/SimPE.Main.exe"
 ```
+
+On first run, use SimPE's Settings / Game Root scanner to point it at
+your Sims 2 install folder (e.g. the `compatdata/<appid>/pfx/drive_c/...`
+path from your Steam/Lutris/GOG prefix) and your Downloads folder. SimPE's
+own settings and cache then live in `~/.simpe`, kept separate from the
+game's prefix.
+
+Running SimPE inside the same prefix as the game works too, if that's more
+convenient for you — nothing above is a requirement, just the path of
+least setup. If you do want that, add `SimPE.Main.exe` as a non-Steam game
+(Steam) or an extra executable/runner entry (Lutris) in your existing Sims
+2 configuration, pointed at that install's `WINEPREFIX`/`STEAM_COMPAT_DATA_PATH`.
 
 (For a Proton prefix, use the matching `proton run` invocation with
 `STEAM_COMPAT_DATA_PATH` and `STEAM_COMPAT_CLIENT_INSTALL_PATH` set, the
 same way you'd launch any other non-Steam Windows exe through Proton.)
-
-**Steam:** add `SimPE.Main.exe` as a non-Steam game, then set its Proton
-compat-tool version to match Sims 2's, and point `STEAM_COMPAT_DATA_PATH`
-at the same `compatdata/<appid>` folder your Sims 2 install already uses.
-
-**Lutris:** add `SimPE.Main.exe` as an extra executable/runner entry in
-your existing Sims 2 game configuration, so it reuses that game's prefix.
-
-There's no single install method that covers every edition, so this is
-left as configuration rather than an auto-detecting script.
