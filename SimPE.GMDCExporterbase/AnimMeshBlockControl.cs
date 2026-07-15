@@ -363,7 +363,7 @@ namespace SimPe.Plugin.Anim
 				GeometryDataContainer gdc = (GeometryDataContainer)gmdc.Blocks[0];
 				gdc.LinkedAnimation = ab1;
 
-				fGeometryDataContainer.StartExport(new System.Windows.Forms.SaveFileDialog(), gdc, ".txt", gdc.Groups, (SimPe.Plugin.Gmdc.ElementSorting)fGeometryDataContainer.DefaultSelectedAxisIndex, this.cbCorrect.Checked);
+				fGeometryDataContainer.StartExport(new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false }, gdc, ".txt", gdc.Groups, (SimPe.Plugin.Gmdc.ElementSorting)fGeometryDataContainer.DefaultSelectedAxisIndex, this.cbCorrect.Checked);
 			} 
 			else 
 			{
@@ -380,7 +380,7 @@ namespace SimPe.Plugin.Anim
 				GeometryDataContainer gdc = (GeometryDataContainer)gmdc.Blocks[0];
 				gdc.LinkedAnimation = ab1;
 
-				fGeometryDataContainer.StartImport(new System.Windows.Forms.OpenFileDialog(), gdc, ".txt", (SimPe.Plugin.Gmdc.ElementSorting)fGeometryDataContainer.DefaultSelectedAxisIndex, true);
+				fGeometryDataContainer.StartImport(new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false }, gdc, ".txt", (SimPe.Plugin.Gmdc.ElementSorting)fGeometryDataContainer.DefaultSelectedAxisIndex, true);
 				ab1.Parent.Changed = true;
 				this.RefreshData();
 			} 

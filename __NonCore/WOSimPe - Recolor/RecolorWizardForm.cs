@@ -156,8 +156,8 @@ namespace SimPe.Wizards
             this.cbover = new System.Windows.Forms.CheckBox();
             this.iObjects = new System.Windows.Forms.ImageList(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.tabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbgeneral)).BeginInit();

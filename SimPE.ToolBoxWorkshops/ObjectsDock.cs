@@ -1011,7 +1011,7 @@ namespace SimPe.Plugin.Tool.Dockable
 		private void button2_Click(object sender, System.EventArgs e)
 		{
 			onlybase = false;
-			OpenFileDialog ofd = new OpenFileDialog();
+			OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = ExtensionProvider.BuildFilterString(
 				new SimPe.ExtensionType[] {
 											  SimPe.ExtensionType.Package,

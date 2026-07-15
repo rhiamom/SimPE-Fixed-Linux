@@ -102,11 +102,11 @@ namespace SimPe.Packages
             this.label5 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btadd = new System.Windows.Forms.Button();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.label6 = new System.Windows.Forms.Label();
             this.tbflname = new System.Windows.Forms.TextBox();
             this.btbrowse = new System.Windows.Forms.Button();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.btdelete = new System.Windows.Forms.Button();
             this.btsave = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();

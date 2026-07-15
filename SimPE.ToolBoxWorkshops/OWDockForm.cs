@@ -171,7 +171,7 @@ namespace SimPe.Plugin.Tool.Dockable
             this.biAbort = new System.Windows.Forms.ToolStripButton();
             this.biCatalog = new System.Windows.Forms.ToolStripButton();
 			this.ilist = new System.Windows.Forms.ImageList(this.components);
-			this.sfd = new System.Windows.Forms.SaveFileDialog();
+			this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
 			this.rightSandDock.SuspendLayout();
 			this.dcObjectWorkshop.SuspendLayout();
 			this.xpGradientPanel1.SuspendLayout();
@@ -919,7 +919,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void button2_Click(object sender, System.EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
+			OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = ExtensionProvider.BuildFilterString(
 				new SimPe.ExtensionType[] {
 											  SimPe.ExtensionType.Package,

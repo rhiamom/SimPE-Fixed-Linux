@@ -166,7 +166,7 @@ namespace SimPe
             this.button4 = new System.Windows.Forms.Button();
             this.tbdds = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.tbep1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);

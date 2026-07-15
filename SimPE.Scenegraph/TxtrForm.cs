@@ -122,8 +122,8 @@ namespace SimPe.Plugin
             this.btex = new System.Windows.Forms.Button();
             this.btim = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.txtrPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();

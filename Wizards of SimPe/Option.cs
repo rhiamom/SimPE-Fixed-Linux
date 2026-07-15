@@ -111,7 +111,7 @@ namespace SimPe.Wizards
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.pbstretch = new System.Windows.Forms.PictureBox();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             ((System.ComponentModel.ISupportInitialize)(this.pbtop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbbottom)).BeginInit();
             this.pnopt.SuspendLayout();

@@ -241,9 +241,9 @@ namespace SimPe.Plugin
             this.pb = new System.Windows.Forms.PictureBox();
             this.cbfix = new System.Windows.Forms.CheckBox();
             this.cbgid = new System.Windows.Forms.CheckBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.tbseek = new System.Windows.Forms.TextBox();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskBox2 = new System.Windows.Forms.Panel();
             this.taskBox1 = new System.Windows.Forms.Panel();

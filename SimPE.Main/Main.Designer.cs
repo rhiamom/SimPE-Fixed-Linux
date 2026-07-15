@@ -176,7 +176,7 @@ namespace SimPe
             this.tbWindow = new System.Windows.Forms.ToolStrip();
             this.tbAction = new System.Windows.Forms.ToolStrip();
             this.dockCenter = new Ambertation.Windows.Forms.DockContainer();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.miNew = new System.Windows.Forms.ToolStripMenuItem();
             this.miOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miSave = new System.Windows.Forms.ToolStripMenuItem();
@@ -216,7 +216,7 @@ namespace SimPe
             this.iAnim = new System.Windows.Forms.ImageList(this.components);
             this.xpGradientPanel3 = new System.Windows.Forms.Panel();
             this.xpGradientPanel5 = new System.Windows.Forms.Panel();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.waitControl1 = new SimPe.WaitControl();
             this.resourceViewManager1 = new SimPe.Windows.Forms.ResourceViewManager();
             this.tsmiStopWaiting = new System.Windows.Forms.ToolStripMenuItem();

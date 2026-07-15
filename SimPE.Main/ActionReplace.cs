@@ -43,7 +43,7 @@ namespace SimPe.Actions.Default
 		/// <returns></returns>
 		protected SimPe.Collections.PackedFileDescriptors LoadDescriptors(bool add) 
 		{
-			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
 			if (!add) 
 			{
 				ofd.Filter =  ExtensionProvider.BuildFilterString(

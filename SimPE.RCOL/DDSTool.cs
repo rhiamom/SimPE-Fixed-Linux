@@ -98,7 +98,7 @@ namespace SimPe.Plugin
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DDSTool));
             this.pb = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbformat = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();

@@ -452,7 +452,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				if (Message.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo)==DialogResult.No) return package;
 			}
 
-			SaveFileDialog sfd = new SaveFileDialog();
+			SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			sfd.Filter = ExtensionProvider.BuildFilterString(
 				new SimPe.ExtensionType[] {
 											  SimPe.ExtensionType.Package,
@@ -487,7 +487,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				if (Message.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo)==DialogResult.No) return package;
 			}
 
-			SaveFileDialog sfd = new SaveFileDialog();
+			SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			sfd.Filter = ExtensionProvider.BuildFilterString(
 				new SimPe.ExtensionType[] {
 											  SimPe.ExtensionType.Package,
@@ -552,7 +552,7 @@ namespace SimPe.Plugin.Tool.Dockable
                     map = fo.GetNameMap(true);
                     if (map == null) return package;
 
-                    SaveFileDialog sfd = new SaveFileDialog();
+                    SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
                     sfd.Filter = ExtensionProvider.BuildFilterString(
                         new SimPe.ExtensionType[] {
 													  SimPe.ExtensionType.Package,

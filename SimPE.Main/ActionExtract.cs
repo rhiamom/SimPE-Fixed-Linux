@@ -45,7 +45,7 @@ namespace SimPe.Actions.Default
 			name = name.Replace(" ", "").Replace(":", "_").Replace(@"\", "_");
 			if (!multi) 
 			{
-				System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+				System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
 				sfd.FileName = name;
 				sfd.Filter =  ExtensionProvider.BuildFilterString(
 					new SimPe.ExtensionType[] {

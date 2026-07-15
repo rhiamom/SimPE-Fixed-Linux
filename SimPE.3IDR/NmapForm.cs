@@ -102,7 +102,7 @@ namespace SimPe.Plugin
             this.tbgroup = new System.Windows.Forms.TextBox();
             this.llcommit = new System.Windows.Forms.LinkLabel();
             this.lblist = new System.Windows.Forms.ListBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.btnCommit = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.wrapperPanel.SuspendLayout();

@@ -82,7 +82,7 @@ namespace pj
         private IPackageFile currentPackage;
         private String getFilename()
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
             ofd.AddExtension = true;
             ofd.CheckFileExists = true;
             ofd.CheckPathExists = true;

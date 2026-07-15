@@ -628,7 +628,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void StringFile(bool load)
         {
-            FileDialog fd = load ? (FileDialog)new OpenFileDialog() : (FileDialog)new SaveFileDialog();
+            FileDialog fd = load ? (FileDialog)new OpenFileDialog() { AutoUpgradeEnabled = false } : (FileDialog)new SaveFileDialog() { AutoUpgradeEnabled = false };
             fd.AddExtension = true;
             fd.CheckFileExists = load;
             fd.CheckPathExists = true;
