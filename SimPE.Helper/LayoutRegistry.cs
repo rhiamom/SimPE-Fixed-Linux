@@ -2,6 +2,11 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
+ *   Copyright (C) 2010 by Chris Hatch                                     *
+ *   ExtendedTheme (originally booby.ThemeManager.ThemedForms in the       *
+ *   SimPE 0.77 GDF.dll theme system) — persisted layout flag that gates   *
+ *   extended button/control styling by the selected theme.                *
+ *                                                                         *
  *   Copyright (C) 2025 by GramzeSweatshop                                 *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
@@ -135,7 +140,7 @@ namespace SimPe
         /// <summary>
         /// gets / sets the Theme for SimPe
         /// </summary>
-        /// <remarks>Math.Min caps the maximum theme to 10 to prevent errors, must be increased to add another theme</remarks>
+        /// <remarks>Cap must be incremented whenever a new GuiTheme enum value is added.</remarks>
         public byte SelectedTheme
         {
             get
@@ -149,9 +154,9 @@ namespace SimPe
 
                 int n = Convert.ToInt32(o);
 
-                // Clamp to [0, 10] as in the original logic
+                // Clamp to [0, 11] — highest current GuiTheme value (Dark).
                 if (n < 0) n = 0;
-                if (n > 10) n = 10;
+                if (n > 11) n = 11;
 
                 return (byte)n;
             }
@@ -161,6 +166,25 @@ namespace SimPe
             }
         }
 
+
+        /// <summary>
+        /// When true, the current theme also styles buttons and other
+        /// standard controls (0.77's "extended theme" / booby.ThemeManager
+        /// ThemedForms). When false, only ToolStrips / MenuStrips /
+        /// DockManager chrome follows the theme.
+        /// </summary>
+        public bool ExtendedTheme
+        {
+            get
+            {
+                object o = xrk.GetValue("ExtendedTheme", false);
+                return Convert.ToBoolean(o);
+            }
+            set
+            {
+                xrk.SetValue("ExtendedTheme", value);
+            }
+        }
 
         /// <summary>
         /// true if classic pre-set has been launched
