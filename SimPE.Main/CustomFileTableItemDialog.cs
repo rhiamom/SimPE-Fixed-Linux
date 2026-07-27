@@ -126,7 +126,7 @@ namespace SimPe
 
         private void BrowseFile_Click(object sender, EventArgs e)
         {
-            using (var ofd = new OpenFileDialog())
+            using (var ofd = new OpenFileDialog() { AutoUpgradeEnabled = false })
             {
                 ofd.Filter = "Sims 2 packages (*.package)|*.package|All files (*.*)|*.*";
                 ofd.CheckFileExists = true;

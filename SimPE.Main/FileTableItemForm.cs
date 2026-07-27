@@ -114,7 +114,7 @@ namespace SimPe
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.xpGradientPanel1.SuspendLayout();
             this.SuspendLayout();
             // 

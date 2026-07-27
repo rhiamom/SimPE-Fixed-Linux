@@ -293,7 +293,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btSave_Click(object sender, System.EventArgs e)
 		{
-			SaveFileDialog sfd = new SaveFileDialog();
+			SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			sfd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] {SimPe.ExtensionType.LuaScript, SimPe.ExtensionType.AllFiles});
 			sfd.FileName = Wrapper.FileName;
 			if (sfd.ShowDialog()==DialogResult.OK)			
@@ -302,7 +302,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btLoad_Click(object sender, System.EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
+			OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] {SimPe.ExtensionType.LuaScript, SimPe.ExtensionType.AllFiles});
 			ofd.FileName = Wrapper.FileName;
 			if (ofd.ShowDialog()==DialogResult.OK)			
@@ -324,7 +324,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void button2_Click(object sender, System.EventArgs e)
 		{
-			SaveFileDialog sfd = new SaveFileDialog();
+			SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			sfd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] {SimPe.ExtensionType.LuaScript, SimPe.ExtensionType.AllFiles});
 			sfd.FileName = Wrapper.FileName;
 			if (sfd.ShowDialog()==DialogResult.OK)	

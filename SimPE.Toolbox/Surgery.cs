@@ -116,7 +116,7 @@ namespace SimPe.Plugin
             this.llusearche = new System.Windows.Forms.LinkLabel();
             this.pbarche = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cbskin = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();

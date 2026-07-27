@@ -203,7 +203,7 @@ namespace SimPe.Plugin.Scanner
             this.label4 = new System.Windows.Forms.Label();
             this.visualStyleLinkLabel2 = new System.Windows.Forms.LinkLabel();
             this.cbref = new System.Windows.Forms.CheckBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.pnep.SuspendLayout();

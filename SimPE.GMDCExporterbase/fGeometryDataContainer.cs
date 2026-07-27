@@ -369,9 +369,9 @@ namespace SimPe.Plugin
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.lb_subsets = new System.Windows.Forms.ListBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.cd = new System.Windows.Forms.ColorDialog();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.tabControl1.SuspendLayout();
             this.tGeometryDataContainer.SuspendLayout();
             this.groupBox1.SuspendLayout();

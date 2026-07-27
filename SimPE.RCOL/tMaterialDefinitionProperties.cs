@@ -118,8 +118,8 @@ namespace SimPe.Plugin.TabPage
             this.btnImport = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.btnMerge = new System.Windows.Forms.Button();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.gbprop.SuspendLayout();
             this.SuspendLayout();
             // 

@@ -36,6 +36,7 @@ namespace SimPe
     public partial class OptionForm : System.Windows.Forms.Form
     {
         private System.Windows.Forms.CheckBox cbbigicons;
+        private System.Windows.Forms.CheckBox cbExtendedTheme;
 
         public OptionForm()
         {
@@ -72,6 +73,42 @@ namespace SimPe
                 SimPe.GuiTheme[] gts = (SimPe.GuiTheme[])System.Enum.GetValues(typeof(SimPe.GuiTheme));
                 foreach (SimPe.GuiTheme gt in gts) cbThemes.Items.Add(gt);
                 cbThemes.SelectedIndex = 0;
+
+                // Theme groupbox was buried under later-added controls in
+                // the tpSettings tab. Move it to the empty slot on the
+                // right side of the tab (originally reserved for the
+                // never-shown "Game Settings" groupbox) and bring it
+                // forward so it renders on top of any siblings. Enlarge
+                // to fit the new "Extended theme" checkbox.
+                if (!tpSettings.Controls.Contains(groupBox5))
+                    tpSettings.Controls.Add(groupBox5);
+                groupBox5.Text = "Theme:";
+                groupBox5.Location = new Point(432, 152);
+                groupBox5.Size = new Size(232, 88);
+                groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                groupBox5.Visible = true;
+                groupBox5.BringToFront();
+
+                // "Extended theme" checkbox — mirrors 0.77's ThemedForms.
+                // When on, the selected theme's colors also style buttons
+                // and other standard controls; when off, only ToolStrip /
+                // MenuStrip / DockManager chrome follows the theme.
+                cbExtendedTheme = new CheckBox();
+                cbExtendedTheme.Name = "cbExtendedTheme";
+                cbExtendedTheme.Text = "Extended theme (buttons)";
+                cbExtendedTheme.AutoSize = true;
+                cbExtendedTheme.Location = new Point(8, 56);
+                cbExtendedTheme.Font = new Font("Verdana", 8.25F, FontStyle.Regular);
+                cbExtendedTheme.Checked = ThemeManager.ExtendedTheme;
+                cbExtendedTheme.CheckedChanged += ExtendedThemeChangedHandler;
+                groupBox5.Controls.Add(cbExtendedTheme);
+
+                // Tab Browsing (groupBox6) was designer-anchored Top+Left+Right,
+                // which stretches it past the visible tab edge at runtime when
+                // font/DPI scaling widens the form beyond its 794px design. Pin
+                // it to Top+Left so it keeps its design width and stays inside
+                // the tab area.
+                groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
                 SimPe.Registry.ReportFormats[] rfs = (SimPe.Registry.ReportFormats[])System.Enum.GetValues(typeof(SimPe.Registry.ReportFormats));
                 foreach (SimPe.Registry.ReportFormats rf in rfs) cbReport.Items.Add(rf);
@@ -291,6 +328,14 @@ namespace SimPe
         {
             // No longer needed — TabControl handles selection natively
             // Kept as stub in case something calls it
+        }
+
+        private void ExtendedThemeChangedHandler(object sender, System.EventArgs e)
+        {
+            // Persist immediately so a restart picks it up even if the
+            // user cancels the dialog. Matches the semantic of the theme
+            // dropdown which also fires NewTheme on change.
+            ThemeManager.ExtendedTheme = cbExtendedTheme.Checked;
         }
 
         private void ChangedThemeHandler(object sender, System.EventArgs e)

@@ -37,7 +37,7 @@ namespace pjse
     {
         public static DialogResult Execute(SimPe.Interfaces.Plugin.AbstractWrapper wrapper, string title)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
             sfd.FileName = wrapper.FileDescriptor.ExportFileName.Replace(" ", "").Replace(":", "_").Replace(@"\", "_");
             sfd.Filter = SimPe.ExtensionProvider.BuildFilterString(
                 new SimPe.ExtensionType[] { SimPe.ExtensionType.ExtractedFile, SimPe.ExtensionType.AllFiles }

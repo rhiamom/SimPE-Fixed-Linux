@@ -2591,9 +2591,9 @@ namespace SimPe.PackedFiles.UserInterface
             bool load = sender.Equals(this.fromFileToolStripMenuItem);
             FileDialog fd;
             if (load)
-                fd = new OpenFileDialog();
+                fd = new OpenFileDialog() { AutoUpgradeEnabled = false };
             else
-                fd = new SaveFileDialog();
+                fd = new SaveFileDialog() { AutoUpgradeEnabled = false };
             fd.AddExtension = true;
             fd.CheckFileExists = load;
             fd.CheckPathExists = true;

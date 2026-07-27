@@ -46,7 +46,7 @@ namespace SimPe.Plugin.UI
             SimPe.Plugin.HairtoneSettings hairtoneSettings1 = new SimPe.Plugin.HairtoneSettings();
             this.tcMain = new System.Windows.Forms.TabControl();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.dlgOpenPackageFile = new System.Windows.Forms.OpenFileDialog();
+            this.dlgOpenPackageFile = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             this.pbTexturePreview = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cbDeleter = new System.Windows.Forms.CheckBox();
@@ -54,7 +54,7 @@ namespace SimPe.Plugin.UI
             this.llGuid = new System.Windows.Forms.LinkLabel();
             this.box = new SimPe.Plugin.GeneticCategorizer(this.components);
             this.meshTable = new SimPe.Plugin.MeshTable(this.components);
-            this.dlgSavePackageFile = new System.Windows.Forms.SaveFileDialog();
+            this.dlgSavePackageFile = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.cmListActions = new System.Windows.Forms.ContextMenuStrip();
             this.miOpenPackage = new System.Windows.Forms.ToolStripMenuItem();
             this.miMoveTo = new System.Windows.Forms.ToolStripMenuItem();

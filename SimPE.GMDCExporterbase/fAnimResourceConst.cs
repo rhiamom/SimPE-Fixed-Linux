@@ -480,7 +480,7 @@ namespace SimPe.Plugin.Anim
 		{
 
 			AnimationMeshBlock ab1 = (AnimationMeshBlock)tv.SelectedNode.Tag;
-			SaveFileDialog ofd = new SaveFileDialog();
+			SaveFileDialog ofd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = "TextFile (*.txt)|*.txt|All Files (*.*)|*.*";
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
@@ -516,7 +516,7 @@ namespace SimPe.Plugin.Anim
         {
             nah = true;
             AnimationMeshBlock ab1 = (AnimationMeshBlock)tv.SelectedNode.Tag;
-            OpenFileDialog ofd = new OpenFileDialog();
+            OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
             ofd.Filter = "Text files (*.txt)|*.txt";
             if (ofd.ShowDialog() == DialogResult.OK)
             {

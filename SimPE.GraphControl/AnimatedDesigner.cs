@@ -139,7 +139,7 @@ namespace Ambertation.Windows.Forms
 			IComponentChangeService c = (IComponentChangeService)
 				GetService(typeof(IComponentChangeService));
 
-			System.Windows.Forms.OpenFileDialog ofd = new OpenFileDialog();
+			System.Windows.Forms.OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = "Images (*.bmp;*.png;*.jpg;*.gif;*.wmf)|*.bmp;*.png;*.jpg;*.gif;*.wmf";
 			ofd.Multiselect = true;
 			if (ofd.ShowDialog()==DialogResult.OK) 

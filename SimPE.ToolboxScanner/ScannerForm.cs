@@ -436,7 +436,7 @@ namespace SimPe.Plugin
             this.lbname = new System.Windows.Forms.Label();
             this.llopen = new System.Windows.Forms.LinkLabel();
             this.thumb = new System.Windows.Forms.PictureBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();

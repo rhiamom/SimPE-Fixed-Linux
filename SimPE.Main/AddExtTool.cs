@@ -99,7 +99,7 @@ namespace SimPe
 			this.tbfile = new System.Windows.Forms.TextBox();
 			this.tbattr = new System.Windows.Forms.TextBox();
 			this.button2 = new System.Windows.Forms.Button();
-			this.ofd = new System.Windows.Forms.OpenFileDialog();
+			this.ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
 			this.tbtype = new System.Windows.Forms.TextBox();
 			this.cbtypes = new System.Windows.Forms.ComboBox();
 			this.SuspendLayout();

@@ -114,6 +114,10 @@ namespace pjse
 
             try
             {
+                // Reset every index. hasLoaded stays false while these are
+                // partially populated so any nested indexer call re-enters
+                // Refresh (which no-ops via the isRefreshing guard above)
+                // instead of reading a half-populated table.
                 fixedPackages = new ArrayList();
                 maxisPackages = new ArrayList();
                 filenames = new Hashtable();
@@ -124,7 +128,43 @@ namespace pjse
                 pfByTypeGroup = new Hashtable();
                 pfByTypeGroupInstance = new Hashtable();
 
-                // ... rest of Refresh body that populates them ...
+                if (loadEverything)
+                {
+                    if (SimPe.Wait.Running) { SimPe.Wait.Progress = 0; SimPe.Wait.MaxProgress = SimPe.FileTable.DefaultFolders.Count; }
+                    foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
+                        if (fii.Use)
+                            Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions, true);
+                    if (SimPe.Wait.Running) SimPe.Wait.MaxProgress = 0;
+                }
+
+                this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, SimPe.Expansions.Custom, true);
+
+                if (loadEverything)
+                {
+                    // These four include packages carry the Maxis global / semi-global
+                    // / private / relationship label constants that the BCON editor's
+                    // Label column and TRCN button resolve against. They're shipped
+                    // embedded in this plugin's DLL and extracted on first load to
+                    // %APPDATA%\SimPe\Data\Plugins\pjse.coder.plugin\Includes\ —
+                    // matching the historical path pjse.coder used in 0.75/0.77.
+                    EnsureIncludesExtracted();
+                    this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\GLOBALS.package"), false, SimPe.Expansions.Custom, true);
+                    this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\SemiGlobals.package"), false, SimPe.Expansions.Custom, true);
+                    this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\Private.package"), false, SimPe.Expansions.Custom, true);
+                    this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\RelLabels.package"), false, SimPe.Expansions.Custom, true);
+                }
+
+                string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
+                if (loadEverything)
+                    if (File.Exists(packages_txt))
+                    {
+                        System.IO.StreamReader sr = new StreamReader(packages_txt);
+                        for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
+                            this.Add(line.TrimEnd('+'), line.EndsWith("+"), SimPe.Expansions.Custom, true);
+                        sr.Close();
+                        sr.Dispose();
+                        sr = null;
+                    }
 
                 hasLoaded = true;    // only after populate completes
             }
@@ -133,48 +173,43 @@ namespace pjse
                 isRefreshing = false;
             }
 
-            maxisPackages = new ArrayList();
-            filenames = new Hashtable();
-            packedFiles = new Hashtable();
-            pfByPackage = new Hashtable();
-            pfByType = new Hashtable();
-            pfByGroup = new Hashtable();
-            pfByTypeGroup = new Hashtable();
-            pfByTypeGroupInstance = new Hashtable();
-
-            if (loadEverything)
-            {
-                if (SimPe.Wait.Running) { SimPe.Wait.Progress = 0; SimPe.Wait.MaxProgress = SimPe.FileTable.DefaultFolders.Count; }
-                foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
-                    if (fii.Use)
-                        Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions, true);
-                if (SimPe.Wait.Running) SimPe.Wait.MaxProgress = 0;
-            }
-
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, SimPe.Expansions.Custom, true);
-
-            if (loadEverything)
-            {
-                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\GLOBALS.package"), false, SimPe.Expansions.Custom, true);
-                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\SemiGlobals.package"), false, SimPe.Expansions.Custom, true);
-                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\Private.package"), false, SimPe.Expansions.Custom, true);
-                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes\\RelLabels.package"), false, SimPe.Expansions.Custom, true);
-            }
-
-            string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
-            if (loadEverything)
-                if (File.Exists(packages_txt))
-                {
-                    System.IO.StreamReader sr = new StreamReader(packages_txt);
-                    for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                        this.Add(line.TrimEnd('+'), line.EndsWith("+"), SimPe.Expansions.Custom, true);
-                    sr.Close();
-                    sr.Dispose();
-                    sr = null;
-                }
-
             CurrentPackage = cp;
             SimPe.Wait.Message = "";
+        }
+
+        /// <summary>
+        /// Extract the four embedded BCON label include packages
+        /// (GLOBALS / SemiGlobals / Private / RelLabels) into
+        /// %APPDATA%\SimPe\Data\Plugins\pjse.coder.plugin\Includes\ if
+        /// they aren't already present. First-run idempotent — any file
+        /// that already exists is left alone so the user can drop in
+        /// their own replacement without it being overwritten.
+        /// </summary>
+        private static void EnsureIncludesExtracted()
+        {
+            string includesDir = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes");
+            try
+            {
+                if (!Directory.Exists(includesDir))
+                    Directory.CreateDirectory(includesDir);
+            }
+            catch { return; }
+
+            string[] names = new[] { "GLOBALS.package", "SemiGlobals.package", "Private.package", "RelLabels.package" };
+            var asm = System.Reflection.Assembly.GetExecutingAssembly();
+            foreach (string name in names)
+            {
+                string dest = Path.Combine(includesDir, name);
+                if (File.Exists(dest)) continue;
+                using System.IO.Stream s = asm.GetManifestResourceStream("pjse.Includes." + name);
+                if (s == null) continue;
+                try
+                {
+                    using var fs = File.Create(dest);
+                    s.CopyTo(fs);
+                }
+                catch { }
+            }
         }
 
         /// <summary>
@@ -252,7 +287,29 @@ namespace pjse
             }
 
             else if (!v.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP+"globalcatbin.bundle.package") && File.Exists(v))
-                Add(SimPe.Packages.File.LoadFromFile(v), ep != SimPe.Expansions.Custom, isFixed);
+            {
+                try
+                {
+                    Add(SimPe.Packages.File.LoadFromFile(v), ep != SimPe.Expansions.Custom, isFixed);
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    // The file has a .package extension but isn't a Sims2 DBPF
+                    // package (HeaderData.Load throws this for a bad magic number
+                    // or an unsupported DBPF version). Some genuine Maxis files
+                    // live in the scanned game folders like this — e.g. Bon
+                    // Voyage's TSData/Res/Catalog/Skins/Skins.package, which
+                    // starts with the bytes "book", not "DBPF". This bulk scan
+                    // runs whenever the BCON/BHAV editor rebuilds its label
+                    // sources, so it MUST skip foreign files quietly: letting the
+                    // exception escape both pops a modal "Sims2 packages only"
+                    // dialog AND aborts the rest of Refresh, so the include
+                    // packages (GLOBALS/SemiGlobals/Private/RelLabels) never load
+                    // and BCON labels resolve to 0xFFFFFFFF. Mirrors the guard in
+                    // SimPE.Scenegraph.FileIndex.AddIndexFromPackage (commit 6d601fe).
+                    System.Diagnostics.Debug.WriteLine("[pjse.FileTable] skipping unsupported file: " + v + " (" + ioe.Message.Split('\n')[0].Trim() + ")");
+                }
+            }
         }
 
 

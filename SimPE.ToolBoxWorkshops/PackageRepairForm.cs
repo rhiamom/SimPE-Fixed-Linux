@@ -265,7 +265,7 @@ namespace SimPe.Plugin.Tool.Window
 
 		private void btBrowse_Click(object sender, System.EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
+			OpenFileDialog ofd = new OpenFileDialog() { AutoUpgradeEnabled = false };
 			ofd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] { SimPe.ExtensionType.Package, SimPe.ExtensionType.AllFiles});
 			if (ofd.ShowDialog()==DialogResult.OK)
 				Setup(ofd.FileName);

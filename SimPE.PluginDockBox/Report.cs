@@ -91,7 +91,7 @@ namespace SimPe.Plugin.Tool
             this.xpGradientPanel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.rtb = new System.Windows.Forms.RichTextBox();
-            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog() { AutoUpgradeEnabled = false };
             this.xpGradientPanel1.SuspendLayout();
             this.SuspendLayout();
             // 

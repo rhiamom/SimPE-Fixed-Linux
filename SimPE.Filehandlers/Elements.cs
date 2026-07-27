@@ -1595,7 +1595,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btPicExport_Click(object sender, System.EventArgs e)
 		{
 			SimPe.PackedFiles.Wrapper.Picture wrp = (SimPe.PackedFiles.Wrapper.Picture)picwrapper;
-			System.Windows.Forms.SaveFileDialog sfd = new SaveFileDialog();
+			System.Windows.Forms.SaveFileDialog sfd = new SaveFileDialog() { AutoUpgradeEnabled = false };
 			sfd.Filter = "Image (*.png) | *.png";
 
 			if (sfd.ShowDialog()==DialogResult.OK)

@@ -48,7 +48,7 @@ namespace SimPe.Plugin.Tool
         {
             if (!ChangeEnabledStateEventHandler(sender, es)) return;
 
-            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog() { AutoUpgradeEnabled = false };
             ofd.Filter = SimPe.ExtensionProvider.BuildFilterString(new SimPe.ExtensionType[] { ExtensionType.Sim2Pack, ExtensionType.AllFiles });
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
