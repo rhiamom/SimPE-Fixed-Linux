@@ -199,9 +199,6 @@ text for copying</value>
   <data name="&gt;&gt;tbInst_Longname.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnOperandRaw.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Wingdings, 14.25pt</value>
-  </data>
   <data name="btnOperandRaw.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -218,7 +215,7 @@ text for copying</value>
     <value>25</value>
   </data>
   <data name="btnOperandRaw.Text" xml:space="preserve">
-    <value>~</value>
+    <value>»</value>
   </data>
   <data name="btnOperandRaw.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
@@ -271,9 +268,6 @@ text for copying</value>
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="btnOperandWiz.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Webdings, 10.8pt</value>
-  </data>
   <data name="btnOperandWiz.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -290,7 +284,7 @@ text for copying</value>
     <value>24</value>
   </data>
   <data name="btnOperandWiz.Text" xml:space="preserve">
-    <value>@</value>
+    <value>⚙</value>
   </data>
   <data name="btnOperandWiz.ToolTip" xml:space="preserve">
     <value>Pop-up Wizard</value>
@@ -1129,9 +1123,6 @@ text for copying</value>
   <data name="btnOpCode.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>System</value>
   </data>
-  <data name="btnOpCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Webdings, 10pt</value>
-  </data>
   <data name="btnOpCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1148,7 +1139,7 @@ text for copying</value>
     <value>2</value>
   </data>
   <data name="btnOpCode.Text" xml:space="preserve">
-    <value>4</value>
+    <value>▶</value>
   </data>
   <data name="&gt;&gt;btnOpCode.Name" xml:space="preserve">
     <value>btnOpCode</value>
